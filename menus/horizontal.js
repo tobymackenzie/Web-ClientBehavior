@@ -7,6 +7,9 @@
 }
 -----*/
 
+
+__ = new tmlib;
+
 /* *** config *** */
 __.cfg.navigationID = "topnavigation";
 __.cfg.navigationMenuLIClass = "topitem"
@@ -18,7 +21,7 @@ __.cfg.addedWidth = 20;
 
 
 /* *** onload *** */
-__.scrOnload = function{
+__.scrOnload = function(){
 //	no sizing
 //	oTopnavigationDropdownhandler = new tmlibSuckerfish({"menuID":cfgNavigationID,"wrapperClass":cfgNavigationMenuLIClass,"toplevelClass":cfgNavigationToplevelItemsClass,"submenuClass":cfgSubmenuClass});
 
@@ -175,8 +178,6 @@ __.classes.suckerfish = function (arguments){
 function tmlib(){
 		this.classes = {};
 		this.cfg = {};
-
-		this.addListener(window, "load", scrOnload, false);
 	}
 	tmlib.prototype.addListener = function(argElement, argEvent, argFunction, argBubble){
 		var fncBubble = (argBubble)?argBubble : false;
@@ -254,3 +255,4 @@ function tmlib(){
 			this.version = parseFloat(navigator.appVersion);
 		}
 	}
+__.addListener(window, "load", __.scrOnload, false);
