@@ -33,6 +33,8 @@ __.classes.imageSwitcher = function(arguments){
 		this.onselect = arguments.onselect || null;
 		this.ondeselect = arguments.ondeselect || null;
 		this.elmKeepDimensions = arguments.elmKeepDimensions || false;
+		this.attrKeepWidth = arguments.attrKeepWidth || null;
+		this.attrKeepHeight = arguments.attrKeepHeight || null;
 		
 		this.inprogress=0;
 		this.elmLICurrent = this.elmsListItems.hasClass(this.classSelected);
@@ -69,9 +71,17 @@ __.classes.imageSwitcher = function(arguments){
 			
 			if(fncThis.elmKeepDimensions){
 				fncThis.elmKeepDimensions.css({"height": fncThis.elmImage.height(), "width": fncThis.elmImage.width()});
-				var heightNew = elmTempImage.height() || fncThis.elmImage.height();
-				var widthNew = elmTempImage.width() || fncThis.elmImage.width();
+				var widthNew = false, heightNew = false;
+				if(fncThis.attrKeepWidth)
+					widthNew = thisLI.attr(fncThis.attrKeepWidth) || false;
+				if(fncThis.attrKeepHeight)
+					heightNew = thisLI.attr(fncThis.attrKeepHeight) || false;
+				if(!(widthNew || heightNew)){
+					widthNew = widthNew || elmTempImage.width() || fncThis.elmImage.width();
+					heightNew = heightNew || elmTempImage.height() || fncThis.elmImage.height();
+				}
 			}
+
 			// animate
 			currentLI.children("a").animate(fncThis.listItemUnselectedState, fncThis.duration, function(){
 				$(this).closest(fncThis.selectorListItemContainer).removeClass(fncThis.classSelected);

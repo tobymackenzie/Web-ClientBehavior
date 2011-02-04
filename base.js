@@ -14,6 +14,9 @@ function tmlib(){
 		this.lib = {};
 		this.cfg = {};
 	}
+	__.lib.init = function(){
+		__.addClass(document.body, "hasjavascript");
+	}
 	tmlib.prototype.addListener = function(argElement, argEvent, argFunction, argBubble){
 		var fncBubble = (argBubble)?argBubble : false;
 		if(argElement.attachEvent)
@@ -242,4 +245,4 @@ __.lib.cookies = {
 init
 ---- */
 __.addListener(window, "load", __.scrOnload, false);
-
+__.addListener(window, "load", __.lib.init, false);
