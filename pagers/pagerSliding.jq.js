@@ -1,6 +1,43 @@
 /* --------
 slides new "pages" into view while sliding old out
+depends on: tmlib base, jquery
+
+---css:
+.container{
+	position: relative; /*- non static
+	width: 100px;
+	height: 100px;
+}
+.page{
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100px; /- same as above
+	height: 100%;
+}
+.page.current{
+	display: block;
+}
+.navigation{
+	display: none;
+}
+body.hasjavascript .navigation{
+	display: block;
+}
+
+---init:
+$(function(){
+	var elmsBanners = $("#bannerbox .banners .banner");
+	if(elmsBanners.length > 0){
+		__.bannerPager = new __.classes.pagerSlidingHash({elmsPages:elmsBanners, itemSelector:".banner", elmNavigation: $("#bannerbox .navigation"), elmPreviousButton:$("#bannerbox .navigation .previous"), elmNextButton:$("#bannerbox .navigation .next"), elmsItemNavigation: $("#bannerbox .navigation li")
+		});
+	}
+});
 ------- */
+/*-----
+©pagerSliding
+-----*/
 __.classes.pagerSliding = function(arguments){
 		var fncThis = this;
 		this.elmsPages = arguments.elmsPages || null;

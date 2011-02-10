@@ -5,22 +5,37 @@ depends on: tmlib base, jquery
 params: arguments array: array of arguments
 		elmsNavigation $element: container of navigation, supply only to auto-display on init, allowing hiding for non-js browsers
 
-// style
-#container .page{
-	display: none; // one way to hide all for non-js
-	position: absolute;
+---css:
+.container{
+	position: relative; /*- non static
+	width: 100px;
+	height: 100px;
 }
-#container .page.current{
-	display: block; // needed if above is used
+.page{
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100px; /- same as above
+	height: 100%;
+}
+.page.current{
+	display: block;
+}
+.navigation{
+	display: none;
+}
+body.hasjavascript .navigation{
+	display: block;
 }
 
-// init
+
+---init
 if(typeof $ !== 'undefined')
 	$(document).ready(function(){
 //		__.pageid = $("body").attr("id");
 		var elmsBanners = $("#banner .banners .banner");
 		if(elmsBanners.length > 0)
-		
 			__.bannerPager = new __.classes.pagerSlidingHash({elmsPages:elmsBanners, itemSelector:".banner", elmPreviousButton:$("#banner .navigation .previous"), elmNextButton:$("#banner .navigation .next"), elmsItemNavigation: $("#banner .navigation li"), callbackPreSlide: function(elmNewPage){
 					var fncThis = this;
 					var newTitle = elmNewPage.attr("data-title");

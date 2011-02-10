@@ -27,6 +27,7 @@ __.classes.slideOpen = function(arguments){
 		this.strTogglerOpened = (arguments.strTogglerOpened !== undefined)? arguments.strTogglerOpened: "Hide ";
 		this.classOpen = arguments.classOpen || "open";
 		this.classClosed = arguments.classClosed || "closed";
+		this.callbackInit = arguments.callbackInit || false;
 		this.callbackPlaceToggler = arguments.callbackPlaceToggler || null;
 		this.callbackOpen = arguments.callbackOpen || null;
 		this.callbackClose = arguments.callbackClose || null;
@@ -44,6 +45,9 @@ __.classes.slideOpen = function(arguments){
 		this.elmTogglerAnchor.click(function(){
 			fncThis.toggle();
 		});
+		
+		if(this.callbackInit)
+			this.callbackInit.call(this);
 	}
 	__.classes.slideOpen.prototype.toggle = function(){
 		if(this.element.hasClass(this.classOpen))
