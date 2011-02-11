@@ -3,11 +3,21 @@ slides open and closed specified element(s)
 */
 
 /*-------------
-external access
-
+---init
 $(document).ready(function(){
-	__.wishlistSlideOpen = new __.classes.slideOpen({element: elmMoreList, strToggler: "", strTogglerClosed: elmMoreList.attr("data-count")+" more&hellip;", strTogglerOpened: "Hide additional items", callbackPlaceToggler: function(argElement){
+	__.wishlistSlideOpen = new __.classes.slideOpen({element: elmMoreList, strToggler: "", strTogglerClosed: elmMoreList.attr("data-count")+" more&hellip;", strTogglerOpened: "Hide additional items"
+		,callbackPlaceToggler: function(argElement){
 			this.element.closest(".wishlist").children(".wishlistitems.primary").after(argElement);
+		}
+		,callbackInit: function(){
+			var fncThis = this;
+			var elmCloserWrap = $('<div class="closerwrap">');
+			var elmCloser = $('<a class="closer" href="javascript://hideAdditionalInformation();">hide</a>');
+			elmCloserWrap.append("(").append(elmCloser).append(")");
+			this.element.find("h3.header").after(elmCloserWrap);
+			elmCloser.bind("click touchstart", function(){
+				fncThis.close();
+			});
 		}
 	}));
 
