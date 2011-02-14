@@ -9,8 +9,13 @@ style:
 
 
 // init
-		__.pager = new __.classes.hashPagerStaticKeepHeight({elmsPages: elmsPages, elmsNavigation: $(".articlenav li"), keepHeight: $(".articlelist")});
-
+if(typeof $ != 'undefined'){
+	$(function(){
+		var elmsPages = $("#maincontent .page");
+		if(elmsPages.length > 0)
+			__.pager = new __.classes.hashPagerStaticKeepHeight({elmsPages: elmsPages, elmsNavigation: $(".articlenav li"), keepHeight: $(".articlelist")});
+	});
+}
 
 ------------*/
 
@@ -28,6 +33,9 @@ __.classes.hashPagerStaticKeepHeight = function(arguments){
 		this.duration = (arguments.duration !== undefined) ? arguments.duration : 500;
 		this.keepHeight = arguments.keepHeight || false;
 		if(__.isIphone() == true) this.keepHeight = false;
+		this.callbackInit = arguments.callbackInit || null;
+		this.callbackPreSwitch = arguments.callbackPreSwitch || null;
+		this.boot = arguments.boot || null;
 		
 		this.inProgress = true;
 		
@@ -47,6 +55,9 @@ __.classes.hashPagerStaticKeepHeight = function(arguments){
 		this.attachListeners(this.elmsNavigation);
 		
 		this.inProgress = false;
+
+		if(this.callbackInit)
+			this.callbackInit.call(this);
 	}
 	__.classes.hashPagerStaticKeepHeight.prototype.attachListeners = function(argElements){
 		var fncThis = this;
@@ -70,6 +81,9 @@ __.classes.hashPagerStaticKeepHeight = function(arguments){
 			var elmCurrentPage = this.elmsPages.filter("."+this.classCurrentPage);
 
 			fncThis.inProgress = true;
+			
+			if(fncThis.callbackPreSwitch)
+				fncThis.callbackPreSwitch.call(this, idNext);
 
 			if(fncThis.keepHeight){
 				fncThis.keepHeight.css("height", elmCurrentPage.outerHeight());
