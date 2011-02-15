@@ -136,9 +136,8 @@ __.classes.suckerfish = function (arguments){
 	}
 
 
-/* ***** 
-©menu sizing
-****** */
+/*---menu sizing
+---*/
 	__.classes.suckerfish.prototype.sizeAndCenter1 = function(){	
 		for(var i=0; i < this.elmsMenuAssociations.length; ++i){
 			var forElmMenuItemArray = this.elmsMenuAssociations[i];

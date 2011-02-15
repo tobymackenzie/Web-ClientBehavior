@@ -5,17 +5,33 @@ style:
 	.page{
 		width: 100%; // width must be set to correct value when page is repositioned to get height
 	}
-
-
+	.pointer{
+		position: absolute;
+		top: -14px;
+		height: -14px;
+	}
+	
 
 // init
 if(typeof $ != 'undefined'){
 	$(function(){
-		var elmsPages = $("#maincontent .page");
+		var elmsPages = $("#maincontent .homecolumns .page");
 		if(elmsPages.length > 0)
-			__.pager = new __.classes.hashPagerStaticKeepHeight({elmsPages: elmsPages, elmsNavigation: $(".articlenav li"), keepHeight: $(".articlelist")});
+			__.pager = new __.classes.hashPagerStaticKeepHeight({elmsPages: elmsPages, selectorNavigation: ".pager.navigation .topitem"
+				,callbackInit: function(){
+					var elmCurrentNavigation = this.elmsNavigation.filter("."+this.classCurrentNavigation);
+					var newPosition = elmCurrentNavigation.position().left + elmCurrentNavigation.outerWidth()/2 - this.boot.elmPointer.outerWidth()/2;
+					this.boot.elmPointer.css({left: newPosition});
+				}
+				,callbackPreSwitch: function(arguments){
+					var newPosition = arguments.elmNextNavigation.position().left + arguments.elmNextNavigation.outerWidth()/2 - this.boot.elmPointer.outerWidth()/2;
+					this.boot.elmPointer.animate({left: newPosition}, this.duration);
+				}
+				,boot: {elmPointer: $(".pager.navigation .pointer")}
+			});
 	});
 }
+
 
 ------------*/
 
@@ -25,8 +41,11 @@ if(typeof $ != 'undefined'){
 ------------*/
 __.classes.hashPagerStaticKeepHeight = function(arguments){
 		this.elmsPages = arguments.elmsPages || false; if(!this.elmsPages || this.elmsPages.length < 1) return false;
-		this.elmsNavigation = arguments.elmsNavigation || false;
-			if(!this.elmsNavigation) return false;
+//->return
+		this.selectorNavigation = arguments.selectorNavigation || false;
+			if(!this.selectorNavigation) return false;
+//->return
+			this.elmsNavigation = $(this.selectorNavigation);
 			this.elmsNavigation = this.elmsNavigation.has("a[href^='#']");
 		this.classCurrentNavigation = arguments.classCurrentNavigation || "current";
 		this.classCurrentPage = arguments.classCurrentPage || "current";
@@ -36,26 +55,26 @@ __.classes.hashPagerStaticKeepHeight = function(arguments){
 		this.callbackInit = arguments.callbackInit || null;
 		this.callbackPreSwitch = arguments.callbackPreSwitch || null;
 		this.boot = arguments.boot || null;
-		
+
 		this.inProgress = true;
 		
 		// hide all, display first
 		this.elmsPages.hide();
 		var elmCurrentPage = this.elmsPages.filter("."+this.classCurrentPage);
 		if(elmCurrentPage.length > 0){
-			this.idCurrent = this.escapeHash(elmCurrentPage.attr("id"));
+			this.idCurrent = "#"+this.escapeHash(elmCurrentPage.attr("id"));
 		}else{
 			elmCurrentPage = this.elmsPages.first();
-			this.idCurrent = this.escapeHash(elmCurrentPage.addClass(this.classCurrentPage).attr("id"));
+			this.idCurrent = "#"+this.escapeHash(elmCurrentPage.addClass(this.classCurrentPage).attr("id"));
 		}
 		elmCurrentPage.show();
-		this.elmsNavigation.filter(this.idCurrent).addClass(this.classCurrentNavigation);
+		this.elmsNavigation.children("a").filter("[href='"+this.unescapeHash(this.idCurrent)+"']").closest(this.selectorNavigation).addClass(this.classCurrentNavigation);
 		
 		// attach listeners
 		this.attachListeners(this.elmsNavigation);
 		
 		this.inProgress = false;
-
+		
 		if(this.callbackInit)
 			this.callbackInit.call(this);
 	}
@@ -83,8 +102,8 @@ __.classes.hashPagerStaticKeepHeight = function(arguments){
 			fncThis.inProgress = true;
 			
 			if(fncThis.callbackPreSwitch)
-				fncThis.callbackPreSwitch.call(this, idNext);
-
+				fncThis.callbackPreSwitch.call(this, {elmNextNavigation: elmNextNavigation, elmNextPage: elmNextPage, elmCurrentNavigation: elmCurrentNavigation, elmCurrentPage: elmCurrentPage});
+			
 			if(fncThis.keepHeight){
 				fncThis.keepHeight.css("height", elmCurrentPage.outerHeight());
 				var nextOriginalSettings = {
@@ -119,6 +138,10 @@ __.classes.hashPagerStaticKeepHeight = function(arguments){
 	__.classes.hashPagerStaticKeepHeight.prototype.escapeHash = function(hash){
 		return hash.replace(/\//g, "\\/");
 	}
+	__.classes.hashPagerStaticKeepHeight.prototype.unescapeHash = function(hash){
+		return hash.replace(/\\\//g, "\/");
+	}
+
 
 
 
