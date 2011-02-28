@@ -17,12 +17,25 @@ function tmlib(){
 	__.lib.init = function(){
 		__.addClass(document.body, "hasjavascript");
 	}
+	//-*depricated in favor of addListeners
 	tmlib.prototype.addListener = function(argElement, argEvent, argFunction, argBubble){
 		var fncBubble = (argBubble)?argBubble : false;
 		if(argElement.attachEvent)
 			argElement.attachEvent("on"+argEvent, argFunction);
 		else
 			argElement.addEventListener(argEvent, argFunction, fncBubble);
+	}
+	tmlib.prototype.addListeners = function(argElements, argEvent, argFunction, argBubble){
+		var fncBubble = (argBubble)?argBubble : false;
+		if(!__.lib.isArray(argElements))
+			argElements = new Array(argElements);
+		for(var i = 0; i < argElements.length; ++i){
+			var forElement = argElements[i];
+			if(forElement.attachEvent)
+				forElement.attachEvent("on"+argEvent, argFunction);
+			else
+				forElement.addEventListener(argEvent, argFunction, fncBubble);
+		}
 	}
 	tmlib.prototype.getElementsByClassName = function(args){
 		var fncClassName = (args.className)?args.className:null; if(!fncClassName) return;
@@ -151,6 +164,11 @@ function tmlib(){
 	tmlib.prototype.isInteger = function(argument){
 		return argument.toString().match(/^-?[0-9]+$/);
 	}
+	//-@based from http://andrewpeace.com/javascript-is-array.html
+	__.lib.isArray = function(argObject){
+		return typeof argObject == 'object' && (argObject instanceof Array);
+	}
+
 /*--dispatchEvent
 fire an event on an element
 */
@@ -220,6 +238,11 @@ string functions
 		var regex = /(<br>|<br\s+\/>)/g;
 		return argString.replace(regex, "");
 	}
+	//-@based from http://beardscratchers.com/journal/using-javascript-to-get-the-hostname-of-a-url
+	__.lib.urlToHostName = function(argURL){
+		var regex = new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im');
+		return argURL.match(regex)[1].toString();
+	}
 /*
 timezone functions
 */
@@ -286,5 +309,5 @@ __.lib.cookies = {
 /* ----
 init
 ---- */
-__.addListener(window, "load", __.lib.init, false);
-__.addListener(window, "load", __.scrOnload, false);
+__.addListeners(window, "load", __.lib.init, false);
+__.addListeners(window, "load", __.scrOnload, false);
