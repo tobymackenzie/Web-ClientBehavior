@@ -239,10 +239,24 @@ string functions
 		return argString.replace(regex, "");
 	}
 	//-@based from http://beardscratchers.com/journal/using-javascript-to-get-the-hostname-of-a-url
-	__.lib.urlToHostName = function(argURL){
-		var regex = new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im');
-		return argURL.match(regex)[1].toString();
+	__.lib.urlParse = function(argURL){
+		var regexExternal = /^(.*):\/\/([^\/]+)(.*)/i;
+		var regexEmail = /^mailto:(.*)@(.*)/i;
+		var regexTel = /^(tel|fax):(.*)/i;
+		
+		var resultExternal = argURL.match(regexExternal);
+		if(resultExternal != null)
+			return {type: "external", protocol: resultExternal[1], host: resultExternal[2], file: resultExternal[3]};
+		var resultEmail = argURL.match(regexEmail);
+		if(resultEmail != null)
+			return {type: "mailto", username: resultEmail[1], host: resultEmail[2]};
+		var resultTel = argURL.match(regexTel);
+		if(resultTel != null)
+			return {type: resultTel[1], n: resultTel[2]};
+
+		return {type: "internal", href: argURL};
 	}
+
 /*
 timezone functions
 */
