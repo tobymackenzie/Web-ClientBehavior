@@ -76,10 +76,14 @@ __.classes.pagerSlidingHash = function(arguments){
 		this.boot = arguments.boot || null;
 		
 		// set up current pages
-		this.elmCurrent = this.elmsPages.filter("."+this.classCurrentItem);
-		if(this.elmCurrent.length < 1){
-			this.elmCurrent = this.elmsPages.first();
-			this.elmCurrent.addClass(this.classCurrentItem);
+		if(window.location.hash){
+			this.elmCurrent = this.elmsPages.filter(window.location.hash).addClass(this.classCurrentItem);
+		}else{
+			this.elmCurrent = this.elmsPages.filter("."+this.classCurrentItem);
+			if(this.elmCurrent.length < 1){
+				this.elmCurrent = this.elmsPages.first();
+				this.elmCurrent.addClass(this.classCurrentItem);
+			}
 		}
 		
 		// show navigation

@@ -22,11 +22,16 @@ __.classes.hashPagerStatic = function(arguments){
 		
 		// hide all, display first
 		this.elmsPages.hide();
-		var elmCurrentNavigation = this.elmsNavigation.filter("."+this.classCurrentNavigation);
-		if(elmCurrentNavigation.length > 0){
-			this.idCurrent = elmCurrentNavigation.find("a").attr("href");
+		if(window.location.hash){
+			this.idCurrent = window.location.hash;
+			this.elmsNavigation.has("a[href="+window.location.hash+"]").addClass(this.classCurrentNavigation);
 		}else{
-			this.idCurrent = this.elmsNavigation.first().addClass(this.classCurrentNavigation).find("a").attr("href");
+			var elmCurrentNavigation = this.elmsNavigation.filter("."+this.classCurrentNavigation);
+			if(elmCurrentNavigation.length > 0){
+				this.idCurrent = elmCurrentNavigation.find("a").attr("href");
+			}else{
+				this.idCurrent = this.elmsNavigation.first().addClass(this.classCurrentNavigation).find("a").attr("href");
+			}
 		}
 		this.elmsPages.filter(this.idCurrent).show().addClass(this.classCurrentPage);
 		

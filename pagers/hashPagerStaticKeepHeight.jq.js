@@ -60,12 +60,17 @@ __.classes.hashPagerStaticKeepHeight = function(arguments){
 		
 		// hide all, display first
 		this.elmsPages.hide();
-		var elmCurrentPage = this.elmsPages.filter("."+this.classCurrentPage);
-		if(elmCurrentPage.length > 0){
-			this.idCurrent = "#"+this.escapeHash(elmCurrentPage.attr("id"));
+		if(window.location.hash){
+			this.idCurrent = window.location.hash;
+			this.elmsPages.filter(window.location.hash).addClass(this.classCurrentPage);
 		}else{
-			elmCurrentPage = this.elmsPages.first();
-			this.idCurrent = "#"+this.escapeHash(elmCurrentPage.addClass(this.classCurrentPage).attr("id"));
+			var elmCurrentPage = this.elmsPages.filter("."+this.classCurrentPage);
+			if(elmCurrentPage.length > 0){
+				this.idCurrent = "#"+this.escapeHash(elmCurrentPage.attr("id"));
+			}else{
+				elmCurrentPage = this.elmsPages.first();
+				this.idCurrent = "#"+this.escapeHash(elmCurrentPage.addClass(this.classCurrentPage).attr("id"));
+			}
 		}
 		elmCurrentPage.show();
 		this.elmsNavigation.children("a").filter("[href='"+this.unescapeHash(this.idCurrent)+"']").closest(this.selectorNavigation).addClass(this.classCurrentNavigation);
