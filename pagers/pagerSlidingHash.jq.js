@@ -36,7 +36,7 @@ if(typeof $ !== 'undefined')
 //		__.pageid = $("body").attr("id");
 		var elmsBanners = $("#banner .banners .banner");
 		if(elmsBanners.length > 0)
-			__.bannerPager = new __.classes.pagerSlidingHash({elmsPages:elmsBanners, itemSelector:".banner", elmPreviousButton:$("#banner .navigation .previous"), elmNextButton:$("#banner .navigation .next"), elmsItemNavigation: $("#banner .navigation li"), callbackPreSlide: function(elmNewPage){
+			__.bannerPager = new __.classes.pagerSlidingHash({elmsPages:elmsBanners, itemSelector:".banner", elmPreviousButton:$("#banner .navigation .previous"), elmNextButton:$("#banner .navigation .next"), elmsItemNavigation: $("#banner .navigation li"), regexHash: {find: /(#[\w-_])/, replace: "$1"}, callbackPreSlide: function(elmNewPage){
 					var fncThis = this;
 					var newTitle = elmNewPage.attr("data-title");
 					this.boot.elmTitle.fadeOut(this.duration, function(){
@@ -66,6 +66,7 @@ __.classes.pagerSlidingHash = function(arguments){
 		this.classCurrentNavItem = arguments.classCurrentNavItem || "current";
 		this.classDisabled = arguments.classDisabled || "disabled";
 		this.classEnabled = arguments.classEnabled || "enabled";
+		this.regexHash = arguments.regexHash || false;
 		this.duration = (arguments.duration !== undefined)? arguments.duration: 500;
 		this.contentWidth = (arguments.contentWidth !== undefined)? arguments.contentWidth: 960;
 		this.contentLeft = arguments.contentLeft || 0;
@@ -77,7 +78,7 @@ __.classes.pagerSlidingHash = function(arguments){
 		
 		// set up current pages
 		if(window.location.hash){
-			this.elmCurrent = this.elmsPages.filter(window.location.hash).addClass(this.classCurrentItem);
+			this.elmCurrent = this.elmsPages.filter(this.parsePath(window.location.hash)).addClass(this.classCurrentItem);
 		}else{
 			this.elmCurrent = this.elmsPages.filter("."+this.classCurrentItem);
 			if(this.elmCurrent.length < 1){
@@ -199,22 +200,24 @@ __.classes.pagerSlidingHash = function(arguments){
 		
 		return true;
 	}
-	__.classes.pagerSlidingHash.prototype.parsePath = function(path){
-		return path;
-	}
 	__.classes.pagerSlidingHash.prototype.updateRelativeNavigation = function(argDuration){
 		fncDuration = (typeof argDuration !== 'undefined')? argDuration: this.duration;
 
-		var previousURL = "#"+this.elmCurrent.prev(this.itemSelector).attr("id");
+		if(this.elmPreviousButton){
+			var previousURL = "#"+this.elmCurrent.prev(this.itemSelector).attr("id");
+			if(previousURL != "#undefined")
+				this.elmPreviousButton.removeClass(this.classDisabled).addClass(this.classEnabled).children("a").attr("href", previousURL);
+			else
+				this.elmPreviousButton.removeClass(this.classEnabled).addClass(this.classDisabled).children("a").attr("href", "");
+		}
+		if(this.elmNextButton){
 		var nextURL = "#"+this.elmCurrent.next(this.itemSelector).attr("id");
-		if(previousURL != "#undefined")
-			this.elmPreviousButton.removeClass(this.classDisabled).addClass(this.classEnabled).children("a").attr("href", previousURL);
-		else
-			this.elmPreviousButton.removeClass(this.classEnabled).addClass(this.classDisabled).children("a").attr("href", "");
-		if(nextURL != "#undefined")
-			this.elmNextButton.removeClass(this.classDisabled).addClass(this.classEnabled).children("a").attr("href", nextURL);
-		else
-			this.elmNextButton.removeClass(this.classEnabled).addClass(this.classDisabled).children("a").attr("href", "");
+			if(nextURL != "#undefined")
+				this.elmNextButton.removeClass(this.classDisabled).addClass(this.classEnabled).children("a").attr("href", nextURL);
+			else
+				this.elmNextButton.removeClass(this.classEnabled).addClass(this.classDisabled).children("a").attr("href", "");
+		}
+
 		
 		// set up current navigation item
 		if(this.elmsItemNavigation)
@@ -248,6 +251,18 @@ __.classes.pagerSlidingHash = function(arguments){
 				}
 			}
 		}
+	}
+	__.classes.pagerSlidingHash.prototype.parsePath = function(path){
+		if(this.regexHash)
+			path = path.replace(this.regexHash.find, this.regexHash.replace);
+		return this.parsePath(path);
+	}
+	// allows using slashes in the hash
+	__.classes.pagerSlidingHash.prototype.escapeHash = function(hash){
+		return hash.replace(/\//g, "\\/");
+	}
+	__.classes.pagerSlidingHash.prototype.unescapeHash = function(hash){
+		return hash.replace(/\\\//g, "\/");
 	}
 
 	/* notes:

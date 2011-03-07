@@ -45,8 +45,8 @@ __.classes.hashPagerStaticKeepHeight = function(arguments){
 		this.selectorNavigation = arguments.selectorNavigation || false;
 			if(!this.selectorNavigation) return false;
 //->return
-			this.elmsNavigation = $(this.selectorNavigation);
-			this.elmsNavigation = this.elmsNavigation.has("a[href^='#']");
+		this.elmsNavigation = $(this.selectorNavigation);
+		this.elmsNavigation = this.elmsNavigation.has("a[href^='#']");
 		this.classCurrentNavigation = arguments.classCurrentNavigation || "current";
 		this.classCurrentPage = arguments.classCurrentPage || "current";
 		this.duration = (arguments.duration !== undefined) ? arguments.duration : 500;

@@ -31,7 +31,7 @@ __.classes.maxWidthWindow = function(arguments){
 		
 		var fncThis = this;	
 		this.update();
-		__.addListener(window, "resize", function(){ fncThis.update() });
+		__.addListeners(window, "resize", function(){ fncThis.update() });
 	}
 	__.classes.maxWidthWindow.prototype.update = function(){
 		var fncThis = this;
