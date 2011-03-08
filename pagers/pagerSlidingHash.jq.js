@@ -59,6 +59,8 @@ __.classes.pagerSlidingHash = function(arguments){
 		this.elmPreviousButton = arguments.elmPreviousButton || null;
 		this.elmNextButton = arguments.elmNextButton || null;
 		this.elmsItemNavigation = arguments.elmsItemNavigation || null;
+		this.elmKeepHeight = arguments.elmKeepHeight || false;
+			if(__.isIphone() == true) this.elmKeepHeight = false;
 		this.itemSelector = (arguments.itemSelector !== undefined)? arguments.itemSelector: "item";
 		this.classCurrentItem = (arguments.classCurrentItem !== undefined)? arguments.classCurrentItem: "selected";
 		this.classPreviousItem = (arguments.classPreviousItem !== undefined)? arguments.classPreviousItem: "previous";
@@ -76,7 +78,7 @@ __.classes.pagerSlidingHash = function(arguments){
 		this.callbackPostSlide = arguments.callbackPostSlide || null;
 		this.boot = arguments.boot || null;
 		
-		// set up current pages
+		//--set up current pages
 		if(window.location.hash){
 			this.elmCurrent = this.elmsPages.filter(this.parsePath(window.location.hash)).addClass(this.classCurrentItem);
 		}else{
@@ -87,11 +89,15 @@ __.classes.pagerSlidingHash = function(arguments){
 			}
 		}
 		
-		// show navigation
+		if(this.elmKeepHeight){
+			this.elmKeepHeight.css("height", __.getHiddenElementHeight(this.elmCurrent));
+		}
+
+		//--show navigation
 		if(this.elmNavigation)
 			this.elmNavigation.show();
 		
-		// set up page offsets
+		//--set up page offsets
 /* for whole body
 		this.pageOffsetLeft = (arguments.contentLeft)? 0: this.elmCurrent.offset().left;
 		if(!arguments.contentLeft){
@@ -102,7 +108,7 @@ __.classes.pagerSlidingHash = function(arguments){
 		this.pageOffsetLeft = arguments.pageOffsetLeft || 0;
 		this.pageOffsetRight = arguments.pageOffsetRight || 0;
 		
-		// set up non-current pages
+		//--set up non-current pages
 		var elmsPrevious = this.elmsPages.filter("."+this.classCurrentItem).prevAll()
 		elmsPrevious.addClass(this.classPreviousItem);
 		var elmsNext = this.elmsPages.filter("."+this.classCurrentItem).nextAll()
@@ -110,7 +116,7 @@ __.classes.pagerSlidingHash = function(arguments){
 		elmsPrevious.css({"left":0 - this.pageOffsetLeft - this.contentWidth, "display":"none"});
 		elmsNext.css({"left":this.pageOffsetRight + this.contentWidth, "display":"none"});
 		
-		// set up relative navigation
+		//--set up relative navigation
 		this.updateRelativeNavigation(0);
 		
 		this.inprogress = 0;
@@ -164,11 +170,11 @@ __.classes.pagerSlidingHash = function(arguments){
 			
 			var elmsPagesLength = fncThis.elmsPages.length;
 			var elmIndexCurrent = fncThis.getPageIndex(elmNewPage);
-			// set all previous elements to previous
+			//-set all previous elements to previous
 			for(var i = 0; i < elmIndexCurrent; ++i){
 				$(fncThis.elmsPages[i]).removeClass(fncThis.classNextItem).addClass(fncThis.classPreviousItem).css({"display":"none"});
 			}
-			// set all next elements to next
+			//-set all next elements to next
 			for(var i = elmIndexCurrent + 1; i < elmsPagesLength; ++i){
 				$(fncThis.elmsPages[i]).addClass(fncThis.classNextItem).removeClass(fncThis.classPreviousItem).css({"display":"none"});
 			}
@@ -181,18 +187,23 @@ __.classes.pagerSlidingHash = function(arguments){
 			fncThis.inprogress = 0;
 		}
 		
-		// call preslide callback
+		//--call preslide callback
 		if(fncThis.callbackPreSlide)
 			fncThis.callbackPreSlide.call(this, elmNewPage);
 		
-		// swap pieces
+		//--animate new height
+		if(fncThis.elmKeepHeight){
+			fncThis.elmKeepHeight.animate({height: __.getHiddenElementHeight(elmNewPage)}, fncThis.duration);
+		}
+
+		//--swap pieces
 		if(elmNewPage.hasClass(fncThis.classNextItem)){
-			// animate left
+			//--animate left
 			fncThis.elmCurrent.css({"display":"block"}).animate({left: 0 - fncThis.pageOffsetLeft - fncThis.contentWidth}, fncThis.duration)
 			elmNewPage.css({"display":"block", "left":this.pageOffsetRight + this.contentWidth}).animate({left: fncThis.contentLeft}, fncThis.duration+1, callback);
 		}
 		else{
-			// animate right
+			//--animate right
 			fncThis.elmCurrent.css("display","block").animate({left: this.pageOffsetRight + this.contentWidth}, fncThis.duration)
 			elmNewPage.css({"display":"block", "left":0 - this.pageOffsetLeft - this.contentWidth}).animate({left: fncThis.contentLeft}, fncThis.duration, callback);
 		}
@@ -219,7 +230,7 @@ __.classes.pagerSlidingHash = function(arguments){
 		}
 
 		
-		// set up current navigation item
+		//-set up current navigation item
 		if(this.elmsItemNavigation)
 			this.elmsItemNavigation.removeClass(this.classCurrentNavItem).has("[href=#"+this.elmCurrent.attr("id")+"]").addClass(this.classCurrentNavItem);
 		if(this.elmsItemNavigation && this.elmNavigationPointer){
@@ -255,9 +266,9 @@ __.classes.pagerSlidingHash = function(arguments){
 	__.classes.pagerSlidingHash.prototype.parsePath = function(path){
 		if(this.regexHash)
 			path = path.replace(this.regexHash.find, this.regexHash.replace);
-		return this.parsePath(path);
+		return this.escapeHash(path);
 	}
-	// allows using slashes in the hash
+	//-allows using slashes in the hash
 	__.classes.pagerSlidingHash.prototype.escapeHash = function(hash){
 		return hash.replace(/\//g, "\\/");
 	}
@@ -265,7 +276,7 @@ __.classes.pagerSlidingHash = function(arguments){
 		return hash.replace(/\\\//g, "\/");
 	}
 
-	/* notes:
+	/*---notes:
 	display changed for ie6 and 7 only so that scrollbar doesn't appear except on page change
 	*/
 
