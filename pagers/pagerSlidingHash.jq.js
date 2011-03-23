@@ -1,26 +1,24 @@
 /*
 slides new "pages" into view while sliding old out
 
-depends on: tmlib base, jquery
+depends on: tmlib base: isIphone, getHiddenElementHeight
+	jquery
 params: arguments array: array of arguments
 		elmsNavigation $element: container of navigation, supply only to auto-display on init, allowing hiding for non-js browsers
 
 ---css:
 .container{
+	overflow: hidden;
 	position: relative; /*- non static
 	width: 100px;
 	height: 100px;
 }
 .page{
-	display: none;
 	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100px; /- same as above
 	height: 100%;
-}
-.page.current{
-	display: block;
 }
 .navigation{
 	display: none;
@@ -62,7 +60,7 @@ __.classes.pagerSlidingHash = function(arguments){
 		this.elmKeepHeight = arguments.elmKeepHeight || false;
 			if(__.isIphone() == true) this.elmKeepHeight = false;
 		this.itemSelector = (arguments.itemSelector !== undefined)? arguments.itemSelector: "item";
-		this.classCurrentItem = (arguments.classCurrentItem !== undefined)? arguments.classCurrentItem: "selected";
+		this.classCurrentItem = (arguments.classCurrentItem !== undefined)? arguments.classCurrentItem: "current";
 		this.classPreviousItem = (arguments.classPreviousItem !== undefined)? arguments.classPreviousItem: "previous";
 		this.classNextItem = (arguments.classNextItem !== undefined)? arguments.classNextItem: "next";
 		this.classCurrentNavItem = arguments.classCurrentNavItem || "current";
@@ -212,7 +210,7 @@ __.classes.pagerSlidingHash = function(arguments){
 		return true;
 	}
 	__.classes.pagerSlidingHash.prototype.updateRelativeNavigation = function(argDuration){
-		fncDuration = (typeof argDuration !== 'undefined')? argDuration: this.duration;
+		var fncDuration = (typeof argDuration !== 'undefined')? argDuration: this.duration;
 
 		if(this.elmPreviousButton){
 			var previousURL = "#"+this.elmCurrent.prev(this.itemSelector).attr("id");
@@ -240,7 +238,7 @@ __.classes.pagerSlidingHash = function(arguments){
 	}
 	__.classes.pagerSlidingHash.prototype.getPageIndex = function(argElement){
 		var arrayLength = this.elmsPages.length;
-		for(i=0;i<arrayLength;++i){
+		for(var i=0;i<arrayLength;++i){
 			if(this.elmsPages[i] == argElement[0]){
 				return i;
 			}
@@ -249,8 +247,8 @@ __.classes.pagerSlidingHash = function(arguments){
 	__.classes.pagerSlidingHash.prototype.pointToCurrentNavigation = function(argID){
 		if(this.elmsItemNavigation){
 			var currentItem = this.elmsItemNavigation.filter("["+this.attrID+"="+argID+"]");
-			this.elmsItemNavigation.filter(".selected").removeClass("selected");
-			currentItem.addClass("selected");
+			this.elmsItemNavigation.filter("."+this.classCurrentNavItem).removeClass(this.classCurrentNavItem);
+			currentItem.addClass(this.classCurrentNavItem);
 			if(this.elmNavigationPointer){
 				switch(this.elmNavigationOrientation){
 					case "horizontal":
