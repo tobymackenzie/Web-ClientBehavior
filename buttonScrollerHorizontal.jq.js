@@ -29,6 +29,8 @@ if(typeof $ !== 'undefined')
 __.classes.buttonScrollerHorizontal = function(arguments){
 		this.elmWrapper = arguments.elmWrapper || null;
 		this.elmContainer = arguments.elmContainer || null;
+		if(!this.elmContainer || this.elmContainer.length < 1) return false;
+//->return
 		this.htmlButtonContainer = arguments.htmlButtonContainer || null;
 		this.htmlButtonPrevious = arguments.htmlButtonPrevious || null;
 		this.htmlButtonNext = arguments.htmlButtonNext || null;
