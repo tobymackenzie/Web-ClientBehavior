@@ -3,6 +3,7 @@ depends on:
 	tmlib
 	jquery
 
+@param boot: extra storage for external/callback use
 @param elmKeepDimensions: jquery element to maintain height on and animate to height of new image
 @param elmList: for animation of type disolve, jquery element container to append new image to
 @param htmlNewImage: html for creating new image
@@ -23,9 +24,6 @@ __.imageSwitcher = new __.classes.imageSwitcher({elmsListItems:$(".photos .navig
 /*-------------
 ©imageswitcher
 ------------*/
-/*-------------
-©imageswitcher
-------------*/
 __.classes.imageSwitcher = function(arguments){
 		//--required arguments
 //->return
@@ -38,6 +36,7 @@ __.classes.imageSwitcher = function(arguments){
 		this.attrImageURL = (arguments.attrImageURL)?arguments.attrImageURL:"href";
 		this.attrKeepWidth = arguments.attrKeepWidth || null;
 		this.attrKeepHeight = arguments.attrKeepHeight || null;
+		this.boot = arguments.boot || null;
 		this.classCurrent = (arguments.classCurrent)? arguments.classCurrent: "current";
 		this.duration = (arguments.duration)? arguments.duration: 500;
 		this.elmKeepDimensions = arguments.elmKeepDimensions || false;
@@ -65,9 +64,9 @@ __.classes.imageSwitcher = function(arguments){
 	__.classes.imageSwitcher.prototype.attachEvents = function(){
 		if(this.elmsListItems.length == 0) return false;
 		var fncThis = this;
-		fncThis.elmsListItems.children("a").bind("click", function(){
-//-> return
-			if(fncThis.inprogress==1) return false;
+		fncThis.elmsListItems.children("a").bind("click", function(event){
+			if(event.preventDefault) event.preventDefault();
+
 			var currentLI = fncThis.elmsListItems.filter("."+fncThis.classCurrent);
 			var thisLI = $(this).closest(fncThis.selectorListItemContainer);
 //-> return
@@ -77,90 +76,101 @@ __.classes.imageSwitcher = function(arguments){
 			if(!newImageURL) newImageURL = thisLI.attr(fncThis.attrImageURL);
 //-> return
 			if(!newImageURL) return false;
+			fncThis.switche(newImageURL);
 
-			fncThis.inprogress = 1;
+			return false;
+		});
+	}
+	__.classes.imageSwitcher.prototype.switche = function(newImageURL, arguments){
+		var fncThis = this;
 
-			//--run pre-animate callback
-			if(fncThis.onpredeselect)
-				fncThis.onpredeselect(currentLI);
-			if(fncThis.onpreselect)
-				fncThis.onpreselect(thisLI);
-			
-			var elmTempImage = $("<img src='"+newImageURL+"' />").css({"position":"absolute", "left":"-9000px", "top":"-1000px"}).appendTo("body");
-			
-			if(fncThis.elmKeepDimensions){
-				fncThis.elmKeepDimensions.css({"height": fncThis.elmImage.height(), "width": fncThis.elmImage.width()});
-				var widthNew = false, heightNew = false;
-				if(fncThis.attrKeepWidth)
-					widthNew = thisLI.attr(fncThis.attrKeepWidth) || false;
-				if(fncThis.attrKeepHeight)
-					heightNew = thisLI.attr(fncThis.attrKeepHeight) || false;
-				if(!(widthNew || heightNew)){
-					widthNew = widthNew || elmTempImage.width() || fncThis.elmImage.width();
-					heightNew = heightNew || elmTempImage.height() || fncThis.elmImage.height();
+//-> return
+		if(fncThis.inprogress==1) return false;		
+		
+		var currentLI = fncThis.elmsListItems.filter("."+fncThis.classCurrent);
+		var thisLI = fncThis.elmsListItems.has("a[href='"+newImageURL+"']");
+		var thisA = thisLI.find("a");
+
+		fncThis.inprogress = 1;
+
+		//--run pre-animate callback
+		if(fncThis.onpredeselect)
+			fncThis.onpredeselect(currentLI);
+		if(fncThis.onpreselect)
+			fncThis.onpreselect(thisLI);
+		
+		var elmTempImage = $("<img src='"+newImageURL+"' />").css({"position":"absolute", "left":"-9000px", "top":"-1000px"}).appendTo("body");
+		
+		if(fncThis.elmKeepDimensions){
+			fncThis.elmKeepDimensions.css({"height": fncThis.elmImage.height(), "width": fncThis.elmImage.width()});
+			var widthNew = false, heightNew = false;
+			if(fncThis.attrKeepWidth)
+				widthNew = thisLI.attr(fncThis.attrKeepWidth) || false;
+			if(fncThis.attrKeepHeight)
+				heightNew = thisLI.attr(fncThis.attrKeepHeight) || false;
+			if(!(widthNew || heightNew)){
+				widthNew = widthNew || elmTempImage.width() || fncThis.elmImage.width();
+				heightNew = heightNew || elmTempImage.height() || fncThis.elmImage.height();
+			}
+		}
+
+		// animate
+		currentLI.children("a").animate(fncThis.listItemUnselectedState, fncThis.duration, function(){
+			$(this).closest(fncThis.selectorListItemContainer).removeClass(fncThis.classCurrent);
+			if(fncThis.ondeselect)
+				fncThis.ondeselect(currentLI);
+		});
+		thisA.animate(fncThis.listItemSelectedState, fncThis.duration, function(){
+			thisLI.addClass(fncThis.classCurrent);
+
+			var callbackAnimateStep2 =  function(){
+				var fncSized = function(){
+					var fncLoaded = function(){
+						if(fncThis.typeAnimation == "dissolve"){
+							fncThis.elmOldImage.fadeOut(fncThis.duration).remove();
+						}else{
+							fncThis.elmImage.attr("src", newImageURL).fadeIn(fncThis.duration);
+						}
+						elmTempImage.remove();
+						fncThis.inprogress = 0;
+						if(fncThis.elmKeepDimensions){
+							fncThis.elmKeepDimensions.animate({"height":heightNew, "width":widthNew}, function(){
+								fncThis.elmKeepDimensions.css({"height":"auto", "width":"auto"});
+							});
+						}
+						fncThis.elmLICurrent = thisLI;
+						if(fncThis.onselect)
+							fncThis.onselect(thisLI);
+					}
+					if($.browser.msie){
+						fncLoaded();
+						thisLI.children("a").blur().focus(); // ie8 only, causes change of rotated element to take effect
+					}
+					else{
+						// get around image caching issue with .load
+						if(elmTempImage.height() > 0)
+							fncLoaded();
+						else
+							$(elmTempImage).load(fncLoaded);
+					}
+				}
+				
+				if(fncThis.elmKeepDimensions){
+					fncThis.elmKeepDimensions.animate({"height":heightNew, "width":widthNew}, fncSized);
+				}else{
+					fncSized();
 				}
 			}
-
-			// animate
-			currentLI.children("a").animate(fncThis.listItemUnselectedState, fncThis.duration, function(){
-				$(this).closest(fncThis.selectorListItemContainer).removeClass(fncThis.classCurrent);
-				if(fncThis.ondeselect)
-					fncThis.ondeselect(currentLI);
-			});
-			thisA.animate(fncThis.listItemSelectedState, fncThis.duration, function(){
-				thisLI.addClass(fncThis.classCurrent);
-
-				var callbackAnimateStep2 =  function(){
-					var fncSized = function(){
-						var fncLoaded = function(){
-							if(fncThis.typeAnimation == "dissolve"){
-								fncThis.elmOldImage.fadeOut(fncThis.duration).remove();
-							}else{
-								fncThis.elmImage.attr("src", newImageURL).fadeIn(fncThis.duration);
-							}
-							elmTempImage.remove();
-							fncThis.inprogress = 0;
-							if(fncThis.elmKeepDimensions){
-								fncThis.elmKeepDimensions.animate({"height":heightNew, "width":widthNew}, function(){
-									fncThis.elmKeepDimensions.css({"height":"auto", "width":"auto"});
-								});
-							}
-							fncThis.elmLICurrent = thisLI;
-							if(fncThis.onselect)
-								fncThis.onselect(thisLI);
-						}
-						if($.browser.msie){
-							fncLoaded();
-							thisLI.children("a").blur().focus(); // ie8 only, causes change of rotated element to take effect
-						}
-						else{
-							// get around image caching issue with .load
-							if(elmTempImage.height() > 0)
-								fncLoaded();
-							else
-								$(elmTempImage).load(fncLoaded);
-						}
-					}
-					
-					if(fncThis.elmKeepDimensions){
-						fncThis.elmKeepDimensions.animate({"height":heightNew, "width":widthNew}, fncSized);
-					}else{
-						fncSized();
-					}
-				}
-				
-				if(fncThis.typeAnimation == "dissolve"){
-					fncThis.elmOldImage = fncThis.elmImage;
-					fncThis.elmImage = $(fncThis.htmlNewImage);
-					fncThis.elmImage.attr("src", newImageURL);
-					fncThis.elmListImages.prepend(fncThis.elmImage);
-					fncThis.elmOldImage.fadeOut(fncThis.duration, callbackAnimateStep2);
-				}else{
-					fncThis.elmImage.fadeOut(fncThis.duration, callbackAnimateStep2);
-				}
-			});
-				
-			return false;
+			
+			if(fncThis.typeAnimation == "dissolve"){
+				fncThis.elmOldImage = fncThis.elmImage;
+				fncThis.elmImage = $(fncThis.htmlNewImage);
+				fncThis.elmImage.attr("src", newImageURL);
+				fncThis.elmListImages.prepend(fncThis.elmImage);
+				fncThis.elmOldImage.fadeOut(fncThis.duration, callbackAnimateStep2);
+			}else{
+				fncThis.elmImage.fadeOut(fncThis.duration, callbackAnimateStep2);
+			}
 		});
 	}
 	__.classes.imageSwitcher.prototype.updateElements = function(arguments){
@@ -170,7 +180,6 @@ __.classes.imageSwitcher = function(arguments){
 			this.attachEvents();
 		}
 	}
-
 
 
 

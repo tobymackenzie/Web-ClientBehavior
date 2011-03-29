@@ -2,6 +2,8 @@
 ©buttonScrollerHorizontal
 adds buttons to scroll horizontally a div that can contain content wider than itself
 
+@param doUpdateWidth: update width of wrapper on window resize?
+
 -----dependsOn
 tmlib base
 jquery
@@ -27,22 +29,26 @@ if(typeof $ !== 'undefined')
 ©buttonScrollerHorizontal
 ------- */
 __.classes.buttonScrollerHorizontal = function(arguments){
-		this.elmWrapper = arguments.elmWrapper || null;
+		//--required arguments
 		this.elmContainer = arguments.elmContainer || null;
-		if(!this.elmContainer || this.elmContainer.length < 1) return false;
 //->return
+		if(!this.elmContainer || this.elmContainer.length < 1) return false;
+
+		//--optional arguments
+		this.doUpdateWidth = arguments.doUpdateWidth || false;
+		this.duration = arguments.duration || 100;
+		this.elmWrapper = arguments.elmWrapper || null;
 		this.htmlButtonContainer = arguments.htmlButtonContainer || null;
 		this.htmlButtonPrevious = arguments.htmlButtonPrevious || null;
 		this.htmlButtonNext = arguments.htmlButtonNext || null;
-		this.duration = arguments.duration || 100;
 		this.increment = arguments.increment || 100;
 		
-		//-init derived attributes
+		//--derived members
 		var fncThis = this;
 		this.widthWrapper = this.elmWrapper.outerWidth();
 		this.widthContainer = this.elmContainer.outerWidth();
 		
-		//-create button navigation, bind handlers
+		//--create button navigation, bind handlers
 		if(this.htmlButtonContainer){
 			this.elmButtonContainer = $(this.htmlButtonContainer)
 			this.elmWrapper.append(this.elmButtonContainer);
@@ -61,13 +67,14 @@ __.classes.buttonScrollerHorizontal = function(arguments){
 		}
 		fncThis.toggleButtonEnable();
 		
-		//-adjust wrapper width on window resize
-		$(window).bind("resize", function(){
-			fncThis.widthWrapper = fncThis.elmWrapper.outerWidth();
-			fncThis.toggleButtonEnable();
-		});
+		//--adjust wrapper width on window resize
+		if(fncThis.doUpdateWidth){
+			$(window).bind("resize", function(){
+				fncThis.resize();
+			});
+		}
 
-		// must be done for browsers with slow image loading
+		//-*must be done for browsers with slow image loading
 		setTimeout(function(){
 			fncThis.widthContainer = fncThis.elmContainer.outerWidth();
 			fncThis.toggleButtonEnable();
@@ -112,7 +119,9 @@ __.classes.buttonScrollerHorizontal = function(arguments){
 		}
 		
 	}
-	__.classes.buttonScrollerHorizontal.prototype.whatever = function(){
-	
+	__.classes.buttonScrollerHorizontal.prototype.resize = function(){
+		this.widthWrapper = this.elmWrapper.outerWidth();
+		this.toggleButtonEnable();
 	}
+
 
