@@ -11,9 +11,9 @@ pulls in data through jquery ajax function and by default animates a wrapper and
 ©pagerAjax
 -------- */
 __.classes.pagerAjax = function(arguments){
-		//--required arguments
+		//--required attributes
 
-		//--optional arguments
+		//--optional attributes
 		this.boot = arguments.boot || null;
 		this.duration = arguments.duration || 500;
 		this.elmContainer = arguments.elmContainer || $("body");
@@ -26,7 +26,7 @@ __.classes.pagerAjax = function(arguments){
 		this.paramAjax = arguments.paramAjax || "ajaxcall";
 		this.url = arguments.url || null;
 
-		//--derived members
+		//--derived attributes
 		if(!this.elmWrap && this.htmlWrap){
 			this.elmWrap = $(this.htmlWrap);
 			this.elmContainer.append(this.elmWrap);
@@ -49,7 +49,7 @@ __.classes.pagerAjax = function(arguments){
 		//--set default parameters
 		if(!fncAjaxParameters.success)
 			fncAjaxParameters.success = function(data){
-				this.onsuccess(data);
+				this.onsuccess.call(this, data);
 			}
 		if(!fncAjaxParameters.context)
 			fncAjaxParameters.context = this;
@@ -77,5 +77,6 @@ __.classes.pagerAjax = function(arguments){
 			fncThis.elmWrapForAnimation.fadeIn(fncThis.duration);
 		}
 	}
+
 
 
