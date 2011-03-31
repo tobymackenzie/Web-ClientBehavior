@@ -21,7 +21,8 @@ __.classes.pagerAjax = function(arguments){
 		this.selectorWrapForAnimation = arguments.selectorWrapForAnimation || null;
 		this.selectorWrapForContent = arguments.selectorWrapForContent || null;
 		this.htmlWrap = arguments.htmlButtonContainer || null;
-		this.onsuccess = (arguments.onsuccess)? arguments.onsuccess: this.animationBasic;
+		this.onpreajaxcall = (typeof arguments.onpreajaxcall != "undefined")? arguments.onpreajaxcall: this.animationBasicPreCall;
+		this.onsuccess = (arguments.onsuccess)? arguments.onsuccess: this.animationBasicOnSuccess;
 		this.paramAjax = arguments.paramAjax || "ajaxcall";
 		this.url = arguments.url || null;
 
@@ -34,6 +35,15 @@ __.classes.pagerAjax = function(arguments){
 		this.elmWrapForContent = $(this.selectorWrapForContent);
 	}
 	__.classes.pagerAjax.prototype.loadAjax = function(arguments){
+		var fncThis = this;
+		var fncAjaxParameters = arguments;
+		
+		if(this.onpreajaxcall)
+			this.onpreajaxcall.call(fncThis, fncAjaxParameters);
+		else
+			this.loadAjaxData(fncAjaxParameters);
+	}
+	__.classes.pagerAjax.prototype.loadAjaxData = function(arguments){
 		var fncAjaxParameters = arguments;
 		
 		//--set default parameters
@@ -51,14 +61,21 @@ __.classes.pagerAjax = function(arguments){
 		
 		$.ajax(fncAjaxParameters);
 	}
-	__.classes.pagerAjax.prototype.animationBasic = function(argData){
+	__.classes.pagerAjax.prototype.animationBasicPreCall = function(arguments){
 		var fncThis = this;
-		var fncTextContent = argData;
+		var fncAjaxParameters = arguments;
 		this.elmWrapForAnimation.fadeOut(fncThis.duration, function(){
-			if(fncTextContent){
-				fncThis.elmWrapForContent.html(fncTextContent);
-				fncThis.elmWrapForAnimation.fadeIn(fncThis.duration);
-			}
+			fncThis.loadAjaxData(fncAjaxParameters);
 		});
 	}
+	__.classes.pagerAjax.prototype.animationBasicOnSuccess = function(argData){
+		var fncThis = this;
+		var fncTextContent = argData;
+
+		if($.trim(fncTextContent)){
+			fncThis.elmWrapForContent.html(fncTextContent);
+			fncThis.elmWrapForAnimation.fadeIn(fncThis.duration);
+		}
+	}
+
 
