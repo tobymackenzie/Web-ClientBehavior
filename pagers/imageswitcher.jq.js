@@ -33,6 +33,8 @@ __.classes.imageSwitcher = function(arguments){
 			if(!this.elmImage) return false;
 
 		//--optional attributes
+		this.addHeight = arguments.addHeight || 0;
+		this.addWeight = arguments.addWeight || 0;
 		this.attrImageURL = (arguments.attrImageURL)?arguments.attrImageURL:"href";
 		this.attrKeepWidth = arguments.attrKeepWidth || null;
 		this.attrKeepHeight = arguments.attrKeepHeight || null;
@@ -96,7 +98,7 @@ __.classes.imageSwitcher = function(arguments){
 		if(fncThis.inprogress==1) return false;		
 		
 		var oldLI = fncThis.elmsListItems.filter("."+fncThis.classCurrent);
-		var newLI = fncThis.elmsListItems.has("a[href='"+newImageURL+"']");
+		var newLI = fncThis.elmsListItems.has("a[href='"+$.trim(newImageURL)+"']");
 		var newA = newLI.find("a");
 
 		fncThis.inprogress = 1;
@@ -110,7 +112,7 @@ __.classes.imageSwitcher = function(arguments){
 		var elmTempImage = $("<img src='"+newImageURL+"' />").css({"position":"absolute", "left":"-9000px", "top":"-1000px"}).appendTo("body");
 		
 		if(fncThis.elmKeepDimensions){
-			fncThis.elmKeepDimensions.css({"height": fncThis.elmImage.height(), "width": fncThis.elmImage.width()});
+			fncThis.elmKeepDimensions.css({"height": fncThis.elmImage.height() + fncThis.addHeight, "width": fncThis.elmImage.width() +fncThis.addWidth});
 			var widthNew = false, heightNew = false;
 			if(fncThis.attrKeepWidth)
 				widthNew = newLI.attr(fncThis.attrKeepWidth) || false;
@@ -120,6 +122,8 @@ __.classes.imageSwitcher = function(arguments){
 				widthNew = widthNew || elmTempImage.width() || fncThis.elmImage.width();
 				heightNew = heightNew || elmTempImage.height() || fncThis.elmImage.height();
 			}
+			widthNew += fncThis.addWidth;
+			heightNew += fncThis.addHeight;
 		}
 		
 		var fncLocalVariables = {newLI: newLI, oldLI: oldLI};

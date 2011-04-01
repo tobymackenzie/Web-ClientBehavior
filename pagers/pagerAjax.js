@@ -11,10 +11,11 @@ pulls in data through jquery ajax function and by default animates a wrapper and
 ©pagerAjax
 -------- */
 __.classes.pagerAjax = function(arguments){
-		//--required attributes
+		//--required arguments
 
-		//--optional attributes
+		//--optional arguments
 		this.boot = arguments.boot || null;
+		this.data = arguments.data || {};
 		this.duration = arguments.duration || 500;
 		this.elmContainer = arguments.elmContainer || $("body");
 		this.elmWrap = arguments.elmWrap || null;
@@ -26,7 +27,7 @@ __.classes.pagerAjax = function(arguments){
 		this.paramAjax = arguments.paramAjax || "ajaxcall";
 		this.url = arguments.url || null;
 
-		//--derived attributes
+		//--derived members
 		if(!this.elmWrap && this.htmlWrap){
 			this.elmWrap = $(this.htmlWrap);
 			this.elmContainer.append(this.elmWrap);
@@ -53,8 +54,15 @@ __.classes.pagerAjax = function(arguments){
 			}
 		if(!fncAjaxParameters.context)
 			fncAjaxParameters.context = this;
-		if(!fncAjaxParameters.data)
-			fncAjaxParameters.data = {};
+		fncAjaxParameters.data = this.data;
+		if(fncAjaxParameters.data){
+			var argData = arguments.data;
+			for(var key in argData){
+				if(argData.hasOwnProperty(key))
+					fncAjaxParameters.data[key] = argData[key];
+			}
+		}
+			
 		fncAjaxParameters.data[this.paramAjax] = 1;
 		if(!fncAjaxParameters.url)
 			fncAjaxParameters.url = this.url;
@@ -77,6 +85,7 @@ __.classes.pagerAjax = function(arguments){
 			fncThis.elmWrapForAnimation.fadeIn(fncThis.duration);
 		}
 	}
+
 
 
 
