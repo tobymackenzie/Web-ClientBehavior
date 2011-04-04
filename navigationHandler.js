@@ -89,7 +89,7 @@ __.message("queue 2");
 			if(fncThis.onpostswitch)
 				fncThis.queue.queue(function(){
 __.message("queue 3");
-					fncThis.onpreswitch.call(fncThis, localVariables);
+					fncThis.onpostswitch.call(fncThis, localVariables);
 				});
 			fncThis.queue.queue(function(){
 __.message("queue 4");
