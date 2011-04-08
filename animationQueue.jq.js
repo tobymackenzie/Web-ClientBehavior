@@ -52,11 +52,11 @@ if(typeof $ !== 'undefined'){
 ------------*/
 __.classes.animationQueue = function(arguments){
 		if(typeof arguments == "undefined") arguments = {};
-		//--optional attributes
+		//--optional variables
 		this.name = arguments.name || "tmlib";
 		this.autoDequeue = arguments.autoDequeue || false;
 		
-		//--derived attributes
+		//--derived variables
 		this.arrayAnimationSteps = $({});
 	}
 	__.classes.animationQueue.prototype.queue = function(arguments){
@@ -89,4 +89,5 @@ __.classes.animationQueue = function(arguments){
 			var fncName = this.name;
 		this.arrayAnimationSteps.clearQueue(fncName);
 	}
+
 

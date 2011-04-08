@@ -81,6 +81,22 @@ function tmlib(){
 	tmlib.prototype.getClasses = function(argElement){
 		return argElement.className.split(/\s+/);
 	}
+	//-@ http://javascript.about.com/library/bldom12.htm
+	__.lib.insertBefore = function(argElmInsert, argElmBefore){
+		return argElmBefore.parentNode.insertBefore(argElmInsert, argElmBefore);
+	}
+
+	//-@ http://stackoverflow.com/questions/868407/hide-an-elements-next-sibling-with-javascript
+	__.lib.getNextSibling = function(argElement){
+		var elmReturn = argElement;
+		do{
+			elmReturn = elmReturn.nextSibling;
+		}while(elmReturn && elmReturn.noteType != 1);
+
+		if(elmReturn == argElement)
+				elmReturn = false;
+		return elmReturn;
+	}
 	
 	tmlib.prototype.isIE = function(){
 		if(this.isievar)
@@ -117,7 +133,7 @@ function tmlib(){
 	tmlib.prototype.message = function(argument){
 		if(window.console) 
 			console.log(argument);
-		else alert(argument);
+//		else alert(argument);
 	}
 	__.lib.vardump = function(variable, maxDeep){
 		//<-http://my.opera.com/SpShut/blog/2009/12/18/best-javascript-var-dump
@@ -167,6 +183,60 @@ function tmlib(){
 	//-@based from http://andrewpeace.com/javascript-is-array.html
 	__.lib.isArray = function(argObject){
 		return typeof argObject == 'object' && (argObject instanceof Array);
+	}
+/*
+return instance name of object from within instance
+-* only use for testing purposes
+*/
+	__.lib.getInstanceName = function(argObject){
+/*
+		this.checkMembers = function(argContainer, argObject){
+			var fncReturn = "";
+			if(typeof argObject != undefined){
+				for(var key in argContainer){
+					if(argContainer[key] === argObject)
+						fncReturn = key;
+					if(fncReturn == ""){
+						fncReturn = this.checkMembers.call(this, argContainer[key], argObject);
+						if(fncReturn != "")
+							fncReturn = key+"."+fncReturn;
+					}
+					if(fncReturn != "")
+						break;
+				}
+			}
+			return fncReturn;
+		}
+		var fncReturn = "[not found]";
+		if(__ === argObject)
+			fncReturn = "window";
+		else{
+			fncReturn = this.checkMembers.call(this, __, argObject);
+			if(fncReturn != "")
+				fncReturn = "__."+fncReturn;
+		}
+		
+		return fncReturn;
+*/
+			
+	
+	
+		for(var key in window){
+			if(window[key] === argObject)
+				return key;
+		}
+		for(var key in __){
+			if(__[key] === argObject)
+				return "__."+key;
+			for(var subkey in __[key]){
+				if(__[key][subkey] === argObject)
+					return "__."+key+"."+subkey;
+				for(var subsubkey in __[key][subkey]){
+					if(__[key][subkey][subsubkey] === argObject)
+						return "__."+key+"."+subkey+"."+subsubkey;
+				}
+			}
+		}
 	}
 
 /*--dispatchEvent

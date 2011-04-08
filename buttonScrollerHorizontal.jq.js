@@ -29,24 +29,23 @@ if(typeof $ !== 'undefined')
 ©buttonScrollerHorizontal
 ------- */
 __.classes.buttonScrollerHorizontal = function(arguments){
-		//--required arguments
-		this.elmContainer = arguments.elmContainer || null;
-//->return
-		if(!this.elmContainer || this.elmContainer.length < 1) return false;
-
 		//--optional arguments
-		this.doUpdateWidth = arguments.doUpdateWidth || false;
+		this.boot = arguments.boot || null;
+		this.doUpdateWidthOnWindowResize = arguments.doUpdateWidthOnWindowResize || false;
 		this.duration = arguments.duration || 100;
-		this.elmWrapper = arguments.elmWrapper || null;
+		if(arguments.elmWrapper)
+			this.setWrapper(arguments.elmWrapper);
+		else
+			this.elmWrapper = null;
 		this.htmlButtonContainer = arguments.htmlButtonContainer || null;
 		this.htmlButtonPrevious = arguments.htmlButtonPrevious || null;
 		this.htmlButtonNext = arguments.htmlButtonNext || null;
 		this.increment = arguments.increment || 100;
+		this.oninit = arguments.oninit || null;
+		this.onresize = arguments.onresize || null;
 		
 		//--derived members
 		var fncThis = this;
-		this.widthWrapper = this.elmWrapper.outerWidth();
-		this.widthContainer = this.elmContainer.outerWidth();
 		
 		//--create button navigation, bind handlers
 		if(this.htmlButtonContainer){
@@ -65,20 +64,25 @@ __.classes.buttonScrollerHorizontal = function(arguments){
 			this.elmButtonContainer.append(this.elmButtonNext);
 			this.elmButtonNext.bind("click", function(){fncThis.scrollRight()});
 		}
-		fncThis.toggleButtonEnable();
 		
 		//--adjust wrapper width on window resize
-		if(fncThis.doUpdateWidth){
+		if(fncThis.doUpdateWidthOnWindowResize){
 			$(window).bind("resize", function(){
 				fncThis.resize();
 			});
 		}
-
+		
+		//--set container
+		if(arguments.elmContainer)
+			this.setContainer(arguments.elmContainer);
+		else
+			this.elmContainer = null;
+		
 		//-*must be done for browsers with slow image loading
-		setTimeout(function(){
-			fncThis.widthContainer = fncThis.elmContainer.outerWidth();
-			fncThis.toggleButtonEnable();
-		}, 500);
+//		setTimeout(function(){fncThis.resize();}, 500);
+
+		if(fncThis.oninit)
+			fncThis.oninit.call(this);
 	}
 	__.classes.buttonScrollerHorizontal.prototype.scrollLeft = function(){
 		var fncThis = this;
@@ -120,8 +124,27 @@ __.classes.buttonScrollerHorizontal = function(arguments){
 		
 	}
 	__.classes.buttonScrollerHorizontal.prototype.resize = function(){
-		this.widthWrapper = this.elmWrapper.outerWidth();
-		this.toggleButtonEnable();
+		if(this.onresize){
+			this.onresize.call(this);		
+		}else{
+			this.widthWrapper = this.elmWrapper.outerWidth();
+			this.toggleButtonEnable();
+		}
 	}
+	__.classes.buttonScrollerHorizontal.prototype.setContainer = function(argElement){
+		var fncThis = this;
+		this.elmContainer = argElement;
+		if(this.elmContainer.length > 0){
+			setTimeout(function(){
+				fncThis.widthContainer = fncThis.elmContainer.outerWidth();
+				fncThis.resize();
+			}, 1500);
+		}
+	}
+	__.classes.buttonScrollerHorizontal.prototype.setWrapper = function(argElement){
+		this.elmWrapper = argElement;
+		this.widthWrapper = this.elmWrapper.outerWidth();
+	}
+
 
 

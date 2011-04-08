@@ -158,6 +158,20 @@ __.classes.pagerSlidingHash = function(arguments){
 		var elmNewPage = this.elmsPages.filter("#"+id);
 		return this.switchPages(elmNewPage);
 	}
+	__.classes.pagerSlidingHash.prototype.switchPagesToPrevious = function(){
+		var elmPrevious = this.elmCurrent.previous();
+		if(elmPrevious.length > 0)
+			this.switchPages(elmPrevious);
+		else
+			this.switchPages(this.elmsPages.last());
+	}
+	__.classes.pagerSlidingHash.prototype.switchPagesToNext = function(){
+		var elmNext = this.elmCurrent.next();
+		if(elmNext.length > 0)
+			this.switchPages(elmNext);
+		else
+			this.switchPages(this.elmsPages.first());
+	}
 	__.classes.pagerSlidingHash.prototype.switchPages = function(elmNewPage){
 		if(elmNewPage[0] == this.elmCurrent[0]) return false;
 		var fncThis = this;

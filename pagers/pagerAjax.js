@@ -21,19 +21,24 @@ __.classes.pagerAjax = function(arguments){
 		this.elmWrap = arguments.elmWrap || null;
 		this.selectorWrapForAnimation = arguments.selectorWrapForAnimation || null;
 		this.selectorWrapForContent = arguments.selectorWrapForContent || null;
-		this.htmlWrap = arguments.htmlButtonContainer || null;
+		this.htmlWrap = arguments.htmlWrap || null;
+		this.oninit = arguments.oninit || null;
 		this.onpreajaxcall = (typeof arguments.onpreajaxcall != "undefined")? arguments.onpreajaxcall: this.animationBasicPreCall;
 		this.onsuccess = (arguments.onsuccess)? arguments.onsuccess: this.animationBasicOnSuccess;
 		this.paramAjax = arguments.paramAjax || "ajaxcall";
 		this.url = arguments.url || null;
 
 		//--derived members
-		if(!this.elmWrap && this.htmlWrap){
+		if((!this.elmWrap || this.elmWrap.length < 1) && this.htmlWrap){
 			this.elmWrap = $(this.htmlWrap);
+			this.elmWrap.hide();
 			this.elmContainer.append(this.elmWrap);
 		}
 		this.elmWrapForAnimation = $(this.selectorWrapForAnimation);
 		this.elmWrapForContent = $(this.selectorWrapForContent);
+		
+		if(this.oninit)
+			this.oninit.call(this);
 	}
 	__.classes.pagerAjax.prototype.loadAjax = function(arguments){
 		var fncThis = this;
@@ -54,12 +59,13 @@ __.classes.pagerAjax = function(arguments){
 			}
 		if(!fncAjaxParameters.context)
 			fncAjaxParameters.context = this;
+		var oldData = arguments.data;
 		fncAjaxParameters.data = this.data;
-		if(fncAjaxParameters.data){
-			var argData = arguments.data;
-			for(var key in argData){
-				if(argData.hasOwnProperty(key))
-					fncAjaxParameters.data[key] = argData[key];
+		if(typeof arguments.data != "undefined"){
+			for(var key in oldData){
+				if(oldData.hasOwnProperty(key)){
+					fncAjaxParameters.data[key] = oldData[key];
+				}
 			}
 		}
 			
@@ -72,9 +78,12 @@ __.classes.pagerAjax = function(arguments){
 	__.classes.pagerAjax.prototype.animationBasicPreCall = function(arguments){
 		var fncThis = this;
 		var fncAjaxParameters = arguments;
-		this.elmWrapForAnimation.fadeOut(fncThis.duration, function(){
+		if(this.elmWrapForAnimation && this.elmWrapForAnimation.length > 0){
+			this.elmWrapForAnimation.fadeOut(fncThis.duration, function(){
+				fncThis.loadAjaxData(fncAjaxParameters);
+			});
+		}else
 			fncThis.loadAjaxData(fncAjaxParameters);
-		});
 	}
 	__.classes.pagerAjax.prototype.animationBasicOnSuccess = function(argData){
 		var fncThis = this;
@@ -85,6 +94,7 @@ __.classes.pagerAjax = function(arguments){
 			fncThis.elmWrapForAnimation.fadeIn(fncThis.duration);
 		}
 	}
+
 
 
 

@@ -42,8 +42,6 @@ __.classes.navigationHandler = function(arguments){
 //->return
 			if(fncThis.inprogress == true)
 				return false;
-__.message(this);
-__.message(event);
 			var fncEvent = event;
 			var localVariables = {elmThis: $(this)};
 			if(fncThis.typeItems == "parent"){
@@ -72,12 +70,10 @@ __.message(event);
 			
 			if(fncThis.onpreswitch)
 				fncThis.queue.queue(function(){
-__.message("queue 1");
 					fncThis.onpreswitch.call(fncThis, localVariables);
 				});
 
 			fncThis.queue.queue(function(){
-__.message("queue 2");
 				localVariables.oldItem.removeClass(fncThis.classCurrent);
 				localVariables.newItem.addClass(fncThis.classCurrent);
 				if(fncThis.onswitch)
@@ -88,12 +84,11 @@ __.message("queue 2");
 
 			if(fncThis.onpostswitch)
 				fncThis.queue.queue(function(){
-__.message("queue 3");
 					fncThis.onpostswitch.call(fncThis, localVariables);
 				});
 			fncThis.queue.queue(function(){
-__.message("queue 4");
 				fncThis.inprogress = false;
+				fncThis.queue.dequeue();
 			});
 			
 			fncThis.queue.dequeue();
@@ -101,4 +96,5 @@ __.message("queue 4");
 			return (fncThis.doPreventDefault)? false: true;
 		});
 	}
+
 

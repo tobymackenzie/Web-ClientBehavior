@@ -25,28 +25,21 @@ __.imageSwitcher = new __.classes.imageSwitcher({elmsListItems:$(".photos .navig
 ©imageswitcher
 ------------*/
 __.classes.imageSwitcher = function(arguments){
-		//--required attributes
-//->return
-		this.elmsListItems = (arguments.elmsListItems && arguments.elmsListItems.length > 0)?arguments.elmsListItems:null;
-			if(!this.elmsListItems) return false;
-		this.elmImage = (arguments.elmImage && arguments.elmImage.length > 0) ? arguments.elmImage : null;
-			if(!this.elmImage) return false;
-
-		//--optional attributes
-		this.addHeight = arguments.addHeight || 0;
-		this.addWeight = arguments.addWeight || 0;
+		//--optional arguments
 		this.attrImageURL = (arguments.attrImageURL)?arguments.attrImageURL:"href";
 		this.attrKeepWidth = arguments.attrKeepWidth || null;
 		this.attrKeepHeight = arguments.attrKeepHeight || null;
 		this.boot = arguments.boot || null;
 		this.classCurrent = (arguments.classCurrent)? arguments.classCurrent: "current";
 		this.duration = (arguments.duration)? arguments.duration: 500;
+//		this.elmImage = (arguments.elmImage && arguments.elmImage.length > 0) ? arguments.elmImage : null;
 		this.elmKeepDimensions = arguments.elmKeepDimensions || false;
 		this.elmListImages = arguments.elmListImages || null;
 		this.htmlNewImage = arguments.htmlNewImage || "<img alt=\"\" />";
 		this.listItemSelectedState = (arguments.listItemSelectedState)? arguments.listItemSelectedState: null;
 		this.listItemUnselectedState = (arguments.listItemUnselectedState)? arguments.listItemUnselectedState: null;
 		this.ondeselect = arguments.ondeselect || null;
+		this.oninit = arguments.oninit || null;
 		this.onpredeselect = arguments.onpredeselect || null;
 		this.onpreimageanimation = arguments.onpreimageanimation || null;
 		this.onpreselect = arguments.onpreselect || null;
@@ -59,17 +52,35 @@ __.classes.imageSwitcher = function(arguments){
 		this.selectorListItemContainer = (arguments.selectorListItemContainer)?arguments.selectorListItemContainer:"li";
 		this.typeAnimation = arguments.typeAnimation || "fadeoutfadein";
 		
-		//--derived attributes
-		this.inprogress=0;
-		this.urlCurrent = this.elmImage.attr("src");
-		this.elmLICurrent = this.elmsListItems.filter(this.classCurrent);
-		if(this.elmLICurrent.length < 1){
-			this.elmLICurrent = this.elmsListItems.has("a[href='"+this.urlCurrent+"']");
-			this.elmLICurrent.addClass(this.classCurrent);
-		}
+		//--derived members
+		if(arguments.elmImage)
+			this.setImage(arguments.elmImage);
+		else
+			this.elmImage = null;
+		if(arguments.elmsListItems)
+			this.setListItems(arguments.elmsListItems);
+		else
+			this.elmsListItems = null;
+		this.inprogress=false;
 		this.queue = new __.classes.animationQueue({name: "image", autoDequeue: false});
 		
-		this.attachEvents();
+		if(this.oninit)
+			this.oninit.call(this);
+	}
+	__.classes.imageSwitcher.prototype.setImage = function(argElement){
+		this.elmImage = argElement;
+		this.urlCurrent = this.elmImage.attr("src");
+	}
+	__.classes.imageSwitcher.prototype.setListItems = function(argElements){
+		this.elmsListItems = argElements;
+		if(this.elmsListItems.length > 0){
+			this.elmLICurrent = this.elmsListItems.filter(this.classCurrent);
+			if(this.elmLICurrent.length < 1){
+				this.elmLICurrent = this.elmsListItems.has("a[href='"+this.urlCurrent+"']");
+				this.elmLICurrent.addClass(this.classCurrent);
+			}
+			this.attachEvents();
+		}
 	}
 	__.classes.imageSwitcher.prototype.attachEvents = function(){
 		if(this.elmsListItems.length == 0) return false;
@@ -95,13 +106,13 @@ __.classes.imageSwitcher = function(arguments){
 		var fncThis = this;
 
 //-> return
-		if(fncThis.inprogress==1) return false;		
+		if(fncThis.inprogress==true) return false;		
 		
 		var oldLI = fncThis.elmsListItems.filter("."+fncThis.classCurrent);
 		var newLI = fncThis.elmsListItems.has("a[href='"+$.trim(newImageURL)+"']");
 		var newA = newLI.find("a");
 
-		fncThis.inprogress = 1;
+		fncThis.inprogress = true;
 
 		//--run pre-animate callback
 		if(fncThis.onpredeselect)
@@ -109,10 +120,10 @@ __.classes.imageSwitcher = function(arguments){
 		if(fncThis.onpreselect)
 			fncThis.onpreselect.call(fncThis, newLI);
 		
-		var elmTempImage = $("<img src='"+newImageURL+"' />").css({"position":"absolute", "left":"-9000px", "top":"-1000px"}).appendTo("body");
+		var elmTempImage = $("<img class=\"tempimage\" src='"+newImageURL+"' />").css({"position":"absolute", "left":"-9000px", "top":"-9000px"}).appendTo("body");
 		
 		if(fncThis.elmKeepDimensions){
-			fncThis.elmKeepDimensions.css({"height": fncThis.elmImage.height() + fncThis.addHeight, "width": fncThis.elmImage.width() +fncThis.addWidth});
+			fncThis.elmKeepDimensions.css({"height": fncThis.elmImage.height(), "width": fncThis.elmImage.width()});
 			var widthNew = false, heightNew = false;
 			if(fncThis.attrKeepWidth)
 				widthNew = newLI.attr(fncThis.attrKeepWidth) || false;
@@ -122,8 +133,6 @@ __.classes.imageSwitcher = function(arguments){
 				widthNew = widthNew || elmTempImage.width() || fncThis.elmImage.width();
 				heightNew = heightNew || elmTempImage.height() || fncThis.elmImage.height();
 			}
-			widthNew += fncThis.addWidth;
-			heightNew += fncThis.addHeight;
 		}
 		
 		var fncLocalVariables = {newLI: newLI, oldLI: oldLI};
@@ -147,7 +156,10 @@ __.classes.imageSwitcher = function(arguments){
 				fncThis.onpreimageanimation.call(fncThis, fncLocalVariables);
 			}});
 		fncThis.queue.queue({name: "image", callback: function(){
-			newA.animate(fncThis.listItemSelectedState, fncThis.duration, function(){fncThis.queue.dequeue("image");});
+			if(newA.length > 0)
+				newA.animate(fncThis.listItemSelectedState, fncThis.duration, function(){fncThis.queue.dequeue("image");});
+			else
+				fncThis.queue.dequeue("image");
 		}});
 		if(fncThis.onpreimageanimationfadeout)
 			fncThis.queue.queue({name: "image", callback: function(){
@@ -187,11 +199,10 @@ __.classes.imageSwitcher = function(arguments){
 				fncThis.elmImage.attr("src", newImageURL).fadeIn(fncThis.duration);
 			}
 			elmTempImage.remove();
-			fncThis.inprogress = 0;
 			if(fncThis.elmKeepDimensions){
 				fncThis.elmKeepDimensions.animate({"height":heightNew, "width":widthNew}, function(){fncThis.queue.dequeue("image");});
 			}else
-				fncThis.queue
+				fncThis.queue.dequeue("image");
 			fncThis.elmLICurrent = newLI;
 			if(fncThis.onselect)
 				fncThis.onselect.call(fncThis, newLI);
@@ -206,10 +217,11 @@ __.classes.imageSwitcher = function(arguments){
 			}else
 				fncThis.queue.dequeue("image");
 		}});
-		if(fncThis.onpostimageanimation)
-			fncThis.queue.queue({name: "image", callback: function(){
+		fncThis.queue.queue({name: "image", callback: function(){
+			if(fncThis.onpostimageanimation)
 				fncThis.onpostimageanimation.call(fncThis, fncLocalVariables);
-			}});
+			fncThis.inprogress = false;
+		}});
 		
 		fncThis.queue.dequeue({name: "image"});
 	}
@@ -220,4 +232,5 @@ __.classes.imageSwitcher = function(arguments){
 			this.attachEvents();
 		}
 	}
+
 
