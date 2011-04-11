@@ -57,7 +57,7 @@ __.classes.animationQueue = function(arguments){
 		this.autoDequeue = arguments.autoDequeue || false;
 		
 		//--derived variables
-		this.arrayAnimationSteps = $({});
+		this.objQueue = $({});
 	}
 	__.classes.animationQueue.prototype.queue = function(arguments){
 		var fncThis = this;
@@ -73,21 +73,32 @@ __.classes.animationQueue = function(arguments){
 				}
 			:fncCallback
 		;
-		this.arrayAnimationSteps.queue(fncName, fncQueueCallback);
+		this.objQueue.queue(fncName, fncQueueCallback);
 	}
 	__.classes.animationQueue.prototype.dequeue = function(arguments){
 		if(typeof arguments != "undefined")
 			var fncName = arguments.name || arguments;
 		else
 			var fncName = this.name;
-		this.arrayAnimationSteps.dequeue(fncName);
+		this.objQueue.dequeue(fncName);
+	}
+	__.classes.animationQueue.prototype.unshift = function(arguments){
+		if(typeof arguments != "undefined"){
+			var fncCallback = arguments.callback || arguments;
+			var fncName = arguments.name || this.name;
+		}
+		if(typeof fncCallback == "undefined" || !fncCallback) return false;
+//->return
+		var fncQueue = this.objQueue.queue(fncName);
+		fncQueue.unshift(fncCallback);
 	}
 	__.classes.animationQueue.prototype.clearQueue = function(arguments){
 		if(typeof arguments != "undefined")
 			var fncName = arguments.name || arguments;
 		else
 			var fncName = this.name;
-		this.arrayAnimationSteps.clearQueue(fncName);
+		this.objQueue.clearQueue(fncName);
 	}
+
 
 
