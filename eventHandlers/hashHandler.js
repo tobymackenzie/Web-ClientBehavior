@@ -15,6 +15,7 @@ __.classes.hashHandler = function(arguments){
 		//--optional attributes
 		this.elmsContainer = arguments.elmsContainer || null;
 		this.onhashchange = arguments.onhashchange || null;
+		this.oninit = arguments.oninit || null;
 		this.selectorAnchors = arguments.selectorAnchors || "a";
 
 		//--derived attributes
@@ -29,6 +30,9 @@ __.classes.hashHandler = function(arguments){
 				var url = location.hash || "/";
 				fncThis.onhashchange.call(fncThis, url);
 			});
+		
+		if(this.oninit)
+			this.oninit.call(fncThis, location.hash);
 	}
 	__.classes.hashHandler.prototype.hashifyURLs = function(argContainers){
 		if(argContainers && argContainers.length > 0){
