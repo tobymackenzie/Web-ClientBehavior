@@ -6,9 +6,9 @@ __.scrOnload = function(){
 	
 }
 
-/* ********* 
+/*---------- 
 ©tmlib
-********* */
+---------*/
 function tmlib(){
 		this.classes = {};
 		this.lib = {};

@@ -47,9 +47,9 @@ if(typeof $ !== 'undefined')
 */
 
 
-/* --------
+/*--------
 ©pagerSlidingHash
-------- */
+-------*/
 __.classes.pagerSlidingHash = function(arguments){
 		var fncThis = this;
 		this.elmsPages = arguments.elmsPages || null;
