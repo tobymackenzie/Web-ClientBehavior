@@ -2,8 +2,74 @@
 pulls in data through jquery ajax function and by default animates a wrapper and replaces its content with the ajax result
 
 -----depends on:
-	tmlib
-	jquery
+tmlib
+jquery
+
+-----instantiation
+		__.contentPager = new __.classes.pagerAjax({url: "/products/"
+			,duration: 1000
+			,elmWrap: $("#maindescriptionwrap")
+			,htmlWrap: '<div id="maindescriptionwrap"><div id="maindescription"></div></div>'
+			,selectorWrapForAnimation: "#maindescription"
+			,selectorWrapForContent: "#maindescription"
+			,onpreajaxcall: function(arguments){
+				var fncThis = this;
+				var fncAjaxParameters = arguments;
+				var callbackMaincontent = function(){};
+				var callbackMaindescription = function(){};
+				var callback = function(){
+					fncThis.loadAjaxData(fncAjaxParameters);
+				}
+				
+				if(fncThis.boot.pagetypeToLoad == "zone")
+					callbackMaincontent = callback;
+				else
+					callbackMaindescription = callback;		
+
+				fncThis.boot.elmMaincontentWrapForAnimation.fadeOut(fncThis.duration, callbackMaincontent);
+				fncThis.elmWrapForAnimation.fadeOut(fncThis.duration, callbackMaindescription);
+			}
+			,onsuccess: function(argData){
+				var fncThis = this;
+				var fncTextContent = argData;
+				if($.trim(fncTextContent)){
+					if(fncThis.boot.pagetypeToLoad == "zone"){
+						fncThis.boot.elmMaincontentWrapForContent.html(fncTextContent);
+						__.hashHandler.hashifyURLs(fncThis.boot.elmMaincontentWrapForContent);
+						fncThis.boot.elmMaincontentWrapForAnimation.fadeIn(fncThis.duration);
+					}else{
+						fncThis.elmWrapForContent.html(fncTextContent);
+						__.hashHandler.hashifyURLs(fncThis.elmWrapForContent);
+						fncThis.elmWrapForAnimation.fadeIn(fncThis.duration);
+					}
+				}
+				fncThis.boot.pagetypeToLoad = false;
+				__.imageSwitcher.queue.dequeue("image");
+			}
+			,oninit: function(){
+				//--ensure main container  is visible, will otherwise not be if created automatically
+				this.elmWrap.show();
+				this.elmWrapForAnimation.hide();
+				
+				//--set or create other content holder
+				this.boot.elmMaincontentWrapForAnimation = $(this.boot.selectorMaincontentWrapForAnimation);
+				if(this.boot.elmMaincontentWrapForAnimation.length < 1){
+					this.boot.elmMaincontentWrap = $(this.boot.htmlMaincontentWrap);
+					this.boot.elmMaincontentWrap.hide();
+					this.boot.elmFullheighter.after(this.boot.elmMaincontentWrap);
+				}else
+					this.boot.elmMaincontentWrap = this.boot.elmMaincontentWrapForAnimation;
+				this.boot.elmMaincontentWrapForAnimation = $(this.boot.selectorMaincontentWrapForAnimation);
+				this.boot.elmMaincontentWrapForContent = $(this.boot.selectorMaincontentWrapForContent);
+			}
+			,boot: {
+				pagetypeToLoad: false
+				,htmlMaincontentWrap: '<div id="maincontentwrap"><div id="maincontent"></div></div>'
+				,elmFullheighter: $("#fullheighter")
+				,selectorMaincontentWrapForAnimation: "#maincontentwrap"
+				,selectorMaincontentWrapForContent: "#maincontent"
+			}
+		});
 
 */
 
@@ -94,8 +160,4 @@ __.classes.pagerAjax = function(arguments){
 			fncThis.elmWrapForAnimation.fadeIn(fncThis.duration);
 		}
 	}
-
-
-
-
 

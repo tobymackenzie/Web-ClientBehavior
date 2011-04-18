@@ -1,100 +1,114 @@
 /*
 handles clicks on a selection of elements
 
+-----parameters
 @param typeItems (parent): type of elmsItems for finding necessary data
 	parent, atomic
 @param selectorChildren (a): selector of children of elmsItems that hold necessary data if type is parent
+
+-----instantiation
+		var mainnavigationItems = $("#topnavigationlist .topitem, #logo");
+		if(mainnavigationItems.length > 0){
+			__.mainnavigationHandler = new __.classes.navigationHandler({
+				elmsItems: mainnavigationItems
+				,onpreswitch: function(arguments){
+					var fncThis = this;
+					var urlAjax = arguments.newItem.find(this.selectorChildren).attr(this.attrData);
+					if(urlAjax.substring(0,1) == "#")
+						urlAjax = urlAjax.substring(1, urlAjax.length - 1);
+					var pagetype = arguments.newItem.attr(this.boot.attrType);
+					__.router.callRoute({path: urlAjax, arguments: {url: urlAjax}});
+				}
+				,boot: {attrType: "data-pagetype"}
+			});
+		}
 */
 
 /*-------
-©navigationHandler
+©pagerAjax
 -------- */
-__.classes.navigationHandler = function(arguments){
-		//--required attributes
-		this.elmsItems = arguments.elmsItems || null;
-//->return
-		if(!this.elmsItems || this.elmsItems.length < 1) return false;
+__.classes.pagerAjax = function(arguments){
+		//--required arguments
 
-		//--optional attributes
-		this.attrData = arguments.attrData || "href";
+		//--optional arguments
 		this.boot = arguments.boot || null;
-		this.classCurrent = arguments.classCurrent || "current";
-		this.doPreventDefault = (typeof arguments.doPreventDefault != "undefined")? arguments.doPreventDefault: true;
-		this.onpreswitch = arguments.onpreswitch || null;
-		this.onpreswitchtest = arguments.onpreswitchtest || null;
-		this.onpostswitch = arguments.onpostswitch || null;
-		this.onswitch = arguments.onswitch || null;
-		this.selectorChildren = arguments.selectorChildren || "a";
-		this.selectorListItemContainer = arguments.selectorListItemContainer || "li";
-		this.typeItems = arguments.typeItems || "parent";
+		this.data = arguments.data || {};
+		this.duration = arguments.duration || 500;
+		this.elmContainer = arguments.elmContainer || $("body");
+		this.elmWrap = arguments.elmWrap || null;
+		this.selectorWrapForAnimation = arguments.selectorWrapForAnimation || null;
+		this.selectorWrapForContent = arguments.selectorWrapForContent || null;
+		this.htmlWrap = arguments.htmlWrap || null;
+		this.oninit = arguments.oninit || null;
+		this.onpreajaxcall = (typeof arguments.onpreajaxcall != "undefined")? arguments.onpreajaxcall: this.animationBasicPreCall;
+		this.onsuccess = (arguments.onsuccess)? arguments.onsuccess: this.animationBasicOnSuccess;
+		this.paramAjax = arguments.paramAjax || "ajaxcall";
+		this.url = arguments.url || null;
 
-		//--derived attributes
-		this.inprogress = false;
-		this.queue = new __.classes.animationQueue();
+		//--derived members
+		if((!this.elmWrap || this.elmWrap.length < 1) && this.htmlWrap){
+			this.elmWrap = $(this.htmlWrap);
+			this.elmWrap.hide();
+			this.elmContainer.append(this.elmWrap);
+		}
+		this.elmWrapForAnimation = $(this.selectorWrapForAnimation);
+		this.elmWrapForContent = $(this.selectorWrapForContent);
 		
-		//--attach events
-		this.attachEvents(this.elmsItems);
+		if(this.oninit)
+			this.oninit.call(this);
 	}
-	__.classes.navigationHandler.prototype.attachEvents = function(arguments){
+	__.classes.pagerAjax.prototype.loadAjax = function(arguments){
 		var fncThis = this;
+		var fncAjaxParameters = arguments;
 		
-		fncThis.elmsItems.bind("click touch", function(event){
-//->return
-			if(fncThis.inprogress == true)
-				return false;
-			var fncEvent = event;
-			var localVariables = {elmThis: $(this)};
-			if(fncThis.typeItems == "parent"){
-				localVariables.oldItem = fncThis.elmsItems.filter("."+fncThis.classCurrent);
-				localVariables.newItem = localVariables.elmThis.closest(fncThis.selectorListItemContainer);
-			}else{
-				localVariables.oldItem = fncThis.elmsItems.filter("."+fncThis.classCurrent);
-				localVariables.newItem = localVariables.elmThis;
+		if(this.onpreajaxcall)
+			this.onpreajaxcall.call(fncThis, fncAjaxParameters);
+		else
+			this.loadAjaxData(fncAjaxParameters);
+	}
+	__.classes.pagerAjax.prototype.loadAjaxData = function(arguments){
+		var fncAjaxParameters = arguments;
+		
+		//--set default parameters
+		if(!fncAjaxParameters.success)
+			fncAjaxParameters.success = function(data){
+				this.onsuccess.call(this, data);
 			}
-//->return
-			if(localVariables.oldItem[0] == localVariables.newItem[0]) return false;
-//->return
-			if(fncThis.onpreswitchtest && !fncThis.onpreswitchtest.call(fncThis, localVariables)){
-				if(fncThis.doPreventDefault){
-					if(typeof event.preventDefault != "undefined")
-						event.preventDefault();
-					return false;
-				}else{
-					return true;
+		if(!fncAjaxParameters.context)
+			fncAjaxParameters.context = this;
+		var oldData = arguments.data;
+		fncAjaxParameters.data = this.data;
+		if(typeof arguments.data != "undefined"){
+			for(var key in oldData){
+				if(oldData.hasOwnProperty(key)){
+					fncAjaxParameters.data[key] = oldData[key];
 				}
 			}
-			fncThis.inprogress = true;	
+		}
 			
-			if(fncThis.doPreventDefault && typeof event.preventDefault != "undefined")
-				event.preventDefault();
-			
-			if(fncThis.onpreswitch)
-				fncThis.queue.queue(function(){
-					fncThis.onpreswitch.call(fncThis, localVariables);
-				});
-
-			fncThis.queue.queue(function(){
-				localVariables.oldItem.removeClass(fncThis.classCurrent);
-				localVariables.newItem.addClass(fncThis.classCurrent);
-				if(fncThis.onswitch)
-					fncThis.onswitch.call(fncThis, localVariables);
-				else
-					fncThis.queue.dequeue();
-			});
-
-			if(fncThis.onpostswitch)
-				fncThis.queue.queue(function(){
-					fncThis.onpostswitch.call(fncThis, localVariables);
-				});
-			fncThis.queue.queue(function(){
-				fncThis.inprogress = false;
-				fncThis.queue.dequeue();
-			});
-			
-			fncThis.queue.dequeue();
-			
-			return (fncThis.doPreventDefault)? false: true;
-		});
+		fncAjaxParameters.data[this.paramAjax] = 1;
+		if(!fncAjaxParameters.url)
+			fncAjaxParameters.url = this.url;
+		
+		$.ajax(fncAjaxParameters);
 	}
+	__.classes.pagerAjax.prototype.animationBasicPreCall = function(arguments){
+		var fncThis = this;
+		var fncAjaxParameters = arguments;
+		if(this.elmWrapForAnimation && this.elmWrapForAnimation.length > 0){
+			this.elmWrapForAnimation.fadeOut(fncThis.duration, function(){
+				fncThis.loadAjaxData(fncAjaxParameters);
+			});
+		}else
+			fncThis.loadAjaxData(fncAjaxParameters);
+	}
+	__.classes.pagerAjax.prototype.animationBasicOnSuccess = function(argData){
+		var fncThis = this;
+		var fncTextContent = argData;
 
+		if($.trim(fncTextContent)){
+			fncThis.elmWrapForContent.html(fncTextContent);
+			fncThis.elmWrapForAnimation.fadeIn(fncThis.duration);
+		}
+	}
 

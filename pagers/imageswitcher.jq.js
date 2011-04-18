@@ -3,6 +3,7 @@ depends on:
 	tmlib
 	jquery
 
+-----parameters
 @param boot: extra storage for external/callback use
 @param elmKeepDimensions: jquery element to maintain height on and animate to height of new image
 @param elmList: for animation of type disolve, jquery element container to append new image to
@@ -11,7 +12,7 @@ depends on:
 	fadeoutfadein: default, fades out old image to nothing, fades in new image
 	dissolve: creates new image behind old image, fades out old image
 
------external access
+-----instantiation
 __.imageSwitcher = new __.classes.imageSwitcher({elmsListItems:$(".photos .navigation li"), elmImage: $(".photos .mainimage img"), elmKeepDimensions: $(".photos .mainimage"),
 		onpreselect: function(elmThis){ __.navGrayscaler.colorify(elmThis); elmThis.addClass("current"); },
 		ondeselect: function(elmThis){ __.navGrayscaler.grayify(elmThis); },
@@ -232,5 +233,4 @@ __.classes.imageSwitcher = function(arguments){
 			this.attachEvents();
 		}
 	}
-
 

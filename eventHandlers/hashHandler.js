@@ -1,7 +1,25 @@
 /*
 allows binding of events to hashchange, and will hashify urls so that they can be animated but still based on the non-javascript urls
+
 -----parameters
+
 -----instantiation
+		__.hashHandler = new __.classes.hashHandler({elmsContainer: $("#topnavigationlist, #maindescription, #maindescriptionwrap, #logo")
+			, onhashchange: function(argHash){
+				var url = argHash;
+				if(url.substring(0,1) == "#")
+					url = url.substring(1, url.length - 1);
+				if(!url)
+					url = "/";
+				__.router.callRoute({path: url, arguments: {url: url}});
+			}
+			,oninit: function(argHash){
+				if(argHash){
+					var fncThis = this;
+					setTimeout(function(){fncThis.onhashchange.call(fncThis, argHash);}, 500);
+				}
+			}
+		});
 */
 
 

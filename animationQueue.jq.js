@@ -1,12 +1,13 @@
 /*
 used to place steps of jquery animation in order, wrapper for jquery's queue
 
-@param autoDequeue (false): if autodequeue is true, automatically moves to next animation step once started, otherwise must dequeue in callback functions.  autoDequeu only useful for animations on one element
-
 -----develompent notes
 the "this" passed to the callback functions is not anything useful, seems to be the jquery queue object
 
------example
+-----parameters
+@param autoDequeue (false): if autodequeue is true, automatically moves to next animation step once started, otherwise must dequeue in callback functions.  autoDequeu only useful for animations on one element
+
+-----instantiation
 if(typeof $ !== 'undefined'){
 	$(document).ready(function(){
 		var elmErrorsbox = $(".phperrorsbox");
@@ -99,6 +100,4 @@ __.classes.animationQueue = function(arguments){
 			var fncName = this.name;
 		this.objQueue.clearQueue(fncName);
 	}
-
-
 

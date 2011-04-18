@@ -2,11 +2,12 @@
 ©buttonScrollerHorizontal
 adds buttons to scroll horizontally a div that can contain content wider than itself
 
-@param doUpdateWidth: update width of wrapper on window resize?
-
 -----dependsOn
 tmlib base
 jquery
+
+-----parameters
+@param doUpdateWidth: update width of wrapper on window resize?
 
 -----init
 if(typeof $ !== 'undefined')
@@ -25,9 +26,9 @@ if(typeof $ !== 'undefined')
 
 -----*/
 
-/* --------
+/*-----------
 ©buttonScrollerHorizontal
-------- */
+----------*/
 __.classes.buttonScrollerHorizontal = function(arguments){
 		//--optional arguments
 		this.boot = arguments.boot || null;
@@ -145,6 +146,4 @@ __.classes.buttonScrollerHorizontal = function(arguments){
 		this.elmWrapper = argElement;
 		this.widthWrapper = this.elmWrapper.outerWidth();
 	}
-
-
 
