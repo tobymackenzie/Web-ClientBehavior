@@ -162,6 +162,20 @@ __.classes.imageSwitcher = function(arguments){
 			else
 				fncThis.queue.dequeue("image");
 		}});
+		if(fncThis.typeAnimation == "dissolve"){
+			fncThis.queue.queue({name: "image", callback: function(){
+				fncThis.elmOldImage = fncThis.elmImage;
+				fncThis.elmImage = $(fncThis.htmlNewImage);
+				fncThis.elmImage.attr("src", newImageURL);
+				fncThis.elmListImages.prepend(fncThis.elmImage);
+				if(fncThis.elmImage.width() > 0)
+					fncThis.queue.dequeue("image");
+				else
+					fncThis.elmImage.bind("load", function(){
+						fncThis.queue.dequeue("image");
+					});
+			}});
+		}
 		if(fncThis.onpreimageanimationfadeout)
 			fncThis.queue.queue({name: "image", callback: function(){
 				fncThis.onpreimageanimationfadeout.call(fncThis, fncLocalVariables);
@@ -170,10 +184,6 @@ __.classes.imageSwitcher = function(arguments){
 			newLI.addClass(fncThis.classCurrent);
 			
 			if(fncThis.typeAnimation == "dissolve"){
-				fncThis.elmOldImage = fncThis.elmImage;
-				fncThis.elmImage = $(fncThis.htmlNewImage);
-				fncThis.elmImage.attr("src", newImageURL);
-				fncThis.elmListImages.prepend(fncThis.elmImage);
 				fncThis.elmOldImage.fadeOut(fncThis.duration, function(){fncThis.queue.dequeue("image");});
 			}else{
 				fncThis.elmImage.fadeOut(fncThis.duration, function(){fncThis.queue.dequeue("image");});

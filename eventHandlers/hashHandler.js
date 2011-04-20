@@ -35,6 +35,8 @@ __.classes.hashHandler = function(arguments){
 		this.onhashchange = arguments.onhashchange || null;
 		this.oninit = arguments.oninit || null;
 		this.selectorAnchors = arguments.selectorAnchors || "a";
+		this.selectorExclude = arguments.selectorExclude || null;
+		this.selectorInclude = arguments.selectorInclude || null;
 
 		//--derived attributes
 		var fncThis = this;
@@ -54,7 +56,12 @@ __.classes.hashHandler = function(arguments){
 	}
 	__.classes.hashHandler.prototype.hashifyURLs = function(argContainers){
 		if(argContainers && argContainers.length > 0){
-			argContainers.find(this.selectorAnchors).add(argContainers.filter(this.selectorAnchors)).each(function(){
+			var elmsAnchors = argContainers.find(this.selectorAnchors).add(argContainers.filter(this.selectorAnchors));
+			if(this.selectorExclude)
+				elmsAnchors = elmsAnchors.not(this.selectorExclude);
+			else if(this.selectorInclude)
+				elmsAnchors = elmsAnchors.filter(this.selectorInclude);
+			elmsAnchors.each(function(){
 				var elmThis = $(this);
 				var currentHref = elmThis.attr("href");
 				if(currentHref.substring(0,1) == "/")

@@ -173,7 +173,7 @@ __.classes.router = function(arguments){
 	}
 	__.classes.router.prototype.routeLookup = function(argPath){
 		var fncReturn = false;
-		for(key in this.routes){
+		for(var key in this.routes){
 			var route = this.routes[key];
 			if(this.routes.hasOwnProperty(key) && typeof route.path != "undefined"){
 				if(typeof route.path == "string"){
