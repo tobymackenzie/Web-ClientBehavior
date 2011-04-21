@@ -78,10 +78,7 @@ if(typeof $ !== 'undefined'){
 		}});
 		
 		//--routes
-		__.router.addRoute({name: "bed", path: /\/products\/1\/?/, action: "loadPageList"});
-		__.router.addRoute({name: "bath", path: /\/products\/2\/?/, action: "loadPageList"});
-		__.router.addRoute({name: "decor", path: /\/products\/3\/?/, action: "loadPageList"});
-		__.router.addRoute({name: "gifts", path: /\/products\/4\/?/, action: "loadPageList"});
+		__.router.addRoute({name: "products", path: /\/products\/[0-9]+\/?/, action: "loadPageList"});
 		__.router.addRoute({name: "designers", path: "/designers", action: "loadPageZone"});
 		__.router.addRoute({name: "blog", path: /\/blog/, action: "loadPageZone"});
 		__.router.addRoute({name: "about", path: "/about", action: "loadPageZone"});
