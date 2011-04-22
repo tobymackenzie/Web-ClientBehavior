@@ -89,19 +89,30 @@ __.classes.imageSwitcher = function(arguments){
 		fncThis.elmsListItems.children("a").bind("click", function(event){
 			if(event.preventDefault) event.preventDefault();
 
-			var currentLI = fncThis.elmsListItems.filter("."+fncThis.classCurrent);
-			var thisLI = $(this).closest(fncThis.selectorListItemContainer);
-//->return
-			if(thisLI[0] == currentLI[0]) return false;
-			var thisA = thisLI.find("a");
-			var newImageURL = thisA.attr("href");
-			if(!newImageURL) newImageURL = thisLI.attr(fncThis.attrImageURL);
-//->return
-			if(!newImageURL) return false;
-			fncThis.switche(newImageURL);
-
+			var thisItem = $(this).closest(fncThis.selectorListItemContainer);
+			fncThis.switchToItem(thisItem);
+			
 			return false;
 		});
+	}
+	__.classes.imageSwitcher.prototype.switchToNext = function(){
+		var currentItem = this.elmsListItems.filter("."+this.classCurrent);
+		this.switchToItem(currentItem.next());
+	}
+	__.classes.imageSwitcher.prototype.switchToPrevious = function(){
+		var currentItem = this.elmsListItems.filter("."+this.classCurrent);
+		this.switchToItem(currentItem.prev());
+	}
+	__.classes.imageSwitcher.prototype.switchToItem = function(elmNewItem){
+		var currentItem = this.elmsListItems.filter("."+this.classCurrent);
+//->return
+		if(elmNewItem[0] == currentItem[0] || elmNewItem.length < 1) return false;		
+		var elmA = elmNewItem.find("a");
+		var newImageURL = elmA.attr("href");
+		if(!newImageURL) newImageURL = elmNewItem.attr(this.attrImageURL);
+//->return
+		if(!newImageURL) return false;
+		this.switche(newImageURL);
 	}
 	__.classes.imageSwitcher.prototype.switche = function(newImageURL, arguments){
 		var fncThis = this;
@@ -168,12 +179,13 @@ __.classes.imageSwitcher = function(arguments){
 				fncThis.elmImage = $(fncThis.htmlNewImage);
 				fncThis.elmImage.attr("src", newImageURL);
 				fncThis.elmListImages.prepend(fncThis.elmImage);
-				if(fncThis.elmImage.width() > 0)
+				if(fncThis.elmImage.width() > 0){
 					fncThis.queue.dequeue("image");
-				else
+				}else{
 					fncThis.elmImage.bind("load", function(){
 						fncThis.queue.dequeue("image");
 					});
+				}
 			}});
 		}
 		if(fncThis.onpreimageanimationfadeout)

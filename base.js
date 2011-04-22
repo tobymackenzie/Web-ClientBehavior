@@ -182,8 +182,16 @@ function tmlib(){
 	}
 	//-@based from http://andrewpeace.com/javascript-is-array.html
 	__.lib.isArray = function(argObject){
-		return typeof argObject == 'object' && (argObject instanceof Array);
+		if(
+			(typeof argObject == 'object' && argObject instanceof Array) //-normal array
+			|| ((typeof argObject == "function" || typeof argObject == "object") && typeof argObject.length == 'number' && typeof argObject.item == "function") //-nodelist
+		){
+			return true;
+		}else{
+			return false;
+		}
 	}
+
 /*
 return instance name of object from within instance
 -* only use for testing purposes
