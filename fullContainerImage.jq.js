@@ -86,7 +86,7 @@ __.classes.fullContainerImage = function(arguments){
 				if(!this.elmImage.hasClass(this.classFitHeight)){
 					this.elmImage.removeClass(this.classFitWidth).addClass(this.classFitHeight);
 					if(this.doCenterVertically)
-						this.elmImage.css("top", "inherit");
+						this.elmImage.css("top", 0);
 				}
 				if(this.doCenterHorizontally)
 					this.elmImage.css("left", -((this.elmImage.width() - this.elmContainer.width()) / 2));
@@ -94,7 +94,7 @@ __.classes.fullContainerImage = function(arguments){
 				if(!this.elmImage.hasClass(this.classFitWidth)){
 					this.elmImage.removeClass(this.classFitHeight).addClass(this.classFitWidth);
 					if(this.doCenterHorizontally)
-						this.elmImage.css("left", "inherit");
+						this.elmImage.css("left", 0);
 				}
 				if(this.doCenterVertically)
 					this.elmImage.css("top", -((this.elmImage.height() - this.elmContainer.height()) / 2));

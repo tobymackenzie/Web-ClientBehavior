@@ -31,14 +31,15 @@ __.classes.imageSwitcher = function(arguments){
 		this.attrKeepWidth = arguments.attrKeepWidth || null;
 		this.attrKeepHeight = arguments.attrKeepHeight || null;
 		this.boot = arguments.boot || null;
-		this.classCurrent = (arguments.classCurrent)? arguments.classCurrent: "current";
+		this.classCurrent = (typeof arguments.classCurrent != "undefined")? arguments.classCurrent: "current";
+		this.doAttachEvents = (typeof arguments.doAttachEvents != "undefined")? arguments.doAttachEvents: true;
 		this.duration = (arguments.duration)? arguments.duration: 500;
 //		this.elmImage = (arguments.elmImage && arguments.elmImage.length > 0) ? arguments.elmImage : null;
 		this.elmKeepDimensions = arguments.elmKeepDimensions || false;
 		this.elmListImages = arguments.elmListImages || null;
 		this.htmlNewImage = arguments.htmlNewImage || "<img alt=\"\" />";
-		this.listItemSelectedState = (arguments.listItemSelectedState)? arguments.listItemSelectedState: null;
-		this.listItemUnselectedState = (arguments.listItemUnselectedState)? arguments.listItemUnselectedState: null;
+		this.listItemSelectedState = arguments.listItemSelectedState || null;
+		this.listItemUnselectedState = arguments.listItemUnselectedState || null;
 		this.ondeselect = arguments.ondeselect || null;
 		this.oninit = arguments.oninit || null;
 		this.onpredeselect = arguments.onpredeselect || null;
@@ -50,7 +51,8 @@ __.classes.imageSwitcher = function(arguments){
 		this.onpreimageanimationfadein = arguments.onpreimageanimationfadein || null;
 		this.onpreimageanimationpostkeepheight = arguments.onpreimageanimationpostkeepheight || null;
 		this.onselect = arguments.onselect || null;
-		this.selectorListItemContainer = (arguments.selectorListItemContainer)?arguments.selectorListItemContainer:"li";
+		this.selectorListItemContainer = (typeof arguments.selectorListItemContainer != "undefined")?arguments.selectorListItemContainer:"li";
+		this.selectorElmImageUrl = arguments.selectorElmImageUrl || "a";
 		this.typeAnimation = arguments.typeAnimation || "fadeoutfadein";
 		
 		//--derived members
@@ -68,6 +70,14 @@ __.classes.imageSwitcher = function(arguments){
 		if(this.oninit)
 			this.oninit.call(this);
 	}
+	__.classes.imageSwitcher.prototype.findElmLIForURL = function(argURL){
+		var selectorAttribute = "["+this.attrImageURL+"='"+argURL+"']";
+		if(this.selectorElmImageUrl == "this"){
+			return this.elmsListItems.filter(selectorAttribute);
+		}else{
+			return this.elmsListItems.has(this.selectorElmImageUrl+selectorAttribute);
+		}
+	}
 	__.classes.imageSwitcher.prototype.setImage = function(argElement){
 		this.elmImage = argElement;
 		this.urlCurrent = this.elmImage.attr("src");
@@ -77,10 +87,11 @@ __.classes.imageSwitcher = function(arguments){
 		if(this.elmsListItems.length > 0){
 			this.elmLICurrent = this.elmsListItems.filter(this.classCurrent);
 			if(this.elmLICurrent.length < 1){
-				this.elmLICurrent = this.elmsListItems.has("a[href='"+this.urlCurrent+"']");
+				this.elmLICurrent = this.findElmLIForURL(this.urlCurrent);
 				this.elmLICurrent.addClass(this.classCurrent);
 			}
-			this.attachEvents();
+			if(this.doAttachEvents)
+				this.attachEvents();
 		}
 	}
 	__.classes.imageSwitcher.prototype.attachEvents = function(){
@@ -107,8 +118,12 @@ __.classes.imageSwitcher = function(arguments){
 		var currentItem = this.elmsListItems.filter("."+this.classCurrent);
 //->return
 		if(elmNewItem[0] == currentItem[0] || elmNewItem.length < 1) return false;		
-		var elmA = elmNewItem.find("a");
-		var newImageURL = elmA.attr("href");
+		if(this.selectorElmImageUrl == "this"){
+			var newImageURL = elmNewItem.attr(this.attrImageURL);
+		}else{
+			var elmA = elmNewItem.find(this.selectorElmImageUrl);
+			var newImageURL = elmA.attr(this.attrImageURL);
+		}
 		if(!newImageURL) newImageURL = elmNewItem.attr(this.attrImageURL);
 //->return
 		if(!newImageURL) return false;
@@ -121,7 +136,7 @@ __.classes.imageSwitcher = function(arguments){
 		if(fncThis.inprogress==true) return false;		
 		
 		var oldLI = fncThis.elmsListItems.filter("."+fncThis.classCurrent);
-		var newLI = fncThis.elmsListItems.has("a[href='"+$.trim(newImageURL)+"']");
+		var newLI = this.findElmLIForURL($.trim(newImageURL));
 		var newA = newLI.find("a");
 
 		fncThis.inprogress = true;
@@ -252,7 +267,8 @@ __.classes.imageSwitcher = function(arguments){
 		this.elmImage = (arguments.elmImage)?arguments.elmImage:this.elmImage;
 		if(arguments.elmsListItems){
 			this.elmsListItems = arguments.elmsListItems;
-			this.attachEvents();
+			if(this.doAttachEvents)
+				this.attachEvents();
 		}
 	}
 

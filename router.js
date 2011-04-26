@@ -165,6 +165,16 @@ __.classes.router = function(arguments){
 		var fncRoute = this.routeLookup(localvars.path);
 		if(fncRoute){
 			localvars.arguments.route = fncRoute;
+			if(fncRoute.path.exec){
+				localvars.arguments.matches = fncRoute.path.exec(localvars.path);
+				if(typeof fncRoute.matches != "undefined"){
+					for(var key in fncRoute.matches){
+						if(fncRoute.matches.hasOwnProperty(key))
+							localvars.arguments.matches[key] = localvars.arguments.matches[fncRoute.matches[key]];
+
+					}
+				}
+			}
 			this.actions[fncRoute.action].call(localvars.scope, localvars.arguments)
 		}
 	}
