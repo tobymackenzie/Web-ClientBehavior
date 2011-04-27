@@ -78,7 +78,8 @@ if(typeof $ !== 'undefined'){
 		}});
 		
 		//--routes
-		__.router.addRoute({name: "products", path: /\/products\/[0-9]+\/?/, action: "loadPageList"});
+		__.router.addRoute({name: "productsitem", path: /\/(products)\/([0-9]+)\/([0-9]+)\/?/, action: "loadPageList", matches: {section: 1, catid: 2, unid: 3}});
+		__.router.addRoute({name: "products", path: /\/(products)\/([0-9]+)\/?/, action: "loadPageList", matches: {section: 1, catid: 2}});
 		__.router.addRoute({name: "designers", path: "/designers", action: "loadPageZone"});
 		__.router.addRoute({name: "blog", path: /\/blog/, action: "loadPageZone"});
 		__.router.addRoute({name: "about", path: "/about", action: "loadPageZone"});
