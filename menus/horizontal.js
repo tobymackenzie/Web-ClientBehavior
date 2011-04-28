@@ -1,4 +1,7 @@
-/*-----CSS
+/*
+-----dependencies
+tmlib: addListeners, getElementsByClassName, addClass, removeClass, hasClass, isIE, isIE6, initUA
+-----styling
 /*--base
 #topnavigation .submenu{
 	display: none;
@@ -7,13 +10,8 @@
 	display: block;
 }
 
------*/
-
-
-__ = new tmlib;
-
-/* *** config *** */
-__.cfg.navigationID = "topnavigation";
+-----instantiation
+__.cfg.navigationID = "mainnavigation";
 __.cfg.navigationMenuLIClass = "topitem"
 __.cfg.navigationToplevelItemsClass = "toplevel";
 __.cfg.submenuClass = "submenu";
@@ -22,29 +20,27 @@ __.cfg.submenuOffset = 0;
 __.cfg.addedWidth = 20;
 
 
-/* *** onload *** */
 __.scrOnload = function(){
 //	no sizing
-//	oTopnavigationDropdownhandler = new tmlibSuckerfish({"menuID":cfgNavigationID,"wrapperClass":cfgNavigationMenuLIClass,"toplevelClass":cfgNavigationToplevelItemsClass,"submenuClass":cfgSubmenuClass});
+	__.topnavigationDropdownhandler = new __.classes.suckerfish({"menuID":__.cfg.navigationID,"wrapperClass":__.cfg.navigationMenuLIClass,"toplevelClass":__.cfg.navigationToplevelItemsClass,"submenuClass":__.cfg.submenuClass});
 
 // size and center 1
-//	oTopnavigationDropdownhandler = new tmlibSuckerfish({"menuID":cfgNavigationID,"wrapperClass":cfgNavigationMenuLIClass,"toplevelClass":cfgNavigationToplevelItemsClass,"submenuClass":cfgSubmenuClass, "submenuPadding":cfgSubmenuPadding, "submenuOffset": cfgSubmenuOffset, "addedWidth": cfgAddedWidth});
+//	__.topnavigationDropdownhandler = new __.classes.suckerfish({"menuID":cfgNavigationID,"wrapperClass":cfgNavigationMenuLIClass,"toplevelClass":cfgNavigationToplevelItemsClass,"submenuClass":cfgSubmenuClass, "submenuPadding":cfgSubmenuPadding, "submenuOffset": cfgSubmenuOffset, "addedWidth": cfgAddedWidth});
 //	oTopnavigationDropdownhandler.sizeAndCenter1();
 
 // size and center 2
-	__.topnavigationDropdownhandler = new __.classes.suckerfish({"menuID":__.cfg.navigationID,"wrapperClass":__.cfg.navigationMenuLIClass,"toplevelClass":__.cfg.navigationToplevelItemsClass,"submenuClass":__.cfg.submenuClass, "menuPadding":__.cfg.menuPadding, "submenuOffset": __.cfg.submenuOffset, "addedWidth": __.cfg.addedWidth});
+//	__.topnavigationDropdownhandler = new __.classes.suckerfish({"menuID":__.cfg.navigationID,"wrapperClass":__.cfg.navigationMenuLIClass,"toplevelClass":__.cfg.navigationToplevelItemsClass,"submenuClass":__.cfg.submenuClass, "menuPadding":__.cfg.menuPadding, "submenuOffset": __.cfg.submenuOffset, "addedWidth": __.cfg.addedWidth});
 	__.topnavigationDropdownhandler.sizeAndCenter2();
 }
 
-/* ----------- tmlib ------------ */
-/* *********
+/*----------
 ©TMlib suckerfish
-*********** */
+----------*/
 __.classes.suckerfish = function (arguments){
 		this.wrapperClass = (arguments.wrapperClass)? arguments.wrapperClass : "menu_li";
 		this.toplevelClass = (arguments.toplevelClass)? arguments.toplevelClass : "toplevel";
 		this.submenuClass = (arguments.submenuClass)? arguments.submenuClass : "submenu";
-		this.doSizeAndCenter = (arguments.doSizeAndCenter)? arguments.doSizeAndCenter : 0;
+		this.doSizeAndCenter = (arguments.doSizeAndCenter)? arguments.doSizeAndCenter : false;
 		this.menuPadding = (arguments.menuPadding)? arguments.menuPadding : 0;
 		this.submenuOffset = (arguments.submenuOffset)? arguments.submenuOffset : 0;
 		this.addedWidth = (arguments.addedWidth)? arguments.addedWidth : 0;
@@ -88,13 +84,13 @@ __.classes.suckerfish = function (arguments){
 					};
 	
 				}(fncThis);
-				__.addListener(forElmMenuItemArray["elmItemWrapper"], "mouseover", callbackFull, false);
-				__.addListener(forElmMenuItemArray["elmToplevel"], "mouseover", callbackFull, false);
-				__.addListener(forElmMenuItemArray["elmToplevel"], "focus", callbackFull, false);
-				__.addListener(forElmMenuItemArray["elmSubmenu"], "mouseover", callbackFull, false);
-				__.addListener(forElmMenuItemArray["elmItemWrapper"], "click", callbackFull, false);
-				__.addListener(forElmMenuItemArray["elmItemWrapper"], "touchstart", callbackFull, false);
-				__.addListener(forElmMenuItemArray["elmItemWrapper"], "mouseout", callbackMouseout, false);
+				__.addListeners(forElmMenuItemArray["elmItemWrapper"], "mouseover", callbackFull, false);
+				__.addListeners(forElmMenuItemArray["elmToplevel"], "mouseover", callbackFull, false);
+				__.addListeners(forElmMenuItemArray["elmToplevel"], "focus", callbackFull, false);
+				__.addListeners(forElmMenuItemArray["elmSubmenu"], "mouseover", callbackFull, false);
+				__.addListeners(forElmMenuItemArray["elmItemWrapper"], "click", callbackFull, false);
+				__.addListeners(forElmMenuItemArray["elmItemWrapper"], "touchstart", callbackFull, false);
+				__.addListeners(forElmMenuItemArray["elmItemWrapper"], "mouseout", callbackMouseout, false);
 				
 				forElmMenuItemArray["elmToplevel"].href="javascript://openMenu();";
 				forElmMenuItemArray["elmToplevel"].style.cursor = "default";
@@ -106,10 +102,10 @@ __.classes.suckerfish = function (arguments){
 						fncThis.dropdownCloseCurrent();
 					}
 				}(fncThis)
-				__.addListener(forElmMenuItemArray["elmItemWrapper"], "mouseover", callbackEmpty, false);
-				__.addListener(forElmMenuItemArray["elmToplevel"], "focus", callbackEmpty, false);
-				__.addListener(forElmMenuItemArray["elmItemWrapper"], "click", callbackEmpty, false);
-				__.addListener(forElmMenuItemArray["elmItemWrapper"], "touchstart", callbackEmpty, false);
+				__.addListeners(forElmMenuItemArray["elmItemWrapper"], "mouseover", callbackEmpty, false);
+				__.addListeners(forElmMenuItemArray["elmToplevel"], "focus", callbackEmpty, false);
+				__.addListeners(forElmMenuItemArray["elmItemWrapper"], "click", callbackEmpty, false);
+				__.addListeners(forElmMenuItemArray["elmItemWrapper"], "touchstart", callbackEmpty, false);
 			}
 		}
 	}
@@ -173,87 +169,3 @@ __.classes.suckerfish = function (arguments){
 		}
 	}
 
-/* ********* 
-©library
-********* */
-function tmlib(){
-		this.classes = {};
-		this.cfg = {};
-	}
-	tmlib.prototype.addListener = function(argElement, argEvent, argFunction, argBubble){
-		var fncBubble = (argBubble)?argBubble : false;
-		if(argElement.attachEvent)
-			argElement.attachEvent("on"+argEvent, argFunction);
-		else
-			argElement.addEventListener(argEvent, argFunction, fncBubble);
-	}
-	tmlib.prototype.getElementsByClassName = function(args){
-		var fncClassName = (args.className)?args.className:null; if(!fncClassName) return;
-		var fncElement = (args.element)?args.element:document;
-		var fncTagName = (args.tagName)?args.tagName:null;
-		
-		var fncReturn = [], fncElementsToSearch = [];
-		var fncRegex = new RegExp('\\b'+fncClassName+'\\b');
-		
-		if(fncTagName){
-			fncElementsToSearch = fncElement.getElementsByTagName(fncTagName);
-		}
-		else if(fncElement.all)
-			fncElementsToSearch = fncElement.all;
-		else
-			fncElementsToSearch = fncElement.getElementsByTagName('*');
-	
-		for(var i=0; i < fncElementsToSearch.length; ++i){
-			if(fncRegex.test(fncElementsToSearch[i].className))
-				fncReturn.push(fncElementsToSearch[i]);
-		}
-		
-		return fncReturn;
-	}
-	tmlib.prototype.addClass = function(argElement, argClass){
-		if(new RegExp('\\b'+argClass+'\\b').test(argElement.className))
-			return 0;
-		else{
-			argElement.className+=argElement.className?' '+argClass:argClass;
-			return 1;
-		}
-	}
-	tmlib.prototype.removeClass = function(argElement, argClass){
-		  var fncReplace = argElement.className.match(' '+argClass)?' '+argClass:argClass;
-		  argElement.className=argElement.className.replace(fncReplace,'');
-	}
-	tmlib.prototype.hasClass = function(argElement, argClass){
-		if(new RegExp('\\b'+argClass+'\\b').test(argElement.className))
-			return 1;
-		else
-			return 0;
-	}
-	
-	tmlib.prototype.isIE = function(){
-		if(this.isievar)
-			return this.isie;
-		else{
-			this.initUA();
-			if(this.browser.indexOf("Internet Explorer", 0) == -1) return 1
-			else return 0;
-		}
-	}
-	tmlib.prototype.isIE6 = function(){
-		if(this.isIE){
-			if(!this.ieversion) // http://www.javascriptkit.com/javatutors/navigator.shtml
-				if(/MSIE (\d+\.\d+);/.test(navigator.userAgent))
-					this.ieversion = new Number(RegExp.$1) // capture x.x portion and store as a number
-			if(this.ieversion == 6)
-				return 1;
-			else return 0;
-		}
-		else
-			return 0;
-	}
-	tmlib.prototype.initUA = function(){
-		if(!this.browser) this.browser = navigator.appName;
-		if(!this.verion){
-			this.version = parseFloat(navigator.appVersion);
-		}
-	}
-__.addListener(window, "load", __.scrOnload, false);

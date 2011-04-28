@@ -4,7 +4,7 @@ handles clicks on a selection of elements
 -----parameters
 @param typeItems (parent): type of elmsItems for finding necessary data
 	parent, atomic
-@param selectorChildren (a): selector of children of elmsItems that hold necessary data if type is parent
+@param selectorElmForData (a): selector of children of elmsItems that hold necessary data if type is parent
 
 -----instantiation
 		var mainnavigationItems = $("#topnavigationlist .topitem, #logo");
@@ -13,7 +13,7 @@ handles clicks on a selection of elements
 				elmsItems: mainnavigationItems
 				,onpreswitch: function(arguments){
 					var fncThis = this;
-					var urlAjax = arguments.newItem.find(this.selectorChildren).attr(this.attrData);
+					var urlAjax = arguments.newItem.find(this.selectorElmForData).attr(this.attrData);
 					if(urlAjax.substring(0,1) == "#")
 						urlAjax = urlAjax.substring(1, urlAjax.length - 1);
 					var pagetype = arguments.newItem.attr(this.boot.attrType);
@@ -24,9 +24,9 @@ handles clicks on a selection of elements
 		}
 */
 
-/*-------
+/*---------
 ©navigationHandler
--------- */
+----------*/
 __.classes.navigationHandler = function(arguments){
 		//--required attributes
 		this.elmsItems = arguments.elmsItems || null;
@@ -42,9 +42,9 @@ __.classes.navigationHandler = function(arguments){
 		this.onpreswitchtest = arguments.onpreswitchtest || null;
 		this.onpostswitch = arguments.onpostswitch || null;
 		this.onswitch = arguments.onswitch || null;
-		this.selectorChildren = arguments.selectorChildren || "a";
-		this.selectorListItemContainer = arguments.selectorListItemContainer || "li";
-		this.typeItems = arguments.typeItems || "parent";
+		this.selectorElmForEvent = arguments.selectorElmForEvent || "a";
+		this.selectorElmForData = arguments.selectorElmForData || "a";
+		this.selectorItemContainer = arguments.selectorListItemContainer || "li";
 
 		//--derived attributes
 		this.inprogress = false;
@@ -56,21 +56,39 @@ __.classes.navigationHandler = function(arguments){
 	__.classes.navigationHandler.prototype.attachEvents = function(arguments){
 		var fncThis = this;
 		
-		fncThis.elmsItems.bind("click touch", function(event){
+		if(fncThis.selectorElmForEvent == "this"){
+			var fncItems = fncThis.elmsItems;
+		}else{
+			var fncItems = fncThis.elmsItems.find(fncThis.selectorElmForEvent);
+		}
+
+		fncItems.bind("click touch", function(event){
 //->return
 			if(fncThis.inprogress == true)
 				return false;
 			var fncEvent = event;
 			var localVariables = {elmThis: $(this)};
-			if(fncThis.typeItems == "parent"){
-				localVariables.oldItem = fncThis.elmsItems.filter("."+fncThis.classCurrent);
-				localVariables.newItem = localVariables.elmThis.closest(fncThis.selectorListItemContainer);
-			}else{
-				localVariables.oldItem = fncThis.elmsItems.filter("."+fncThis.classCurrent);
+
+			//--determine old and new item
+			localVariables.oldItem = fncThis.elmsItems.filter("."+fncThis.classCurrent);
+			if(fncThis.selectorElmForEvent == "this"){
 				localVariables.newItem = localVariables.elmThis;
+			}else{
+				localVariables.newItem = localVariables.elmThis.closest(fncThis.selectorListItemContainer);
 			}
 //->return
 			if(localVariables.oldItem[0] == localVariables.newItem[0]) return false;
+
+			//--get data
+			if(fncThis.selectorElmForData == "this"){
+				localVariables.dataOld = localVariables.oldItem.attr(fncThis.attrData);
+				localVariables.dataNew = localVariables.newItem.attr(fncThis.attrData);
+			}else{
+				localVariables.dataOld = localVariables.oldItem.find(fncThis.selectorElmForData).attr(fncThis.attrData);
+				localVariables.dataNew = localVariables.newItem.find(fncThis.selectorElmForData).attr(fncThis.attrData);
+			}
+
+			//--preswitchtest
 //->return
 			if(fncThis.onpreswitchtest && !fncThis.onpreswitchtest.call(fncThis, localVariables)){
 				if(fncThis.doPreventDefault){
@@ -114,4 +132,23 @@ __.classes.navigationHandler = function(arguments){
 			return (fncThis.doPreventDefault)? false: true;
 		});
 	}
+	__.classes.navigationHandler.prototype.switchToPrevious = function(){
+		var elmPrevious = this.elmsItems.filter(this.classCurrent).prev();
+		if(elmPrevious.length < 1 && this.doSwitchCarousel)
+			elmPrevious = this.elmsItems.last();
+		if(elmPrevious.length > 0)
+			this.switchToElm(elmPrevious);
+		else
+			return false;
+	}
+	__.classes.navigationHandler.prototype.switchToNext = function(){
+		var elmNext = this.elmsItems.filter(this.classCurrent).next();
+		if(elmNext.length < 1 && this.doSwitchCarousel)
+			elmNext = this.elmsItems.first();
+		if(elmNext.length > 0)
+			this.switchToElm(elmNext);
+		else
+			return false;
+	}
+
 
