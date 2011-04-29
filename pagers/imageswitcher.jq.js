@@ -51,11 +51,15 @@ __.classes.imageSwitcher = function(arguments){
 		this.onpreimageanimationfadein = arguments.onpreimageanimationfadein || null;
 		this.onpreimageanimationpostkeepheight = arguments.onpreimageanimationpostkeepheight || null;
 		this.onselect = arguments.onselect || null;
+		this.onsetimage = arguments.onsetimage || null;
+		this.onsetlistitems = arguments.onsetlistitems || null;
 		this.selectorListItemContainer = (typeof arguments.selectorListItemContainer != "undefined")?arguments.selectorListItemContainer:"li";
 		this.selectorElmImageUrl = arguments.selectorElmImageUrl || "a";
 		this.typeAnimation = arguments.typeAnimation || "fadeoutfadein";
 		
 		//--derived members
+		this.inprogress=false;
+		this.queue = new __.classes.animationQueue({name: "image", autoDequeue: false});
 		if(arguments.elmImage)
 			this.setImage(arguments.elmImage);
 		else
@@ -64,14 +68,12 @@ __.classes.imageSwitcher = function(arguments){
 			this.setListItems(arguments.elmsListItems);
 		else
 			this.elmsListItems = null;
-		this.inprogress=false;
-		this.queue = new __.classes.animationQueue({name: "image", autoDequeue: false});
 		
 		if(this.oninit)
 			this.oninit.call(this);
 	}
 	__.classes.imageSwitcher.prototype.findElmLIForURL = function(argURL){
-		var selectorAttribute = "["+this.attrImageURL+"='"+argURL+"']";
+		var selectorAttribute = "["+this.attrImageURL+"='"+$.trim(argURL)+"']";
 		if(this.selectorElmImageUrl == "this"){
 			return this.elmsListItems.filter(selectorAttribute);
 		}else{
@@ -81,6 +83,8 @@ __.classes.imageSwitcher = function(arguments){
 	__.classes.imageSwitcher.prototype.setImage = function(argElement){
 		this.elmImage = argElement;
 		this.urlCurrent = this.elmImage.attr("src");
+		if(this.onsetimage)
+			this.onsetimage.call(this);
 	}
 	__.classes.imageSwitcher.prototype.setListItems = function(argElements){
 		this.elmsListItems = argElements;
@@ -92,6 +96,8 @@ __.classes.imageSwitcher = function(arguments){
 			}
 			if(this.doAttachEvents)
 				this.attachEvents();
+			if(this.onsetlistitems)
+				this.onsetlistitems.call(this);
 		}
 	}
 	__.classes.imageSwitcher.prototype.attachEvents = function(){
@@ -237,13 +243,13 @@ __.classes.imageSwitcher = function(arguments){
 				fncThis.elmImage.attr("src", newImageURL).fadeIn(fncThis.duration);
 			}
 			elmTempImage.remove();
+
+			if(fncThis.onselect)
+				fncThis.onselect.call(fncThis, newLI);
 			if(fncThis.elmKeepDimensions){
 				fncThis.elmKeepDimensions.animate({"height":heightNew, "width":widthNew}, function(){fncThis.queue.dequeue("image");});
 			}else
 				fncThis.queue.dequeue("image");
-			fncThis.elmLICurrent = newLI;
-			if(fncThis.onselect)
-				fncThis.onselect.call(fncThis, newLI);
 		}});
 		if(fncThis.onpreimageanimationpostkeepheight)
 			fncThis.queue.queue({name: "image", callback: function(){
@@ -256,6 +262,11 @@ __.classes.imageSwitcher = function(arguments){
 				fncThis.queue.dequeue("image");
 		}});
 		fncThis.queue.queue({name: "image", callback: function(){
+			fncThis.urlCurrent = fncThis.elmImage.attr("src");
+			if(newLI && newLI.length > 0)
+				fncThis.elmLICurrent = newLI;
+			else
+				fncThis.elmLICurrent = fncThis.findElmLIForURL(fncThis.urlCurrent);
 			if(fncThis.onpostimageanimation)
 				fncThis.onpostimageanimation.call(fncThis, fncLocalVariables);
 			fncThis.inprogress = false;

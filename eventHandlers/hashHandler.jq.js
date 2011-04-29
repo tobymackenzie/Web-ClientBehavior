@@ -64,7 +64,7 @@ __.classes.hashHandler = function(arguments){
 			elmsAnchors.each(function(){
 				var elmThis = $(this);
 				var currentHref = elmThis.attr("href");
-				if(currentHref.substring(0,1) == "/")
+				if(currentHref && currentHref.substring(0,1) == "/")
 					elmThis.attr("href", "#"+currentHref);
 			});
 		}
