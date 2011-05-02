@@ -184,6 +184,7 @@ __.classes.imageSwitcher = function(arguments){
 		fncThis.queue.dequeue({name: "navigation"});
 		
 		//--animate image
+		newLI.addClass(fncThis.classCurrent);
 		if(fncThis.onpreimageanimation)
 			fncThis.queue.queue({name: "image", callback: function(){
 				fncThis.onpreimageanimation.call(fncThis, fncLocalVariables);
@@ -214,8 +215,6 @@ __.classes.imageSwitcher = function(arguments){
 				fncThis.onpreimageanimationfadeout.call(fncThis, fncLocalVariables);
 			}});
 		fncThis.queue.queue({name: "image", callback: function(){
-			newLI.addClass(fncThis.classCurrent);
-			
 			if(fncThis.typeAnimation == "dissolve"){
 				fncThis.elmOldImage.fadeOut(fncThis.duration, function(){fncThis.queue.dequeue("image");});
 			}else{
