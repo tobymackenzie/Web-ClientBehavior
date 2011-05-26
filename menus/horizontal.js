@@ -1,6 +1,7 @@
 /*
 -----dependencies
 tmlib: addListeners, getElementsByClassName, addClass, removeClass, hasClass, isIE, isIE6, initUA
+
 -----styling
 /*--base
 #topnavigation .submenu{
@@ -12,9 +13,6 @@ tmlib: addListeners, getElementsByClassName, addClass, removeClass, hasClass, is
 
 -----instantiation
 __.cfg.navigationID = "mainnavigation";
-__.cfg.navigationMenuLIClass = "topitem"
-__.cfg.navigationToplevelItemsClass = "toplevel";
-__.cfg.submenuClass = "submenu";
 __.cfg.menuPadding = 20;
 __.cfg.submenuOffset = 0;
 __.cfg.addedWidth = 20;
@@ -22,22 +20,22 @@ __.cfg.addedWidth = 20;
 
 __.scrOnload = function(){
 //	no sizing
-	__.topnavigationDropdownhandler = new __.classes.suckerfish({"menuID":__.cfg.navigationID,"wrapperClass":__.cfg.navigationMenuLIClass,"toplevelClass":__.cfg.navigationToplevelItemsClass,"submenuClass":__.cfg.submenuClass});
+	__.topnavigationDropdownhandler = new __.classes.suckerfish({"menuID":__.cfg.navigationID});
 
 // size and center 1
-//	__.topnavigationDropdownhandler = new __.classes.suckerfish({"menuID":cfgNavigationID,"wrapperClass":cfgNavigationMenuLIClass,"toplevelClass":cfgNavigationToplevelItemsClass,"submenuClass":cfgSubmenuClass, "submenuPadding":cfgSubmenuPadding, "submenuOffset": cfgSubmenuOffset, "addedWidth": cfgAddedWidth});
+//	__.topnavigationDropdownhandler = new __.classes.suckerfish({"menuID":__.cfgNavigationID, "submenuPadding":cfgSubmenuPadding, "submenuOffset": cfgSubmenuOffset, "addedWidth": cfgAddedWidth});
 //	oTopnavigationDropdownhandler.sizeAndCenter1();
 
 // size and center 2
-//	__.topnavigationDropdownhandler = new __.classes.suckerfish({"menuID":__.cfg.navigationID,"wrapperClass":__.cfg.navigationMenuLIClass,"toplevelClass":__.cfg.navigationToplevelItemsClass,"submenuClass":__.cfg.submenuClass, "menuPadding":__.cfg.menuPadding, "submenuOffset": __.cfg.submenuOffset, "addedWidth": __.cfg.addedWidth});
-	__.topnavigationDropdownhandler.sizeAndCenter2();
+//	__.topnavigationDropdownhandler = new __.classes.suckerfish({"menuID":__.cfg.navigationID, "menuPadding":__.cfg.menuPadding, "submenuOffset": __.cfg.submenuOffset, "addedWidth": __.cfg.addedWidth});
+//	__.topnavigationDropdownhandler.sizeAndCenter2();
 }
 
 /*----------
 ©TMlib suckerfish
 ----------*/
 __.classes.suckerfish = function (arguments){
-		this.wrapperClass = (arguments.wrapperClass)? arguments.wrapperClass : "menu_li";
+		this.wrapperClass = (arguments.wrapperClass)? arguments.wrapperClass : "topitem";
 		this.toplevelClass = (arguments.toplevelClass)? arguments.toplevelClass : "toplevel";
 		this.submenuClass = (arguments.submenuClass)? arguments.submenuClass : "submenu";
 		this.doSizeAndCenter = (arguments.doSizeAndCenter)? arguments.doSizeAndCenter : false;
