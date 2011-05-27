@@ -1,7 +1,9 @@
 /*------
-dependencies: tmlib base, tmlib isiphone, jquery
+-----dependencies
+tmlib (un)escapehash, isiphone
+jquery
 
-style:
+-----style
 	.page{
 		width: 100%; // width must be set to correct value when page is repositioned to get height
 	}
@@ -12,7 +14,7 @@ style:
 	}
 	
 
-// init
+-----instantiation
 if(typeof $ != 'undefined'){
 	$(function(){
 		var elmsPages = $("#maincontent .homecolumns .page");
@@ -66,14 +68,14 @@ __.classes.hashPagerStaticKeepHeight = function(arguments){
 		}else{
 			var elmCurrentPage = this.elmsPages.filter("."+this.classCurrentPage);
 			if(elmCurrentPage.length > 0){
-				this.idCurrent = "#"+this.escapeHash(elmCurrentPage.attr("id"));
+				this.idCurrent = "#"+__.lib.escapeHash(elmCurrentPage.attr("id"));
 			}else{
 				elmCurrentPage = this.elmsPages.first();
-				this.idCurrent = "#"+this.escapeHash(elmCurrentPage.addClass(this.classCurrentPage).attr("id"));
+				this.idCurrent = "#"+__.lib.escapeHash(elmCurrentPage.addClass(this.classCurrentPage).attr("id"));
 			}
 		}
 		elmCurrentPage.show();
-		this.elmsNavigation.children("a").filter("[href='"+this.unescapeHash(this.idCurrent)+"']").closest(this.selectorNavigation).addClass(this.classCurrentNavigation);
+		this.elmsNavigation.children("a").filter("[href='"+__.lib.unescapeHash(this.idCurrent)+"']").closest(this.selectorNavigation).addClass(this.classCurrentNavigation);
 		
 		// attach listeners
 		this.attachListeners(this.elmsNavigation);
@@ -88,10 +90,30 @@ __.classes.hashPagerStaticKeepHeight = function(arguments){
 		argElements.bind("click", function(event){
 			if(event.preventDefault)
 				event.preventDefault();
-			fncThis.switche(fncThis.escapeHash($(this).find("a").attr("href")));
+			fncThis.switche(__.lib.escapeHash($(this).find("a").attr("href")));
 			
 			return false;
 		});
+	}
+	__.classes.hashPagerStaticKeepHeight.prototype.switchToPrevious = function(){
+		var elmCurrentNavigation = this.elmsNavigation.filter("."+this.classCurrentNavigation);
+		var elmPreviousNavigation = elmCurrentNavigation.prev();
+		if(elmPreviousNavigation.length > 0){
+			var elmNavigationToSwitchTo = elmPreviousNavigation;
+		}else{
+			var elmNavigationToSwitchTo = this.elmsNavigation.last();
+		}
+		this.switche(__.lib.escapeHash(elmNavigationToSwitchTo.find("a").attr("href")));
+	}
+	__.classes.hashPagerStaticKeepHeight.prototype.switchToNext = function(){
+		var elmCurrentNavigation = this.elmsNavigation.filter("."+this.classCurrentNavigation);
+		var elmNextNavigation = elmCurrentNavigation.next();
+		if(elmNextNavigation.length > 0){
+			var elmNavigationToSwitchTo = elmNextNavigation;
+		}else{
+			var elmNavigationToSwitchTo = this.elmsNavigation.first();
+		}
+		this.switche(__.lib.escapeHash(elmNavigationToSwitchTo.find("a").attr("href")));
 	}
 	__.classes.hashPagerStaticKeepHeight.prototype.switche = function(argID){
 		if(this.inProgress == true || argID == this.idCurrent){
@@ -139,15 +161,3 @@ __.classes.hashPagerStaticKeepHeight = function(arguments){
 			});
 		}
 	}
-	// allows using slashes in the hash
-	__.classes.hashPagerStaticKeepHeight.prototype.escapeHash = function(hash){
-		return hash.replace(/\//g, "\\/");
-	}
-	__.classes.hashPagerStaticKeepHeight.prototype.unescapeHash = function(hash){
-		return hash.replace(/\\\//g, "\/");
-	}
-
-
-
-
-

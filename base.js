@@ -1,3 +1,5 @@
+document.getElementsByTagName('html')[0].className += ' hasjavascript';
+
 if(typeof __ === 'undefined') var __ = new tmlib;
 
 __.cfg.whatever = "whatever";
@@ -13,9 +15,6 @@ function tmlib(){
 		this.classes = {};
 		this.lib = {};
 		this.cfg = {};
-	}
-	__.lib.init = function(){
-		__.addClass(document.body, "hasjavascript");
 	}
 	tmlib.prototype.addListeners = function(argElements, argEvent, argFunction, argBubble){
 		var fncBubble = (argBubble)?argBubble : false;
@@ -44,5 +43,4 @@ function tmlib(){
 /*-----
 init
 -----*/
-__.addListeners(window, "load", __.lib.init, false);
 __.addListeners(window, "load", __.scrOnload, false);

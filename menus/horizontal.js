@@ -39,6 +39,8 @@ __.classes.suckerfish = function (arguments){
 		this.toplevelClass = (arguments.toplevelClass)? arguments.toplevelClass : "toplevel";
 		this.submenuClass = (arguments.submenuClass)? arguments.submenuClass : "submenu";
 		this.doSizeAndCenter = (arguments.doSizeAndCenter)? arguments.doSizeAndCenter : false;
+		this.doSizeAndCenterFirst = (typeof arguments.doSizeAndCenterFirst != "undefined")? arguments.doSizeAndCenterFirst : true;
+		this.doSizeAndCenterLast = (typeof arguments.doSizeAndCenterLast != "undefined")? arguments.doSizeAndCenterLast : true;
 		this.menuPadding = (arguments.menuPadding)? arguments.menuPadding : 0;
 		this.submenuOffset = (arguments.submenuOffset)? arguments.submenuOffset : 0;
 		this.addedWidth = (arguments.addedWidth)? arguments.addedWidth : 0;
@@ -135,7 +137,7 @@ __.classes.suckerfish = function (arguments){
 	__.classes.suckerfish.prototype.sizeAndCenter1 = function(){	
 		for(var i=0; i < this.elmsMenuAssociations.length; ++i){
 			var forElmMenuItemArray = this.elmsMenuAssociations[i];
-			if(forElmMenuItemArray["elmSubmenu"]){
+			if(forElmMenuItemArray["elmSubmenu"] && (this.doSizeAndCenterFirst || (i != 0)) && (this.doSizeAndCenterLast || (i != this.elmsMenuAssociations.length - 1))){	
 				if(forElmMenuItemArray["elmSubmenu"].offsetWidth < forElmMenuItemArray["elmToplevel"].offsetWidth + this.addedWidth && !__.isIE6()){
 					forElmMenuItemArray["elmSubmenu"].style.width = (forElmMenuItemArray["elmToplevel"].offsetWidth + this.addedWidth/*  - this.submenuPadding */) + "px";
 				}
@@ -150,7 +152,7 @@ __.classes.suckerfish = function (arguments){
 	__.classes.suckerfish.prototype.sizeAndCenter2 = function(){	
 		for(var i=0; i < this.elmsMenuAssociations.length; ++i){
 			var forElmMenuItemArray = this.elmsMenuAssociations[i];
-			if(forElmMenuItemArray["elmSubmenu"]){	
+			if(forElmMenuItemArray["elmSubmenu"] && (this.doSizeAndCenterFirst || (i != 0)) && (this.doSizeAndCenterLast || (i != this.elmsMenuAssociations.length - 1))){	
 				forElmMenuItemArray["elmSubmenu"].style.visibility = "hidden";
 				forElmMenuItemArray["elmSubmenu"].style.display = "block";
 				if(forElmMenuItemArray["elmSubmenu"].offsetWidth < forElmMenuItemArray["elmToplevel"].offsetWidth + this.addedWidth && !__.isIE6()){

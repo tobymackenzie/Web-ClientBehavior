@@ -33,7 +33,7 @@ __.classes.hashPagerStatic = function(arguments){
 				this.idCurrent = this.elmsNavigation.first().addClass(this.classCurrentNavigation).find("a").attr("href");
 			}
 		}
-		this.elmsPages.filter(this.idCurrent).show().addClass(this.classCurrentPage);
+		this.elmsPages.filter(__.lib.escapeHash(this.idCurrent)).show().addClass(this.classCurrentPage);
 		
 		// attach listeners
 		this.attachListeners(this.elmsNavigation);
@@ -57,7 +57,7 @@ __.classes.hashPagerStatic = function(arguments){
 			var fncThis = this;
 			var idNext = argID;
 			var elmNextNavigation = this.elmsNavigation.has("a[href='"+argID+"']");
-			var elmNextPage = this.elmsPages.filter(argID);
+			var elmNextPage = this.elmsPages.filter(__.lib.escapeHash(argID));
 			var elmCurrentNavigation = this.elmsNavigation.filter("."+this.classCurrentNavigation);
 			var elmCurrentPage = this.elmsPages.filter("."+this.classCurrentPage);
 
