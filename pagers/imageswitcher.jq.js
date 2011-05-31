@@ -1,6 +1,7 @@
 /*-------------
 depends on:
 	tmlib
+	animationqueue
 	jquery
 
 -----parameters
@@ -32,6 +33,8 @@ __.classes.imageSwitcher = function(arguments){
 		this.attrKeepHeight = arguments.attrKeepHeight || null;
 		this.boot = arguments.boot || null;
 		this.classCurrent = (typeof arguments.classCurrent != "undefined")? arguments.classCurrent: "current";
+		this.dimKeepDimensionsAddedWidth = arguments.dimKeepDimensionsAddedWidth || 0;
+		this.dimKeepDimensionsAddedHeight = arguments.dimKeepDimensionsAddedHeight || 0;
 		this.doAttachEvents = (typeof arguments.doAttachEvents != "undefined")? arguments.doAttachEvents: true;
 		this.duration = (arguments.duration)? arguments.duration: 500;
 //		this.elmImage = (arguments.elmImage && arguments.elmImage.length > 0) ? arguments.elmImage : null;
@@ -156,7 +159,7 @@ __.classes.imageSwitcher = function(arguments){
 		var elmTempImage = $("<img class=\"tempimage\" src='"+newImageURL+"' />").css({"position":"absolute", "left":"-9000px", "top":"-9000px"}).appendTo("body");
 		
 		if(fncThis.elmKeepDimensions){
-			fncThis.elmKeepDimensions.css({"height": fncThis.elmImage.height(), "width": fncThis.elmImage.width()});
+			fncThis.elmKeepDimensions.css({"width": fncThis.elmImage.width() + fncThis.dimKeepDimensionsAddedWidth, "height": fncThis.elmImage.height() + fncThis.dimKeepDimensionsAddedHeight});
 			var widthNew = false, heightNew = false;
 			if(fncThis.attrKeepWidth)
 				widthNew = newLI.attr(fncThis.attrKeepWidth) || false;
@@ -166,6 +169,8 @@ __.classes.imageSwitcher = function(arguments){
 				widthNew = widthNew || elmTempImage.width() || fncThis.elmImage.width();
 				heightNew = heightNew || elmTempImage.height() || fncThis.elmImage.height();
 			}
+			widthNew += fncThis.dimKeepDimensionsAddedWidth;
+			heightNew += fncThis.dimKeepDimensionsAddedHeight;
 		}
 		
 		var fncLocalVariables = {newLI: newLI, oldLI: oldLI};
@@ -255,10 +260,9 @@ __.classes.imageSwitcher = function(arguments){
 				fncThis.onpreimageanimationpostkeepheight.call(fncThis, fncLocalVariables);
 			}});
 		fncThis.queue.queue({name: "image", callback: function(){
-			if(fncThis.elmKeepDimensions){
-				fncThis.elmKeepDimensions.css({"height":"auto", "width":"auto"}, function(){fncThis.queue.dequeue("image");});
-			}else
-				fncThis.queue.dequeue("image");
+			if(fncThis.elmKeepDimensions)
+				fncThis.elmKeepDimensions.css({"height":"auto", "width":"auto"});
+			fncThis.queue.dequeue("image");
 		}});
 		fncThis.queue.queue({name: "image", callback: function(){
 			fncThis.urlCurrent = fncThis.elmImage.attr("src");
