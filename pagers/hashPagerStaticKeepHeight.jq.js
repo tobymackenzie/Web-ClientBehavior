@@ -51,6 +51,7 @@ __.classes.hashPagerStaticKeepHeight = function(arguments){
 		this.elmsNavigation = this.elmsNavigation.has("a[href^='#']");
 		this.classCurrentNavigation = arguments.classCurrentNavigation || "current";
 		this.classCurrentPage = arguments.classCurrentPage || "current";
+		this.dimKeepDimensionsAddedHeight = arguments.dimKeepDimensionsAddedHeight || 0;
 		this.duration = (arguments.duration !== undefined) ? arguments.duration : 500;
 		this.keepHeight = arguments.keepHeight || false;
 		if(__.isIphone() == true) this.keepHeight = false;
@@ -64,17 +65,19 @@ __.classes.hashPagerStaticKeepHeight = function(arguments){
 		this.elmsPages.hide();
 		if(window.location.hash){
 			this.idCurrent = window.location.hash;
-			this.elmsPages.filter(window.location.hash).addClass(this.classCurrentPage);
+			var elmCurrentPage = this.elmsPages.filter(__.lib.escapeHash(window.location.hash));
 		}else{
 			var elmCurrentPage = this.elmsPages.filter("."+this.classCurrentPage);
 			if(elmCurrentPage.length > 0){
 				this.idCurrent = "#"+__.lib.escapeHash(elmCurrentPage.attr("id"));
 			}else{
 				elmCurrentPage = this.elmsPages.first();
-				this.idCurrent = "#"+__.lib.escapeHash(elmCurrentPage.addClass(this.classCurrentPage).attr("id"));
+				this.idCurrent = "#"+__.lib.escapeHash(elmCurrentPage.attr("id"));
 			}
 		}
-		elmCurrentPage.show();
+		this.elmsPages.removeClass(this.classCurrentPage);
+		elmCurrentPage.show().addClass(this.classCurrentPage);
+		this.elmsNavigation.children("a").closest(this.selectorNavigation).removeClass(this.classCurrentNavigation)
 		this.elmsNavigation.children("a").filter("[href='"+__.lib.unescapeHash(this.idCurrent)+"']").closest(this.selectorNavigation).addClass(this.classCurrentNavigation);
 		
 		// attach listeners
@@ -138,7 +141,7 @@ __.classes.hashPagerStaticKeepHeight = function(arguments){
 					left: elmNextPage.css("left"),
 					top: elmNextPage.css("top")
 				}
-				var heightNew = elmNextPage.css({"position":"absolute", "left":"-9000px", "top":"-1000px"}).outerHeight();
+				var heightNew = elmNextPage.css({"position":"absolute", "left":"-9000px", "top":"-1000px"}).outerHeight() + fncThis.dimKeepDimensionsAddedHeight;
 				elmNextPage.css(nextOriginalSettings);
 			}
 			

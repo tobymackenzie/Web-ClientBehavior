@@ -165,12 +165,24 @@ __.classes.imageSwitcher = function(arguments){
 				widthNew = newLI.attr(fncThis.attrKeepWidth) || false;
 			if(fncThis.attrKeepHeight)
 				heightNew = newLI.attr(fncThis.attrKeepHeight) || false;
-			if(!(widthNew || heightNew)){
-				widthNew = widthNew || elmTempImage.width() || fncThis.elmImage.width();
-				heightNew = heightNew || elmTempImage.height() || fncThis.elmImage.height();
+			
+			var callbackGetNewWidthHeight = function(){
+				if(!(widthNew || heightNew)){
+					widthNew = widthNew || elmTempImage.width();
+					heightNew = heightNew || elmTempImage.height();
+				}
+				if(widthNew && heightNew){
+					widthNew += fncThis.dimKeepDimensionsAddedWidth;
+					heightNew += fncThis.dimKeepDimensionsAddedHeight;
+					fncThis.queue.dequeue("image");
+				}else{
+					elmTempImage.load(callbackGetNewWidthHeight);
+				}
 			}
-			widthNew += fncThis.dimKeepDimensionsAddedWidth;
-			heightNew += fncThis.dimKeepDimensionsAddedHeight;
+			
+			if(!(widthNew || heightNew)){
+				fncThis.queue.queue({name: "image", callback: callbackGetNewWidthHeight});
+			}
 		}
 		
 		var fncLocalVariables = {newLI: newLI, oldLI: oldLI};
