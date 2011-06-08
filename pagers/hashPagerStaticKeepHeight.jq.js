@@ -57,7 +57,7 @@ __.classes.hashPagerStaticKeepHeight = function(arguments){
 		if(__.isIphone() == true) this.keepHeight = false;
 		this.callbackInit = arguments.callbackInit || null;
 		this.callbackPreSwitch = arguments.callbackPreSwitch || null;
-		this.boot = arguments.boot || null;
+		this.boot = arguments.boot || {};
 
 		this.inProgress = true;
 		
@@ -69,16 +69,16 @@ __.classes.hashPagerStaticKeepHeight = function(arguments){
 		}else{
 			var elmCurrentPage = this.elmsPages.filter("."+this.classCurrentPage);
 			if(elmCurrentPage.length > 0){
-				this.idCurrent = "#"+__.lib.escapeHash(elmCurrentPage.attr("id"));
+				this.idCurrent = "#"+elmCurrentPage.attr("id");
 			}else{
 				elmCurrentPage = this.elmsPages.first();
-				this.idCurrent = "#"+__.lib.escapeHash(elmCurrentPage.attr("id"));
+				this.idCurrent = "#"+elmCurrentPage.attr("id");
 			}
 		}
 		this.elmsPages.removeClass(this.classCurrentPage);
 		elmCurrentPage.show().addClass(this.classCurrentPage);
 		this.elmsNavigation.children("a").closest(this.selectorNavigation).removeClass(this.classCurrentNavigation)
-		this.elmsNavigation.children("a").filter("[href='"+__.lib.unescapeHash(this.idCurrent)+"']").closest(this.selectorNavigation).addClass(this.classCurrentNavigation);
+		this.elmsNavigation.children("a").filter("[href='"+this.idCurrent+"']").closest(this.selectorNavigation).addClass(this.classCurrentNavigation);
 		
 		// attach listeners
 		this.attachListeners(this.elmsNavigation);
@@ -93,7 +93,7 @@ __.classes.hashPagerStaticKeepHeight = function(arguments){
 		argElements.bind("click", function(event){
 			if(event.preventDefault)
 				event.preventDefault();
-			fncThis.switche(__.lib.escapeHash($(this).find("a").attr("href")));
+			fncThis.switche($(this).find("a").attr("href"));
 			
 			return false;
 		});
@@ -106,7 +106,7 @@ __.classes.hashPagerStaticKeepHeight = function(arguments){
 		}else{
 			var elmNavigationToSwitchTo = this.elmsNavigation.last();
 		}
-		this.switche(__.lib.escapeHash(elmNavigationToSwitchTo.find("a").attr("href")));
+		this.switche(elmNavigationToSwitchTo.find("a").attr("href"));
 	}
 	__.classes.hashPagerStaticKeepHeight.prototype.switchToNext = function(){
 		var elmCurrentNavigation = this.elmsNavigation.filter("."+this.classCurrentNavigation);
@@ -116,7 +116,7 @@ __.classes.hashPagerStaticKeepHeight = function(arguments){
 		}else{
 			var elmNavigationToSwitchTo = this.elmsNavigation.first();
 		}
-		this.switche(__.lib.escapeHash(elmNavigationToSwitchTo.find("a").attr("href")));
+		this.switche(elmNavigationToSwitchTo.find("a").attr("href"));
 	}
 	__.classes.hashPagerStaticKeepHeight.prototype.switche = function(argID){
 		if(this.inProgress == true || argID == this.idCurrent){
@@ -125,7 +125,7 @@ __.classes.hashPagerStaticKeepHeight = function(arguments){
 			var fncThis = this;
 			var idNext = argID;
 			var elmNextNavigation = this.elmsNavigation.has("a[href='"+argID+"']");
-			var elmNextPage = this.elmsPages.filter(argID);
+			var elmNextPage = this.elmsPages.filter(__.lib.escapeHash(argID));
 			var elmCurrentNavigation = this.elmsNavigation.filter("."+this.classCurrentNavigation);
 			var elmCurrentPage = this.elmsPages.filter("."+this.classCurrentPage);
 
@@ -164,3 +164,4 @@ __.classes.hashPagerStaticKeepHeight = function(arguments){
 			});
 		}
 	}
+
