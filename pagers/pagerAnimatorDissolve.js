@@ -17,6 +17,7 @@ jquery
 ©pagerAnimatorDissolve
 ------------*/
 __.classes.pagerAnimatorDissolve = function(arguments){
+		if(typeof arguments == "undefined") arguments = {};
 		//--optional attribributes
 		this.classCurrent = arguments.classCurrent || "current";
 		this.cssZIndexBehind = arguments.cssZIndexBehind || -1;

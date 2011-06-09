@@ -53,7 +53,7 @@ __.classes.pagerManagerHash = function(arguments){
 		if(window.location.hash && this.doUseHash){
 			this.idCurrent = window.location.hash;
 			this.elmsItems.removeClass(this.classCurrent);
-			this.elmsItems.filter(window.location.hash).addClass(this.classCurrent);
+			this.elmsItems.filter(__.lib.escapeHash(window.location.hash)).addClass(this.classCurrent);
 		}else{
 			var elmCurrentPage = this.getPageCurrent();
 			if(elmCurrentPage && elmCurrentPage.length > 0){
@@ -61,7 +61,7 @@ __.classes.pagerManagerHash = function(arguments){
 				elmCurrentPage = this.elmsItems.first();
 				elmCurrentPage.addClass(this.classCurrent);
 			}
-			this.idCurrent = "#"+__.lib.escapeHash(elmCurrentPage.attr("id"));
+			this.idCurrent = "#"+elmCurrentPage.attr("id");
 		}
 		if(this.doShowHide){
 			this.elmsItems.hide();
@@ -129,7 +129,7 @@ __.classes.pagerManagerHash = function(arguments){
 			var fncThis = this;
 			var localVariables = {};
 			localVariables.idNext = argID;
-			localVariables.elmNext = this.elmsItems.filter(localVariables.idNext);
+			localVariables.elmNext = this.elmsItems.filter(__.lib.escapeHash(localVariables.idNext));
 			localVariables.elmCurrent = this.getPageCurrent();
 //->return
 			if(localVariables.elmNext.length < 1)
@@ -193,7 +193,7 @@ __.classes.pagerManagerHash = function(arguments){
 	__.classes.pagerManagerHash.prototype.getPageCurrent = function(){
 		var fncReturn = false;
 		if(this.idCurrent)
-			fncReturn = this.elmsItems.filter(this.idCurrent);
+			fncReturn = this.elmsItems.filter(__.lib.escapeHash(this.idCurrent));
 		if(!fncReturn || (fncReturn && fncReturn.length < 1))
 			fncReturn = this.elmsItems.filter("."+this.classCurrent);
 		return (fncReturn && fncReturn.length > 0)? fncReturn: false;
