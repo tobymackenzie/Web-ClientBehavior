@@ -1,15 +1,14 @@
-/*------
+/*
+basic pager with navigation and pages collection
 -----dependencies
-tmlib: addclass, removeclass, hasclass, attachListeners
+tmlib addClass, removeClass
+-----parameters
 -----instantiation
-__.pager = new __.classes.hashPagerStatic({elmsPages: document.getElementById("maincontent").getElementsByClassName("tabpage"), elmsNavigation: document.getElementById("maincontent").getElementsByClassName("tab")});
+__.pager = new __.classes.pager({elmsPages: document.getElementById("maincontent").getElementsByClassName("tabpage"), elmsNavigation: document.getElementById("maincontent").getElementsByClassName("tab")});
+-----html
+-----css
+*/
 
-------------*/
-
-
-/*-------------
-©pager
-------------*/
 /*-------
 ©pager
 -------- */
@@ -81,9 +80,14 @@ __.classes.pager = function(arguments){
 		if(this.elmsNavigation){
 			for(var key in this.elmsNavigation){
 				if(this.elmsNavigation.hasOwnProperty(key) && this.elmsNavigation[key].getElementsByTagName){
-					var fncHref = this.getIDForNavigation(this.elmsNavigation[key]);
-					if(fncHref == argId)
+					if(this.elmsNavigation[key].href)
+						var fncAnchor = this.elmsNavigation[key];
+					else
+						var fncAnchor = this.elmsNavigation[key].getElementsByTagName("a")[0];
+					if(fncAnchor.href == "#"+argId)
+{
 						return this.elmsNavigation[key];
+}
 				}
 			}
 		}

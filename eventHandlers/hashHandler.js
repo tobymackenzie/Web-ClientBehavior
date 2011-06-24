@@ -4,7 +4,7 @@ allows binding of events to hashchange, and will hashify urls so that they can b
 -----parameters
 
 -----instantiation
-		__.hashHandler = new __.classes.hashHandler({elmsContainer: $("#topnavigationlist, #maindescription, #maindescriptionwrap, #logo")
+		__.hashHandler = new __.classes.hashHandler({elmsContainer: document.getElementById("topnavigationlist")
 			, onhashchange: function(argHash){
 				var url = argHash;
 				if(url.substring(0,1) == "#")
@@ -27,12 +27,15 @@ allows binding of events to hashchange, and will hashify urls so that they can b
 /*-------
 ©hashHandler
 -------- */
+/*-------
+©hashHandler
+-------- */
 __.classes.hashHandler = function(arguments){
 		//--required attributes
 //->return
 		//--optional attributes
 		this.boot = arguments.boot || {};
-		this.elmsContainer = arguments.elmsContainer || null;
+//!		this.elmsContainer = arguments.elmsContainer || null;
 		this.onhashchange = arguments.onhashchange || null;
 		this.oninit = arguments.oninit || null;
 		this.selectorAnchors = arguments.selectorAnchors || "a";
@@ -42,19 +45,37 @@ __.classes.hashHandler = function(arguments){
 		//--derived attributes
 		var fncThis = this;
 		//--hashify urls
-		if(this.elmsContainer)
-			this.hashifyURLs(this.elmsContainer);
+//!		if(this.elmsContainer)
+//!			this.hashifyURLs(this.elmsContainer);
 		
 		//--attach listener for hash change
-		if(this.onhashchange)
-			$(window).bind("hashchange", function(){
-				var url = location.hash || "/";
-				fncThis.onhashchange.call(fncThis, url);
-			});
-		
+		if(this.onhashchange){
+			if(typeof window.hashchange != "undefined"){
+				__.addListeners(window, "hashchange", function(){
+					fncThis.onhashchange.call(fncThis, fncThis.cleanHash(location.hash));
+				});
+			//-emulate listener for older browsers
+			}else{
+				this.hashCurrent = location.hash;
+				setInterval(function(){
+					if(location.hash != fncThis.hashCurrent){
+						fncThis.hashCurrent = location.hash;
+						fncThis.onhashchange.call(fncThis, fncThis.cleanHash(location.hash));
+					}
+				}, 200);
+			}
+		}
+
 		if(this.oninit)
-			this.oninit.call(fncThis, location.hash);
+			this.oninit.call(fncThis, this.cleanHash(location.hash));
 	}
+	__.classes.hashHandler.prototype.cleanHash = function(argHash){
+		var fncHash = argHash || "";
+		if(fncHash.substring(0,1) == "#")
+			fncHash = fncHash.substring(1, fncHash.length);
+		return fncHash;
+	}
+/*! to add non jq version
 	__.classes.hashHandler.prototype.hashifyURLs = function(argContainers){
 		if(argContainers && argContainers.length > 0){
 			var elmsAnchors = argContainers.find(this.selectorAnchors).add(argContainers.filter(this.selectorAnchors));
@@ -70,4 +91,5 @@ __.classes.hashHandler = function(arguments){
 			});
 		}
 	}
+*/
 
