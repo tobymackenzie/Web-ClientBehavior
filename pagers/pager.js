@@ -16,6 +16,7 @@ __.classes.pager = function(arguments){
 		//--required attributes
 //->return
 		//--optional attributes
+		this.attrId = arguments.attrId || "id";
 		this.boot = arguments.boot || {};
 		this.callbackGetCurrentNavigation = arguments.callbackGetCurrentNavigation || this.defaultCallbackGetCurrentNavigation;
 		this.callbackGetCurrentPage = arguments.callbackGetCurrentPage || this.defaultCallbackGetCurrentPage;
@@ -80,14 +81,9 @@ __.classes.pager = function(arguments){
 		if(this.elmsNavigation){
 			for(var key in this.elmsNavigation){
 				if(this.elmsNavigation.hasOwnProperty(key) && this.elmsNavigation[key].getElementsByTagName){
-					if(this.elmsNavigation[key].href)
-						var fncAnchor = this.elmsNavigation[key];
-					else
-						var fncAnchor = this.elmsNavigation[key].getElementsByTagName("a")[0];
-					if(fncAnchor.href == "#"+argId)
-{
+					var fncHref = this.getIDForNavigation(this.elmsNavigation[key]);
+					if(fncHref == argId)
 						return this.elmsNavigation[key];
-}
 				}
 			}
 		}
@@ -95,7 +91,17 @@ __.classes.pager = function(arguments){
 	}
 	__.classes.pager.prototype.defaultCallbackGetCurrentPage = function(argId){
 		if(this.elmsPages){
-			return document.getElementById(argId);
+			if(this.attrId == "id"){
+				return document.getElementById(argId);
+			}else{
+				for(var key in this.elmsPages){
+					if(this.elmsPages.hasOwnProperty(key) && typeof this.elmsPages[key].id != "undefined"){
+						var fncId = this.elmsPages[key].getAttribute(this.attrId);
+						if(fncId == argId)
+							return this.elmsPages[key];
+					}
+				}
+			}
 		}
 	}
 	__.classes.pager.prototype.getIDForNavigation = function(argElement){
