@@ -1,8 +1,15 @@
 /*
-description
+monitor a select element, perform an ajax call when the value changes and use a callback to handle that data
 -----dependencies
-tmlib addlisteners, ajaxcall
+jquery
 -----parameters
+elmSelectSource: the select element to monitor for changes
+elmSelectDestination: the html element that will receive content from the ajax request
+urlData: url to receive ajax data from
+nameParameter: parameter sent with ajax request containing value from select
+callback: function to run when ajax content is received
+	data: data received from ajax callback
+
 -----instantiation
 		var elmPageGetAQuote = document.getElementById("page_getaquote");
 		if(elmPageGetAQuote){

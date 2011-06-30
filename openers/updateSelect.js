@@ -1,8 +1,16 @@
 /*
-description
+monitor a select element, perform an ajax call when the value changes and use a callback to handle that data
 -----dependencies
 tmlib addlisteners, ajaxcall
+
 -----parameters
+elmSelectSource: the select element to monitor for changes
+elmSelectDestination: the html element that will receive content from the ajax request
+urlData: url to receive ajax data from
+nameParameter: parameter sent with ajax request containing value from select
+callback: function to run when ajax content is received
+	data: data received from ajax callback
+
 -----instantiation
 		var keuringupdateSelect = new __.classes.updateSelect({elmSelectSource: document.getElementById("frmKeuring"), elmSelectDestination: document.getElementById("frmClass"), nameParameter: "catid", urlData: "/content/forms/ajax_classes_for_keuring.php"
 			,callback: function(transport){
