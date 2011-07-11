@@ -20,14 +20,14 @@ __.cfg.addedWidth = 20;
 
 __.scrOnload = function(){
 //	no sizing
-	__.topnavigationDropdownhandler = new __.classes.suckerfish({"menuID":__.cfg.navigationID});
+	__.topnavigationDropdownhandler = new __.classes.suckerfish({menuID: __.cfg.navigationID});
 
 // size and center 1
-//	__.topnavigationDropdownhandler = new __.classes.suckerfish({"menuID":__.cfgNavigationID, "submenuPadding":cfgSubmenuPadding, "submenuOffset": cfgSubmenuOffset, "addedWidth": cfgAddedWidth});
+//	__.topnavigationDropdownhandler = new __.classes.suckerfish({menuID: __.cfg.navigationID, menuPadding: __.cfg.submenuPadding,submenuOffset: __.cfg.submenuOffset, addedWidth: __.cfg.addedWidth});
 //	oTopnavigationDropdownhandler.sizeAndCenter1();
 
 // size and center 2
-//	__.topnavigationDropdownhandler = new __.classes.suckerfish({"menuID":__.cfg.navigationID, "menuPadding":__.cfg.menuPadding, "submenuOffset": __.cfg.submenuOffset, "addedWidth": __.cfg.addedWidth});
+//	__.topnavigationDropdownhandler = new __.classes.suckerfish({menuID: __.cfg.navigationID, menuPadding: __.cfg.menuPadding, submenuOffset: __.cfg.submenuOffset, addedWidth: __.cfg.addedWidth});
 //	__.topnavigationDropdownhandler.sizeAndCenter2();
 }
 
