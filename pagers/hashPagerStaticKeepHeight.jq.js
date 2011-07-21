@@ -93,7 +93,15 @@ __.classes.hashPagerStaticKeepHeight = function(arguments){
 		argElements.bind("click", function(event){
 			if(event.preventDefault)
 				event.preventDefault();
-			fncThis.switche($(this).find("a").attr("href"));
+
+			var elmThis = $(this);
+			if(elmThis.is("a"))
+				var elmA = elmThis;
+			else
+				var elmA = elmThis.find("a");
+			
+			fncThis.switche(elmA.attr("href"));
+
 			
 			return false;
 		});
