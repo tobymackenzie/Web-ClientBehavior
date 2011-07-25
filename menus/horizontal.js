@@ -38,6 +38,7 @@ __.classes.suckerfish = function (arguments){
 		this.wrapperClass = (arguments.wrapperClass)? arguments.wrapperClass : "topitem";
 		this.toplevelClass = (arguments.toplevelClass)? arguments.toplevelClass : "toplevel";
 		this.submenuClass = (arguments.submenuClass)? arguments.submenuClass : "submenu";
+		this.doCloseOnClickOutside = arguments.doCloseOnClickOutside || false;
 		this.doSizeAndCenter = (arguments.doSizeAndCenter)? arguments.doSizeAndCenter : false;
 		this.doSizeAndCenterFirst = (typeof arguments.doSizeAndCenterFirst != "undefined")? arguments.doSizeAndCenterFirst : true;
 		this.doSizeAndCenterLast = (typeof arguments.doSizeAndCenterLast != "undefined")? arguments.doSizeAndCenterLast : true;
@@ -45,14 +46,14 @@ __.classes.suckerfish = function (arguments){
 		this.submenuOffset = (arguments.submenuOffset)? arguments.submenuOffset : 0;
 		this.addedWidth = (arguments.addedWidth)? arguments.addedWidth : 0;
 		this.classSelected = arguments.classSelected || "selected";
-		
+
 		this.elmMenu = document.getElementById(this.menuID);
 		this.elmsWrapper = __.getElementsByClassName({"className": this.wrapperClass, "element": this.elmMenu});
 		this.elmsMenuAssociations = this.getAllMenuPieces();
 		this.elmCurrentlySelected = 0;
-		
+
 		this.timeout;
-		
+
 		this.attachListeners();
 	}
 	__.classes.suckerfish.prototype.getAllMenuPieces = function(){
@@ -82,7 +83,7 @@ __.classes.suckerfish = function (arguments){
 					return function(){
 						fncThis.timeout = setTimeout(function(fncThis){ return function(){fncThis.dropdownCloseCurrent(); };}(fncThis) ,750);
 					};
-	
+
 				}(fncThis);
 				__.addListeners(forElmMenuItemArray["elmItemWrapper"], "mouseover", callbackFull, false);
 				__.addListeners(forElmMenuItemArray["elmToplevel"], "mouseover", callbackFull, false);
@@ -91,7 +92,7 @@ __.classes.suckerfish = function (arguments){
 				__.addListeners(forElmMenuItemArray["elmItemWrapper"], "click", callbackFull, false);
 				__.addListeners(forElmMenuItemArray["elmItemWrapper"], "touchstart", callbackFull, false);
 				__.addListeners(forElmMenuItemArray["elmItemWrapper"], "mouseout", callbackMouseout, false);
-				
+
 				forElmMenuItemArray["elmToplevel"].href="javascript://openMenu();";
 				forElmMenuItemArray["elmToplevel"].style.cursor = "default";
 			}
@@ -107,6 +108,9 @@ __.classes.suckerfish = function (arguments){
 				__.addListeners(forElmMenuItemArray["elmItemWrapper"], "click", callbackEmpty, false);
 				__.addListeners(forElmMenuItemArray["elmItemWrapper"], "touchstart", callbackEmpty, false);
 			}
+		}
+		if(this.doCloseOnClickOutside){
+			__.addListeners(document.body, "click", function(){ fncThis.dropdownCloseAll(); }, true);
 		}
 	}
 	__.classes.suckerfish.prototype.dropdownOpen = function(argElement){
@@ -126,18 +130,18 @@ __.classes.suckerfish = function (arguments){
 		return 0;
 	}
 	__.classes.suckerfish.prototype.dropdownCloseAll = function(){
-		for(j=0;j < argElmsMenuArray.length; ++j){
-			__.removeClass(argElmsMenuArray[j]["elmItemWrapper"], this.classSelected);
+		for(j=0;j < this.elmsMenuAssociations.length; ++j){
+			__.removeClass(this.elmsMenuAssociations[j]["elmItemWrapper"], this.classSelected);
 		}
 	}
 
 
 /*---menu sizing
 ---*/
-	__.classes.suckerfish.prototype.sizeAndCenter1 = function(){	
+	__.classes.suckerfish.prototype.sizeAndCenter1 = function(){
 		for(var i=0; i < this.elmsMenuAssociations.length; ++i){
 			var forElmMenuItemArray = this.elmsMenuAssociations[i];
-			if(forElmMenuItemArray["elmSubmenu"] && (this.doSizeAndCenterFirst || (i != 0)) && (this.doSizeAndCenterLast || (i != this.elmsMenuAssociations.length - 1))){	
+			if(forElmMenuItemArray["elmSubmenu"] && (this.doSizeAndCenterFirst || (i != 0)) && (this.doSizeAndCenterLast || (i != this.elmsMenuAssociations.length - 1))){
 				if(forElmMenuItemArray["elmSubmenu"].offsetWidth < forElmMenuItemArray["elmToplevel"].offsetWidth + this.addedWidth && !__.isIE6()){
 					forElmMenuItemArray["elmSubmenu"].style.width = (forElmMenuItemArray["elmToplevel"].offsetWidth + this.addedWidth/*  - this.submenuPadding */) + "px";
 				}
@@ -149,10 +153,10 @@ __.classes.suckerfish = function (arguments){
 			}
 		}
 	}
-	__.classes.suckerfish.prototype.sizeAndCenter2 = function(){	
+	__.classes.suckerfish.prototype.sizeAndCenter2 = function(){
 		for(var i=0; i < this.elmsMenuAssociations.length; ++i){
 			var forElmMenuItemArray = this.elmsMenuAssociations[i];
-			if(forElmMenuItemArray["elmSubmenu"] && (this.doSizeAndCenterFirst || (i != 0)) && (this.doSizeAndCenterLast || (i != this.elmsMenuAssociations.length - 1))){	
+			if(forElmMenuItemArray["elmSubmenu"] && (this.doSizeAndCenterFirst || (i != 0)) && (this.doSizeAndCenterLast || (i != this.elmsMenuAssociations.length - 1))){
 				forElmMenuItemArray["elmSubmenu"].style.visibility = "hidden";
 				forElmMenuItemArray["elmSubmenu"].style.display = "block";
 				if(forElmMenuItemArray["elmSubmenu"].offsetWidth < forElmMenuItemArray["elmToplevel"].offsetWidth + this.addedWidth && !__.isIE6()){
