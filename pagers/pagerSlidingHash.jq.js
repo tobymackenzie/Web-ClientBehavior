@@ -1,10 +1,13 @@
 /*
 slides new "pages" into view while sliding old out
 
-depends on: tmlib base: isIphone, getHiddenElementHeight
-	jquery
-params: arguments array: array of arguments
-		elmsNavigation $element: container of navigation, supply only to auto-display on init, allowing hiding for non-js browsers
+depends on:
+tmlib base: isIphone, getHiddenElementHeight
+jquery
+
+-----parameters
+arguments array: array of arguments
+		elmsNavigation($element): container of navigation, supply only to auto-display on init, allowing hiding for non-js browsers
 
 ---css:
 .container{
@@ -34,7 +37,7 @@ if(typeof $ !== 'undefined')
 //		__.pageid = $("body").attr("id");
 		var elmsBanners = $("#banner .banners .banner");
 		if(elmsBanners.length > 0)
-			__.bannerPager = new __.classes.pagerSlidingHash({elmsPages:elmsBanners, itemSelector:".banner", elmPreviousButton:$("#banner .navigation .previous"), elmNextButton:$("#banner .navigation .next"), elmsItemNavigation: $("#banner .navigation li"), regexHash: {find: /(#[\w-_])/, replace: "$1"}, callbackPreSlide: function(elmNewPage){
+			__.bannerPager = new __.classes.pagerSlidingHash({elmsPages:elmsBanners, itemSelector:".banner", elmPreviousButton:$("#banner .navigation .previous"), elmNextButton:$("#banner .navigation .next"), elmsItemNavigation: $("#banner .navigation li"), regexHash: {find: /(#[\w-_])/, replace: "$1"}, onpreslide: function(elmNewPage){
 					var fncThis = this;
 					var newTitle = elmNewPage.attr("data-title");
 					this.boot.elmTitle.fadeOut(this.duration, function(){
@@ -72,8 +75,9 @@ __.classes.pagerSlidingHash = function(arguments){
 		this.contentLeft = arguments.contentLeft || 0;
 		this.elmNavigationPointer = arguments.elmNavigationPointer || null;
 		this.elmNavigationOrientation = arguments.elmNavigationOrientation || "horizontal";
-		this.callbackPreSlide = arguments.callbackPreSlide || null;
-		this.callbackPostSlide = arguments.callbackPostSlide || null;
+		this.oninit = arguments.oninit || null;
+		this.onpreslide = arguments.onpreslide || null;
+		this.onpostslide = arguments.onpostslide || null;
 		this.boot = arguments.boot || null;
 		
 		//--set up current pages
@@ -120,6 +124,9 @@ __.classes.pagerSlidingHash = function(arguments){
 		this.inprogress = 0;
 		
 		this.attachEvents();
+
+		if(this.oninit)
+			this.oninit.call(this);
 	}
 	__.classes.pagerSlidingHash.prototype.attachEvents = function(){
 		var fncThis = this;
@@ -191,8 +198,8 @@ __.classes.pagerSlidingHash = function(arguments){
 				$(fncThis.elmsPages[i]).addClass(fncThis.classNextItem).removeClass(fncThis.classPreviousItem).css({"display":"none"});
 			}
 
-			if(fncThis.callbackPostSlide)
-				fncThis.callbackPostSlide.call(this);
+			if(fncThis.onpostslide)
+				fncThis.onpostslide.call(this);
 
 			fncThis.updateRelativeNavigation();
 			
@@ -200,8 +207,8 @@ __.classes.pagerSlidingHash = function(arguments){
 		}
 		
 		//--call preslide callback
-		if(fncThis.callbackPreSlide)
-			fncThis.callbackPreSlide.call(this, elmNewPage);
+		if(fncThis.onpreslide)
+			fncThis.onpreslide.call(this, elmNewPage);
 		
 		//--animate new height
 		if(fncThis.elmKeepHeight){
@@ -278,14 +285,7 @@ __.classes.pagerSlidingHash = function(arguments){
 	__.classes.pagerSlidingHash.prototype.parsePath = function(path){
 		if(this.regexHash)
 			path = path.replace(this.regexHash.find, this.regexHash.replace);
-		return this.escapeHash(path);
-	}
-	//-allows using slashes in the hash
-	__.classes.pagerSlidingHash.prototype.escapeHash = function(hash){
-		return hash.replace(/\//g, "\\/");
-	}
-	__.classes.pagerSlidingHash.prototype.unescapeHash = function(hash){
-		return hash.replace(/\\\//g, "\/");
+		return __.lib.escapeHash(path);
 	}
 
 	/*---notes:
