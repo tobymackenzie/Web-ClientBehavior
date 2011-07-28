@@ -17,12 +17,22 @@ jqueryui: dialog
 ----------*/
 __.classes.HandlerDialog = function(arguments){
 		if(typeof arguments == "undefined") var arguments = {};
+		var fncThis = this;
 		//--required attributes
 //->return
 		//--optional attributes
 		this.ajaxData = $.extend({ajaxcall: 1}, (arguments.ajaxData || null));
 		this.boot = arguments.boot || {};
-		this.dialogArguments = {autoOpen: false};
+		this.classLoading = arguments.classLoading || "loading";
+		this.dialogArguments = {
+			autoOpen: false
+			,close: function(event, ui){
+				if(fncThis.request){
+					fncThis.request.abort();
+					fncThis.request = null;
+				}
+			}
+		};
 		this.dialogArguments = $.extend(this.dialogArguments, (arguments.dialogArguments || {}));
 		this.doManageWidth = (typeof arguments.doManageWidth != "undefined")? arguments.doManageWidth: true;
 		this.doManageHeight = (typeof arguments.doManageHeight != "undefined")? arguments.doManageHeight: true;
@@ -34,9 +44,9 @@ __.classes.HandlerDialog = function(arguments){
 		this.heightMax = arguments.heightMax || 500;
 		this.url = arguments.url || null;
 
+		this.request = null;
 		this.elmDialog = null;
 		//--derived attributes
-		var fncThis = this;
 
 		//--do something
 		if(this.oninit)
@@ -56,40 +66,49 @@ __.classes.HandlerDialog = function(arguments){
 		this.elmDialog.html(elmNewHTML);
 		if(this.doManageWidth || this.doManageHeight){
 			var elmNewHTMLClone = $("<div>").html(elmNewHTML.clone());
+			elmNewHTMLClone.addClass("ui-dialog-content "+this.dialogArguments.dialogClass);
 			elmNewHTMLClone.css({position: "absolute", left: "-9000px", top: "-9000px", display: "table"});
 			$("body").append(elmNewHTMLClone);
 			var widthNewHTML = elmNewHTMLClone.width();
 			widthNewHTML += this.widthAdded;
 			var heightNewHTML = elmNewHTMLClone.height();
-			if(this.doManageHeight && heightNewHTML > this.heightMax){
+			elmNewHTMLClone.remove();
+			if(heightNewHTML > this.heightMax){
 				widthNewHTML += this.widthScrollbar;
 			}
-			elmNewHTMLClone.remove();
 			if(this.doManageWidth)
-				this.elmDialog.dialog("option", "width", widthNewHTML);
+				this.dialog("option", "width", widthNewHTML);
 			if(this.doManageHeight){
 				if(heightNewHTML > this.heightMax){
-					this.elmDialog.dialog("option", "height", this.heightMax);
+					this.dialog("option", "height", this.heightMax);
 				}else
-					this.elmDialog.dialog("option", "height", "auto");
+					this.dialog("option", "height", "auto");
 			}
 		}
-		this.elmDialog.dialog("open");
+		this.dialog("open");
 		if(this.onshow)
 			this.onshow.call(this);
 	}
 	__.classes.HandlerDialog.prototype.showForAjax = function(arguments){
 		var fncThis = this;
+		this.initDialog();
 		if(typeof arguments.url == "undefined")
 			arguments.url = this.url;
 		arguments.data = $.extend({}, this.ajaxData, (arguments.data || null));
 		if(typeof arguments.success == "undefined")
 			arguments.success = function(data){ fncThis.callbackAjaxSuccess(data, this) };
 
-		$.ajax(arguments);
+		this.elmDialog.addClass(this.classLoading).html("").dialog("open");
+		this.request = $.ajax(arguments);
 	}
 	__.classes.HandlerDialog.prototype.callbackAjaxSuccess = function(argData, argContext){
 		if(this.onsuccess)
-			argData = this.onsuccess.call(this, argData) || argData;
+ 		   argData = this.onsuccess.call(this, argData) || argData;
 		this.showWithContent(argData);
+		this.elmDialog.removeClass(this.classLoading);
+		this.dialog("option", "position", this.dialog("option", "position"));
+		this.request = null;
+	}
+	__.classes.HandlerDialog.prototype.dialog = function(){
+		return this.elmDialog.dialog.apply(this.elmDialog, arguments);
 	}
