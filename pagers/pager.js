@@ -39,10 +39,10 @@ __.classes.pager = function(arguments){
 					this.elmNavigationCurrent = this.elmsNavigation[key];
 			}
 		}
-		if(!this.elmNavigationCurrent)
-			this.elmNavigationCurrent = this.elmsNavigation[0];
 		if(!this.elmPageCurrent)
-			this.elmPageCurrent = this.callbackGetCurrentPage(this.getIDForNavigation(this.elmNavigationCurrent));
+			this.elmPageCurrent = this.elmsPages[0];
+		if(!this.elmNavigationCurrent && this.elmsNavigation)
+			this.elmNavigationCurrent = this.callbackGetCurrentNavigation(this.elmPageCurrent.id);
 		this.setClasses();
 			
 		//--do something
