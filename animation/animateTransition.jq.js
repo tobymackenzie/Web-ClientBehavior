@@ -35,6 +35,7 @@ __.classes.AnimateTransition = function(arguments){
 		//--optional attributes
 		this.boot = arguments.boot || null;
 		this.callbackTransition = (typeof arguments.callbackTransition != "undefined")? arguments.callbackTransition: this.defaultCallbackTransition;
+		this.duration = arguments.duration || 500;
 		this.stylesBefore = arguments.stylesBefore || null;
 		this.stylesTransition = arguments.stylesTransition || null;
 		this.stylesAfter = arguments.stylesAfter || null;
@@ -78,7 +79,7 @@ __.classes.AnimateTransition = function(arguments){
 				if(lopStylesTransition){
 					if(typeof lopStylesTransition === "function")
 						lopStylesTransition = lopStylesTransition.call(this, fncElements[key]);
-					fncElements[key].animate(lopStylesTransition);
+					fncElements[key].animate(lopStylesTransition, this.duration);
 				}
 			}
 		}
