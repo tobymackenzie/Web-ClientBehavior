@@ -4,11 +4,13 @@ animates transition between two elements
 tmlib: animationQueue
 -----parameters
 arguments:
+	duration (integer || array[integers]): duration of animation or of each animation step
 	stylesBefore (array[map of style properties and values]): styles to apply to elements before animation starts
-	stylesTransition (array[map of style properties and values]): styles to animate elemetns to
-	stylesAfter (array[map of style properties and values]): styles to apply to elements after animation
+	stylesTransition (array[stylemap || array[stylemap]]): styles to animate elements to
+	stylesAfter (array[stylemap]): styles to apply to elements after animation
 -----instantiation
-		animateImage: new __.classes.AnimateTransition({
+		//--
+		__.animateImage = new __.classes.AnimateTransition({
 			stylesBefore: [
 				{}
 				,{left: __.bannerlist.width(), display: "block"}
@@ -21,6 +23,31 @@ arguments:
 				{}
 				,{}
 			]
+		})
+		__.animateLabel = new __.classes.AnimateTransition({
+			doMultistep: true
+			,duration: [this.boot.duration * 1/3, this.boot.duration *2/3]
+			,stylesBefore: [
+				{}
+				,{bottom:  -(elmLabel.outerHeight()), display: "block"}
+			]
+			,stylesTransition: [
+				[
+					{bottom: __.bannerlist.height()}
+					,{}
+				]
+				,[
+					{}
+					,function(argElement){
+						return {bottom: argElement.attr(this.boot.attrDataBottom)}
+					}
+				]
+			]
+			,stylesAfter: [
+				{display: "none"}
+				,{}
+			]
+			,boot: {attrDataBottom: "data-bottom"}
 		})
 -----html
 -----css
@@ -35,6 +62,7 @@ __.classes.AnimateTransition = function(arguments){
 		//--optional attributes
 		this.boot = arguments.boot || null;
 		this.callbackTransition = (typeof arguments.callbackTransition != "undefined")? arguments.callbackTransition: this.defaultCallbackTransition;
+		this.doMultistep = arguments.doMultistep || false;
 		this.duration = arguments.duration || 500;
 		this.stylesBefore = arguments.stylesBefore || null;
 		this.stylesTransition = arguments.stylesTransition || null;
@@ -61,29 +89,63 @@ __.classes.AnimateTransition = function(arguments){
 			fncThis.queue.queue({callback: function(){
 				fncThis.onbefore.call(fncThis, fncArguments);
 			}});
-		if(fncThis.callbackTransition)
-			fncThis.queue.queue({callback: function(){
-				fncThis.callbackTransition.call(fncThis, fncArguments);
-			}});
+		if(fncThis.callbackTransition){
+			if(fncThis.doMultistep){
+				for(var key in fncThis.stylesTransition){
+					if(fncThis.stylesTransition.hasOwnProperty(key)){
+						fncThis.queue.queue({callback: function(fncThis, key){
+							return function(){
+								fncThis.callbackTransition.call(fncThis, fncArguments, key);
+							}
+						}(fncThis, key)});
+					}
+				}
+			}else{
+				fncThis.queue.queue({callback: function(){
+					fncThis.callbackTransition.call(fncThis, fncArguments);
+				}});
+			}
+		}
 		if(fncThis.onafter)
 			fncThis.queue.queue({callback: function(){
 				fncThis.onafter.call(fncThis, fncArguments);
 			}});
 		fncThis.queue.dequeue();
 	}
-	__.classes.AnimateTransition.prototype.defaultCallbackTransition = function(arguments){
+	__.classes.AnimateTransition.prototype.defaultCallbackTransition = function(arguments, argKey){
 		var fncElements = arguments.elements;
+		var fncThis = this;
+		var callbackDQ = function(){
+			fncThis.queue.dequeue();
+		}
 		for(var key in fncElements){
 			if(fncElements.hasOwnProperty(key)){
-				var lopStylesTransition = this.stylesTransition[key] || null;
+				if(typeof argKey != "undefined"){
+					var lopStylesTransition = this.stylesTransition[argKey][key] || null;
+					if(this.duration.constructor == Array){
+						var lopDuration = this.duration[argKey];
+					}else{
+						var lopDuration = this.duration;
+					}
+				}else{
+					var lopStylesTransition = fncThis.stylesTransition[key] || null;
+					var lopDuration = this.duration;
+				}
 				if(lopStylesTransition){
 					if(typeof lopStylesTransition === "function")
 						lopStylesTransition = lopStylesTransition.call(this, fncElements[key]);
-					fncElements[key].animate(lopStylesTransition, this.duration);
+					if(key == 0){
+						var lopCallbackDQ = callbackDQ;
+					}else{
+						var lopCallbackDQ = null;
+					}
+						
+					fncElements[key].animate(lopStylesTransition, lopDuration, lopCallbackDQ);
+				}else{
+					callbackDQ();
 				}
 			}
 		}
-		this.queue.dequeue();
 	}
 	__.classes.AnimateTransition.prototype.defaultOnBefore = function(arguments){
 		var fncElements = arguments.elements;
