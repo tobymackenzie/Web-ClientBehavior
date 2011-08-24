@@ -10,6 +10,7 @@ __.pager = new __.classes.hashPagerStatic({elmsPages: $(".pagecontentpieces .pag
 ©pager
 ------------*/
 __.classes.hashPagerStatic = function(arguments){
+		this.boot = arguments.boot || {};
 		this.elmsPages = arguments.elmsPages || false; if(!this.elmsPages || this.elmsPages.length < 1) return false;
 		this.elmsNavigation = arguments.elmsNavigation || false;
 			if(!this.elmsNavigation) return false;
@@ -17,6 +18,8 @@ __.classes.hashPagerStatic = function(arguments){
 		this.classCurrentNavigation = arguments.classCurrentNavigation || "current";
 		this.classCurrentPage = arguments.classCurrentPage || "current";
 		this.duration = (arguments.duration !== undefined) ? arguments.duration : 500;
+		this.onpreswitch = arguments.onpreswitch || false;
+		this.onpostswitch = arguments.onpostswitch || false;
 		
 		this.inProgress = true;
 		
@@ -55,24 +58,29 @@ __.classes.hashPagerStatic = function(arguments){
 			return false;
 		}else{
 			var fncThis = this;
-			var idNext = argID;
-			var elmNextNavigation = this.elmsNavigation.has("a[href='"+argID+"']");
-			var elmNextPage = this.elmsPages.filter(__.lib.escapeHash(argID));
-			var elmCurrentNavigation = this.elmsNavigation.filter("."+this.classCurrentNavigation);
-			var elmCurrentPage = this.elmsPages.filter("."+this.classCurrentPage);
+			var localvars = {};
+			localvars.idNext = argID;
+			localvars.elmNextNavigation = this.elmsNavigation.has("a[href='"+argID+"']");
+			localvars.elmNextPage = this.elmsPages.filter(__.lib.escapeHash(argID));
+			localvars.elmCurrentNavigation = this.elmsNavigation.filter("."+this.classCurrentNavigation);
+			localvars.elmCurrentPage = this.elmsPages.filter("."+this.classCurrentPage);
 
 			fncThis.inProgress = true;
 
-			elmNextNavigation.addClass(fncThis.classCurrentNavigation);
-			elmCurrentPage.removeClass(fncThis.classCurrentPage).hide(this.duration, function(){
-				elmCurrentNavigation.removeClass(fncThis.classCurrentNavigation);
-				elmNextPage.show(fncThis.duration, function(){
-					elmNextPage.addClass(fncThis.classCurrentPage);
-					fncThis.idCurrent = idNext;
+			if(this.onpreswitch)
+				this.onpreswitch.call(this, localvars);
+
+			localvars.elmNextNavigation.addClass(fncThis.classCurrentNavigation);
+			localvars.elmCurrentPage.removeClass(fncThis.classCurrentPage).hide(this.duration, function(){
+				localvars.elmCurrentNavigation.removeClass(fncThis.classCurrentNavigation);
+				localvars.elmNextPage.show(fncThis.duration, function(){
+					localvars.elmNextPage.addClass(fncThis.classCurrentPage);
+					fncThis.idCurrent = localvars.idNext;
 					fncThis.inProgress = false;
+					if(fncThis.onpostswitch)
+						fncThis.onpostswitch.call(fncThis, localvars);
 				});
 			});
 		}
 	}
-
 
