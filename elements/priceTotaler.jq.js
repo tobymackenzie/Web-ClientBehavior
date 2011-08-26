@@ -77,6 +77,7 @@ __.classes.priceTotaler = function(arguments){
 				
 		//--derived attributes
 		this.priceItems = new Array();
+		this.priceItemsNames = new Array();
 		
 		if(this.oninit)
 			this.oninit.call(this);
@@ -89,7 +90,10 @@ __.classes.priceTotaler = function(arguments){
 			this.priceItems[argItemArguments] = fncPriceItem;
 		else
 */
-			this.priceItems.push(fncPriceItem);
+		var index = this.priceItems.push(fncPriceItem);
+		if(typeof argItemArguments.name != "undefined"){
+			this.priceItemsNames[index] = argItemArguments.name;
+		}
 		fncPriceItem.addChangeListener(function(event){
 			fncThis.updateTotal();
 		});
@@ -115,6 +119,13 @@ __.classes.priceTotaler = function(arguments){
 			if(this.onchange)
 				this.onchange.call(this, fncTotal);
 		}
+	}
+	__.classes.priceTotaler.prototype.getPriceItem = function(argName){
+		var index = __.lib.arraySearch(argName, this.priceItemsNames);
+		if(index !== false){
+			return this.priceItems[index];
+		}else
+			return null;
 	}
 __.classes.priceTotaler.prototype.classes = {};
 __.classes.priceTotaler.prototype.classes.priceItem = function(arguments){
