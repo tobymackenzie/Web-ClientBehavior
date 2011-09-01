@@ -9,17 +9,17 @@ __.pager = new __.classes.hashPagerStatic({elmsPages: $(".pagecontentpieces .pag
 /*-------------
 ©pager
 ------------*/
-__.classes.hashPagerStatic = function(arguments){
-		this.boot = arguments.boot || {};
-		this.elmsPages = arguments.elmsPages || false; if(!this.elmsPages || this.elmsPages.length < 1) return false;
-		this.elmsNavigation = arguments.elmsNavigation || false;
+__.classes.hashPagerStatic = function(args){
+		this.boot = args.boot || {};
+		this.elmsPages = args.elmsPages || false; if(!this.elmsPages || this.elmsPages.length < 1) return false;
+		this.elmsNavigation = args.elmsNavigation || false;
 			if(!this.elmsNavigation) return false;
 			this.elmsNavigation = this.elmsNavigation.has("a[href^='#']");
-		this.classCurrentNavigation = arguments.classCurrentNavigation || "current";
-		this.classCurrentPage = arguments.classCurrentPage || "current";
-		this.duration = (arguments.duration !== undefined) ? arguments.duration : 500;
-		this.onpreswitch = arguments.onpreswitch || false;
-		this.onpostswitch = arguments.onpostswitch || false;
+		this.classCurrentNavigation = args.classCurrentNavigation || "current";
+		this.classCurrentPage = args.classCurrentPage || "current";
+		this.duration = (args.duration !== undefined) ? args.duration : 500;
+		this.onpreswitch = args.onpreswitch || false;
+		this.onpostswitch = args.onpostswitch || false;
 		
 		this.inProgress = true;
 		

@@ -38,32 +38,32 @@ $(function(){
 /*-----
 ©pagerSliding
 -----*/
-__.classes.pagerSliding = function(arguments){
+__.classes.pagerSliding = function(args){
 		var fncThis = this;
-		this.elmsPages = arguments.elmsPages || null;
-		this.elmPreviousButton = arguments.elmPreviousButton || null;
-		this.elmNextButton = arguments.elmNextButton || null;
-		this.elmsItemNavigation = arguments.elmsItemNavigation || null;
-		this.linkPathRegex = (arguments.linkPathRegex !== undefined)? arguments.linkPathRegex: /(\d+)/;
-		this.itemSelector = (arguments.itemSelector !== undefined)? arguments.itemSelector: "item";
-		this.classCurrentItem = (arguments.classCurrentItem !== undefined)? arguments.classCurrentItem: "selected";
-		this.classPreviousItem = (arguments.classPreviousItem !== undefined)? arguments.classPreviousItem: "previous";
-		this.nextClass = (arguments.nextClass !== undefined)? arguments.nextClass: "next";
-		this.attrID = (arguments.attrID !== undefined)? arguments.attrID: "data-id";
-		this.attrPreviousURL = (arguments.attrPreviousURL !== undefined)? arguments.attrPreviousURL: "data-previous-url";
-		this.attrNextURL = (arguments.attrNextURL !== undefined)? arguments.attrNextURL: "data-next-url";
-		this.duration = (arguments.duration !== undefined)? arguments.duration: 500;
-		this.contentWidth = (arguments.contentWidth !== undefined)? arguments.contentWidth: 960;
-		this.contentLeft = arguments.contentLeft || 0;
-		this.elmNavigationPointer = arguments.elmNavigationPointer || null;
-		this.elmNavigationOrientation = arguments.elmNavigationOrientation || "horizontal";
+		this.elmsPages = args.elmsPages || null;
+		this.elmPreviousButton = args.elmPreviousButton || null;
+		this.elmNextButton = args.elmNextButton || null;
+		this.elmsItemNavigation = args.elmsItemNavigation || null;
+		this.linkPathRegex = (args.linkPathRegex !== undefined)? args.linkPathRegex: /(\d+)/;
+		this.itemSelector = (args.itemSelector !== undefined)? args.itemSelector: "item";
+		this.classCurrentItem = (args.classCurrentItem !== undefined)? args.classCurrentItem: "selected";
+		this.classPreviousItem = (args.classPreviousItem !== undefined)? args.classPreviousItem: "previous";
+		this.nextClass = (args.nextClass !== undefined)? args.nextClass: "next";
+		this.attrID = (args.attrID !== undefined)? args.attrID: "data-id";
+		this.attrPreviousURL = (args.attrPreviousURL !== undefined)? args.attrPreviousURL: "data-previous-url";
+		this.attrNextURL = (args.attrNextURL !== undefined)? args.attrNextURL: "data-next-url";
+		this.duration = (args.duration !== undefined)? args.duration: 500;
+		this.contentWidth = (args.contentWidth !== undefined)? args.contentWidth: 960;
+		this.contentLeft = args.contentLeft || 0;
+		this.elmNavigationPointer = args.elmNavigationPointer || null;
+		this.elmNavigationOrientation = args.elmNavigationOrientation || "horizontal";
 		
 		this.elmCurrent = this.elmsPages.filter("."+this.classCurrentItem);
-		this.pageOffsetLeft = (arguments.contentLeft)? 0: this.elmCurrent.offset().left;
+		this.pageOffsetLeft = (args.contentLeft)? 0: this.elmCurrent.offset().left;
 		if(this.elmCurrent.length < 1)
 			this.elmCurrent = elmsPages.first();
-		if(!arguments.contentLeft){
-			this.pageOffsetRight = (arguments.contentLeft)?false:jQuery("body").outerWidth();
+		if(!args.contentLeft){
+			this.pageOffsetRight = (args.contentLeft)?false:jQuery("body").outerWidth();
 			
 		}
 		this.elmsPages.filter("."+this.classPreviousItem).css({"left":0 - this.pageOffsetLeft - this.contentWidth, "display":"none"});

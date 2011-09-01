@@ -34,10 +34,10 @@ function scrOnload(){
 TM suckerfish init
 *********** */
 // get all toplevel and submenu items in associatiative array
-function tmlibGetAllMenuPieces(arguments){
-	var fncElmsWrapper = (arguments.wrapperElements)? arguments.wrapperElements : null;
-	var fncToplevelClass = (arguments.toplevelClass)? arguments.toplevelClass : "toplevel";
-	var fncSubmenuClass = (arguments.submenuClass)? arguments.submenuClass : "submenu";
+function tmlibGetAllMenuPieces(args){
+	var fncElmsWrapper = (args.wrapperElements)? args.wrapperElements : null;
+	var fncToplevelClass = (args.toplevelClass)? args.toplevelClass : "toplevel";
+	var fncSubmenuClass = (args.submenuClass)? args.submenuClass : "submenu";
 
 	var fncReturnArray = new Array();
 	
@@ -112,11 +112,11 @@ function tmlibMenuDropdownCloseAll(){
 menu sizing
 ****** */
 
-function tmlibMenuSizing(arguments){
-	var fncElmsMenuArray = (arguments.elmsMenuArray)? arguments.elmsMenuArray : 0;	
-	var fncSubmenuPadding = (arguments.submenuPadding)? arguments.submenuPadding : 0;
-	var fncSubmenuOffset = (arguments.submenuOffset)? arguments.submenuOffset : 0;
-	var fncAddedWidth = (arguments.addedWidth)? arguments.addedWidth : 0;
+function tmlibMenuSizing(args){
+	var fncElmsMenuArray = (args.elmsMenuArray)? args.elmsMenuArray : 0;	
+	var fncSubmenuPadding = (args.submenuPadding)? args.submenuPadding : 0;
+	var fncSubmenuOffset = (args.submenuOffset)? args.submenuOffset : 0;
+	var fncAddedWidth = (args.addedWidth)? args.addedWidth : 0;
 
 	if(!fncElmsMenuArray) return false;
 	

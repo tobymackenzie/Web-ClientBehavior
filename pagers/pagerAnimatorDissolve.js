@@ -16,17 +16,17 @@ jquery
 /*-------------
 ©pagerAnimatorDissolve
 ------------*/
-__.classes.pagerAnimatorDissolve = function(arguments){
-		if(typeof arguments == "undefined") arguments = {};
+__.classes.pagerAnimatorDissolve = function(args){
+		if(typeof args== "undefined") args = {};
 		//--optional attribributes
-		this.classCurrent = arguments.classCurrent || "current";
-		this.cssZIndexBehind = arguments.cssZIndexBehind || -1;
-		this.cssZIndexNormal = arguments.cssZIndexNormal || 0;
-		this.duration = (typeof arguments.duration != "undefined")? arguments.duration: 500;
-		this.oninit = arguments.oninit || null;
-		this.onpreswitch = arguments.onpreswitch || null;
-		this.onpostswitch = arguments.onpostswitch || null;
-		this.boot = arguments.boot || null;
+		this.classCurrent = args.classCurrent || "current";
+		this.cssZIndexBehind = args.cssZIndexBehind || -1;
+		this.cssZIndexNormal = args.cssZIndexNormal || 0;
+		this.duration = (typeof args.duration != "undefined")? args.duration: 500;
+		this.oninit = args.oninit || null;
+		this.onpreswitch = args.onpreswitch || null;
+		this.onpostswitch = args.onpostswitch || null;
+		this.boot = args.boot || null;
 		
 		//--derived attributes
 		this.inprogress = false;
@@ -35,7 +35,7 @@ __.classes.pagerAnimatorDissolve = function(arguments){
 		if(this.oninit)
 			this.oninit.call(this);
 	}
-	__.classes.pagerAnimatorDissolve.prototype.switche = function(arguments){
+	__.classes.pagerAnimatorDissolve.prototype.switche = function(args){
 		var fncThis = this;
 //-> return
 		if(fncThis.inprogress==true) return false;		
@@ -43,8 +43,8 @@ __.classes.pagerAnimatorDissolve = function(arguments){
 		fncThis.inprogress = true;
 
 		var localVariables = {};
-		localVariables.elmFrom = arguments.elmFrom;
-		localVariables.elmTo = arguments.elmTo;
+		localVariables.elmFrom = args.elmFrom;
+		localVariables.elmTo = args.elmTo;
 
 		//--set up queue
 		if(fncThis.onpreswitch)

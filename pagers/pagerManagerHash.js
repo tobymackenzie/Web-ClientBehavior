@@ -26,23 +26,23 @@ jquery
 /*-------------
 ©pagerManagerHash
 ------------*/
-__.classes.pagerManagerHash = function(arguments){
+__.classes.pagerManagerHash = function(args){
 		//--required attributes
-		this.elmsItems = arguments.elmsItems || false; if(!this.elmsItems || this.elmsItems.length < 1) return false;
+		this.elmsItems = args.elmsItems || false; if(!this.elmsItems || this.elmsItems.length < 1) return false;
 //->return
 
 		//--optional attributes
-		this.handlerAnimation = arguments.handlerAnimation || null;
-		this.handlerNavigation = arguments.handlerNavigation || null;
-		this.classCurrent = arguments.classCurrent || "current";
-		this.doCarousel = (typeof arguments.doCarousel != "undefined")? arguments.doCarousel: true;
-		this.doShowHide = (typeof arguments.doShowHide != "undefined")? arguments.doShowHide: true;
-		this.doUseHash = (typeof arguments.doUseHash != "undefined")? arguments.doUseHash: true;
-		this.duration = (typeof arguments.duration != "undefined")? arguments.duration: 500;
-		this.oninit = arguments.oninit || null;
-		this.onpreswitch = arguments.onpreswitch || null;
-		this.onpostswitch = arguments.onpostswitch || null;
-		this.boot = arguments.boot || null;
+		this.handlerAnimation = args.handlerAnimation || null;
+		this.handlerNavigation = args.handlerNavigation || null;
+		this.classCurrent = args.classCurrent || "current";
+		this.doCarousel = (typeof args.doCarousel != "undefined")? args.doCarousel: true;
+		this.doShowHide = (typeof args.doShowHide != "undefined")? args.doShowHide: true;
+		this.doUseHash = (typeof args.doUseHash != "undefined")? args.doUseHash: true;
+		this.duration = (typeof args.duration != "undefined")? args.duration: 500;
+		this.oninit = args.oninit || null;
+		this.onpreswitch = args.onpreswitch || null;
+		this.onpostswitch = args.onpostswitch || null;
+		this.boot = args.boot || null;
 
 		//--derived attributes
 		var fncThis = this;
@@ -72,17 +72,17 @@ __.classes.pagerManagerHash = function(arguments){
 		
 		//--set up event handlers for event manager
 		if(this.handlerNavigation){
-			this.handlerNavigation.onswitch = function(arguments){
-				fncThis.switche(arguments.dataNew);
+			this.handlerNavigation.onswitch = function(args){
+				fncThis.switche(args.dataNew);
 			}
 		}
 		
 		//--set up animation handler
 		if(this.handlerAnimation){
-			this.handlerAnimation.onpostswitch = function(arguments){
+			this.handlerAnimation.onpostswitch = function(args){
 				fncThis.inprogress = false;
 				this.queue.dequeue();
-				fncThis.idCurrent = "#"+arguments.elmTo.attr("id");
+				fncThis.idCurrent = "#"+args.elmTo.attr("id");
 				fncThis.queue.dequeue();
 			}
 		}

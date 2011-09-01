@@ -25,18 +25,18 @@ x$(window).load(function(){
 /*----------
 ©ticker
 ----------*/
-__.classes.ticker = function(arguments){
-		if(typeof arguments == "undefined") arguments = {};
+__.classes.ticker = function(args){
+		if(typeof args == "undefined") args = {};
 		//--optional attributes
-		this.boot = arguments.boot || null;
-		this.duration = (typeof arguments.duration != "undefined")? arguments.duration : 10000;
-		this.elmAnimated = arguments.elmAnimated || null;
-		this.elmContainer = arguments.elmContainer || null;
-		this.elmsItems = arguments.elmsItems || null;
-		this.oninit = arguments.oninit || null;
-		this.styleAnimated = (typeof arguments.styleAnimated != "undefined")? arguments.styleAnimated : {position: "absolute", top: this.elmContainer[0].style.paddingTop, left: this.elmContainer[0].style.paddingLeft};
-		this.styleItems = (typeof arguments.styleItems != "undefined")? arguments.styleItems : {display: "inline"};
-		this.styleContainer = (typeof arguments.styleContainer != "undefined")? arguments.styleContainer : {position: "relative", overflow: "hidden", "white-space": "nowrap", height: this.elmsItems[0].offsetHeight+"px"};
+		this.boot = args.boot || null;
+		this.duration = (typeof args.duration != "undefined")? args.duration : 10000;
+		this.elmAnimated = args.elmAnimated || null;
+		this.elmContainer = args.elmContainer || null;
+		this.elmsItems = args.elmsItems || null;
+		this.oninit = args.oninit || null;
+		this.styleAnimated = (typeof args.styleAnimated != "undefined")? args.styleAnimated : {position: "absolute", top: this.elmContainer[0].style.paddingTop, left: this.elmContainer[0].style.paddingLeft};
+		this.styleItems = (typeof args.styleItems != "undefined")? args.styleItems : {display: "inline"};
+		this.styleContainer = (typeof args.styleContainer != "undefined")? args.styleContainer : {position: "relative", overflow: "hidden", "white-space": "nowrap", height: this.elmsItems[0].offsetHeight+"px"};
 		
 		//--derived attributes
 		this.widthContainer = this.elmContainer[0].offsetWidth;

@@ -12,22 +12,22 @@ __.pager = new __.classes.Pager({elmsPages: jQuery("#maincontent .tabpage"), elm
 /*-------
 ©Pager
 -------- */
-__.classes.Pager = function(arguments){
+__.classes.Pager = function(args){
 		//--required attributes
 //->return
 		//--optional attributes
-		this.attrId = arguments.attrId || "id";
-		this.boot = arguments.boot || {};
-		this.callbackGetNavigationForID = arguments.callbackGetNavigationForID || this.defaultCallbackGetNavigationForID;
-		this.callbackGetPageForID = arguments.callbackGetPageForID || this.defaultCallbackGetPageForID;
-		this.classCurrentNavigation = arguments.classCurrentNavigation || "current";
-		this.classCurrentPage = arguments.classCurrentPage || "current";
-		this.doCarousel = (typeof arguments.doCarousel != "undefined")? arguments.doCarousel: true;
-		this.elmsNavigation = arguments.elmsNavigation || null;
-		this.elmsPages = arguments.elmsPages || null;
-		this.idInitial = arguments.idInitial || null;
-		this.oninit = arguments.oninit || null;
-		this.onswitch = arguments.onswitch || null;
+		this.attrId = args.attrId || "id";
+		this.boot = args.boot || {};
+		this.callbackGetNavigationForID = args.callbackGetNavigationForID || this.defaultCallbackGetNavigationForID;
+		this.callbackGetPageForID = args.callbackGetPageForID || this.defaultCallbackGetPageForID;
+		this.classCurrentNavigation = args.classCurrentNavigation || "current";
+		this.classCurrentPage = args.classCurrentPage || "current";
+		this.doCarousel = (typeof args.doCarousel != "undefined")? args.doCarousel: true;
+		this.elmsNavigation = args.elmsNavigation || null;
+		this.elmsPages = args.elmsPages || null;
+		this.idInitial = args.idInitial || null;
+		this.oninit = args.oninit || null;
+		this.onswitch = args.onswitch || null;
 
 		//--derived attributes
 		this.inProgress = true;
@@ -60,8 +60,8 @@ __.classes.Pager = function(arguments){
 				this.elmPageCurrent.addClass(this.classCurrentPage);
 		}
 	}
-	__.classes.Pager.prototype.switche = function(arguments){
-		var localvars = arguments || {};
+	__.classes.Pager.prototype.switche = function(args){
+		var localvars = args|| {};
 		if(this.onswitch)
 			this.onswitch.call(this, localvars);
 		else{

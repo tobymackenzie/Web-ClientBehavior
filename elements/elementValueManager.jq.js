@@ -24,14 +24,14 @@ $(document).ready(function(){
 /*----------
 ©elementValueManager
 ----------*/
-__.classes.elementValueManager = function(arguments){
+__.classes.elementValueManager = function(args){
 		//--require attributes
-		this.element = arguments.element || null; if(!this.element) return false; else if(this.element.length != 1) return false;
+		this.element = args.element || null; if(!this.element) return false; else if(this.element.length != 1) return false;
 
 		//--optional attributes
-		this.dataSourceValue = arguments.dataSourceValue || null;
-		this.dataSource = arguments.dataSource || "value";
-		this.event = arguments.event || "change";
+		this.dataSourceValue = args.dataSourceValue || null;
+		this.dataSource = args.dataSource || "value";
+		this.event = args.event || "change";
 
 		//--derived attributes
 		fncThis = this;

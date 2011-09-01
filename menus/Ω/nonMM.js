@@ -36,10 +36,10 @@ function scrOnload(){
 TM suckerfish init
 *********** */
 // get all toplevel and submenu items in associatiative array
-function tmlibGetAllMenuPieces(arguments){
-	var fncElmsWrapper = (arguments.wrapperElements)? arguments.wrapperElements : null;
-	var fncToplevelClass = (arguments.toplevelClass)? arguments.toplevelClass : "toplevel";
-	var fncSubmenuClass = (arguments.submenuClass)? arguments.submenuClass : "submenu";
+function tmlibGetAllMenuPieces(args){
+	var fncElmsWrapper = (args.wrapperElements)? args.wrapperElements : null;
+	var fncToplevelClass = (args.toplevelClass)? args.toplevelClass : "toplevel";
+	var fncSubmenuClass = (args.submenuClass)? args.submenuClass : "submenu";
 
 	var fncReturnArray = new Array();
 	

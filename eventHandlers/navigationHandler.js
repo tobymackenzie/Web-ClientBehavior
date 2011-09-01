@@ -13,10 +13,10 @@ __.scrOnload = function(){
 			,oninit: function(){
 				this.boot.elmVideoPlayerYoutube.style.left = __.cfg.offscreen;
 			}
-			,onswitch: function(arguments){
+			,onswitch: function(args){
 
 				var fncThis = this;
-				var elmThis = arguments.elmThis;
+				var elmThis = args.elmThis;
 				var elmID = elmThis.getAttribute(fncThis.boot.attrID);
 				if(elmThis.getAttribute(fncThis.boot.attrType) == "youtube"){
 					fncThis.boot.elmVideoPlayerLocal.style.left = __.cfg.offscreen;
@@ -36,18 +36,18 @@ __.scrOnload = function(){
 /*-------
 ©navigationHandler
 -------- */
-__.classes.navigationHandler = function(arguments){
+__.classes.navigationHandler = function(args){
 		//--optional attributes
-		this.elmsItems = arguments.elmsItems || null;
-		this.attrData = arguments.attrData || "href";
-		this.boot = arguments.boot || null;
-		this.classCurrent = arguments.classCurrent || "current";
-		this.doPreventDefault = (typeof arguments.doPreventDefault != "undefined")? arguments.doPreventDefault: true;
-		this.oninit = arguments.oninit || null;
-		this.onpreswitch = arguments.onpreswitch || null;
-		this.onpreswitchtest = arguments.onpreswitchtest || null;
-		this.onpostswitch = arguments.onpostswitch || null;
-		this.onswitch = arguments.onswitch || null;
+		this.elmsItems = args.elmsItems || null;
+		this.attrData = args.attrData || "href";
+		this.boot = args.boot || null;
+		this.classCurrent = args.classCurrent || "current";
+		this.doPreventDefault = (typeof args.doPreventDefault != "undefined")? args.doPreventDefault: true;
+		this.oninit = args.oninit || null;
+		this.onpreswitch = args.onpreswitch || null;
+		this.onpreswitchtest = args.onpreswitchtest || null;
+		this.onpostswitch = args.onpostswitch || null;
+		this.onswitch = args.onswitch || null;
 
 		//--derived attributes
 		this.inprogress = false;
@@ -59,7 +59,7 @@ __.classes.navigationHandler = function(arguments){
 		if(this.oninit)
 			this.oninit.call(this);
 	}
-	__.classes.navigationHandler.prototype.attachEvents = function(arguments){
+	__.classes.navigationHandler.prototype.attachEvents = function(args){
 		var fncThis = this;
 		
 		var fncCallback = function(event, arg2, arg3, arg4){

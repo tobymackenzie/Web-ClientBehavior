@@ -27,17 +27,17 @@ allows binding of events to hashchange, and will hashify urls so that they can b
 /*-------
 ©hashHandler
 -------- */
-__.classes.hashHandler = function(arguments){
+__.classes.hashHandler = function(args){
 		//--required attributes
 //->return
 		//--optional attributes
-		this.boot = arguments.boot || {};
-		this.elmsContainer = arguments.elmsContainer || null;
-		this.onhashchange = arguments.onhashchange || null;
-		this.oninit = arguments.oninit || null;
-		this.selectorAnchors = arguments.selectorAnchors || "a";
-		this.selectorExclude = arguments.selectorExclude || null;
-		this.selectorInclude = arguments.selectorInclude || null;
+		this.boot = args.boot || {};
+		this.elmsContainer = args.elmsContainer || null;
+		this.onhashchange = args.onhashchange || null;
+		this.oninit = args.oninit || null;
+		this.selectorAnchors = args.selectorAnchors || "a";
+		this.selectorExclude = args.selectorExclude || null;
+		this.selectorInclude = args.selectorInclude || null;
 
 		//--derived attributes
 		var fncThis = this;

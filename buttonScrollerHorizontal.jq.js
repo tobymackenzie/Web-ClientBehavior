@@ -29,21 +29,21 @@ if(typeof $ !== 'undefined')
 /*-----------
 ©buttonScrollerHorizontal
 ----------*/
-__.classes.buttonScrollerHorizontal = function(arguments){
+__.classes.buttonScrollerHorizontal = function(args){
 		//--optional arguments
-		this.boot = arguments.boot || null;
-		this.doUpdateWidthOnWindowResize = arguments.doUpdateWidthOnWindowResize || false;
-		this.duration = arguments.duration || 100;
-		if(arguments.elmWrapper)
-			this.setWrapper(arguments.elmWrapper);
+		this.boot = args.boot || null;
+		this.doUpdateWidthOnWindowResize = args.doUpdateWidthOnWindowResize || false;
+		this.duration = args.duration || 100;
+		if(args.elmWrapper)
+			this.setWrapper(args.elmWrapper);
 		else
 			this.elmWrapper = null;
-		this.htmlButtonContainer = arguments.htmlButtonContainer || null;
-		this.htmlButtonPrevious = arguments.htmlButtonPrevious || null;
-		this.htmlButtonNext = arguments.htmlButtonNext || null;
-		this.increment = arguments.increment || 100;
-		this.oninit = arguments.oninit || null;
-		this.onresize = arguments.onresize || null;
+		this.htmlButtonContainer = args.htmlButtonContainer || null;
+		this.htmlButtonPrevious = args.htmlButtonPrevious || null;
+		this.htmlButtonNext = args.htmlButtonNext || null;
+		this.increment = args.increment || 100;
+		this.oninit = args.oninit || null;
+		this.onresize = args.onresize || null;
 		
 		//--derived members
 		var fncThis = this;
@@ -74,8 +74,8 @@ __.classes.buttonScrollerHorizontal = function(arguments){
 		}
 		
 		//--set container
-		if(arguments.elmContainer)
-			this.setContainer(arguments.elmContainer);
+		if(args.elmContainer)
+			this.setContainer(args.elmContainer);
 		else
 			this.elmContainer = null;
 		

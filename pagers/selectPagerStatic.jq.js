@@ -36,16 +36,16 @@ if(typeof $ !== "undefined"){
 /*-------------
 ©selectpager
 ------------*/
-__.classes.selectPagerStatic = function(arguments){
-		this.elmsPages = arguments.elmsPages || false; if(!this.elmsPages || this.elmsPages.length < 1) return false;
+__.classes.selectPagerStatic = function(args){
+		this.elmsPages = args.elmsPages || false; if(!this.elmsPages || this.elmsPages.length < 1) return false;
 //-> return
-		this.elmSelect = arguments.elmSelect || false; if(!this.elmSelect) return false;
+		this.elmSelect = args.elmSelect || false; if(!this.elmSelect) return false;
 //-> return
-		this.classCurrentPage = arguments.classCurrentPage || "current";
-		this.duration = (arguments.duration !== undefined) ? arguments.duration : 500;
-		this.keepHeight = arguments.keepHeight || false;
+		this.classCurrentPage = args.classCurrentPage || "current";
+		this.duration = (args.duration !== undefined) ? args.duration : 500;
+		this.keepHeight = args.keepHeight || false;
 		if(__.isIphone() == true) this.keepHeight = false;
-		this.callbackSetHashForValue = arguments.callbackSetHashForValue || function(argValue){
+		this.callbackSetHashForValue = args.callbackSetHashForValue || function(argValue){
 			return "/"+argValue;
 		}
 

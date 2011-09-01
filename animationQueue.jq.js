@@ -51,51 +51,51 @@ if(typeof $ !== 'undefined'){
 /*-------------
 ©animationQueue
 ------------*/
-__.classes.animationQueue = function(arguments){
-		if(typeof arguments == "undefined") arguments = {};
+__.classes.animationQueue = function(args){
+		if(typeof args== "undefined") args= {};
 		//--optional variables
-		this.name = arguments.name || "tmlib";
-		this.autoDequeue = arguments.autoDequeue || false;
+		this.name = args.name || "tmlib";
+		this.autoDequeue = args.autoDequeue || false;
 		
 		//--derived variables
 		this.objQueue = jQuery({});
 	}
-	__.classes.animationQueue.prototype.queue = function(arguments){
+	__.classes.animationQueue.prototype.queue = function(args){
 		var fncThis = this;
-		var fncName = arguments.name || this.name;
-		var fncCallback = arguments.callback || arguments; //-arguments is (assumed) the callback if not set explicitely
-		var fncAutoDequeue = (typeof arguments.autoDequeue != "undefined")? arguments.autoDequeue: fncThis.autoDequeue;
+		var fncName = args.name || this.name;
+		var fncCallback = args.callback || args; //-arguments is (assumed) the callback if not set explicitely
+		var fncAutoDequeue = (typeof args.autoDequeue != "undefined")? args.autoDequeue: fncThis.autoDequeue;
 		var fncQueueCallback = (fncAutoDequeue)
 			?function(){
-					var fncArguments = arguments;
+					var fncArgs= args;
 					var internalThis = this;
-					fncCallback.apply(internalThis, fncArguments);
+					fncCallback.apply(internalThis, fncArgs);
 					fncThis.dequeue();
 				}
 			:fncCallback
 		;
 		this.objQueue.queue(fncName, fncQueueCallback);
 	}
-	__.classes.animationQueue.prototype.dequeue = function(arguments){
-		if(typeof arguments != "undefined")
-			var fncName = arguments.name || arguments;
+	__.classes.animationQueue.prototype.dequeue = function(args){
+		if(typeof args!= "undefined")
+			var fncName = args.name || args;
 		else
 			var fncName = this.name;
 		this.objQueue.dequeue(fncName);
 	}
-	__.classes.animationQueue.prototype.unshift = function(arguments){
-		if(typeof arguments != "undefined"){
-			var fncCallback = arguments.callback || arguments;
-			var fncName = arguments.name || this.name;
+	__.classes.animationQueue.prototype.unshift = function(args){
+		if(typeof args!= "undefined"){
+			var fncCallback = args.callback || args;
+			var fncName = args.name || this.name;
 		}
 		if(typeof fncCallback == "undefined" || !fncCallback) return false;
 //->return
 		var fncQueue = this.objQueue.queue(fncName);
 		fncQueue.unshift(fncCallback);
 	}
-	__.classes.animationQueue.prototype.clearQueue = function(arguments){
-		if(typeof arguments != "undefined")
-			var fncName = arguments.name || arguments;
+	__.classes.animationQueue.prototype.clearQueue = function(args){
+		if(typeof args != "undefined")
+			var fncName = args.name || args;
 		else
 			var fncName = this.name;
 		this.objQueue.clearQueue(fncName);

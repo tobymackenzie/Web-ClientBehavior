@@ -18,16 +18,16 @@ if(typeof $ !== 'undefined'){
 /* ******
 ©toggler
 ********* */
-__.classes.Toggler = function(arguments){
-		this.elmsItems = arguments.elmsItems || null;
-		this.classOpen = arguments.classOpen || "open";
-		this.classClosed = arguments.classClosed || "closed";
-		this.event = arguments.event || "click";
-		this.closeoninit = arguments.closeoninit || false;
-		this.onopen = arguments.onopen || null;
-		this.onclose = arguments.onclose || null;
-		this.ontoggle = arguments.ontoggle || null;
-		this.selectorElmClick = arguments.selectorElmClick || null;
+__.classes.Toggler = function(args){
+		this.elmsItems = args.elmsItems || null;
+		this.classOpen = args.classOpen || "open";
+		this.classClosed = args.classClosed || "closed";
+		this.event = args.event || "click";
+		this.closeoninit = args.closeoninit || false;
+		this.onopen = args.onopen || null;
+		this.onclose = args.onclose || null;
+		this.ontoggle = args.ontoggle || null;
+		this.selectorElmClick = args.selectorElmClick || null;
 		
 		if(this.closeoninit)
 			this.elmsItems.not("."+this.classClosed).not("."+this.classOpen).addClass(this.classClosed);

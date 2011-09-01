@@ -30,18 +30,18 @@ $(document).ready(function(){
 ©slideOpen
 depends on: jquery, tmlib
 ------------*/
-__.classes.slideOpen = function(arguments){
-		this.element = arguments.element || null; if(!this.element) return false;
-		this.strToggler = (arguments.strToggler !== undefined)? arguments.strToggler: "more";
-		this.strTogglerClosed = (arguments.strTogglerClosed !== undefined)? arguments.strTogglerClosed: "View ";
-		this.strTogglerOpened = (arguments.strTogglerOpened !== undefined)? arguments.strTogglerOpened: "Hide ";
-		this.classOpen = arguments.classOpen || "open";
-		this.classClosed = arguments.classClosed || "closed";
-		this.callbackInit = arguments.callbackInit || false;
-		this.callbackPlaceToggler = arguments.callbackPlaceToggler || null;
-		this.callbackOpen = arguments.callbackOpen || null;
-		this.callbackClose = arguments.callbackClose || null;
-		this.duration = arguments.duration || 500;
+__.classes.slideOpen = function(args){
+		this.element = args.element || null; if(!this.element) return false;
+		this.strToggler = (args.strToggler !== undefined)? args.strToggler: "more";
+		this.strTogglerClosed = (args.strTogglerClosed !== undefined)? args.strTogglerClosed: "View ";
+		this.strTogglerOpened = (args.strTogglerOpened !== undefined)? args.strTogglerOpened: "Hide ";
+		this.classOpen = args.classOpen || "open";
+		this.classClosed = args.classClosed || "closed";
+		this.callbackInit = args.callbackInit || false;
+		this.callbackPlaceToggler = args.callbackPlaceToggler || null;
+		this.callbackOpen = args.callbackOpen || null;
+		this.callbackClose = args.callbackClose || null;
+		this.duration = args.duration || 500;
 		
 		var fncThis = this;
 		this.element.css("display", "none").addClass(this.classClosed).removeClass(this.classOpen);

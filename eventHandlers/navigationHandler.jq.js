@@ -11,12 +11,12 @@ handles clicks on a selection of elements
 		if(mainnavigationItems.length > 0){
 			__.mainnavigationHandler = new __.classes.navigationHandler({
 				elmsItems: mainnavigationItems
-				,onpreswitch: function(arguments){
+				,onpreswitch: function(args){
 					var fncThis = this;
-					var urlAjax = arguments.newItem.find(this.selectorElmForData).attr(this.attrData);
+					var urlAjax = args.newItem.find(this.selectorElmForData).attr(this.attrData);
 					if(urlAjax.substring(0,1) == "#")
 						urlAjax = urlAjax.substring(1, urlAjax.length - 1);
-					var pagetype = arguments.newItem.attr(this.boot.attrType);
+					var pagetype = args.newItem.attr(this.boot.attrType);
 					__.router.callRoute({path: urlAjax, arguments: {url: urlAjax}});
 				}
 				,boot: {attrType: "data-pagetype"}
@@ -27,24 +27,24 @@ handles clicks on a selection of elements
 /*---------
 ©navigationHandler
 ----------*/
-__.classes.navigationHandler = function(arguments){
+__.classes.navigationHandler = function(args){
 		//--required attributes
-		this.elmsItems = arguments.elmsItems || null;
+		this.elmsItems = args.elmsItems || null;
 //->return
 		if(!this.elmsItems || this.elmsItems.length < 1) return false;
 
 		//--optional attributes
-		this.attrData = arguments.attrData || "href";
-		this.boot = arguments.boot || null;
-		this.classCurrent = arguments.classCurrent || "current";
-		this.doPreventDefault = (typeof arguments.doPreventDefault != "undefined")? arguments.doPreventDefault: true;
-		this.onpreswitch = arguments.onpreswitch || null;
-		this.onpreswitchtest = arguments.onpreswitchtest || null;
-		this.onpostswitch = arguments.onpostswitch || null;
-		this.onswitch = arguments.onswitch || null;
-		this.selectorElmForEvent = arguments.selectorElmForEvent || "a";
-		this.selectorElmForData = arguments.selectorElmForData || "a";
-		this.selectorItemContainer = arguments.selectorListItemContainer || "li";
+		this.attrData = args.attrData || "href";
+		this.boot = args.boot || null;
+		this.classCurrent = args.classCurrent || "current";
+		this.doPreventDefault = (typeof args.doPreventDefault != "undefined")? args.doPreventDefault: true;
+		this.onpreswitch = args.onpreswitch || null;
+		this.onpreswitchtest = args.onpreswitchtest || null;
+		this.onpostswitch = args.onpostswitch || null;
+		this.onswitch = args.onswitch || null;
+		this.selectorElmForEvent = args.selectorElmForEvent || "a";
+		this.selectorElmForData = args.selectorElmForData || "a";
+		this.selectorItemContainer = args.selectorListItemContainer || "li";
 
 		//--derived attributes
 		this.inprogress = false;
@@ -53,7 +53,7 @@ __.classes.navigationHandler = function(arguments){
 		//--attach events
 		this.attachEvents(this.elmsItems);
 	}
-	__.classes.navigationHandler.prototype.attachEvents = function(arguments){
+	__.classes.navigationHandler.prototype.attachEvents = function(args){
 		var fncThis = this;
 		
 		if(fncThis.selectorElmForEvent == "this"){

@@ -53,32 +53,32 @@ if(typeof $ !== 'undefined')
 /*--------
 ©pagerSlidingHash
 -------*/
-__.classes.pagerSlidingHash = function(arguments){
+__.classes.pagerSlidingHash = function(args){
 		var fncThis = this;
-		this.elmsPages = arguments.elmsPages || null;
-		this.elmNavigation = arguments.elmNavigation || null;
-		this.elmPreviousButton = arguments.elmPreviousButton || null;
-		this.elmNextButton = arguments.elmNextButton || null;
-		this.elmsItemNavigation = arguments.elmsItemNavigation || null;
-		this.elmKeepHeight = arguments.elmKeepHeight || false;
+		this.elmsPages = args.elmsPages || null;
+		this.elmNavigation = args.elmNavigation || null;
+		this.elmPreviousButton = args.elmPreviousButton || null;
+		this.elmNextButton = args.elmNextButton || null;
+		this.elmsItemNavigation = args.elmsItemNavigation || null;
+		this.elmKeepHeight = args.elmKeepHeight || false;
 			if(__.isIphone() == true) this.elmKeepHeight = false;
-		this.itemSelector = (arguments.itemSelector !== undefined)? arguments.itemSelector: "item";
-		this.classCurrentItem = (arguments.classCurrentItem !== undefined)? arguments.classCurrentItem: "current";
-		this.classPreviousItem = (arguments.classPreviousItem !== undefined)? arguments.classPreviousItem: "previous";
-		this.classNextItem = (arguments.classNextItem !== undefined)? arguments.classNextItem: "next";
-		this.classCurrentNavItem = arguments.classCurrentNavItem || "current";
-		this.classDisabled = arguments.classDisabled || "disabled";
-		this.classEnabled = arguments.classEnabled || "enabled";
-		this.regexHash = arguments.regexHash || false;
-		this.duration = (arguments.duration !== undefined)? arguments.duration: 500;
-		this.contentWidth = (arguments.contentWidth !== undefined)? arguments.contentWidth: 960;
-		this.contentLeft = arguments.contentLeft || 0;
-		this.elmNavigationPointer = arguments.elmNavigationPointer || null;
-		this.elmNavigationOrientation = arguments.elmNavigationOrientation || "horizontal";
-		this.oninit = arguments.oninit || null;
-		this.onpreslide = arguments.onpreslide || null;
-		this.onpostslide = arguments.onpostslide || null;
-		this.boot = arguments.boot || null;
+		this.itemSelector = (args.itemSelector !== undefined)? args.itemSelector: "item";
+		this.classCurrentItem = (args.classCurrentItem !== undefined)? args.classCurrentItem: "current";
+		this.classPreviousItem = (args.classPreviousItem !== undefined)? args.classPreviousItem: "previous";
+		this.classNextItem = (args.classNextItem !== undefined)? args.classNextItem: "next";
+		this.classCurrentNavItem = args.classCurrentNavItem || "current";
+		this.classDisabled = args.classDisabled || "disabled";
+		this.classEnabled = args.classEnabled || "enabled";
+		this.regexHash = args.regexHash || false;
+		this.duration = (args.duration !== undefined)? args.duration: 500;
+		this.contentWidth = (args.contentWidth !== undefined)? args.contentWidth: 960;
+		this.contentLeft = args.contentLeft || 0;
+		this.elmNavigationPointer = args.elmNavigationPointer || null;
+		this.elmNavigationOrientation = args.elmNavigationOrientation || "horizontal";
+		this.oninit = args.oninit || null;
+		this.onpreslide = args.onpreslide || null;
+		this.onpostslide = args.onpostslide || null;
+		this.boot = args.boot || null;
 		
 		//--set up current pages
 		if(window.location.hash){
@@ -101,14 +101,14 @@ __.classes.pagerSlidingHash = function(arguments){
 		
 		//--set up page offsets
 /* for whole body
-		this.pageOffsetLeft = (arguments.contentLeft)? 0: this.elmCurrent.offset().left;
-		if(!arguments.contentLeft){
-			this.pageOffsetRight = (arguments.contentLeft)?false:$("body").outerWidth();
+		this.pageOffsetLeft = (args.contentLeft)? 0: this.elmCurrent.offset().left;
+		if(!args.contentLeft){
+			this.pageOffsetRight = (args.contentLeft)?false:$("body").outerWidth();
 			
 		}
 */
-		this.pageOffsetLeft = arguments.pageOffsetLeft || 0;
-		this.pageOffsetRight = arguments.pageOffsetRight || 0;
+		this.pageOffsetLeft = args.pageOffsetLeft || 0;
+		this.pageOffsetRight = args.pageOffsetRight || 0;
 		
 		//--set up non-current pages
 		var elmsPrevious = this.elmsPages.filter("."+this.classCurrentItem).prevAll()

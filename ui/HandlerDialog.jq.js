@@ -15,15 +15,15 @@ jqueryui: dialog
 /*---------
 @HandlerDialog
 ----------*/
-__.classes.HandlerDialog = function(arguments){
-		if(typeof arguments == "undefined") var arguments = {};
+__.classes.HandlerDialog = function(args){
+		if(typeof args== "undefined") var args= {};
 		var fncThis = this;
 		//--required attributes
 //->return
 		//--optional attributes
-		this.ajaxData = jQuery.extend({ajaxcall: 1}, (arguments.ajaxData || null));
-		this.boot = arguments.boot || {};
-		this.classLoading = arguments.classLoading || "loading";
+		this.ajaxData = jQuery.extend({ajaxcall: 1}, (args.ajaxData || null));
+		this.boot = args.boot || {};
+		this.classLoading = args.classLoading || "loading";
 		this.dialogArguments = {
 			autoOpen: false
 			,close: function(event, ui){
@@ -33,16 +33,16 @@ __.classes.HandlerDialog = function(arguments){
 				}
 			}
 		};
-		this.dialogArguments = jQuery.extend(this.dialogArguments, (arguments.dialogArguments || {}));
-		this.doManageWidth = (typeof arguments.doManageWidth != "undefined")? arguments.doManageWidth: true;
-		this.doManageHeight = (typeof arguments.doManageHeight != "undefined")? arguments.doManageHeight: true;
-		this.oninit = arguments.oninit || null;
-		this.onshow = arguments.onshow || null;
-		this.onsuccess = arguments.onsuccess || null;
-		this.widthAdded = arguments.widthAdded || 0;
-		this.widthScrollbar = (typeof arguments.widthScrollbar != "undefined")? arguments.widthScrollbar: 25;
-		this.heightMax = arguments.heightMax || 500;
-		this.url = arguments.url || null;
+		this.dialogArguments = jQuery.extend(this.dialogArguments, (args.dialogArguments || {}));
+		this.doManageWidth = (typeof args.doManageWidth != "undefined")? args.doManageWidth: true;
+		this.doManageHeight = (typeof args.doManageHeight != "undefined")? args.doManageHeight: true;
+		this.oninit = args.oninit || null;
+		this.onshow = args.onshow || null;
+		this.onsuccess = args.onsuccess || null;
+		this.widthAdded = args.widthAdded || 0;
+		this.widthScrollbar = (typeof args.widthScrollbar != "undefined")? args.widthScrollbar: 25;
+		this.heightMax = args.heightMax || 500;
+		this.url = args.url || null;
 
 		this.request = null;
 		this.elmDialog = null;
@@ -89,17 +89,17 @@ __.classes.HandlerDialog = function(arguments){
 		if(this.onshow)
 			this.onshow.call(this);
 	}
-	__.classes.HandlerDialog.prototype.showForAjax = function(arguments){
+	__.classes.HandlerDialog.prototype.showForAjax = function(args){
 		var fncThis = this;
 		this.initDialog();
-		if(typeof arguments.url == "undefined")
-			arguments.url = this.url;
-		arguments.data = jQuery.extend({}, this.ajaxData, (arguments.data || null));
-		if(typeof arguments.success == "undefined")
-			arguments.success = function(data){ fncThis.callbackAjaxSuccess(data, this) };
+		if(typeof args.url == "undefined")
+			args.url = this.url;
+		args.data = jQuery.extend({}, this.ajaxData, (args.data || null));
+		if(typeof args.success == "undefined")
+			args.success = function(data){ fncThis.callbackAjaxSuccess(data, this) };
 
 		this.elmDialog.addClass(this.classLoading).html("").dialog("open");
-		this.request = jQuery.ajax(arguments);
+		this.request = jQuery.ajax(args);
 	}
 	__.classes.HandlerDialog.prototype.callbackAjaxSuccess = function(argData, argContext){
 		if(this.onsuccess)

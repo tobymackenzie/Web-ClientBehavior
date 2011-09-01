@@ -16,23 +16,23 @@ handle relative navigation buttons (next and previous)
 /*----------
 ©relativeNavigationHandler
 ---------*/
-__.classes.relativeNavigationHandler = function(arguments){
+__.classes.relativeNavigationHandler = function(args){
 		//--optional arguments
-		this.attrForLinkManagement = arguments.attrForLinkManagement || "href";
-		this.boot = arguments.boot || null;
-		this.elmWrapper = arguments.elmWrapper || null;
-		this.eventsBindTo = (arguments.eventsBindTo)? arguments.eventsBindTo: "click touch";
-		this.elmButtonPrevious = arguments.elmButtonPrevious || null;
-		this.elmButtonNext = arguments.elmButtonNext || null;
-		this.htmlButtonContainer = arguments.htmlButtonContainer || null;
-		this.htmlButtonPrevious = arguments.htmlButtonPrevious || null;
-		this.htmlButtonNext = arguments.htmlButtonNext || null;
-		this.onactivateprevious = arguments.onactivateprevious || null;
-		this.onactivatenext = arguments.onactivatenext || null;
-		this.oninit = arguments.oninit || null;
-		this.selectorElmForLinkManagement = arguments.selectorElmForLinkManagement || null;
-		this.testShowNext = arguments.testShowNext || function(){return true;};
-		this.testShowPrevious = arguments.testShowPrevious || function(){return true;};
+		this.attrForLinkManagement = args.attrForLinkManagement || "href";
+		this.boot = args.boot || null;
+		this.elmWrapper = args.elmWrapper || null;
+		this.eventsBindTo = (args.eventsBindTo)? args.eventsBindTo: "click touch";
+		this.elmButtonPrevious = args.elmButtonPrevious || null;
+		this.elmButtonNext = args.elmButtonNext || null;
+		this.htmlButtonContainer = args.htmlButtonContainer || null;
+		this.htmlButtonPrevious = args.htmlButtonPrevious || null;
+		this.htmlButtonNext = args.htmlButtonNext || null;
+		this.onactivateprevious = args.onactivateprevious || null;
+		this.onactivatenext = args.onactivatenext || null;
+		this.oninit = args.oninit || null;
+		this.selectorElmForLinkManagement = args.selectorElmForLinkManagement || null;
+		this.testShowNext = args.testShowNext || function(){return true;};
+		this.testShowPrevious = args.testShowPrevious || function(){return true;};
 		
 		
 		//--derived members
@@ -44,14 +44,14 @@ __.classes.relativeNavigationHandler = function(arguments){
 		}else{
 			this.elmButtonContainer = this.elmWrapper;
 		}
-		if(arguments.elmButtonPrevious){
-			this.elmButtonPrevious = arguments.elmButtonPrevious;
+		if(args.elmButtonPrevious){
+			this.elmButtonPrevious = args.elmButtonPrevious;
 		}else if(this.htmlButtonPrevious){
 			this.elmButtonPrevious = jQuery(this.htmlButtonPrevious);
 			this.elmButtonContainer.append(this.elmButtonPrevious);
 		}
-		if(arguments.elmButtonNext){
-			this.elmButtonNext = arguments.elmButtonNext;
+		if(args.elmButtonNext){
+			this.elmButtonNext = args.elmButtonNext;
 		}else if(this.htmlButtonNext){
 			this.elmButtonNext = jQuery(this.htmlButtonNext);
 			this.elmButtonContainer.append(this.elmButtonNext);

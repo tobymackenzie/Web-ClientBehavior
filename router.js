@@ -19,9 +19,9 @@ if(typeof $ !== 'undefined'){
 			}
 			,ajaxURLLoader: new __.classes.pagerAjax({
 					data: {ajaxtype: "backgroundimage"}
-					,onpreajaxcall: function(arguments){
+					,onpreajaxcall: function(args){
 						var fncThis = this;
-						var fncAjaxParameters = arguments;
+						var fncAjaxParameters = args;
 						if(this.elmWrapForAnimation && this.elmWrapForAnimation.length > 0){
 							this.elmWrapForAnimation.fadeOut(fncThis.duration, function(){
 								fncThis.loadAjaxData(fncAjaxParameters);
@@ -51,9 +51,9 @@ if(typeof $ !== 'undefined'){
 								__.scrollerCategoryImages.boot.elmWrapInner = $("#imagenavigationwrapinner");
 						}
 					}
-					,onpreajaxcall: function(arguments){
+					,onpreajaxcall: function(args){
 						var fncThis = this;
-						var fncAjaxParameters = arguments;
+						var fncAjaxParameters = args;
 						if(this.elmWrapForAnimation && this.elmWrapForAnimation.length > 0){
 							this.elmWrapForAnimation.slideUp(fncThis.duration, function(){
 								fncThis.loadAjaxData(fncAjaxParameters);
@@ -87,31 +87,31 @@ if(typeof $ !== 'undefined'){
 		__.router.addRoute({name: "home", path: "/", action: "loadPageHome"});
 		
 		//--route actions
-		__.router.addAction({name: "loadPageZone", callback: function(arguments){
+		__.router.addAction({name: "loadPageZone", callback: function(args){
 			this.boot.animateNavigationbarNormal.call(this);
 			__.contentPager.boot.pagetypeToLoad = "zone";
-			this.boot.fncBasicLoadURL.call(this, arguments.url);
+			this.boot.fncBasicLoadURL.call(this, args.url);
 		}});
-		__.router.addAction({name: "loadPageList", callback: function(arguments){
+		__.router.addAction({name: "loadPageList", callback: function(args){
 			this.boot.animateNavigationbarNormal.call(this);
 			__.contentPager.boot.pagetypeToLoad = "list";
-			this.boot.fncBasicLoadURL.call(this, arguments.url);
+			this.boot.fncBasicLoadURL.call(this, args.url);
 		}});
-		__.router.addAction({name: "loadPageHome", callback: function(arguments){
+		__.router.addAction({name: "loadPageHome", callback: function(args){
 			this.boot.elmNavigationBar.animate({bottom: __.cfg.bottomNavigationbarHome}, this.duration);
 			__.contentPager.boot.pagetypeToLoad = "list";
-			this.boot.fncBasicLoadURL.call(this, arguments.url);
+			this.boot.fncBasicLoadURL.call(this, args.url);
 		}});
 
 */
 /*-------
 ©router
 -------- */
-__.classes.router = function(arguments){
+__.classes.router = function(args){
 		//--required attributes
 		//--optional attributes
-		this.boot = arguments.boot || null;
-		this.currentRoot = arguments.currentRoot || "null";
+		this.boot = args.boot || null;
+		this.currentRoot = args.currentRoot || "null";
 		
 		//--derived attributes
 		this.routes = [];
@@ -119,9 +119,9 @@ __.classes.router = function(arguments){
 		
 		//--do something
 	}
-	__.classes.router.prototype.addAction = function(arguments){
-		var fncName = arguments.name;
-		var fncCallback = arguments.callback;
+	__.classes.router.prototype.addAction = function(args){
+		var fncName = args.name;
+		var fncCallback = args.callback;
 		this.actions[fncName] = fncCallback;
 	}
 /*
@@ -129,54 +129,54 @@ __.classes.router = function(arguments){
 @param name: name for access by callroute
 @param path (optional): path regex to check
 */
-	__.classes.router.prototype.addRoute = function(arguments){
-		var fncName = arguments.name;
-		var fncArguments = arguments;
-		this.routes[fncName] = fncArguments;
+	__.classes.router.prototype.addRoute = function(args){
+		var fncName = args.name;
+		var fncArgs = args;
+		this.routes[fncName] = fncArgs;
 	}
-	__.classes.router.prototype.callRoute = function(arguments){
+	__.classes.router.prototype.callRoute = function(args){
 		var localvars = {};
-		if(typeof arguments == "string"){
-			localvars.name = arguments;
+		if(typeof args == "string"){
+			localvars.name = args;
 		}else{
-			localvars = arguments;
+			localvars = args;
 		}
 		if(typeof localvars.scope == "undefined")
 			localvars.scope = this;
-		if(typeof localvars.arguments == "undefined")
-			localvars.arguments = {};
+		if(typeof localvars.args== "undefined")
+			localvars.args= {};
 
 		if(typeof localvars.name != "undefined"){
-			localvars.arguments.route = this.routes[localvars.name];
-			this.actions[this.routes[localvars.name].action].call(localvars.scope, localvars.arguments);
+			localvars.args.route = this.routes[localvars.name];
+			this.actions[this.routes[localvars.name].action].call(localvars.scope, localvars.args);
 		}else{
 			this.callRouteForPath(localvars);
 		}
 	}
-	__.classes.router.prototype.callRouteForPath = function(arguments){
-		var localvars = arguments;
+	__.classes.router.prototype.callRouteForPath = function(args){
+		var localvars = args;
 		if(typeof localvars.path == "undefined")
 			return false;
 //->return
 		if(typeof localvars.scope == "undefined")
 			localvars.scope = this;
-		if(typeof localvars.arguments == "undefined")
-			localvars.arguments = {};
+		if(typeof localvars.args== "undefined")
+			localvars.args= {};
 
 		var fncRoute = this.routeLookup(localvars.path);
 		if(fncRoute){
-			localvars.arguments.route = fncRoute;
+			localvars.args.route = fncRoute;
 			if(fncRoute.path.exec){
-				localvars.arguments.matches = fncRoute.path.exec(localvars.path);
+				localvars.args.matches = fncRoute.path.exec(localvars.path);
 				if(typeof fncRoute.matches != "undefined"){
 					for(var key in fncRoute.matches){
 						if(fncRoute.matches.hasOwnProperty(key))
-							localvars.arguments.matches[key] = localvars.arguments.matches[fncRoute.matches[key]];
+							localvars.args.matches[key] = localvars.args.matches[fncRoute.matches[key]];
 
 					}
 				}
 			}
-			this.actions[fncRoute.action].call(localvars.scope, localvars.arguments)
+			this.actions[fncRoute.action].call(localvars.scope, localvars.args)
 		}
 	}
 	__.classes.router.prototype.routeLookup = function(argPath){

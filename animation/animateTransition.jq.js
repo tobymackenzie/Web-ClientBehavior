@@ -56,20 +56,20 @@ arguments:
 /*-------
 ©AnimateTransition
 -------- */
-__.classes.AnimateTransition = function(arguments){
+__.classes.AnimateTransition = function(args){
 		//--required attributes
 //->return
 		//--optional attributes
-		this.boot = arguments.boot || null;
-		this.callbackTransition = (typeof arguments.callbackTransition != "undefined")? arguments.callbackTransition: this.defaultCallbackTransition;
-		this.doMultistep = arguments.doMultistep || false;
-		this.duration = arguments.duration || 500;
-		this.stylesBefore = arguments.stylesBefore || null;
-		this.stylesTransition = arguments.stylesTransition || null;
-		this.stylesAfter = arguments.stylesAfter || null;
-		this.onbefore = (typeof arguments.onbefore != "undefined")? arguments.onbefore: this.defaultOnBefore;
-		this.onafter = (typeof arguments.onafter != "undefined")? arguments.onafter: this.defaultOnAfter;
-		this.oninit = arguments.oninit || null;
+		this.boot = args.boot || null;
+		this.callbackTransition = (typeof args.callbackTransition != "undefined")? args.callbackTransition: this.defaultCallbackTransition;
+		this.doMultistep = args.doMultistep || false;
+		this.duration = args.duration || 500;
+		this.stylesBefore = args.stylesBefore || null;
+		this.stylesTransition = args.stylesTransition || null;
+		this.stylesAfter = args.stylesAfter || null;
+		this.onbefore = (typeof args.onbefore != "undefined")? args.onbefore: this.defaultOnBefore;
+		this.onafter = (typeof args.onafter != "undefined")? args.onafter: this.defaultOnAfter;
+		this.oninit = args.oninit || null;
 
 		//--derived attributes
 		this.inprogress = false;
@@ -78,16 +78,16 @@ __.classes.AnimateTransition = function(arguments){
 		if(this.oninit)
 			this.oninit.call(this);
 	}
-	__.classes.AnimateTransition.prototype.transitionForElements = function(arguments){
-		if(typeof arguments.elements != "undefined")
-			var fncArguments = arguments;
+	__.classes.AnimateTransition.prototype.transitionForElements = function(args){
+		if(typeof args.elements != "undefined")
+			var fncArgs = args;
 		else
-			var fncArguments = {elements: arguments};
+			var fncArgs = {elements: args};
 		var fncThis = this;
 
 		if(fncThis.onbefore)
 			fncThis.queue.queue({callback: function(){
-				fncThis.onbefore.call(fncThis, fncArguments);
+				fncThis.onbefore.call(fncThis, fncArgs);
 			}});
 		if(fncThis.callbackTransition){
 			if(fncThis.doMultistep){
@@ -95,25 +95,25 @@ __.classes.AnimateTransition = function(arguments){
 					if(fncThis.stylesTransition.hasOwnProperty(key)){
 						fncThis.queue.queue({callback: function(fncThis, key){
 							return function(){
-								fncThis.callbackTransition.call(fncThis, fncArguments, key);
+								fncThis.callbackTransition.call(fncThis, fncArgs, key);
 							}
 						}(fncThis, key)});
 					}
 				}
 			}else{
 				fncThis.queue.queue({callback: function(){
-					fncThis.callbackTransition.call(fncThis, fncArguments);
+					fncThis.callbackTransition.call(fncThis, fncArgs);
 				}});
 			}
 		}
 		if(fncThis.onafter)
 			fncThis.queue.queue({callback: function(){
-				fncThis.onafter.call(fncThis, fncArguments);
+				fncThis.onafter.call(fncThis, fncArgs);
 			}});
 		fncThis.queue.dequeue();
 	}
-	__.classes.AnimateTransition.prototype.defaultCallbackTransition = function(arguments, argKey){
-		var fncElements = arguments.elements;
+	__.classes.AnimateTransition.prototype.defaultCallbackTransition = function(args, argKey){
+		var fncElements = args.elements;
 		var fncThis = this;
 		var callbackDQ = function(){
 			fncThis.queue.dequeue();
@@ -147,8 +147,8 @@ __.classes.AnimateTransition = function(arguments){
 			}
 		}
 	}
-	__.classes.AnimateTransition.prototype.defaultOnBefore = function(arguments){
-		var fncElements = arguments.elements;
+	__.classes.AnimateTransition.prototype.defaultOnBefore = function(args){
+		var fncElements = args.elements;
 		var fncThis = this;
 		for(var key in fncElements){
 			if(fncElements.hasOwnProperty(key)){
@@ -162,8 +162,8 @@ __.classes.AnimateTransition = function(arguments){
 		}
 		this.queue.dequeue();
 	}
-	__.classes.AnimateTransition.prototype.defaultOnAfter = function(arguments){
-		var fncElements = arguments.elements;
+	__.classes.AnimateTransition.prototype.defaultOnAfter = function(args){
+		var fncElements = args.elements;
 		for(var key in fncElements){
 			if(fncElements.hasOwnProperty(key)){
 				var lopStylesAfter = this.stylesAfter[key] || null;

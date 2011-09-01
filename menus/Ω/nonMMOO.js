@@ -16,15 +16,15 @@ function scrOnload(){
 /* *********
 ©TMlib suckerfish
 *********** */
-function tmlibSuckerfish(arguments){
-	this.menuID = (arguments.meniID)? arguments.menuID : "topnavigation";
-	this.wrapperClass = (arguments.wrapperClass)? arguments.wrapperClass : "menu_li";
-	this.toplevelClass = (arguments.toplevelClass)? arguments.toplevelClass : "toplevel";
-	this.submenuClass = (arguments.submenuClass)? arguments.submenuClass : "submenu";
-	this.doSizeAndCenter = (arguments.doSizeAndCenter)? arguments.doSizeAndCenter : 0;
-	this.submenuPadding = (arguments.submenuPadding)? arguments.submenuPadding : 0;
-	this.submenuOffset = (arguments.submenuOffset)? arguments.submenuOffset : 0;
-	this.addedWidth = (arguments.addedWidth)? arguments.addedWidth : 0;
+function tmlibSuckerfish(args){
+	this.menuID = (args.meniID)? args.menuID : "topnavigation";
+	this.wrapperClass = (args.wrapperClass)? args.wrapperClass : "menu_li";
+	this.toplevelClass = (args.toplevelClass)? args.toplevelClass : "toplevel";
+	this.submenuClass = (args.submenuClass)? args.submenuClass : "submenu";
+	this.doSizeAndCenter = (args.doSizeAndCenter)? args.doSizeAndCenter : 0;
+	this.submenuPadding = (args.submenuPadding)? args.submenuPadding : 0;
+	this.submenuOffset = (args.submenuOffset)? args.submenuOffset : 0;
+	this.addedWidth = (args.addedWidth)? args.addedWidth : 0;
 	
 	this.elmMenu = elmMenu = document.getElementById(cfgNavigationID);
 	this.elmsWrapper = __.getElementsByClassName({"className": this.wrapperClass, "element": elmMenu});

@@ -40,10 +40,10 @@ function scrOnload(){
 MM suckerfish init
 *********** */
 // get all toplevel and submenu items in associatiative array, only useful for MM type code
-function tmlibGetToplevelAndSubmenuItems(arguments){
-	var fncElmsWrapper = (arguments.wrapperElements)? arguments.wrapperElements : null;
-	var fncToplevelClass = (arguments.toplevelClass)? arguments.toplevelClass : "toplevel";
-	var fncSubmenuClass = (arguments.submenuClass)? arguments.submenuClass : "submenu";
+function tmlibGetToplevelAndSubmenuItems(args){
+	var fncElmsWrapper = (args.wrapperElements)? args.wrapperElements : null;
+	var fncToplevelClass = (args.toplevelClass)? args.toplevelClass : "toplevel";
+	var fncSubmenuClass = (args.submenuClass)? args.submenuClass : "submenu";
 
 	var fncArray = new Array();
 	
@@ -90,11 +90,11 @@ function tmlibMenuDropdownInit(argElmsToplevelAndSubmenu){
 menu sizing
 ****** */
 
-function scrMenuSizing(arguments){
-	var fncElmMenu = (arguments.elmMenu)? arguments.elmMenu : document.getElementById("topnavigation");
-	var fncElmsToplevel = (arguments.elmsToplevel)? arguments.elmsToplevel : tmlibGetElementsByClassName({"className": "toplevel", "element": fncElmMenu});
-	var fncSubmenuClass = (arguments.submenuClass)? arguments.submenuClass : "submenu";
-	var fncSubmenuPadding = (arguments.submenuPadding)? arguments.submenuPadding : 0;
+function scrMenuSizing(args){
+	var fncElmMenu = (args.elmMenu)? args.elmMenu : document.getElementById("topnavigation");
+	var fncElmsToplevel = (args.elmsToplevel)? args.elmsToplevel : tmlibGetElementsByClassName({"className": "toplevel", "element": fncElmMenu});
+	var fncSubmenuClass = (args.submenuClass)? args.submenuClass : "submenu";
+	var fncSubmenuPadding = (args.submenuPadding)? args.submenuPadding : 0;
 	
 	for(var i=0; i < fncElmsToplevel.length; ++i){
 		forElmSubmenu = tmlibGetElementsByClassName({"className": fncSubmenuClass, "element": fncElmsToplevel[i]});

@@ -12,9 +12,9 @@ jquery
 			,htmlWrap: '<div id="maindescriptionwrap"><div id="maindescription"></div></div>'
 			,selectorWrapForAnimation: "#maindescription"
 			,selectorWrapForContent: "#maindescription"
-			,onpreajaxcall: function(arguments){
+			,onpreajaxcall: function(args){
 				var fncThis = this;
-				var fncAjaxParameters = arguments;
+				var fncAjaxParameters = args;
 				var callbackMaincontent = function(){};
 				var callbackMaindescription = function(){};
 				var callback = function(){
@@ -76,23 +76,23 @@ jquery
 /*-------
 ©pagerAjax
 -------- */
-__.classes.pagerAjax = function(arguments){
+__.classes.pagerAjax = function(args){
 		//--required arguments
 
 		//--optional arguments
-		this.boot = arguments.boot || null;
-		this.data = arguments.data || {};
-		this.duration = arguments.duration || 500;
-		this.elmContainer = arguments.elmContainer || jQuery("body");
-		this.elmWrap = arguments.elmWrap || null;
-		this.selectorWrapForAnimation = arguments.selectorWrapForAnimation || null;
-		this.selectorWrapForContent = arguments.selectorWrapForContent || null;
-		this.htmlWrap = arguments.htmlWrap || null;
-		this.oninit = arguments.oninit || null;
-		this.onpreajaxcall = (typeof arguments.onpreajaxcall != "undefined")? arguments.onpreajaxcall: this.animationBasicPreCall;
-		this.onsuccess = (arguments.onsuccess)? arguments.onsuccess: this.animationBasicOnSuccess;
-		this.paramAjax = arguments.paramAjax || "ajaxcall";
-		this.url = arguments.url || null;
+		this.boot = args.boot || null;
+		this.data = args.data || {};
+		this.duration = args.duration || 500;
+		this.elmContainer = args.elmContainer || jQuery("body");
+		this.elmWrap = args.elmWrap || null;
+		this.selectorWrapForAnimation = args.selectorWrapForAnimation || null;
+		this.selectorWrapForContent = args.selectorWrapForContent || null;
+		this.htmlWrap = args.htmlWrap || null;
+		this.oninit = args.oninit || null;
+		this.onpreajaxcall = (typeof args.onpreajaxcall != "undefined")? args.onpreajaxcall: this.animationBasicPreCall;
+		this.onsuccess = (args.onsuccess)? args.onsuccess: this.animationBasicOnSuccess;
+		this.paramAjax = args.paramAjax || "ajaxcall";
+		this.url = args.url || null;
 
 		//--derived members
 		if((!this.elmWrap || this.elmWrap.length < 1) && this.htmlWrap){
@@ -106,17 +106,17 @@ __.classes.pagerAjax = function(arguments){
 		if(this.oninit)
 			this.oninit.call(this);
 	}
-	__.classes.pagerAjax.prototype.loadAjax = function(arguments){
+	__.classes.pagerAjax.prototype.loadAjax = function(args){
 		var fncThis = this;
-		var fncAjaxParameters = arguments;
+		var fncAjaxParameters = args;
 		
 		if(this.onpreajaxcall)
 			this.onpreajaxcall.call(fncThis, fncAjaxParameters);
 		else
 			this.loadAjaxData(fncAjaxParameters);
 	}
-	__.classes.pagerAjax.prototype.loadAjaxData = function(arguments){
-		var fncAjaxParameters = arguments;
+	__.classes.pagerAjax.prototype.loadAjaxData = function(args){
+		var fncAjaxParameters = args;
 		
 		//--set default parameters
 		if(!fncAjaxParameters.success)
@@ -125,9 +125,9 @@ __.classes.pagerAjax = function(arguments){
 			}
 		if(!fncAjaxParameters.context)
 			fncAjaxParameters.context = this;
-		var oldData = arguments.data;
+		var oldData = args.data;
 		fncAjaxParameters.data = this.data;
-		if(typeof arguments.data != "undefined"){
+		if(typeof args.data != "undefined"){
 			for(var key in oldData){
 				if(oldData.hasOwnProperty(key)){
 					fncAjaxParameters.data[key] = oldData[key];
@@ -141,9 +141,9 @@ __.classes.pagerAjax = function(arguments){
 		
 		jQuery.ajax(fncAjaxParameters);
 	}
-	__.classes.pagerAjax.prototype.animationBasicPreCall = function(arguments){
+	__.classes.pagerAjax.prototype.animationBasicPreCall = function(args){
 		var fncThis = this;
-		var fncAjaxParameters = arguments;
+		var fncAjaxParameters = args;
 		if(this.elmWrapForAnimation && this.elmWrapForAnimation.length > 0){
 			this.elmWrapForAnimation.fadeOut(fncThis.duration, function(){
 				fncThis.loadAjaxData(fncAjaxParameters);

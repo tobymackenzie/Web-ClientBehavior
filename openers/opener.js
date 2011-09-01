@@ -19,26 +19,26 @@ __.scrOnload = function(){
 /*------
 ©opener
 ------------*/
-__.classes.opener = function(arguments){
+__.classes.opener = function(args){
 		//--required attributes
-		this.element = arguments.element || null; if(!this.element) return false;
+		this.element = args.element || null; if(!this.element) return false;
 //->return
 
 		//--optional attributes
-		this.boot = arguments.boot || null;
-		this.callbackPlaceToggler = arguments.callbackPlaceToggler || null;
-		this.classOpened = arguments.classOpened || "open";
-		this.classClosed = arguments.classClosed || "closed";
-		this.classesToggler = arguments.classesToggler || "toggler";
-		this.elmContainer = arguments.elmContainer || false;
-		this.insertPosition = arguments.insertPosition || "after";
-		this.oninit = arguments.oninit || null;
-		this.onopen = arguments.onopen || null;
-		this.onclose = arguments.onclose || null;
-		this.stateInitial = arguments.stateInitial || "closed";
-		this.strToggler = (arguments.strToggler !== undefined)? arguments.strToggler: "more";
-		this.strTogglerClosed = (arguments.strTogglerClosed !== undefined)? arguments.strTogglerClosed: "View ";
-		this.strTogglerOpened = (arguments.strTogglerOpened !== undefined)? arguments.strTogglerOpened: "Hide ";
+		this.boot = args.boot || null;
+		this.callbackPlaceToggler = args.callbackPlaceToggler || null;
+		this.classOpened = args.classOpened || "open";
+		this.classClosed = args.classClosed || "closed";
+		this.classesToggler = args.classesToggler || "toggler";
+		this.elmContainer = args.elmContainer || false;
+		this.insertPosition = args.insertPosition || "after";
+		this.oninit = args.oninit || null;
+		this.onopen = args.onopen || null;
+		this.onclose = args.onclose || null;
+		this.stateInitial = args.stateInitial || "closed";
+		this.strToggler = (args.strToggler !== undefined)? args.strToggler: "more";
+		this.strTogglerClosed = (args.strTogglerClosed !== undefined)? args.strTogglerClosed: "View ";
+		this.strTogglerOpened = (args.strTogglerOpened !== undefined)? args.strTogglerOpened: "Hide ";
 		
 		//--derived attributes
 		var fncThis = this;

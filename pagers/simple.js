@@ -1,10 +1,10 @@
-__.classes.simplePager = function(arguments){
+__.classes.simplePager = function(args){
 		var fncThis = this;
-		this.elmsPages = arguments.elmsPages || null; if(!this.elmsPages) return false;
-		this.elmPagerControlSingle = arguments.elmPagerControlSingle || null;
-		this.elmPagerControlsIndexed = arguments.elmPagerControlsIndexed || null;
-		this.labelPrefix = arguments.labelPrefix || "";
-		this.onchange = arguments.onchange || null;
+		this.elmsPages = args.elmsPages || null; if(!this.elmsPages) return false;
+		this.elmPagerControlSingle = args.elmPagerControlSingle || null;
+		this.elmPagerControlsIndexed = args.elmPagerControlsIndexed || null;
+		this.labelPrefix = args.labelPrefix || "";
+		this.onchange = args.onchange || null;
 		
 		this.indexCurrent = null;
 		this.indexPrevious = null;

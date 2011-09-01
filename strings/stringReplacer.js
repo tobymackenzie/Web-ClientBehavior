@@ -8,14 +8,14 @@ __.testRegexHandler = new __.classes.regexHandler({strIng: "facebook.com/url={{u
 /*---------
 ©stringReplacer
 ----------*/
-__.classes.stringReplacer = function(arguments){
+__.classes.stringReplacer = function(args){
 		//--optional attributes
-		this.boot = arguments.boot || null;
-		this.arrMatchPieces = arguments.arrMatchPieces || [];
-		this.strKey = arguments.strKey || "key";
-		this.strMatchKey = arguments.strMatchKey || "{{key}}";
-		this.strRequired = arguments.strRequired || "required";
-		this.strIng = arguments.strIng || "";
+		this.boot = args.boot || null;
+		this.arrMatchPieces = args.arrMatchPieces || [];
+		this.strKey = args.strKey || "key";
+		this.strMatchKey = args.strMatchKey || "{{key}}";
+		this.strRequired = args.strRequired || "required";
+		this.strIng = args.strIng || "";
 	}
 	__.classes.stringReplacer.prototype.getString = function(argMatchPieces){
 		var fncReturn = this.strIng;

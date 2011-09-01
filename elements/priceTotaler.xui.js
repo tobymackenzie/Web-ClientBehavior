@@ -65,14 +65,14 @@ x$(window).load(function(){
 /*----------
 ©priceTotaler
 ----------*/
-__.classes.priceTotaler = function(arguments){
+__.classes.priceTotaler = function(args){
 		//--required attributes
 		//--optional attributes
-		this.boot = arguments.boot || null;
-		this.doUpdate = (typeof arguments.doUpdate != "undefined")? arguments.doUpdate: true;
-		this.elmPrice = arguments.elmPrice || null;
-		this.onchange = arguments.onchange || null;
-		this.oninit = arguments.oninit || null;
+		this.boot = args.boot || null;
+		this.doUpdate = (typeof args.doUpdate != "undefined")? args.doUpdate: true;
+		this.elmPrice = args.elmPrice || null;
+		this.onchange = args.onchange || null;
+		this.oninit = args.oninit || null;
 				
 		//--derived attributes
 		this.priceItems = new Array();
@@ -111,13 +111,13 @@ __.classes.priceTotaler = function(arguments){
 		}
 	}
 __.classes.priceTotaler.prototype.classes = {};
-__.classes.priceTotaler.prototype.classes.priceItem = function(arguments){
+__.classes.priceTotaler.prototype.classes.priceItem = function(args){
 		//--required attributes
-		this.elmValueManagerPrice = arguments.elmValueManagerPrice || null; if(!this.elmValueManagerPrice) return false;
+		this.elmValueManagerPrice = args.elmValueManagerPrice || null; if(!this.elmValueManagerPrice) return false;
 		
 		//--optional attributes
-		this.elmValueManagerQuantity = arguments.elmValueManagerQuantity || null;
-		this.elmValueManagerBoolean = arguments.elmValueManagerBoolean || null;
+		this.elmValueManagerQuantity = args.elmValueManagerQuantity || null;
+		this.elmValueManagerBoolean = args.elmValueManagerBoolean || null;
 		
 		//--derived attributes
 		var fncThis = this;

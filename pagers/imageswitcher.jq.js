@@ -26,49 +26,49 @@ __.imageSwitcher = new __.classes.imageSwitcher({elmsListItems:$(".photos .navig
 /*-------------
 ©imageswitcher
 ------------*/
-__.classes.imageSwitcher = function(arguments){
+__.classes.imageSwitcher = function(args){
 		//--optional arguments
-		this.attrImageURL = (arguments.attrImageURL)?arguments.attrImageURL:"href";
-		this.attrKeepWidth = arguments.attrKeepWidth || null;
-		this.attrKeepHeight = arguments.attrKeepHeight || null;
-		this.boot = arguments.boot || null;
-		this.classCurrent = (typeof arguments.classCurrent != "undefined")? arguments.classCurrent: "current";
-		this.dimKeepDimensionsAddedWidth = arguments.dimKeepDimensionsAddedWidth || 0;
-		this.dimKeepDimensionsAddedHeight = arguments.dimKeepDimensionsAddedHeight || 0;
-		this.doAttachEvents = (typeof arguments.doAttachEvents != "undefined")? arguments.doAttachEvents: true;
-		this.duration = (arguments.duration)? arguments.duration: 500;
-//		this.elmImage = (arguments.elmImage && arguments.elmImage.length > 0) ? arguments.elmImage : null;
-		this.elmKeepDimensions = arguments.elmKeepDimensions || false;
-		this.elmListImages = arguments.elmListImages || null;
-		this.htmlNewImage = arguments.htmlNewImage || "<img alt=\"\" />";
-		this.listItemSelectedState = arguments.listItemSelectedState || null;
-		this.listItemUnselectedState = arguments.listItemUnselectedState || null;
-		this.ondeselect = arguments.ondeselect || null;
-		this.oninit = arguments.oninit || null;
-		this.onpredeselect = arguments.onpredeselect || null;
-		this.onpreimageanimation = arguments.onpreimageanimation || null;
-		this.onpreselect = arguments.onpreselect || null;
-		this.onpostimageanimation = arguments.onpostimageanimation || null;
-		this.onpreimageanimationfadeout = arguments.onpreimageanimationfadeout || null;
-		this.onpreimageanimationkeepheight = arguments.onpreimageanimationkeepheight || null;
-		this.onpreimageanimationfadein = arguments.onpreimageanimationfadein || null;
-		this.onpreimageanimationpostkeepheight = arguments.onpreimageanimationpostkeepheight || null;
-		this.onselect = arguments.onselect || null;
-		this.onsetimage = arguments.onsetimage || null;
-		this.onsetlistitems = arguments.onsetlistitems || null;
-		this.selectorListItemContainer = (typeof arguments.selectorListItemContainer != "undefined")?arguments.selectorListItemContainer:"li";
-		this.selectorElmImageUrl = arguments.selectorElmImageUrl || "a";
-		this.typeAnimation = arguments.typeAnimation || "fadeoutfadein";
+		this.attrImageURL = (args.attrImageURL)? args.attrImageURL:"href";
+		this.attrKeepWidth = args.attrKeepWidth || null;
+		this.attrKeepHeight = args.attrKeepHeight || null;
+		this.boot = args.boot || null;
+		this.classCurrent = (typeof args.classCurrent != "undefined")? args.classCurrent: "current";
+		this.dimKeepDimensionsAddedWidth = args.dimKeepDimensionsAddedWidth || 0;
+		this.dimKeepDimensionsAddedHeight = args.dimKeepDimensionsAddedHeight || 0;
+		this.doAttachEvents = (typeof args.doAttachEvents != "undefined")? args.doAttachEvents: true;
+		this.duration = (args.duration)? args.duration: 500;
+//		this.elmImage = (args.elmImage && args.elmImage.length > 0) ? args.elmImage : null;
+		this.elmKeepDimensions = args.elmKeepDimensions || false;
+		this.elmListImages = args.elmListImages || null;
+		this.htmlNewImage = args.htmlNewImage || "<img alt=\"\" />";
+		this.listItemSelectedState = args.listItemSelectedState || null;
+		this.listItemUnselectedState = args.listItemUnselectedState || null;
+		this.ondeselect = args.ondeselect || null;
+		this.oninit = args.oninit || null;
+		this.onpredeselect = args.onpredeselect || null;
+		this.onpreimageanimation = args.onpreimageanimation || null;
+		this.onpreselect = args.onpreselect || null;
+		this.onpostimageanimation = args.onpostimageanimation || null;
+		this.onpreimageanimationfadeout = args.onpreimageanimationfadeout || null;
+		this.onpreimageanimationkeepheight = args.onpreimageanimationkeepheight || null;
+		this.onpreimageanimationfadein = args.onpreimageanimationfadein || null;
+		this.onpreimageanimationpostkeepheight = args.onpreimageanimationpostkeepheight || null;
+		this.onselect = args.onselect || null;
+		this.onsetimage = args.onsetimage || null;
+		this.onsetlistitems = args.onsetlistitems || null;
+		this.selectorListItemContainer = (typeof args.selectorListItemContainer != "undefined")? args.selectorListItemContainer:"li";
+		this.selectorElmImageUrl = args.selectorElmImageUrl || "a";
+		this.typeAnimation = args.typeAnimation || "fadeoutfadein";
 		
 		//--derived members
 		this.inprogress=false;
 		this.queue = new __.classes.animationQueue({name: "image", autoDequeue: false});
-		if(arguments.elmImage)
-			this.setImage(arguments.elmImage);
+		if(args.elmImage)
+			this.setImage(args.elmImage);
 		else
 			this.elmImage = null;
-		if(arguments.elmsListItems)
-			this.setListItems(arguments.elmsListItems);
+		if(args.elmsListItems)
+			this.setListItems(args.elmsListItems);
 		else
 			this.elmsListItems = null;
 		
@@ -138,7 +138,7 @@ __.classes.imageSwitcher = function(arguments){
 		if(!newImageURL) return false;
 		this.switche(newImageURL);
 	}
-	__.classes.imageSwitcher.prototype.switche = function(newImageURL, arguments){
+	__.classes.imageSwitcher.prototype.switche = function(newImageURL, args){
 		var fncThis = this;
 
 //-> return
@@ -289,10 +289,10 @@ __.classes.imageSwitcher = function(arguments){
 		
 		fncThis.queue.dequeue({name: "image"});
 	}
-	__.classes.imageSwitcher.prototype.updateElements = function(arguments){
-		this.elmImage = (arguments.elmImage)?arguments.elmImage:this.elmImage;
-		if(arguments.elmsListItems){
-			this.elmsListItems = arguments.elmsListItems;
+	__.classes.imageSwitcher.prototype.updateElements = function(args){
+		this.elmImage = (args.elmImage)? args.elmImage:this.elmImage;
+		if(args.elmsListItems){
+			this.elmsListItems = args.elmsListItems;
 			if(this.doAttachEvents)
 				this.attachEvents();
 		}

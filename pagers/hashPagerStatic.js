@@ -13,20 +13,20 @@ __.pager = new __.classes.hashPagerStatic({elmsPages: document.getElementById("m
 /*-------
 ©pager
 -------- */
-__.classes.pager = function(arguments){
+__.classes.pager = function(args){
 		//--required attributes
 //->return
 		//--optional attributes
-		this.boot = arguments.boot || {};
-		this.callbackGetCurrentNavigation = arguments.callbackGetCurrentNavigation || this.defaultCallbackGetCurrentNavigation;
-		this.callbackGetCurrentPage = arguments.callbackGetCurrentPage || this.defaultCallbackGetCurrentPage;
-		this.classCurrentNavigation = arguments.classCurrentNavigation || "current";
-		this.classCurrentPage = arguments.classCurrentPage || "current";
-		this.elmsNavigation = arguments.elmsNavigation || null;
-		this.elmsPages = arguments.elmsPages || null;
-		this.idInitial = arguments.idInitial || null;
-		this.oninit = arguments.oninit || null;
-		this.onswitch = arguments.onswitch || null;
+		this.boot = args.boot || {};
+		this.callbackGetCurrentNavigation = args.callbackGetCurrentNavigation || this.defaultCallbackGetCurrentNavigation;
+		this.callbackGetCurrentPage = args.callbackGetCurrentPage || this.defaultCallbackGetCurrentPage;
+		this.classCurrentNavigation = args.classCurrentNavigation || "current";
+		this.classCurrentPage = args.classCurrentPage || "current";
+		this.elmsNavigation = args.elmsNavigation || null;
+		this.elmsPages = args.elmsPages || null;
+		this.idInitial = args.idInitial || null;
+		this.oninit = args.oninit || null;
+		this.onswitch = args.onswitch || null;
 
 		//--derived attributes
 		this.inProgress = true;

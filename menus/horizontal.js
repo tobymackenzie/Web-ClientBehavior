@@ -34,18 +34,18 @@ __.scrOnload = function(){
 /*----------
 ©TMlib suckerfish
 ----------*/
-__.classes.suckerfish = function (arguments){
-		this.wrapperClass = (arguments.wrapperClass)? arguments.wrapperClass : "topitem";
-		this.toplevelClass = (arguments.toplevelClass)? arguments.toplevelClass : "toplevel";
-		this.submenuClass = (arguments.submenuClass)? arguments.submenuClass : "submenu";
-		this.doCloseOnClickOutside = arguments.doCloseOnClickOutside || false;
-		this.doSizeAndCenter = (arguments.doSizeAndCenter)? arguments.doSizeAndCenter : false;
-		this.doSizeAndCenterFirst = (typeof arguments.doSizeAndCenterFirst != "undefined")? arguments.doSizeAndCenterFirst : true;
-		this.doSizeAndCenterLast = (typeof arguments.doSizeAndCenterLast != "undefined")? arguments.doSizeAndCenterLast : true;
-		this.menuPadding = (arguments.menuPadding)? arguments.menuPadding : 0;
-		this.submenuOffset = (arguments.submenuOffset)? arguments.submenuOffset : 0;
-		this.addedWidth = (arguments.addedWidth)? arguments.addedWidth : 0;
-		this.classSelected = arguments.classSelected || "selected";
+__.classes.suckerfish = function (args){
+		this.wrapperClass = (args.wrapperClass)? args.wrapperClass : "topitem";
+		this.toplevelClass = (args.toplevelClass)? args.toplevelClass : "toplevel";
+		this.submenuClass = (args.submenuClass)? args.submenuClass : "submenu";
+		this.doCloseOnClickOutside = args.doCloseOnClickOutside || false;
+		this.doSizeAndCenter = (args.doSizeAndCenter)? args.doSizeAndCenter : false;
+		this.doSizeAndCenterFirst = (typeof args.doSizeAndCenterFirst != "undefined")? args.doSizeAndCenterFirst : true;
+		this.doSizeAndCenterLast = (typeof args.doSizeAndCenterLast != "undefined")? args.doSizeAndCenterLast : true;
+		this.menuPadding = (args.menuPadding)? args.menuPadding : 0;
+		this.submenuOffset = (args.submenuOffset)? args.submenuOffset : 0;
+		this.addedWidth = (args.addedWidth)? args.addedWidth : 0;
+		this.classSelected = args.classSelected || "selected";
 
 		this.elmMenu = document.getElementById(this.menuID);
 		this.elmsWrapper = __.getElementsByClassName({"className": this.wrapperClass, "element": this.elmMenu});

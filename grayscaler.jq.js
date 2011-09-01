@@ -17,14 +17,14 @@ depends on:
 	jquery
 	grayscale.js: http://james.padolsey.com/javascript/grayscaling-in-non-ie-browsers/
 ------------*/
-__.classes.navigationGrayscaler = function(arguments){
+__.classes.navigationGrayscaler = function(args){
 		// not needed in ie
 		if(jQuery.browser.msie) return false;
-		this.elmsItems = arguments.elmsItems || false; if(this.elmsItems.length < 1) return false;
-		this.classCurrent = arguments.classCurrent || "current";
-		this.eventCurrentChange = arguments.eventCurrentChange || "changeCurrent";
-		this.classGrayed = arguments.classGrayed || "grayed";
-		this.duration = arguments.duration || 500;
+		this.elmsItems = args.elmsItems || false; if(this.elmsItems.length < 1) return false;
+		this.classCurrent = args.classCurrent || "current";
+		this.eventCurrentChange = args.eventCurrentChange || "changeCurrent";
+		this.classGrayed = args.classGrayed || "grayed";
+		this.duration = args.duration || 500;
 		
 		this.init(this.elmsItems)
 	}

@@ -52,15 +52,15 @@ callback: function to run when ajax content is received
 /*----------
 ©updateSelect
 ----------*/
-__.classes.updateSelect = function(arguments){
+__.classes.updateSelect = function(args){
 		var fncThis = this;
-		this.boot = arguments.boot || {};
-		this.callback = arguments.callback || function(){};
-		this.elmSelectSource = arguments.elmSelectSource || null;
-		this.elmSelectDestination = arguments.elmSelectDestination || null;
-		this.handleNull = arguments.handleNull || false;
-		this.nameParameter = arguments.nameParameter || null;
-		this.urlData = arguments.urlData || null;
+		this.boot = args.boot || {};
+		this.callback = args.callback || function(){};
+		this.elmSelectSource = args.elmSelectSource || null;
+		this.elmSelectDestination = args.elmSelectDestination || null;
+		this.handleNull = args.handleNull || false;
+		this.nameParameter = args.nameParameter || null;
+		this.urlData = args.urlData || null;
 		
 		if(!this.elmSelectSource || !this.urlData){
 			return false;

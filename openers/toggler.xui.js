@@ -38,23 +38,23 @@ x$(window).load(function(){
 /*----------
 ©toggler
 ----------*/
-__.classes.toggler = function(arguments){
-		if(typeof arguments == "undefined") arguments = {};
+__.classes.toggler = function(args){
+		if(typeof args == "undefined") args = {};
 
 		//--optional attributes
-		this.boot = arguments.boot || null;
-		this.classOpen = (typeof arguments.classOpen != "undefined")? arguments.classOpen : "open";
-		this.classClosed = (typeof arguments.classClosed != "undefined")? arguments.classClosed : "closed";
-		this.closeoninit = arguments.closeoninit || false;
-		this.duration = (typeof arguments.duration != "undefined")? arguments.duration : 500;
-		this.elmClickable = arguments.elmClickable || null;
-		this.elmToToggle = arguments.elmToToggle || null;
-		this.onopen = arguments.onopen || null;
-		this.onclose = arguments.onclose || null;
-		this.ontoggle = arguments.ontoggle || null;
-		this.styleClosed = arguments.styleClosed || {display: "none"};
-		this.styleOpened = arguments.styleOpened || {display: "block"};
-		this.typeEvent = arguments.typeEvent || "click";
+		this.boot = args.boot || null;
+		this.classOpen = (typeof args.classOpen != "undefined")? args.classOpen : "open";
+		this.classClosed = (typeof args.classClosed != "undefined")? args.classClosed : "closed";
+		this.closeoninit = args.closeoninit || false;
+		this.duration = (typeof args.duration != "undefined")? args.duration : 500;
+		this.elmClickable = args.elmClickable || null;
+		this.elmToToggle = args.elmToToggle || null;
+		this.onopen = args.onopen || null;
+		this.onclose = args.onclose || null;
+		this.ontoggle = args.ontoggle || null;
+		this.styleClosed = args.styleClosed || {display: "none"};
+		this.styleOpened = args.styleOpened || {display: "block"};
+		this.typeEvent = args.typeEvent || "click";
 
 		//--close elements on init
 		if(this.closeoninit)

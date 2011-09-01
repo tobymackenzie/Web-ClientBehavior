@@ -10,12 +10,12 @@ description
 /*-------
 ©IntervalHandler
 -------- */
-__.classes.IntervalHandler = function(arguments){
+__.classes.IntervalHandler = function(args){
 		//--required attributes
 //->return
 		//--optional attributes
-		this.callback = arguments.callback || null;
-		this.delay = arguments.delay || 1000;
+		this.callback = args.callback || null;
+		this.delay = args.delay || 1000;
 
 		//--derived attributes
 		this.interval = false;
@@ -23,7 +23,7 @@ __.classes.IntervalHandler = function(arguments){
 		//--do something
 		this.startInterval();
 	}
-	__.classes.IntervalHandler.prototype.startInterval = function(arguments){
+	__.classes.IntervalHandler.prototype.startInterval = function(args){
 		if(this.interval)
 			this.interval.clearInterval();
 		if(this.callback){

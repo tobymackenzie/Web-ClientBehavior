@@ -57,19 +57,19 @@ html.uaielte6 #bgimage img{
 /*----------
 ©fullContainerImage
 ----------*/
-__.classes.fullContainerImage = function(arguments){
+__.classes.fullContainerImage = function(args){
 		//--optional attributes
-		this.boot = arguments.boot || null;
-		this.elmContainer = arguments.elmContainer || jQuery(window);
-		this.classFitWidth = arguments.classFitWidth || "fitwidth";
-		this.classFitHeight = arguments.classFitHeight || "fitheight";
-		this.doCenterHorizontally = arguments.doCenterHorizontally || false;
-		this.doCenterVertically = arguments.doCenterVertically || false;
-		this.oninit = arguments.oninit || null;
+		this.boot = args.boot || null;
+		this.elmContainer = args.elmContainer || jQuery(window);
+		this.classFitWidth = args.classFitWidth || "fitwidth";
+		this.classFitHeight = args.classFitHeight || "fitheight";
+		this.doCenterHorizontally = args.doCenterHorizontally || false;
+		this.doCenterVertically = args.doCenterVertically || false;
+		this.oninit = args.oninit || null;
 		
 		//--derived attributes
 		var fncThis = this;
-		var fncElmImage = arguments.elmImage || null;
+		var fncElmImage = args.elmImage || null;
 		this.setImage(fncElmImage);
 		
 		//--bind events

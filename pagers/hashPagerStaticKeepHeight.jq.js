@@ -41,23 +41,23 @@ if(typeof $ != 'undefined'){
 /*-------------
 ©pager
 ------------*/
-__.classes.hashPagerStaticKeepHeight = function(arguments){
-		this.elmsPages = arguments.elmsPages || false; if(!this.elmsPages || this.elmsPages.length < 1) return false;
+__.classes.hashPagerStaticKeepHeight = function(args){
+		this.elmsPages = args.elmsPages || false; if(!this.elmsPages || this.elmsPages.length < 1) return false;
 //->return
-		this.selectorNavigation = arguments.selectorNavigation || false;
+		this.selectorNavigation = args.selectorNavigation || false;
 			if(!this.selectorNavigation) return false;
 //->return
 		this.elmsNavigation = jQuery(this.selectorNavigation);
 		this.elmsNavigation = this.elmsNavigation.has("a[href^='#']");
-		this.classCurrentNavigation = arguments.classCurrentNavigation || "current";
-		this.classCurrentPage = arguments.classCurrentPage || "current";
-		this.dimKeepDimensionsAddedHeight = arguments.dimKeepDimensionsAddedHeight || 0;
-		this.duration = (arguments.duration !== undefined) ? arguments.duration : 500;
-		this.keepHeight = arguments.keepHeight || false;
+		this.classCurrentNavigation = args.classCurrentNavigation || "current";
+		this.classCurrentPage = args.classCurrentPage || "current";
+		this.dimKeepDimensionsAddedHeight = args.dimKeepDimensionsAddedHeight || 0;
+		this.duration = (args.duration !== undefined) ? args.duration : 500;
+		this.keepHeight = args.keepHeight || false;
 		if(__.isIphone() == true) this.keepHeight = false;
-		this.callbackInit = arguments.callbackInit || null;
-		this.callbackPreSwitch = arguments.callbackPreSwitch || null;
-		this.boot = arguments.boot || {};
+		this.callbackInit = args.callbackInit || null;
+		this.callbackPreSwitch = args.callbackPreSwitch || null;
+		this.boot = args.boot || {};
 
 		this.inProgress = true;
 		

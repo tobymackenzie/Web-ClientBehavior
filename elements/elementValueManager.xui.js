@@ -21,14 +21,14 @@ x$(window).load(function(){
 /*----------
 ©elementValueManager
 ----------*/
-__.classes.elementValueManager = function(arguments){
+__.classes.elementValueManager = function(args){
 		//--require attributes
-		this.element = arguments.element || null; if(!this.element) return false; else if(this.element.length != 1) return false;
-		this.dataSource = arguments.dataSource || null; if(!this.dataSource) return false;
+		this.element = args.element || null; if(!this.element) return false; else if(this.element.length != 1) return false;
+		this.dataSource = args.dataSource || null; if(!this.dataSource) return false;
 		
 		//--optional attributes
-		this.attribute = arguments.attribute || null;
-		this.event = arguments.event || "change";
+		this.attribute = args.attribute || null;
+		this.event = args.event || "change";
 		
 		//--derived attributes
 		fncThis = this;

@@ -13,18 +13,18 @@ if($){
 verticalMenuAnimation
 requires: jquery
 ------ */
-__.classes.verticalMenuAnimation = function(arguments){
-		this.elmContainer = arguments.elmContainer || document.body;
-		this.classToplevelitem = arguments.classToplevelitem || "toplevelitem";
-		this.elmsMenus = arguments.elmsMenus || this.elmContainer.find("."+this.classToplevelitem);
-		this.classTopitem = arguments.classTopitem || "topitem";
-		this.classSubmenu = arguments.classSubmenu || "submenu";
-		this.nameAttribute = arguments.nameAttribute || "data-name";
-		this.selectedName = arguments.selectedName || false;
-		this.duration = arguments.duration || 500;
-		this.classClosed = arguments.classClosed || "closed";
-		this.classOpen = arguments.classOpen || "open";
-		this.easing = arguments.easing || "swing";
+__.classes.verticalMenuAnimation = function(args){
+		this.elmContainer = args.elmContainer || document.body;
+		this.classToplevelitem = args.classToplevelitem || "toplevelitem";
+		this.elmsMenus = args.elmsMenus || this.elmContainer.find("."+this.classToplevelitem);
+		this.classTopitem = args.classTopitem || "topitem";
+		this.classSubmenu = args.classSubmenu || "submenu";
+		this.nameAttribute = args.nameAttribute || "data-name";
+		this.selectedName = args.selectedName || false;
+		this.duration = args.duration || 500;
+		this.classClosed = args.classClosed || "closed";
+		this.classOpen = args.classOpen || "open";
+		this.easing = args.easing || "swing";
 		
 		this.elmCurrent = false;
 		//- remove elmsMenus without submenus

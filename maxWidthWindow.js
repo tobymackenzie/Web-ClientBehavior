@@ -15,18 +15,18 @@ __.scrOnload = function(){
 
 
 
-__.classes.maxWidthWindow = function(arguments){
-		this.element = arguments.element; if(!this.element) return false;
-		this.handleWidth = arguments.handleWidth || false;
-		this.maxWidth = arguments.maxWidth || null; // pixels
-		this.minWidth = arguments.minWidth || null; // pixels
-		this.subtractWidth = arguments.subtractWidth || 0; // pixels less than container
-		this.handleHeight = arguments.handleHeight || false;
-		this.maxHeight = arguments.maxHeight || null; // pixels
-		this.subtractHeight = arguments.subtractHeight || 0; // pixels less than container
-		this.pageWidth = arguments.pageWidth || null;
-		this.bodyMarginWidth = arguments.bodyMarginWidth || 0;
-		this.bodyMarginHeight = arguments.bodyMarginHeight || 0;
+__.classes.maxWidthWindow = function(args){
+		this.element = args.element; if(!this.element) return false;
+		this.handleWidth = args.handleWidth || false;
+		this.maxWidth = args.maxWidth || null; // pixels
+		this.minWidth = args.minWidth || null; // pixels
+		this.subtractWidth = args.subtractWidth || 0; // pixels less than container
+		this.handleHeight = args.handleHeight || false;
+		this.maxHeight = args.maxHeight || null; // pixels
+		this.subtractHeight = args.subtractHeight || 0; // pixels less than container
+		this.pageWidth = args.pageWidth || null;
+		this.bodyMarginWidth = args.bodyMarginWidth || 0;
+		this.bodyMarginHeight = args.bodyMarginHeight || 0;
 		
 		
 		var fncThis = this;	

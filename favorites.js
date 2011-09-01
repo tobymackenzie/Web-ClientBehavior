@@ -32,17 +32,17 @@ __.message("start");
 /*----------
 ©favorites
 ----------*/
-__.classes.favorites = function(arguments){
-		this.elmDroppableContainer = arguments.elmDroppableContainer || null;
-		this.elmsDraggable = arguments.elmsDraggable || null;
-		this.selectorAccepts = arguments.selectorAccepts || "li";
-		this.classAdded = arguments.classAdded || "ui-added";
-		this.nameCookie = (arguments.nameCookie)? arguments.nameCookie: "favorites";
-		this.htmlDeleteButton = (arguments.htmlDeleteButton)? arguments.htmlDeleteButton: '<a class="delete button" href="javascript://__remove_item_from_favorites"><span>delete</span></a>';
-		this.callbackItemAdd = arguments.callbackItemAdd || null;
-		this.callbackDraggableStart = arguments.callbackDraggableStart || null;
-		this.attrID = arguments.attrID || "data-unid";
-		this.member = arguments.member || false;
+__.classes.favorites = function(args){
+		this.elmDroppableContainer = args.elmDroppableContainer || null;
+		this.elmsDraggable = args.elmsDraggable || null;
+		this.selectorAccepts = args.selectorAccepts || "li";
+		this.classAdded = args.classAdded || "ui-added";
+		this.nameCookie = (args.nameCookie)? args.nameCookie: "favorites";
+		this.htmlDeleteButton = (args.htmlDeleteButton)? args.htmlDeleteButton: '<a class="delete button" href="javascript://__remove_item_from_favorites"><span>delete</span></a>';
+		this.callbackItemAdd = args.callbackItemAdd || null;
+		this.callbackDraggableStart = args.callbackDraggableStart || null;
+		this.attrID = args.attrID || "data-unid";
+		this.member = args.member || false;
 		
 		var fncThis = this;
 		

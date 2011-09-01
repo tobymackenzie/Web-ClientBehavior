@@ -22,20 +22,20 @@ __.lib.cookies = {
 		expires: int, in days, defaults to none (session duration)
 		path: string, path of cookie, false means path of current page, defaults to "/"
 	*/
-	,set : function(arguments){
+	,set : function(args){
 		var fncExpires = false;
-		if(arguments.expires){
+		if(args.expires){
 			var fncExpires = new Date();
-			fncExpires.setDate(fncExpires.getDate()+arguments.expires);
+			fncExpires.setDate(fncExpires.getDate()+args.expires);
 		}
 		var fncPath = "/";
-		if(arguments.path && typeof arguments.path !== undefined){
-			if(arguments.path !== false)
-				fncPath = arguments.path;
+		if(args.path && typeof args.path !== undefined){
+			if(args.path !== false)
+				fncPath = args.path;
 			else
 				fncPath = "";
 		}
-		document.cookie = arguments.name + "=" + escape(arguments.value) + ((fncExpires) ? ";expires="+fncExpires.toUTCString():"") + ((fncPath) ? ";path="+fncPath : "");
+		document.cookie = args.name + "=" + escape(args.value) + ((fncExpires) ? ";expires="+fncExpires.toUTCString():"") + ((fncPath) ? ";path="+fncPath : "");
 	}
 }
 
