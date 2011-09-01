@@ -58,7 +58,7 @@ __.classes.animationQueue = function(arguments){
 		this.autoDequeue = arguments.autoDequeue || false;
 		
 		//--derived variables
-		this.objQueue = $({});
+		this.objQueue = jQuery({});
 	}
 	__.classes.animationQueue.prototype.queue = function(arguments){
 		var fncThis = this;

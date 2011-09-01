@@ -53,7 +53,7 @@ __.classes.favorites = function(arguments){
 		this.elmDroppableContainer.droppable({accept: this.selectorAccepts, drop: this.addDroppableItem});
 */
 		this.initDraggableItems(this.elmsDraggable);
-/* 		$(".imagelist").sortable({helper: "clone", connectWith: "#footer .favoriteslist"}); */
+/* 		jQuery(".imagelist").sortable({helper: "clone", connectWith: "#footer .favoriteslist"}); */
 		this.elmDroppableContainer.sortable({
 //			containment: "parent",
 			forcePlaceholderSize: true,
@@ -75,12 +75,12 @@ __.classes.favorites = function(arguments){
 					var idNew = elmNew.attr(fncThis.attrID);
 					var isIDAlreadyAdded = false;
 					fncThis.elmDroppableContainer.find(fncThis.selectorAccepts).not(elmNew).each(function(index, element){
-						if($(this).attr(fncThis.attrID) == idNew)
+						if(jQuery(this).attr(fncThis.attrID) == idNew)
 							isIDAlreadyAdded = true;
 					});
 					if(isIDAlreadyAdded){
-						$(ui.sender).sortable('cancel');
-						$(this).sortable('cancel');
+						jQuery(ui.sender).sortable('cancel');
+						jQuery(this).sortable('cancel');
 						elmNew.remove();
 					}else{
 						elmNew.css({position: "relative"});
@@ -99,7 +99,7 @@ __.classes.favorites = function(arguments){
 	}
 	__.classes.favorites.prototype.initDraggableItems = function(argElements){
 		var parmDraggable = {
-			appendTo: $("body"),
+			appendTo: jQuery("body"),
 			helper: 'clone',
 			cursorAt: {left: 5, top: 5},
 			connectToSortable: this.elmDroppableContainer
@@ -113,12 +113,12 @@ __.classes.favorites = function(arguments){
 		var elmsItems = argElmItem.not("."+fncThis.classAdded);
 		elmsItems.addClass(fncThis.classAdded);
 		elmsItems.append(function(){
-			return $(fncThis.htmlDeleteButton).bind("click", function(event){
+			return jQuery(fncThis.htmlDeleteButton).bind("click", function(event){
 				if(event.preventDefault)
 					event.preventDefault();
 				//-ajax remove item from user db
 				//-remove element from list
-				$(this).closest(fncThis.selectorAccepts).remove();
+				jQuery(this).closest(fncThis.selectorAccepts).remove();
 				fncThis.update();
 
 				return false;
@@ -132,7 +132,7 @@ __.classes.favorites = function(arguments){
 		var elmsItems = fncThis.elmDroppableContainer.find(fncThis.selectorAccepts);
 		var arrUnids = new Array();
 		elmsItems.each(function(){
-			arrUnids.push($(this).attr(fncThis.attrID));
+			arrUnids.push(jQuery(this).attr(fncThis.attrID));
 		});
 		if(fncThis.nameCookie){
 			__.lib.cookies.set({name: fncThis.nameCookie, value: arrUnids.join(","), expires: 180});

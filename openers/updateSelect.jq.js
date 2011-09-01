@@ -54,10 +54,10 @@ __.classes.updateSelect = function(arguments){
 				fncThis.callback.call(fncThis, data, textStatus, jqXHR);
 			}
 			var fncParameters = {};
-			$.extend(fncParameters, fncThis.parametersFixed);
+			jQuery.extend(fncParameters, fncThis.parametersFixed);
 			if(this.nameParameter && valueSelect != "")
 				fncParameters[this.nameParameter] = valueSelect;
-			$.ajax({
+			jQuery.ajax({
 				type: 'GET'
 				,data: fncParameters
 				,success: callback

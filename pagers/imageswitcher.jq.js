@@ -76,7 +76,7 @@ __.classes.imageSwitcher = function(arguments){
 			this.oninit.call(this);
 	}
 	__.classes.imageSwitcher.prototype.findElmLIForURL = function(argURL){
-		var selectorAttribute = "["+this.attrImageURL+"='"+$.trim(argURL)+"']";
+		var selectorAttribute = "["+this.attrImageURL+"='"+jQuery.trim(argURL)+"']";
 		if(this.selectorElmImageUrl == "this"){
 			return this.elmsListItems.filter(selectorAttribute);
 		}else{
@@ -109,7 +109,7 @@ __.classes.imageSwitcher = function(arguments){
 		fncThis.elmsListItems.children("a").bind("click", function(event){
 			if(event.preventDefault) event.preventDefault();
 
-			var thisItem = $(this).closest(fncThis.selectorListItemContainer);
+			var thisItem = jQuery(this).closest(fncThis.selectorListItemContainer);
 			fncThis.switchToItem(thisItem);
 			
 			return false;
@@ -145,7 +145,7 @@ __.classes.imageSwitcher = function(arguments){
 		if(fncThis.inprogress==true) return false;		
 		
 		var oldLI = fncThis.elmsListItems.filter("."+fncThis.classCurrent);
-		var newLI = this.findElmLIForURL($.trim(newImageURL));
+		var newLI = this.findElmLIForURL(jQuery.trim(newImageURL));
 		var newA = newLI.find("a");
 
 		fncThis.inprogress = true;
@@ -156,7 +156,7 @@ __.classes.imageSwitcher = function(arguments){
 		if(fncThis.onpreselect)
 			fncThis.onpreselect.call(fncThis, newLI);
 		
-		var elmTempImage = $("<img class=\"tempimage\" src='"+newImageURL+"' />").css({"position":"absolute", "left":"-9000px", "top":"-9000px"}).appendTo("body");
+		var elmTempImage = jQuery("<img class=\"tempimage\" src='"+newImageURL+"' />").css({"position":"absolute", "left":"-9000px", "top":"-9000px"}).appendTo("body");
 		
 		if(fncThis.elmKeepDimensions){
 			fncThis.elmKeepDimensions.css({"width": fncThis.elmImage.width() + fncThis.dimKeepDimensionsAddedWidth, "height": fncThis.elmImage.height() + fncThis.dimKeepDimensionsAddedHeight});
@@ -215,7 +215,7 @@ __.classes.imageSwitcher = function(arguments){
 		if(fncThis.typeAnimation == "dissolve"){
 			fncThis.queue.queue({name: "image", callback: function(){
 				fncThis.elmOldImage = fncThis.elmImage;
-				fncThis.elmImage = $(fncThis.htmlNewImage);
+				fncThis.elmImage = jQuery(fncThis.htmlNewImage);
 				fncThis.elmImage.attr("src", newImageURL);
 				fncThis.elmListImages.prepend(fncThis.elmImage);
 				if(fncThis.elmImage.width() > 0){

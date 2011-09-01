@@ -41,7 +41,7 @@ __.classes.Toggler = function(arguments){
 	__.classes.Toggler.prototype.attachListeners = function(argElements){
 		var fncThis = this;
 		argElements.each(function(){
-			var elmParent = $(this);
+			var elmParent = jQuery(this);
 			elmParent.find(fncThis.selectorElmClick).css("cursor", "pointer").bind(fncThis.event, function(event){
 				fncThis.toggle(elmParent);
 				if(event.preventDefault)

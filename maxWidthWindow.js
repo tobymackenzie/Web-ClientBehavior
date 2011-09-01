@@ -36,7 +36,7 @@ __.classes.maxWidthWindow = function(arguments){
 	__.classes.maxWidthWindow.prototype.update = function(){
 		var fncThis = this;
 		if(fncThis.handleWidth){
-			if(typeof $ === 'undefined')
+			if(typeof jQuery === 'undefined')
 				var windowWidth = window.innerWidth || document.documentElement.clientWidth;
 			else
 				var windowWidth = __.getRealWindowWidth();

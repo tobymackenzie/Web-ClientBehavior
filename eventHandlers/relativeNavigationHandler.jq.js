@@ -39,7 +39,7 @@ __.classes.relativeNavigationHandler = function(arguments){
 		var fncThis = this;
 		//-create button navigation
 		if(this.htmlButtonContainer){
-			this.elmButtonContainer = $(this.htmlButtonContainer)
+			this.elmButtonContainer = jQuery(this.htmlButtonContainer)
 			this.elmWrapper.append(this.elmButtonContainer);
 		}else{
 			this.elmButtonContainer = this.elmWrapper;
@@ -47,13 +47,13 @@ __.classes.relativeNavigationHandler = function(arguments){
 		if(arguments.elmButtonPrevious){
 			this.elmButtonPrevious = arguments.elmButtonPrevious;
 		}else if(this.htmlButtonPrevious){
-			this.elmButtonPrevious = $(this.htmlButtonPrevious);
+			this.elmButtonPrevious = jQuery(this.htmlButtonPrevious);
 			this.elmButtonContainer.append(this.elmButtonPrevious);
 		}
 		if(arguments.elmButtonNext){
 			this.elmButtonNext = arguments.elmButtonNext;
 		}else if(this.htmlButtonNext){
-			this.elmButtonNext = $(this.htmlButtonNext);
+			this.elmButtonNext = jQuery(this.htmlButtonNext);
 			this.elmButtonContainer.append(this.elmButtonNext);
 		}
 		

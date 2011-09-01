@@ -21,7 +21,7 @@ __.classes.HandlerDialog = function(arguments){
 		//--required attributes
 //->return
 		//--optional attributes
-		this.ajaxData = $.extend({ajaxcall: 1}, (arguments.ajaxData || null));
+		this.ajaxData = jQuery.extend({ajaxcall: 1}, (arguments.ajaxData || null));
 		this.boot = arguments.boot || {};
 		this.classLoading = arguments.classLoading || "loading";
 		this.dialogArguments = {
@@ -33,7 +33,7 @@ __.classes.HandlerDialog = function(arguments){
 				}
 			}
 		};
-		this.dialogArguments = $.extend(this.dialogArguments, (arguments.dialogArguments || {}));
+		this.dialogArguments = jQuery.extend(this.dialogArguments, (arguments.dialogArguments || {}));
 		this.doManageWidth = (typeof arguments.doManageWidth != "undefined")? arguments.doManageWidth: true;
 		this.doManageHeight = (typeof arguments.doManageHeight != "undefined")? arguments.doManageHeight: true;
 		this.oninit = arguments.oninit || null;
@@ -54,7 +54,7 @@ __.classes.HandlerDialog = function(arguments){
 	}
 	__.classes.HandlerDialog.prototype.initDialog = function(){
 		if(!this.elmDialog){
-			this.elmDialog = $("<div>");
+			this.elmDialog = jQuery("<div>");
 			if(this.doManageHeight)
 				this.elmDialog.css({overflow: "auto"});
 			this.elmDialog.dialog(this.dialogArguments);
@@ -62,13 +62,13 @@ __.classes.HandlerDialog = function(arguments){
 	}
 	__.classes.HandlerDialog.prototype.showWithContent = function(argContent){
 		this.initDialog();
-		var elmNewHTML = $(argContent);
+		var elmNewHTML = jQuery(argContent);
 		this.elmDialog.html(elmNewHTML);
 		if(this.doManageWidth || this.doManageHeight){
-			var elmNewHTMLClone = $("<div>").html(elmNewHTML.clone());
+			var elmNewHTMLClone = jQuery("<div>").html(elmNewHTML.clone());
 			elmNewHTMLClone.addClass("ui-dialog-content "+this.dialogArguments.dialogClass);
 			elmNewHTMLClone.css({position: "absolute", left: "-9000px", top: "-9000px", display: "table"});
-			$("body").append(elmNewHTMLClone);
+			jQuery("body").append(elmNewHTMLClone);
 			var widthNewHTML = elmNewHTMLClone.width();
 			widthNewHTML += this.widthAdded;
 			var heightNewHTML = elmNewHTMLClone.height();
@@ -94,12 +94,12 @@ __.classes.HandlerDialog = function(arguments){
 		this.initDialog();
 		if(typeof arguments.url == "undefined")
 			arguments.url = this.url;
-		arguments.data = $.extend({}, this.ajaxData, (arguments.data || null));
+		arguments.data = jQuery.extend({}, this.ajaxData, (arguments.data || null));
 		if(typeof arguments.success == "undefined")
 			arguments.success = function(data){ fncThis.callbackAjaxSuccess(data, this) };
 
 		this.elmDialog.addClass(this.classLoading).html("").dialog("open");
-		this.request = $.ajax(arguments);
+		this.request = jQuery.ajax(arguments);
 	}
 	__.classes.HandlerDialog.prototype.callbackAjaxSuccess = function(argData, argContext){
 		if(this.onsuccess)

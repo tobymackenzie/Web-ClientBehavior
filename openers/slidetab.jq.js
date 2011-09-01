@@ -266,7 +266,7 @@ __.classes.slidetab = function(arguments){
 		this.elmsItems.find(this.selectorTab).bind("click focus", function(event){
 			event.preventDefault();
 			
-			fncThis.switchTo($(this).closest(fncThis.selectorItems));
+			fncThis.switchTo(jQuery(this).closest(fncThis.selectorItems));
 			return false;	
 		});
 	}

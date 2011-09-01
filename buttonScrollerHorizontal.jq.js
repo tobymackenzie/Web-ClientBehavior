@@ -50,25 +50,25 @@ __.classes.buttonScrollerHorizontal = function(arguments){
 		
 		//--create button navigation, bind handlers
 		if(this.htmlButtonContainer){
-			this.elmButtonContainer = $(this.htmlButtonContainer)
+			this.elmButtonContainer = jQuery(this.htmlButtonContainer)
 			this.elmWrapper.append(this.elmButtonContainer);
 		}else{
 			this.elmButtonContainer = this.elmWrapper;
 		}
 		if(this.htmlButtonPrevious){
-			this.elmButtonPrevious = $(this.htmlButtonPrevious);
+			this.elmButtonPrevious = jQuery(this.htmlButtonPrevious);
 			this.elmButtonContainer.append(this.elmButtonPrevious);
 			this.elmButtonPrevious.bind("click", function(){fncThis.scrollLeft()});
 		}
 		if(this.htmlButtonNext){
-			this.elmButtonNext = $(this.htmlButtonNext);
+			this.elmButtonNext = jQuery(this.htmlButtonNext);
 			this.elmButtonContainer.append(this.elmButtonNext);
 			this.elmButtonNext.bind("click", function(){fncThis.scrollRight()});
 		}
 		
 		//--adjust wrapper width on window resize
 		if(fncThis.doUpdateWidthOnWindowResize){
-			$(window).bind("resize", function(){
+			jQuery(window).bind("resize", function(){
 				fncThis.resize();
 			});
 		}

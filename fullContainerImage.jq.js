@@ -60,7 +60,7 @@ html.uaielte6 #bgimage img{
 __.classes.fullContainerImage = function(arguments){
 		//--optional attributes
 		this.boot = arguments.boot || null;
-		this.elmContainer = arguments.elmContainer || $(window);
+		this.elmContainer = arguments.elmContainer || jQuery(window);
 		this.classFitWidth = arguments.classFitWidth || "fitwidth";
 		this.classFitHeight = arguments.classFitHeight || "fitheight";
 		this.doCenterHorizontally = arguments.doCenterHorizontally || false;

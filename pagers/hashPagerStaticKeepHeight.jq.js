@@ -47,7 +47,7 @@ __.classes.hashPagerStaticKeepHeight = function(arguments){
 		this.selectorNavigation = arguments.selectorNavigation || false;
 			if(!this.selectorNavigation) return false;
 //->return
-		this.elmsNavigation = $(this.selectorNavigation);
+		this.elmsNavigation = jQuery(this.selectorNavigation);
 		this.elmsNavigation = this.elmsNavigation.has("a[href^='#']");
 		this.classCurrentNavigation = arguments.classCurrentNavigation || "current";
 		this.classCurrentPage = arguments.classCurrentPage || "current";
@@ -94,7 +94,7 @@ __.classes.hashPagerStaticKeepHeight = function(arguments){
 			if(event.preventDefault)
 				event.preventDefault();
 
-			var elmThis = $(this);
+			var elmThis = jQuery(this);
 			if(elmThis.is("a"))
 				var elmA = elmThis;
 			else

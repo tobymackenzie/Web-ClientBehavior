@@ -83,7 +83,7 @@ __.classes.pagerAjax = function(arguments){
 		this.boot = arguments.boot || null;
 		this.data = arguments.data || {};
 		this.duration = arguments.duration || 500;
-		this.elmContainer = arguments.elmContainer || $("body");
+		this.elmContainer = arguments.elmContainer || jQuery("body");
 		this.elmWrap = arguments.elmWrap || null;
 		this.selectorWrapForAnimation = arguments.selectorWrapForAnimation || null;
 		this.selectorWrapForContent = arguments.selectorWrapForContent || null;
@@ -96,12 +96,12 @@ __.classes.pagerAjax = function(arguments){
 
 		//--derived members
 		if((!this.elmWrap || this.elmWrap.length < 1) && this.htmlWrap){
-			this.elmWrap = $(this.htmlWrap);
+			this.elmWrap = jQuery(this.htmlWrap);
 			this.elmWrap.hide();
 			this.elmContainer.append(this.elmWrap);
 		}
-		this.elmWrapForAnimation = $(this.selectorWrapForAnimation);
-		this.elmWrapForContent = $(this.selectorWrapForContent);
+		this.elmWrapForAnimation = jQuery(this.selectorWrapForAnimation);
+		this.elmWrapForContent = jQuery(this.selectorWrapForContent);
 		
 		if(this.oninit)
 			this.oninit.call(this);
@@ -139,7 +139,7 @@ __.classes.pagerAjax = function(arguments){
 		if(!fncAjaxParameters.url)
 			fncAjaxParameters.url = this.url;
 		
-		$.ajax(fncAjaxParameters);
+		jQuery.ajax(fncAjaxParameters);
 	}
 	__.classes.pagerAjax.prototype.animationBasicPreCall = function(arguments){
 		var fncThis = this;
@@ -155,7 +155,7 @@ __.classes.pagerAjax = function(arguments){
 		var fncThis = this;
 		var fncTextContent = argData;
 
-		if($.trim(fncTextContent)){
+		if(jQuery.trim(fncTextContent)){
 			fncThis.elmWrapForContent.html(fncTextContent);
 			fncThis.elmWrapForAnimation.fadeIn(fncThis.duration);
 		}

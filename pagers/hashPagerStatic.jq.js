@@ -48,7 +48,7 @@ __.classes.hashPagerStatic = function(arguments){
 		argElements.bind("click", function(event){
 			if(event.preventDefault)
 				event.preventDefault();
-			fncThis.switche($(this).find("a").attr("href"));
+			fncThis.switche(jQuery(this).find("a").attr("href"));
 			
 			return false;
 		});

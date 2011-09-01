@@ -34,7 +34,7 @@ __.classes.verticalMenuAnimation = function(arguments){
 		this.elmsMenus.find("."+this.classTopitem).attr("href","javascript://openmenu();");
 		// must set height so there is no jump
 		this.elmsMenus.find("."+this.classSubmenu).each(function(){
-			$(this).css("height", $(this).height());
+			jQuery(this).css("height", jQuery(this).height());
 		});
 		//- init as closed
 		this.elmsMenus.addClass(this.classClosed);
@@ -50,7 +50,7 @@ __.classes.verticalMenuAnimation = function(arguments){
 		var fncThis = this;
 		var elmsMenus = argElmsMenus || this.elmsMenus;
 		elmsMenus.find("."+this.classTopitem).bind("click", function(){
-			var elmMenu = $(this).parent(this.classToplevelitem);
+			var elmMenu = jQuery(this).parent(this.classToplevelitem);
 			if(elmMenu[0] == fncThis.elmCurrent[0]){
 				fncThis.close(elmMenu);
 				fncThis.elmCurrent = false;

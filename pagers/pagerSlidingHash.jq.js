@@ -132,7 +132,7 @@ __.classes.pagerSlidingHash = function(arguments){
 		var fncThis = this;
 		if(fncThis.elmPreviousButton){
 			fncThis.elmPreviousButton.children("a").bind("click", function(){
-				if(fncThis.inprogress == 0 && $(this).attr("href")){
+				if(fncThis.inprogress == 0 && jQuery(this).attr("href")){
 					fncThis.inprogress = 1;
 					if(!fncThis.switchPagesByID(fncThis.parsePath(fncThis.elmPreviousButton.children("a").attr("href"))))
 						fncThis.inprogress = 0;
@@ -142,7 +142,7 @@ __.classes.pagerSlidingHash = function(arguments){
 		}
 		if(fncThis.elmNextButton){
 			fncThis.elmNextButton.children("a").bind("click", function(){
-				if(fncThis.inprogress == 0 && $(this).attr("href")){
+				if(fncThis.inprogress == 0 && jQuery(this).attr("href")){
 					fncThis.inprogress = 1;
 					if(!fncThis.switchPagesByID(fncThis.parsePath(fncThis.elmNextButton.children("a").attr("href"))))
 						fncThis.inprogress = 0;
@@ -154,7 +154,7 @@ __.classes.pagerSlidingHash = function(arguments){
 			fncThis.elmsItemNavigation.bind("click", function(){
 				if(fncThis.inprogress == 0){
 					fncThis.inprogress = 1;
-					if(!fncThis.switchPagesByID(fncThis.parsePath($(this).children("a").attr("href"))))
+					if(!fncThis.switchPagesByID(fncThis.parsePath(jQuery(this).children("a").attr("href"))))
 						fncThis.inprogress = 0;
 				}
 				return false;
@@ -191,11 +191,11 @@ __.classes.pagerSlidingHash = function(arguments){
 			var elmIndexCurrent = fncThis.getPageIndex(elmNewPage);
 			//-set all previous elements to previous
 			for(var i = 0; i < elmIndexCurrent; ++i){
-				$(fncThis.elmsPages[i]).removeClass(fncThis.classNextItem).addClass(fncThis.classPreviousItem).css({"display":"none"});
+				jQuery(fncThis.elmsPages[i]).removeClass(fncThis.classNextItem).addClass(fncThis.classPreviousItem).css({"display":"none"});
 			}
 			//-set all next elements to next
 			for(var i = elmIndexCurrent + 1; i < elmsPagesLength; ++i){
-				$(fncThis.elmsPages[i]).addClass(fncThis.classNextItem).removeClass(fncThis.classPreviousItem).css({"display":"none"});
+				jQuery(fncThis.elmsPages[i]).addClass(fncThis.classNextItem).removeClass(fncThis.classPreviousItem).css({"display":"none"});
 			}
 
 			if(fncThis.onpostslide)

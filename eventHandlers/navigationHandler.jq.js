@@ -67,7 +67,7 @@ __.classes.navigationHandler = function(arguments){
 			if(fncThis.inprogress == true)
 				return false;
 			var fncEvent = event;
-			var localVariables = {elmThis: $(this)};
+			var localVariables = {elmThis: jQuery(this)};
 
 			//--determine old and new item
 			localVariables.oldItem = fncThis.elmsItems.filter("."+fncThis.classCurrent);

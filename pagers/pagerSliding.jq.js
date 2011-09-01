@@ -63,7 +63,7 @@ __.classes.pagerSliding = function(arguments){
 		if(this.elmCurrent.length < 1)
 			this.elmCurrent = elmsPages.first();
 		if(!arguments.contentLeft){
-			this.pageOffsetRight = (arguments.contentLeft)?false:$("body").outerWidth();
+			this.pageOffsetRight = (arguments.contentLeft)?false:jQuery("body").outerWidth();
 			
 		}
 		this.elmsPages.filter("."+this.classPreviousItem).css({"left":0 - this.pageOffsetLeft - this.contentWidth, "display":"none"});
@@ -116,7 +116,7 @@ __.classes.pagerSliding = function(arguments){
 			fncThis.elmsItemNavigation.bind("click", function(){
 				if(fncThis.inprogress == 0){
 					fncThis.inprogress = 1;
-					if(!fncThis.switchPagesByID(fncThis.parsePath($(this).children("a").attr("href"))))
+					if(!fncThis.switchPagesByID(fncThis.parsePath(jQuery(this).children("a").attr("href"))))
 						fncThis.inprogress = 0;
 				}
 				return false;
@@ -139,11 +139,11 @@ __.classes.pagerSliding = function(arguments){
 			var elmIndexCurrent = fncThis.getPageIndex(elmNewPage);
 			// set all previous elements to previous
 			for(var i = 0; i < elmIndexCurrent; ++i){
-				$(fncThis.elmsPages[i]).removeClass(fncThis.nextClass).addClass(fncThis.classPreviousItem).css({"display":"none"});
+				jQuery(fncThis.elmsPages[i]).removeClass(fncThis.nextClass).addClass(fncThis.classPreviousItem).css({"display":"none"});
 			}
 			// set all next elements to next
 			for(var i = elmIndexCurrent + 1; i < elmsPagesLength; ++i){
-				$(fncThis.elmsPages[i]).addClass(fncThis.nextClass).removeClass(fncThis.classPreviousItem).css({"display":"none"});
+				jQuery(fncThis.elmsPages[i]).addClass(fncThis.nextClass).removeClass(fncThis.classPreviousItem).css({"display":"none"});
 			}
 			
 			//elmNewPage.prevAll(fncThis.itemSelector).removeClass(fncThis.nextClass).addClass(fncThis.classPreviousItem).css({"display":"none", "left":0 - this.pageOffsetLeft - this.contentWidth});

@@ -19,7 +19,7 @@ depends on:
 ------------*/
 __.classes.navigationGrayscaler = function(arguments){
 		// not needed in ie
-		if($.browser.msie) return false;
+		if(jQuery.browser.msie) return false;
 		this.elmsItems = arguments.elmsItems || false; if(this.elmsItems.length < 1) return false;
 		this.classCurrent = arguments.classCurrent || "current";
 		this.eventCurrentChange = arguments.eventCurrentChange || "changeCurrent";
@@ -32,7 +32,7 @@ __.classes.navigationGrayscaler = function(arguments){
 		var fncThis = this;
 		if(argElms.length > 0){
 			argElms.each(function(){
-				var elmThis = $(this);
+				var elmThis = jQuery(this);
 				if(elmThis.css("position") == "static" || elmThis.css("position") == "")
 					elmThis.css("position", "relative");
 				var elmClone = elmThis.find("img").clone().addClass(fncThis.classGrayed).attr("alt","").css({"position":"absolute", "top":"0", "left":"0", "z-index":"10"});
@@ -54,12 +54,12 @@ __.classes.navigationGrayscaler = function(arguments){
 			});
 			
 			argElms.bind("mouseenter focus", function(){
-				var elmThis = $(this);
+				var elmThis = jQuery(this);
 				if(!elmThis.hasClass(fncThis.classCurrent))
 					fncThis.colorify(elmThis, 0);
 			});
 			argElms.bind("mouseleave blur", function(){
-				var elmThis = $(this);
+				var elmThis = jQuery(this);
 				if(!elmThis.hasClass(fncThis.classCurrent))
 					fncThis.grayify(elmThis, 0);
 			});

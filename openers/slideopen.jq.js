@@ -46,7 +46,7 @@ __.classes.slideOpen = function(arguments){
 		var fncThis = this;
 		this.element.css("display", "none").addClass(this.classClosed).removeClass(this.classOpen);
 		// init toggle clickable
-		this.elmToggler = $('<div class="toggler"><a href="javascript://toggleContentDisplay();">'+this.strTogglerClosed+this.strToggler+'</a></div>');
+		this.elmToggler = jQuery('<div class="toggler"><a href="javascript://toggleContentDisplay();">'+this.strTogglerClosed+this.strToggler+'</a></div>');
 		if(this.callbackPlaceToggler)
 			this.callbackPlaceToggler.call(this, this.elmToggler);
 		else

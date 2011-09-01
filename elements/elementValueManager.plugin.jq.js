@@ -18,7 +18,7 @@
 
 				//--settings
 				if(fncSettingsDefault)
-					$.extend(fncSettingsDefault, argSettings);
+					jQuery.extend(fncSettingsDefault, argSettings);
 
 				//--initialize data if not already initialized
 				if(!fncData){
@@ -66,7 +66,7 @@
 		}
 	};
 
-	$.fn[cloNamePlugin] = function(argMethod){
+	jQuery.fn[cloNamePlugin] = function(argMethod){
 		if(cloMethods[argMethod]){
 			return cloMethods[argMethod].apply(this, Array.prototype.slice.call(arguments, 1));
 		}else if(typeof argMethod == "object" || argMethod){
