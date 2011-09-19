@@ -28,6 +28,55 @@ __.message(this);
 __.message(argData);
         __.message("change: "+argData.new);
     });
+
+	//--complicated
+        __.colInputsTax = new __.classes.collection();
+        __.colInputsTax.add(__.elmFormCheckout.find("#fld\\[checkout\\]\\[address1\\]"), "address1");
+        __.colInputsTax.add(__.elmFormCheckout.find("#fld\\[checkout\\]\\[city\\]"), "city");
+        __.colInputsTax.add(__.elmFormCheckout.find("#fld\\[checkout\\]\\[state\\]"), "state");
+        __.colInputsTax.add(__.elmFormCheckout.find("#fld\\[checkout\\]\\[zip\\]"), "zip");
+        __.colInputsTax.add(__.elmFormCheckout.find("#fld\\[checkout\\]\\[sameasbilling\\]"), "sameasbilling");
+        __.colInputsTax.add(__.elmFormCheckout.find("#fld\\[checkout\\]\\[shippingaddress1\\]"), "shippingaddress1");
+        __.colInputsTax.add(__.elmFormCheckout.find("#fld\\[checkout\\]\\[shippingcity\\]"), "shippingcity");
+        __.colInputsTax.add(__.elmFormCheckout.find("#fld\\[checkout\\]\\[shippingstate\\]"), "shippingstate");
+        __.colInputsTax.add(__.elmFormCheckout.find("#fld\\[checkout\\]\\[shippingzip\\]"), "shippingzip");
+        __.stateCheckerTaxFields = new __.classes.stateChecker({
+            collection: __.colInputsTax
+            ,callbackCheckState: function(args){
+                var lclReturn = "";
+                if(this.collection.get("sameasbilling").filter(":checked").length > 0)
+                    var fields = this.boot.fieldsBillingAddress;
+                else
+                    var fields = this.boot.fieldsShippingAddress;
+                for(var key in fields){
+                    if(fields.hasOwnProperty(key)){
+                        lclReturn += this.collection.get(fields[key]).val();
+                    }
+                }
+                return lclReturn;
+                
+            }
+            ,boot: {
+                fieldsBillingAddress: [
+                    "address1"
+                    ,"city"
+                    ,"state"
+                    ,"zip"
+                ]
+                ,fieldsShippingAddress: [
+                    "shippingaddress1"
+                    ,"shippingcity"
+                    ,"shippingstate"
+                    ,"shippingzip"
+                ]
+            }
+        });
+        __.stateCheckerTaxFields.bind("change", function(argEvent, argData){
+            //--do ajax query to change taxes
+            __.orderAddressManager.store();
+            //--modify "data-taxes" on ".mainhead .cost" on change
+            //!__.orderManager.serviceRequest(null, "read", ["order"]);
+        });
 });
 
 -----html

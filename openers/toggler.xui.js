@@ -56,6 +56,9 @@ __.classes.toggler = function(args){
 		this.styleOpened = args.styleOpened || {display: "block"};
 		this.typeEvent = args.typeEvent || "click";
 
+		//--derived attributes
+		this.preventDefault = (this.elmClickable.has("a").length > 0)? true: false;
+
 		//--close elements on init
 		if(this.closeoninit)
 			this.elmToToggle/* .not("."+this.classClosed).not("."+this.classOpen) */.addClass(this.classClosed).css(this.styleClosed);
@@ -71,9 +74,11 @@ __.classes.toggler = function(args){
 		if(argElements && argElements.length > 0){
 			argElements.on(this.typeEvent, function(event){
 				fncThis.toggle(fncThis.elmToToggle);
-				if(event.preventDefault)
-					event.preventDefault();
-				return false;
+				if(fncThis.preventDefault){
+					if(event.preventDefault)
+						event.preventDefault();
+					return false;
+				}
 			});
 		}
 	}
