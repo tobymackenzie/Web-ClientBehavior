@@ -55,7 +55,6 @@ __.classes.elementValueManager = function(args){
 		var fncReturn = false;
 		var fncDataSource = this.dataSource;
 		if(fncDataSource.substr(0, 7) == "checked"){
-			fncReturn = ((this.element.filter(":checked").length > 0)? true: false);
 			var newDataSource = fncDataSource.substr(7);
 			if(fncReturn)
 				fncDataSource = (newDataSource)? newDataSource: fncDataSource;
@@ -79,13 +78,21 @@ __.classes.elementValueManager = function(args){
 	__.classes.elementValueManager.prototype.setValue = function(argValue){
 		var fncDataSource = this.dataSource;
 		if(fncDataSource.substr(0, 7) == "checked"){
-			fncReturn = ((this.element.filter(":checked").length > 0)? true: false);
-			this.element.attr("checked", "checked");
 			var newDataSource = fncDataSource.substr(7);
-			if(argValue != "checked")
-				fncDataSource = (newDataSource)? newDataSource: fncDataSource;
-			else
+			if(newDataSource){
+				this.element.attr("checked", "checked");
+				if(argValue != "checked")
+					fncDataSource = (newDataSource)? newDataSource: fncDataSource;
+				else
+					fncDataSource = false;
+			}else{
+				if(argValue == "checked"){
+					this.element.attr("checked", "checked");
+				}else{
+					this.element.removeAttr("checked");
+				}
 				fncDataSource = false;
+			}
 		}
 		switch(fncDataSource){
 			case "attribute":
