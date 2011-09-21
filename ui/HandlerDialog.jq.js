@@ -47,8 +47,21 @@ __.classes.HandlerDialog = function(args){
 		this.request = null;
 		this.elmDialog = null;
 		//--derived attributes
-
+		this.isLimitingHeight = false;
+		
 		//--do something
+		if(this.doManageHeight && this.heightMax == "viewport"){
+			this.elmHTML = $("html");
+			this.valueHTMLOverflow = this.elmHTML.css("overflow");
+			this.initDialog();
+			this.elmDialog.bind("dialogopen", function(argEvent, argUI){
+				fncThis.elmHTML.css("overflow", "hidden");
+			});
+			this.elmDialog.bind("dialogclose", function(argEvent, argUI){
+				fncThis.elmHTML.css("overflow", fncThis.valueHTMLOverflow);
+			});
+		}
+
 		if(this.oninit)
 			this.oninit.call(this);
 	}
@@ -83,15 +96,15 @@ __.classes.HandlerDialog = function(args){
 					var lclHeightMax = false;
 				}
 				if(lclHeightMax && heightNewHTML > lclHeightMax){
-					var isLimitingHeight = true;
+					this.isLimitingHeight = true;
 					this.elmDialog.dialog("option", "height", lclHeightMax);
 				}else{
-					var isLimitingHeight = false;
+					this.isLimitingHeight = false;
 					this.dialog("option", "height", "auto");
 				}
 			}
 			if(this.doManageWidth){
-				if(isLimitingHeight){
+				if(this.isLimitingHeight){
 					widthNewHTML += this.widthScrollbar;
 				}
 				this.dialog("option", "width", widthNewHTML);
