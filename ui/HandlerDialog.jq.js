@@ -2,7 +2,7 @@
 handler for dialog to use single dialog with changing content, passed directly or via ajax call
 
 -----dependencies
-tmlib
+tmlib: getWidthScrollbar
 jquery
 jqueryui: dialog
 
@@ -40,7 +40,7 @@ __.classes.HandlerDialog = function(args){
 		this.onshow = args.onshow || null;
 		this.onsuccess = args.onsuccess || null;
 		this.widthAdded = args.widthAdded || 0;
-		this.widthScrollbar = (typeof args.widthScrollbar != "undefined")? args.widthScrollbar: 25;
+		this.widthScrollbar = (typeof args.widthScrollbar != "undefined")? args.widthScrollbar: __.lib.getWidthScrollbar();
 		this.heightMax = args.heightMax || 500;
 		this.url = args.url || null;
 
@@ -73,16 +73,28 @@ __.classes.HandlerDialog = function(args){
 			widthNewHTML += this.widthAdded;
 			var heightNewHTML = elmNewHTMLClone.height();
 			elmNewHTMLClone.remove();
-			if(heightNewHTML > this.heightMax){
-				widthNewHTML += this.widthScrollbar;
-			}
-			if(this.doManageWidth)
-				this.dialog("option", "width", widthNewHTML);
+
 			if(this.doManageHeight){
-				if(heightNewHTML > this.heightMax){
-					this.dialog("option", "height", this.heightMax);
-				}else
+				if(this.heightMax == "viewport"){
+					var lclHeightMax = $(window).height();
+				}else if(isNumeric(this.heightMax)){
+					var lclHeightMax = this.heightMax;
+				}else{
+					var lclHeightMax = false;
+				}
+				if(lclHeightMax && heightNewHTML > lclHeightMax){
+					var isLimitingHeight = true;
+					this.elmDialog.dialog("option", "height", lclHeightMax);
+				}else{
+					var isLimitingHeight = false;
 					this.dialog("option", "height", "auto");
+				}
+			}
+			if(this.doManageWidth){
+				if(isLimitingHeight){
+					widthNewHTML += this.widthScrollbar;
+				}
+				this.dialog("option", "width", widthNewHTML);
 			}
 		}
 		this.dialog("open");
