@@ -36,6 +36,7 @@ __.classes.HandlerDialog = function(args){
 		this.dialogArguments = jQuery.extend(this.dialogArguments, (args.dialogArguments || {}));
 		this.doManageWidth = (typeof args.doManageWidth != "undefined")? args.doManageWidth: true;
 		this.doManageHeight = (typeof args.doManageHeight != "undefined")? args.doManageHeight: true;
+		this.htmlLoading = arguments.htmlLoading || "";
 		this.oninit = args.oninit || null;
 		this.onshow = args.onshow || null;
 		this.onsuccess = args.onsuccess || null;
@@ -49,7 +50,7 @@ __.classes.HandlerDialog = function(args){
 		//--derived attributes
 		this.isLimitingHeight = false;
 		
-		//--do something
+		//--prevent scrolling of document
 		if(this.doManageHeight && this.heightMax == "viewport"){
 			this.elmHTML = $("html");
 			this.valueHTMLOverflow = this.elmHTML.css("overflow");
@@ -78,7 +79,7 @@ __.classes.HandlerDialog = function(args){
 		var elmNewHTML = jQuery(argContent);
 		this.elmDialog.html(elmNewHTML);
 		if(this.doManageWidth || this.doManageHeight){
-			var elmNewHTMLClone = jQuery("<div>").html(elmNewHTML.clone());
+			var elmNewHTMLClone = jQuery('<div class="ui-dialog">').html(elmNewHTML.clone());
 			elmNewHTMLClone.addClass("ui-dialog-content "+this.dialogArguments.dialogClass);
 			elmNewHTMLClone.css({position: "absolute", left: "-9000px", top: "-9000px", display: "table"});
 			jQuery("body").append(elmNewHTMLClone);
@@ -123,7 +124,20 @@ __.classes.HandlerDialog = function(args){
 		if(typeof args.success == "undefined")
 			args.success = function(data){ fncThis.callbackAjaxSuccess(data, this) };
 
-		this.elmDialog.addClass(this.classLoading).html("").dialog("open");
+		if(this.doManageWidth)
+			this.dialog("option", "width", "auto");
+		if(this.doManageHeight){
+			this.dialog("option", "height", "auto");
+			this.isLimitingHeight = false;
+		}
+
+		if(__.lib.isFunction(this.htmlLoading))
+			var lclHtmlLoading = this.htmlLoading.call(this);
+		else
+			var lclHtmlLoading = this.htmlLoading;
+
+		this.elmDialog.addClass(this.classLoading).html(lclHtmlLoading).dialog("open");
+
 		this.request = jQuery.ajax(args);
 	}
 	__.classes.HandlerDialog.prototype.callbackAjaxSuccess = function(argData, argContext){
@@ -137,3 +151,7 @@ __.classes.HandlerDialog = function(args){
 	__.classes.HandlerDialog.prototype.dialog = function(){
 		return this.elmDialog.dialog.apply(this.elmDialog, arguments);
 	}
+	__.classes.HandlerDialog.prototype.defaultClbGetLoadingHTML = function(){
+		return "";
+	}
+
