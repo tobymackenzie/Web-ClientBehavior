@@ -52,12 +52,10 @@ __.classes.toggler = function(args){
 		this.onopen = args.onopen || null;
 		this.onclose = args.onclose || null;
 		this.ontoggle = args.ontoggle || null;
+		this.preventDefault = (typeof args.preventDefault != "undefined")? args.preventDefault : true;
 		this.styleClosed = args.styleClosed || {display: "none"};
 		this.styleOpened = args.styleOpened || {display: "block"};
 		this.typeEvent = args.typeEvent || "click";
-
-		//--derived attributes
-		this.preventDefault = (this.elmClickable.has("a").length > 0)? true: false;
 
 		//--close elements on init
 		if(this.closeoninit)
@@ -73,11 +71,14 @@ __.classes.toggler = function(args){
 		var fncThis = this;
 		if(argElements && argElements.length > 0){
 			argElements.on(this.typeEvent, function(event){
-				fncThis.toggle(fncThis.elmToToggle);
-				if(fncThis.preventDefault){
-					if(event.preventDefault)
-						event.preventDefault();
-					return false;
+				var nodeName = event.target.nodeName;
+				if(!event.target.href || (nodeName != "A" && nodeName != "a")){
+					fncThis.toggle(fncThis.elmToToggle);
+					if(fncThis.preventDefault){
+						if(event.preventDefault)
+							event.preventDefault();
+						return false;
+					}
 				}
 			});
 		}
