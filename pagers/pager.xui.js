@@ -8,7 +8,35 @@ xui
 -----parameters
 
 -----instantiation
-__.pager = new __.classes.Pager({elmsPages: xui("#maincontent .tabpage"), elmsNavigation: xui("#maincontent .tab")});
+	__.elmsBanners = xui(".bannerlist .banner");
+	if(__.elmsBanners.length > 0){
+		__.pager = new __.classes.Pager({
+			elmsPages: __.elmsBanners
+			,oninit: function(){
+				this.elmsPages.setStyle("display", "none");
+				this.elmPageCurrent.setStyle("display", "block");
+			}
+			,onswitch: function(args){
+				var lclThis = this;
+				var lclArgs = args;
+				args.elmPageNext.setStyle("left", __.cfg.widthPage+"px")
+					.setStyle("display", "block")
+					.setStyle("z-index", "1")
+					.tween({left: 0, duration: __.cfg.durationPager})
+				;
+				this.elmPageCurrent.tween({left: "-"+__.cfg.widthPage+"px", duration: __.cfg.durationPager}
+					,function(){
+						lclThis.elmPageCurrent.setStyle("z-index", 0);
+						lclThis.elmPageCurrent = args.elmPageNext;
+						lclThis.setClasses();
+					}
+				);
+			}
+		});
+		__.pagerInterval = setInterval(function(){
+			__.pager.switchToNext();
+		}, __.cfg.intervalPager);
+	}
 
 -----html
 -----css
@@ -97,9 +125,10 @@ __.classes.Pager = function(args){
 	__.classes.Pager.prototype.switchToNext = function(){
 		var localvars = {};
 		localvars.elmPageNext = this.elmPageCurrent.next();
-		if(localvars.elmPageNext.length == 0 && this.doCarousel)
+		if(typeof localvars.elmPageNext.length == "undefined" && this.doCarousel){
 			localvars.elmPageNext = this.elmsPages.first();
-		if(localvars.elmPageNext.length > 0){
+		}
+		if(!!localvars.elmPageNext && localvars.elmPageNext.length){
 			localvars.elmNavigationNext = this.callbackGetNavigationForID(localvars.elmPageNext.attr(this.attrId));
 			this.switche(localvars);
 			return true;
