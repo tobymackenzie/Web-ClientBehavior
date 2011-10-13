@@ -2,7 +2,7 @@
 handler for dialog to use single dialog with changing content, passed directly or via ajax call
 
 -----dependencies
-tmlib: getWidthScrollbar
+tmlib: getWidthScrollbar, AjaxForm(if selectorAjaxForm)
 jquery
 jqueryui: dialog
 
@@ -24,6 +24,7 @@ __.classes.HandlerDialog = function(args){
 		this.ajaxData = jQuery.extend({ajaxcall: 1}, (args.ajaxData || null));
 		this.boot = args.boot || {};
 		this.classLoading = args.classLoading || "loading";
+		this.clbHandleFormSuccess = args.clbHandleFormSuccess || this.defaultHandleFormSuccess;
 		this.clbManageWidthHeight = args.clbManageWidthHeight || this.defaultManageWidthHeight;
 		this.dialogArguments = {
 			autoOpen: false
@@ -46,12 +47,14 @@ __.classes.HandlerDialog = function(args){
 		this.heightMax = args.heightMax || "viewport";
 		this.heightModifierContent = args.heightModifierContent || 0;
 		this.heightModifierContainer = (typeof args.heightModifierContainer != "undefined")? args.heightModifierContainer: -40;
+		this.selectorAjaxForm = args.selectorAjaxForm || "";
 		this.url = args.url || null;
 
-		this.request = null;
-		this.elmDialog = null;
 		//--derived attributes
+		this.arrAjaxForms = [];
+		this.elmDialog = null;
 		this.isLimitingHeight = false;
+		this.request = null;
 		
 		//--prevent scrolling of document
 		if(this.doManageHeight && this.heightMax == "viewport"){
@@ -69,6 +72,27 @@ __.classes.HandlerDialog = function(args){
 		if(this.oninit)
 			this.oninit.call(this);
 	}
+	__.classes.HandlerDialog.prototype.bindAjaxForm = function(argElmsForm){
+		var lclThis = this;
+		if(typeof argElmsForm == "undefined")
+			argElmsForm = this.elmDialog.find(this.selectorAjaxForm);
+		argElmsForm.each(function(){
+			lclThis.arrAjaxForms.push(new __.classes.AjaxForm({
+				elmForm: $(this)
+				,onsuccess: function(){
+					lclThis.clbHandleFormSuccess.apply(lclThis, arguments);
+				}
+			}));
+		});
+	}
+	__.classes.HandlerDialog.prototype.defaultHandleFormSuccess = function(argData, argStatus, argXHR){
+		var lclContentType = argXHR.getResponseHeader("content-type");
+		if(lclContentType.indexOf("text/html") > -1){
+			this.showWithContent(argData);
+		}else{
+			this.elmDialog.dialog("close");
+		}
+	}
 	__.classes.HandlerDialog.prototype.initDialog = function(){
 		if(!this.elmDialog){
 			this.elmDialog = jQuery("<div>");
@@ -85,6 +109,8 @@ __.classes.HandlerDialog = function(args){
 			this.clbManageWidthHeight.call(this, elmNewHTML);
 		}
 		this.dialog("open");
+		if(this.selectorAjaxForm)
+			this.bindAjaxForm();
 		if(this.onshow)
 			this.onshow.call(this);
 	}
