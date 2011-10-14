@@ -39,6 +39,7 @@ __.classes.HandlerDialog = function(args){
 		this.doManageWidth = (typeof args.doManageWidth != "undefined")? args.doManageWidth: true;
 		this.doManageHeight = (typeof args.doManageHeight != "undefined")? args.doManageHeight: true;
 		this.htmlLoading = args.htmlLoading || "";
+		this.onhandleformsuccess = args.onhandleformsuccess || null;
 		this.oninit = args.oninit || null;
 		this.onshow = args.onshow || null;
 		this.onsuccess = args.onsuccess || null;
@@ -90,8 +91,10 @@ __.classes.HandlerDialog = function(args){
 		if(lclContentType.indexOf("text/html") > -1){
 			this.showWithContent(argData);
 		}else{
-			this.elmDialog.dialog("close");
+			this.dialog("close");
 		}
+		if(this.onhandleformsuccess)
+			this.onhandleformsuccess.call(this);
 	}
 	__.classes.HandlerDialog.prototype.initDialog = function(){
 		if(!this.elmDialog){
@@ -108,6 +111,7 @@ __.classes.HandlerDialog = function(args){
 		if(this.doManageWidth || this.doManageHeight){
 			this.clbManageWidthHeight.call(this, elmNewHTML);
 		}
+		this.dialog("option", "closeText", this.dialogArguments.closeText);
 		this.dialog("open");
 		if(this.selectorAjaxForm)
 			this.bindAjaxForm();
@@ -135,6 +139,7 @@ __.classes.HandlerDialog = function(args){
 		else
 			var lclHtmlLoading = this.htmlLoading;
 
+		this.dialog("option", "closeText", this.dialogArguments.closeText);
 		this.elmDialog.addClass(this.classLoading).html(lclHtmlLoading).dialog("open");
 
 		this.request = jQuery.ajax(args);
