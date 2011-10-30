@@ -65,7 +65,7 @@ __.classes.updateSelect = function(args){
 		if(!this.elmSelectSource || !this.urlData){
 			return false;
 		}
-		__.addListeners(this.elmSelectSource, "change", function(){
+		__.lib.addListeners(this.elmSelectSource, "change", function(){
 			fncThis.handleChange();
 		});
 		fncThis.handleChange();

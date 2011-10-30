@@ -61,7 +61,7 @@ __.classes.collection = function(args){
 		return this;
 	}
 	__.classes.collection.prototype.getIndexForNameOrIndex = function(argNameOrIndex){
-		if(__.isInteger(argNameOrIndex))
+		if(__.lib.isInteger(argNameOrIndex))
 			var index = argNameOrIndex;
 		else
 			var index = __.lib.arraySearch(argNameOrIndex, this.itemsNames);

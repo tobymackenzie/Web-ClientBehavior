@@ -2,7 +2,7 @@
 provides uniform interface for getting and (setting) "values" of an element, monitoring them for changes
 
 -----dependencies
-tmlib: dispatchevent
+tmlib
 jquery
 
 -----parameters

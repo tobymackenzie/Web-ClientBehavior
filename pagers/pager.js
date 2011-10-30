@@ -35,7 +35,7 @@ __.classes.pager = function(args){
 			this.elmPageCurrent = this.callbackGetCurrentPage(this.idInitial);
 		}else{
 			for(var key in this.elmsNavigation){
-				if(this.elmsNavigation.hasOwnProperty(key) && __.hasClass(this.elmsNavigation[key], this.classCurrentNavigation))
+				if(this.elmsNavigation.hasOwnProperty(key) && __.lib.hasClass(this.elmsNavigation[key], this.classCurrentNavigation))
 					this.elmNavigationCurrent = this.elmsNavigation[key];
 			}
 		}
@@ -53,20 +53,20 @@ __.classes.pager = function(args){
 		if(this.elmsNavigation){
 			for(var key in this.elmsNavigation){
 				if(this.elmsNavigation.hasOwnProperty(key) && this.elmsNavigation[key].getElementsByTagName){
-					__.removeClass(this.elmsNavigation[key], this.classCurrentNavigation);
+					__.lib.removeClass(this.elmsNavigation[key], this.classCurrentNavigation);
 				}
 			}
 			if(this.elmNavigationCurrent)
-				__.addClass(this.elmNavigationCurrent, this.classCurrentNavigation);
+				__.lib.addClass(this.elmNavigationCurrent, this.classCurrentNavigation);
 		}
 		if(this.elmsPages){
 			for(var key in this.elmsPages){
 				if(this.elmsPages.hasOwnProperty(key) && this.elmsPages[key].getElementsByTagName){
-					__.removeClass(this.elmsPages[key], this.classCurrentPage);
+					__.lib.removeClass(this.elmsPages[key], this.classCurrentPage);
 				}
 			}
 			if(this.elmPageCurrent)
-				__.addClass(this.elmPageCurrent, this.classCurrentPage);
+				__.lib.addClass(this.elmPageCurrent, this.classCurrentPage);
 		}
 	}
 	__.classes.pager.prototype.switche = function(argId){

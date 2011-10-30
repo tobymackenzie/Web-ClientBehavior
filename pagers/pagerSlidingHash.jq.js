@@ -61,7 +61,7 @@ __.classes.pagerSlidingHash = function(args){
 		this.elmNextButton = args.elmNextButton || null;
 		this.elmsItemNavigation = args.elmsItemNavigation || null;
 		this.elmKeepHeight = args.elmKeepHeight || false;
-			if(__.isIphone() == true) this.elmKeepHeight = false;
+			if(__.ua.isIphone() == true) this.elmKeepHeight = false;
 		this.itemSelector = (args.itemSelector !== undefined)? args.itemSelector: "item";
 		this.classCurrentItem = (args.classCurrentItem !== undefined)? args.classCurrentItem: "current";
 		this.classPreviousItem = (args.classPreviousItem !== undefined)? args.classPreviousItem: "previous";

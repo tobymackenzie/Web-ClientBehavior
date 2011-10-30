@@ -1,29 +1,24 @@
 document.getElementsByTagName('html')[0].className += ' hasjavascript';
 
-if(typeof __ === 'undefined') var __ = new tmlib;
+if(typeof __ === "undefined") var __ = {ua: {}, cfg: {}, class: {}, classes: {}, data: {}, lib: {}, objects: {}};
 
 __.cfg.whatever = "whatever";
 
-__.scrOnload = function(){
+__.onload = function(){
 	
 }
 
 /*---------- 
-©tmlib
+©lib
 ---------*/
-function tmlib(){
-		this.classes = {};
-		this.lib = {};
-		this.cfg = {};
-	}
-	tmlib.prototype.message = function(argument){
-		if(window.console) 
-			console.log(argument);
+__.message = function(argument){
+	if(window.console) 
+		console.log(argument);
 //		else alert(argument);
-	}
+}
 
 /*-----
 init
 -----*/
-//-!removeonhead-__.addListeners(window, "load", __.scrOnload, false);
-head.ready(__.scrOnload);
+//-!removeonhead-__.lib.addListeners(window, "load", __.onload, false);
+head.ready(__.onload);

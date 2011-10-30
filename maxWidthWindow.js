@@ -31,7 +31,7 @@ __.classes.maxWidthWindow = function(args){
 		
 		var fncThis = this;	
 		this.update();
-		__.addListeners(window, "resize", function(){ fncThis.update() });
+		__.lib.addListeners(window, "resize", function(){ fncThis.update() });
 	}
 	__.classes.maxWidthWindow.prototype.update = function(){
 		var fncThis = this;
@@ -39,7 +39,7 @@ __.classes.maxWidthWindow = function(args){
 			if(typeof jQuery === 'undefined')
 				var windowWidth = window.innerWidth || document.documentElement.clientWidth;
 			else
-				var windowWidth = __.getRealWindowWidth();
+				var windowWidth = __.lib.getRealWindowWidth();
 			var bodyWidth = document.body.outerWidth|| document.body.clientWidth;
 			bodyWidth += fncThis.bodyMarginWidth;
 			var newContainerWidth = (windowWidth > bodyWidth)? windowWidth : bodyWidth;

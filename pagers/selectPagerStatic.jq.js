@@ -44,7 +44,7 @@ __.classes.selectPagerStatic = function(args){
 		this.classCurrentPage = args.classCurrentPage || "current";
 		this.duration = (args.duration !== undefined) ? args.duration : 500;
 		this.keepHeight = args.keepHeight || false;
-		if(__.isIphone() == true) this.keepHeight = false;
+		if(__.ua.isIphone() == true) this.keepHeight = false;
 		this.callbackSetHashForValue = args.callbackSetHashForValue || function(argValue){
 			return "/"+argValue;
 		}

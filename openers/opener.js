@@ -60,7 +60,7 @@ __.classes.opener = function(args){
 		var fncThis = this;
 		//--create elements
 		this.elmToggler = document.createElement("div");
-		__.addClass(this.elmToggler, this.classesToggler);
+		__.lib.addClass(this.elmToggler, this.classesToggler);
 		this.elmTogglerAnchor = document.createElement("a");
 		this.elmTogglerAnchor.setAttribute("href", "javascript://toggleContentDisplay();");
 		this.elmToggler.appendChild(this.elmTogglerAnchor);
@@ -83,7 +83,7 @@ __.classes.opener = function(args){
 		}
 
 		//--add listener
-		__.addListeners(this.elmTogglerAnchor, "click", function(){
+		__.lib.addListeners(this.elmTogglerAnchor, "click", function(){
 			fncThis.toggle();
 		});
 	}
@@ -95,16 +95,16 @@ __.classes.opener = function(args){
 	}
 	__.classes.opener.prototype.open = function(){
 		this.element.style.display = this.cssDisplayElement;
-		__.removeClass(this.element, this.classClosed);
-		__.addClass(this.element, this.classOpened);
+		__.lib.removeClass(this.element, this.classClosed);
+		__.lib.addClass(this.element, this.classOpened);
 		this.setMessage(this.strTogglerOpened+this.strToggler);
 		if(this.onopen)
 			this.onopen.call(this);
 	}
 	__.classes.opener.prototype.close = function(){
 		this.element.style.display = "none";
-		__.removeClass(this.element, this.classOpened);
-		__.addClass(this.element, this.classClosed);
+		__.lib.removeClass(this.element, this.classOpened);
+		__.lib.addClass(this.element, this.classClosed);
 		this.setMessage(this.strTogglerClosed+this.strToggler);
 		if(this.onclose)
 			this.onclose.call(this);

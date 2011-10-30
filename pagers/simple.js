@@ -12,7 +12,7 @@ __.classes.simplePager = function(args){
 		
 		this.switchToPage(0);
 		if(this.elmPagerControlSingle){
-			__.addListener(this.elmPagerControlSingle, "click", function(){
+			__.lib.addListener(this.elmPagerControlSingle, "click", function(){
 				fncThis.toggle();
 			});
 			this.elmPagerControlSingle.style.cursor = "pointer";
@@ -20,7 +20,7 @@ __.classes.simplePager = function(args){
 		__.message(this.elmPagerControlsIndexed);
 		if(this.elmPagerControlsIndexed){
 			__.message("indexed setup");
-			this.elmPagerControlsIndexedItems = __.getElementsByClassName({"className":"item", "element": this.elmPagerControlsIndexed});
+			this.elmPagerControlsIndexedItems = __.lib.getElementsByClassName({"className":"item", "element": this.elmPagerControlsIndexed});
 			for(var i = 0; i < this.elmsPages.length; ++i){
 				var pageID = this.elmsPages[i].getAttribute("id");
 				for(var j = 0; j < this.elmPagerControlsIndexedItems.length; ++j){
@@ -36,8 +36,8 @@ __.classes.simplePager = function(args){
 								return false;
 							}
 						}(fncThis, thisIndex);
-						__.addListener(thisElement, "click", handler);
-						__.addListener(thisElement, "click", function(){__.message("clicked"); });
+						__.lib.addListener(thisElement, "click", handler);
+						__.lib.addListener(thisElement, "click", function(){__.message("clicked"); });
 					}
 				}
 			}
@@ -51,15 +51,15 @@ __.classes.simplePager = function(args){
 		// set all to non-current if none have been current before
 		if(this.indexCurrent === null){
 			for(var i = 0; i < this.elmsPages.length; ++i){
-				__.removeClass(this.elmsPages[i], "current");
-				__.addClass(this.elmsPages[i], "noncurrent");
+				__.lib.removeClass(this.elmsPages[i], "current");
+				__.lib.addClass(this.elmsPages[i], "noncurrent");
 			}
 		}else{
-			__.removeClass(this.elmsPages[this.indexCurrent], "current");
-			__.addClass(this.elmsPages[this.indexCurrent], "noncurrent");
+			__.lib.removeClass(this.elmsPages[this.indexCurrent], "current");
+			__.lib.addClass(this.elmsPages[this.indexCurrent], "noncurrent");
 		}
-		__.removeClass(this.elmsPages[argIndex], "noncurrent");
-		__.addClass(this.elmsPages[argIndex], "current");
+		__.lib.removeClass(this.elmsPages[argIndex], "noncurrent");
+		__.lib.addClass(this.elmsPages[argIndex], "current");
 		
 		this.indexPrevious = this.indexCurrent;
 		this.indexCurrent = argIndex;

@@ -106,7 +106,7 @@ __.classes.fullContainerImage = function(args){
 		this.elmImage = argElmImage;
 		if(this.elmImage.length > 0){
 			var fncCallback = function(){
-				var fncWidthHeight = __.getHiddenElementWidthHeight(this.elmImage);
+				var fncWidthHeight = __.lib.getHiddenElementWidthHeight(this.elmImage);
 				this.aspectRatioImage = fncWidthHeight.width / fncWidthHeight.height;
 				this.setClass();
 			}

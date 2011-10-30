@@ -51,7 +51,7 @@ __.classes.hashHandler = function(args){
 		//--attach listener for hash change
 		if(this.onhashchange){
 			if(typeof window.hashchange != "undefined"){
-				__.addListeners(window, "hashchange", function(){
+				__.lib.addListeners(window, "hashchange", function(){
 					fncThis.onhashchange.call(fncThis, fncThis.cleanHash(location.hash));
 				});
 			//-emulate listener for older browsers

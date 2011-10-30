@@ -1,6 +1,6 @@
 /*
 -----dependencies
-tmlib: addListeners, getElementsByClassName, addClass, removeClass, hasClass, isIE, isIE6, initUA
+tmlib: addListeners, getElementsByClassName, addClass, removeClass, hasClass, isIE, isIE6, ua.init
 
 -----styling
 /*--base
@@ -48,7 +48,7 @@ __.classes.suckerfish = function (args){
 		this.classSelected = args.classSelected || "selected";
 
 		this.elmMenu = document.getElementById(this.menuID);
-		this.elmsWrapper = __.getElementsByClassName({"className": this.wrapperClass, "element": this.elmMenu});
+		this.elmsWrapper = __.lib.getElementsByClassName({"className": this.wrapperClass, "element": this.elmMenu});
 		this.elmsMenuAssociations = this.getAllMenuPieces();
 		this.elmCurrentlySelected = 0;
 
@@ -60,8 +60,8 @@ __.classes.suckerfish = function (args){
 		var fncReturnArray = new Array();
 		for(var i=0; i < this.elmsWrapper.length; ++i){
 			var forArray = new Array;
-			var forElmToplevel = __.getElementsByClassName({"className": this.toplevelClass, "element": this.elmsWrapper[i]});
-			var forElmSubmenu = __.getElementsByClassName({"className": this.submenuClass, "element": this.elmsWrapper[i]});
+			var forElmToplevel = __.lib.getElementsByClassName({"className": this.toplevelClass, "element": this.elmsWrapper[i]});
+			var forElmSubmenu = __.lib.getElementsByClassName({"className": this.submenuClass, "element": this.elmsWrapper[i]});
 			fncReturnArray.push({"elmItemWrapper":this.elmsWrapper[i], "elmToplevel":forElmToplevel[0], "elmSubmenu": (forElmSubmenu[0])?forElmSubmenu[0]:null})
 		}
 
@@ -85,13 +85,13 @@ __.classes.suckerfish = function (args){
 					};
 
 				}(fncThis);
-				__.addListeners(forElmMenuItemArray["elmItemWrapper"], "mouseover", callbackFull, false);
-				__.addListeners(forElmMenuItemArray["elmToplevel"], "mouseover", callbackFull, false);
-				__.addListeners(forElmMenuItemArray["elmToplevel"], "focus", callbackFull, false);
-				__.addListeners(forElmMenuItemArray["elmSubmenu"], "mouseover", callbackFull, false);
-				__.addListeners(forElmMenuItemArray["elmItemWrapper"], "click", callbackFull, false);
-				__.addListeners(forElmMenuItemArray["elmItemWrapper"], "touchstart", callbackFull, false);
-				__.addListeners(forElmMenuItemArray["elmItemWrapper"], "mouseout", callbackMouseout, false);
+				__.lib.addListeners(forElmMenuItemArray["elmItemWrapper"], "mouseover", callbackFull, false);
+				__.lib.addListeners(forElmMenuItemArray["elmToplevel"], "mouseover", callbackFull, false);
+				__.lib.addListeners(forElmMenuItemArray["elmToplevel"], "focus", callbackFull, false);
+				__.lib.addListeners(forElmMenuItemArray["elmSubmenu"], "mouseover", callbackFull, false);
+				__.lib.addListeners(forElmMenuItemArray["elmItemWrapper"], "click", callbackFull, false);
+				__.lib.addListeners(forElmMenuItemArray["elmItemWrapper"], "touchstart", callbackFull, false);
+				__.lib.addListeners(forElmMenuItemArray["elmItemWrapper"], "mouseout", callbackMouseout, false);
 
 				forElmMenuItemArray["elmToplevel"].href="javascript://openMenu();";
 				forElmMenuItemArray["elmToplevel"].style.cursor = "default";
@@ -103,27 +103,27 @@ __.classes.suckerfish = function (args){
 						fncThis.dropdownCloseCurrent();
 					}
 				}(fncThis)
-				__.addListeners(forElmMenuItemArray["elmItemWrapper"], "mouseover", callbackEmpty, false);
-				__.addListeners(forElmMenuItemArray["elmToplevel"], "focus", callbackEmpty, false);
-				__.addListeners(forElmMenuItemArray["elmItemWrapper"], "click", callbackEmpty, false);
-				__.addListeners(forElmMenuItemArray["elmItemWrapper"], "touchstart", callbackEmpty, false);
+				__.lib.addListeners(forElmMenuItemArray["elmItemWrapper"], "mouseover", callbackEmpty, false);
+				__.lib.addListeners(forElmMenuItemArray["elmToplevel"], "focus", callbackEmpty, false);
+				__.lib.addListeners(forElmMenuItemArray["elmItemWrapper"], "click", callbackEmpty, false);
+				__.lib.addListeners(forElmMenuItemArray["elmItemWrapper"], "touchstart", callbackEmpty, false);
 			}
 		}
 		if(this.doCloseOnClickOutside){
-			__.addListeners(document.body, "click", function(){ fncThis.dropdownCloseAll(); }, true);
+			__.lib.addListeners(document.body, "click", function(){ fncThis.dropdownCloseAll(); }, true);
 		}
 	}
 	__.classes.suckerfish.prototype.dropdownOpen = function(argElement){
 		if(this.elmCurrentlySelected && this.elmCurrentlySelected !== argElement)
 			this.dropdownCloseCurrent();
 		if(argElement){
-			__.addClass(argElement, this.classSelected);
+			__.lib.addClass(argElement, this.classSelected);
 			this.elmCurrentlySelected = argElement;
 		}
 	}
 	__.classes.suckerfish.prototype.dropdownCloseCurrent = function(){
 		if(this.elmCurrentlySelected){
-			__.removeClass(this.elmCurrentlySelected, this.classSelected);
+			__.lib.removeClass(this.elmCurrentlySelected, this.classSelected);
 			this.elmCurrentlySelected = 0;
 			return 1;
 		}
@@ -131,7 +131,7 @@ __.classes.suckerfish = function (args){
 	}
 	__.classes.suckerfish.prototype.dropdownCloseAll = function(){
 		for(j=0;j < this.elmsMenuAssociations.length; ++j){
-			__.removeClass(this.elmsMenuAssociations[j]["elmItemWrapper"], this.classSelected);
+			__.lib.removeClass(this.elmsMenuAssociations[j]["elmItemWrapper"], this.classSelected);
 		}
 	}
 
@@ -142,12 +142,12 @@ __.classes.suckerfish = function (args){
 		for(var i=0; i < this.elmsMenuAssociations.length; ++i){
 			var forElmMenuItemArray = this.elmsMenuAssociations[i];
 			if(forElmMenuItemArray["elmSubmenu"] && (this.doSizeAndCenterFirst || (i != 0)) && (this.doSizeAndCenterLast || (i != this.elmsMenuAssociations.length - 1))){
-				if(forElmMenuItemArray["elmSubmenu"].offsetWidth < forElmMenuItemArray["elmToplevel"].offsetWidth + this.addedWidth && !__.isIE6()){
+				if(forElmMenuItemArray["elmSubmenu"].offsetWidth < forElmMenuItemArray["elmToplevel"].offsetWidth + this.addedWidth && !__.ua.isIE6()){
 					forElmMenuItemArray["elmSubmenu"].style.width = (forElmMenuItemArray["elmToplevel"].offsetWidth + this.addedWidth/*  - this.submenuPadding */) + "px";
 				}
 				if(forElmMenuItemArray["elmSubmenu"].offsetWidth > forElmMenuItemArray["elmToplevel"].offsetWidth){
 					ifOffset = ((forElmMenuItemArray["elmToplevel"].offsetWidth - (forElmMenuItemArray["elmSubmenu"].offsetWidth/*  + this.ubmenuPadding */)) / 2);
-					if(__.isIE6()) ifOffset += this.submenuOffset;
+					if(__.ua.isIE6()) ifOffset += this.submenuOffset;
 					forElmMenuItemArray["elmSubmenu"].style.left = ifOffset+ "px";
 				}
 			}
@@ -159,12 +159,12 @@ __.classes.suckerfish = function (args){
 			if(forElmMenuItemArray["elmSubmenu"] && (this.doSizeAndCenterFirst || (i != 0)) && (this.doSizeAndCenterLast || (i != this.elmsMenuAssociations.length - 1))){
 				forElmMenuItemArray["elmSubmenu"].style.visibility = "hidden";
 				forElmMenuItemArray["elmSubmenu"].style.display = "block";
-				if(forElmMenuItemArray["elmSubmenu"].offsetWidth < forElmMenuItemArray["elmToplevel"].offsetWidth + this.addedWidth && !__.isIE6()){
+				if(forElmMenuItemArray["elmSubmenu"].offsetWidth < forElmMenuItemArray["elmToplevel"].offsetWidth + this.addedWidth && !__.ua.isIE6()){
 					forElmMenuItemArray["elmSubmenu"].style.width = (forElmMenuItemArray["elmToplevel"].offsetWidth + this.addedWidth + this.menuPadding*2) + "px";
 				}
 				if(forElmMenuItemArray["elmSubmenu"].offsetWidth > forElmMenuItemArray["elmToplevel"].offsetWidth){
 					ifOffset = ((forElmMenuItemArray["elmToplevel"].offsetWidth - forElmMenuItemArray["elmSubmenu"].offsetWidth ) / 2) + this.menuPadding;
-					if(__.isIE6()) ifOffset += this.submenuOffset;
+					if(__.ua.isIE6()) ifOffset += this.submenuOffset;
 					forElmMenuItemArray["elmSubmenu"].style.left = ifOffset+ "px";
 				}
 				forElmMenuItemArray["elmSubmenu"].style.display = "";

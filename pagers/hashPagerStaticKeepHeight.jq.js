@@ -54,7 +54,7 @@ __.classes.hashPagerStaticKeepHeight = function(args){
 		this.dimKeepDimensionsAddedHeight = args.dimKeepDimensionsAddedHeight || 0;
 		this.duration = (args.duration !== undefined) ? args.duration : 500;
 		this.keepHeight = args.keepHeight || false;
-		if(__.isIphone() == true) this.keepHeight = false;
+		if(__.ua.isIphone() == true) this.keepHeight = false;
 		this.callbackInit = args.callbackInit || null;
 		this.callbackPreSwitch = args.callbackPreSwitch || null;
 		this.boot = args.boot || {};

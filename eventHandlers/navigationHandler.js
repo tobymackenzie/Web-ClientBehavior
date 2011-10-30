@@ -105,7 +105,7 @@ __.classes.navigationHandler = function(args){
 			return (fncThis.doPreventDefault)? false: true;
 		}		
 
-		__.addListeners(fncThis.elmsItems, "mouseup", fncCallback);
-		__.addListeners(fncThis.elmsItems, "touch", fncCallback);
+		__.lib.addListeners(fncThis.elmsItems, "mouseup", fncCallback);
+		__.lib.addListeners(fncThis.elmsItems, "touch", fncCallback);
 	}
 

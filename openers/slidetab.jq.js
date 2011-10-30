@@ -291,7 +291,7 @@ __.classes.slidetab = function(arguments){
 		else
 			var elmContentWrap = argElement;
 		var elmContent = argElement.find(this.selectorContent);	
-		var newWidthHeight = __.getHiddenElementWidthHeight(elmContent);
+		var newWidthHeight = __.lib.getHiddenElementWidthHeight(elmContent);
 
 		var callback = function(){
 			fncElement.addClass(fncThis.classCurrent);

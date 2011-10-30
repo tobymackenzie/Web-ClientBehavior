@@ -80,7 +80,7 @@ __.classes.verticalMenuAnimation = function(args){
 	}
 __.lib.getCurrentSubsection = function(argRegex, argIndex){
 	var fncIndex = argIndex || 1;
-	var arrClasses = __.getClasses(document.body);
+	var arrClasses = __.lib.getClasses(document.body);
 	for(i = 0; i < arrClasses.length; i++){
 		var regexResult = argRegex.exec(arrClasses[i]);
 		if(regexResult){
