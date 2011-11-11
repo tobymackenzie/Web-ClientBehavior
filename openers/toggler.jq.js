@@ -19,6 +19,7 @@ if(typeof $ !== 'undefined'){
 ©toggler
 ********* */
 __.classes.Toggler = function(args){
+		this.boot = args.boot || {};
 		this.elmsItems = args.elmsItems || null;
 		this.classOpen = args.classOpen || "open";
 		this.classClosed = args.classClosed || "closed";
@@ -26,6 +27,7 @@ __.classes.Toggler = function(args){
 		this.closeoninit = args.closeoninit || false;
 		this.onopen = args.onopen || null;
 		this.onclose = args.onclose || null;
+		this.oninit = args.oninit || null;
 		this.ontoggle = args.ontoggle || null;
 		this.selectorElmClick = args.selectorElmClick || null;
 		
@@ -37,6 +39,8 @@ __.classes.Toggler = function(args){
 //			this.open(this.elmsItems.not("."+this.classClosed).not("."+this.classOpen));
 		
 		this.attachListeners(this.elmsItems);
+
+		if(this.oninit) this.oninit.call(this);
 	}
 	__.classes.Toggler.prototype.attachListeners = function(argElements){
 		var fncThis = this;
@@ -53,19 +57,18 @@ __.classes.Toggler = function(args){
 	__.classes.Toggler.prototype.toggle = function(argElement){
 		if(argElement.hasClass(this.classOpen)){
 			this.close(argElement);
-			if(this.ontoggle) this.ontoggle.call(this);
 		}
 		else{
 			this.open(argElement);
-			if(this.ontoggle) this.ontoggle.call(this);
 		}
+		if(this.ontoggle) this.ontoggle.call(this, argElement);
 	}
 	__.classes.Toggler.prototype.open = function(argElement){
 		argElement.removeClass(this.classClosed).addClass(this.classOpen);
-		if(this.onopen) this.onopen.call(this);
+		if(this.onopen) this.onopen.call(this, argElement);
 	}
 	__.classes.Toggler.prototype.close = function(argElement){
 		argElement.removeClass(this.classOpen).addClass(this.classClosed);
-		if(this.onclose) this.onclose.call(this);
+		if(this.onclose) this.onclose.call(this, argElement);
 	}
 
