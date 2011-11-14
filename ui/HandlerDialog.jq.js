@@ -25,6 +25,8 @@ __.classes.HandlerDialog = function(args){
 		this.boot = args.boot || {};
 		this.classLoading = args.classLoading || "loading";
 		this.clbHandleFormSuccess = args.clbHandleFormSuccess || this.defaultHandleFormSuccess;
+		this.clbHandleFormSuccessHTML = args.clbHandleFormSuccessHTML || null;
+		this.clbHandleFormSuccessJSON = args.clbHandleFormSuccessJSON || null;
 		this.clbManageWidthHeight = args.clbManageWidthHeight || this.defaultManageWidthHeight;
 		this.dialogArguments = {
 			autoOpen: false
@@ -89,9 +91,17 @@ __.classes.HandlerDialog = function(args){
 	__.classes.HandlerDialog.prototype.defaultHandleFormSuccess = function(argData, argStatus, argXHR){
 		var lclContentType = argXHR.getResponseHeader("content-type");
 		if(lclContentType.indexOf("text/html") > -1){
-			this.showWithContent(argData);
+			if(this.clbHandleFormSuccessHTML)
+				this.clbHandleFormSuccessHTML.call(this, argData);
+			else{
+				this.showWithContent(argData);
+			}
 		}else{
-			this.dialog("close");
+			if(this.clbHandleFormSuccessJSON){
+				this.clbHandleFormSuccessJSON.call(this, argData);
+			}else{
+				this.dialog("close");
+			}
 		}
 		if(this.onhandleformsuccess)
 			this.onhandleformsuccess.call(this);
@@ -134,13 +144,9 @@ __.classes.HandlerDialog = function(args){
 			this.isLimitingHeight = false;
 		}
 
-		if(__.lib.isFunction(this.htmlLoading))
-			var lclHtmlLoading = this.htmlLoading.call(this);
-		else
-			var lclHtmlLoading = this.htmlLoading;
-
 		this.dialog("option", "closeText", this.dialogArguments.closeText);
-		this.elmDialog.addClass(this.classLoading).html(lclHtmlLoading).dialog("open");
+		this.displayLoading();
+		this.elmDialog.dialog("open");
 
 		this.request = jQuery.ajax(args);
 	}
@@ -189,5 +195,12 @@ __.classes.HandlerDialog = function(args){
 			}
 			this.dialog("option", "width", lcl.widthNewHTML);
 		}
+	}
+	__.classes.HandlerDialog.prototype.displayLoading = function(){
+		if(__.lib.isFunction(this.htmlLoading))
+			var lclHtmlLoading = this.htmlLoading.call(this);
+		else
+			var lclHtmlLoading = this.htmlLoading;
+		this.elmDialog.addClass(this.classLoading).html(lclHtmlLoading);
 	}
 
