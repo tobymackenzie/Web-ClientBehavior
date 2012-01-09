@@ -199,7 +199,7 @@ __.classes.pagerSlidingHash = function(args){
 			}
 
 			if(fncThis.onpostslide)
-				fncThis.onpostslide.call(this);
+				fncThis.onpostslide.call(fncThis, this);
 
 			fncThis.updateRelativeNavigation();
 			
