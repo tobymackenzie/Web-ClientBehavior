@@ -1,6 +1,6 @@
 document.getElementsByTagName('html')[0].className += ' hasjavascript';
 
-if(typeof __ === "undefined") var __ = {ua: {}, cfg: {}, class: {}, classes: {}, data: {}, lib: {}, objects: {}};
+if(typeof __ === "undefined") var __ = {ua: {}, cfg: {}, "class": {}, classes: {}, "data": {}, lib: {}, objects: {}};
 
 __.cfg.whatever = "whatever";
 
