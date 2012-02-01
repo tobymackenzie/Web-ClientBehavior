@@ -26,6 +26,10 @@ __.classes.ModelManager = function(args){
 		this.optionsPersist = args.optionsPersist || {};
 		this.urlFetch = args.urlFetch || null;
 		this.urlPersist = args.urlPersist || null;
+
+		//--direct attributes
+		this.fetch = args.fnFetch || this.defaultFnFetch;
+		this.persist = args.fnPersist || this.defaultFnFetch;
 	
 		//--derived attributes
 		this.binder = $({});
@@ -52,7 +56,7 @@ __.classes.ModelManager = function(args){
 		}
 		return fncReturn;
 	}
-	__.classes.ModelManager.prototype.fetch = function(argData, argURL, argCallback){
+	__.classes.ModelManager.prototype.defaultFnFetch = function(argData, argURL, argCallback){
 		var lclThis = this;
 		var lclCallback = (typeof argCallback != "undefined")? argCallback: this.clbFetch;
 		var lclParams = {
@@ -66,7 +70,7 @@ __.classes.ModelManager = function(args){
 		lclParams.url = argURL || this.urlFetch;
 		jQuery.ajax(__.lib.merge(this.optionsFetch, lclParams));
 	}
-	__.classes.ModelManager.prototype.persist = function(argData, argURL, argCallback){
+	__.classes.ModelManager.prototype.defaultFnPersist = function(argData, argURL, argCallback){
 		var lclThis = this;
 		var lclCallback = (typeof argCallback != "undefined")? argCallback: this.clbPersist;
 		var lclParams = {
