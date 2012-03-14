@@ -21,6 +21,7 @@ __.classes.ModelManager = function(args){
 		this.clbFetch = args.clbFetch || null;
 		this.clbPersist = args.clbPersist || null;
 		this.fnGetRequestData = args.fnGetRequestData || this.defaultFnGetRequestData;
+		this.fnTransformDataForPersist = args.fnTransformDataForPersist || this.defaultfnTransformDataForPersist;
 		this.oninit = args.oninit || null;
 		this.optionsFetch = args.optionsFetch || {};
 		this.optionsPersist = args.optionsPersist || {};
@@ -80,8 +81,11 @@ __.classes.ModelManager = function(args){
 			}
 		};
 		if(argData)
-			lclParams.data = JSON.stringify(argData);
+			lclParams.data = this.fnTransformDataForPersist.call(this, argData);
 		lclParams.url = argURL || this.urlPersist;
 		jQuery.ajax(__.lib.merge(this.optionsPersist, lclParams));
+	}
+	__.classes.modelManager.prototype.defaultfnTransformDataForPersist = function(argData){
+		return JSON.stringify(argData);
 	}
 
