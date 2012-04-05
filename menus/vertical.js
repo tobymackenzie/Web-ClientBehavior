@@ -31,7 +31,7 @@ __.classes.verticalMenuAnimation = function(args){
 		this.elmsMenus = this.elmsMenus.has("."+this.classSubmenu);
 		
 		// set href of toplevel items to # so they are keyboard navigable but have no target for non-js browsers/bots
-		this.elmsMenus.find("."+this.classTopitem).attr("href","javascript://openmenu();");
+		this.elmsMenus.find("."+this.classTopitem).attr("href","javascript:\'openmenu()\';");
 		// must set height so there is no jump
 		this.elmsMenus.find("."+this.classSubmenu).each(function(){
 			jQuery(this).css("height", jQuery(this).height());

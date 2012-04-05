@@ -93,7 +93,7 @@ __.classes.suckerfish = function (args){
 				__.lib.addListeners(forElmMenuItemArray["elmItemWrapper"], "touchstart", callbackFull, false);
 				__.lib.addListeners(forElmMenuItemArray["elmItemWrapper"], "mouseout", callbackMouseout, false);
 
-				forElmMenuItemArray["elmToplevel"].href="javascript://openMenu();";
+				forElmMenuItemArray["elmToplevel"].href="javascript:\'openMenu()\';";
 				forElmMenuItemArray["elmToplevel"].style.cursor = "default";
 			}
 			// empty menu items

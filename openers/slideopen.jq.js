@@ -12,7 +12,7 @@ $(document).ready(function(){
 		,callbackInit: function(){
 			var fncThis = this;
 			var elmCloserWrap = $('<div class="closerwrap">');
-			var elmCloser = $('<a class="closer" href="javascript://hideAdditionalInformation();">hide</a>');
+			var elmCloser = $('<a class="closer" href="javascript:\'hideAdditionalInformation()\';">hide</a>');
 			elmCloserWrap.append("(").append(elmCloser).append(")");
 			this.element.find("h3.header").after(elmCloserWrap);
 			elmCloser.bind("click touchstart", function(){
@@ -46,7 +46,7 @@ __.classes.slideOpen = function(args){
 		var fncThis = this;
 		this.element.css("display", "none").addClass(this.classClosed).removeClass(this.classOpen);
 		// init toggle clickable
-		this.elmToggler = jQuery('<div class="toggler"><a href="javascript://toggleContentDisplay();">'+this.strTogglerClosed+this.strToggler+'</a></div>');
+		this.elmToggler = jQuery('<div class="toggler"><a href="javascript:\'toggleContentDisplay()\';">'+this.strTogglerClosed+this.strToggler+'</a></div>');
 		if(this.callbackPlaceToggler)
 			this.callbackPlaceToggler.call(this, this.elmToggler);
 		else
