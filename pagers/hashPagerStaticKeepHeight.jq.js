@@ -66,7 +66,8 @@ __.classes.hashPagerStaticKeepHeight = function(args){
 		if(window.location.hash){
 			this.idCurrent = window.location.hash;
 			var elmCurrentPage = this.elmsPages.filter(__.lib.escapeHash(window.location.hash));
-		}else{
+		}
+		if(!(typeof elmCurrentPage != "undefined" && elmCurrentPage.length > 0)){
 			var elmCurrentPage = this.elmsPages.filter("."+this.classCurrentPage);
 			if(elmCurrentPage.length > 0){
 				this.idCurrent = "#"+elmCurrentPage.attr("id");
