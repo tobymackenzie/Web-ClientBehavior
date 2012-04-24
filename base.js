@@ -13,7 +13,7 @@ __.onload = function(){
 ---------*/
 __.message = function(argument){
 	if(window.console) 
-		console.log(argument);
+		window.console.log.apply(window.console, arguments);
 //		else alert(argument);
 }
 
