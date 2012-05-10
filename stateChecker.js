@@ -122,7 +122,7 @@ __.classes.stateChecker = function(args){
 	   if(this.state != stateNew){
 	       var stateOld = this.state;
 	       this.state = stateNew;
-	       this.jq.trigger("change", {old: this.state, new: stateNew});
+	       this.jq.trigger("change", {'old': this.state, 'new': stateNew});
 	   }
 	}
 	__.classes.stateChecker.prototype.bind = function(){
