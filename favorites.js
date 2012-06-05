@@ -38,7 +38,7 @@ __.classes.favorites = function(args){
 		this.selectorAccepts = args.selectorAccepts || "li";
 		this.classAdded = args.classAdded || "ui-added";
 		this.nameCookie = (args.nameCookie)? args.nameCookie: "favorites";
-		this.htmlDeleteButton = (args.htmlDeleteButton)? args.htmlDeleteButton: '<a class="delete button" href="javascript:\'__remove_item_from_favorites\'"><span>delete</span></a>';
+		this.htmlDeleteButton = (args.htmlDeleteButton)? args.htmlDeleteButton: '<a class="delete button" href="javascript:/*__remove_item_from_favorites*/"><span>delete</span></a>';
 		this.callbackItemAdd = args.callbackItemAdd || null;
 		this.callbackDraggableStart = args.callbackDraggableStart || null;
 		this.attrID = args.attrID || "data-unid";

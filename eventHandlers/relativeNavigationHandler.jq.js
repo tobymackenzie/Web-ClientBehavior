@@ -2,14 +2,15 @@
 handle relative navigation buttons (next and previous)
 
 -----instantiation
+*/
 		__.relativeNavigationImages = new __.classes.relativeNavigationHandler({
 			elmWrapper: elmImageNavigationWrapper
 			,htmlButtonContainer: '<div class="relativenavigation"><h3 class="screenreaderonly">Image Navigation</h3></div>'
-			,htmlButtonPrevious: '<div class="item previous"><a href="javascript:\'__go_to_previous_image\'"><span class="screenreaderonly">Previous</span></a></div>'
-			,htmlButtonNext: '<div class="item next"><a href="javascript:\'__go_to_next_image\'"><span class="screenreaderonly">Next</span></a></div>'
+			,htmlButtonPrevious: '<div class="item previous"><a href="javascript:/*__go_to_previous_image*/"><span class="screenreaderonly">Previous</span></a></div>'
+			,htmlButtonNext: '<div class="item next"><a href="javascript:/*__go_to_next_image*/"><span class="screenreaderonly">Next</span></a></div>'
 			,selectorElmForLinkManagement: "a"
 		});
-
+/*
 */
 
 

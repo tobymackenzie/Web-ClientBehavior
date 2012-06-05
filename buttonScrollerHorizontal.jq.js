@@ -18,8 +18,8 @@ if(typeof $ !== 'undefined')
 				elmWrapper: elmCategoryImages,
 				elmContainer: elmCategoryImages.find(".imagelist"),
 				htmlButtonContainer: '<div class="relativenavigation"><h3 class="screenreaderonly">Image Navigation</h3></div>',
-				htmlButtonPrevious: '<div class="item previous"><a href="javascript:'__scroll_to_previous_images'"><span class="screenreaderonly">Previous</span></a></div>',
-				htmlButtonNext: '<div class="item next"><a href="javascript:'__scroll_to_next_images'"><span class="screenreaderonly">Next</span></a></div>'
+				htmlButtonPrevious: '<div class="item previous"><a href="javascript:/*__scroll_to_previous_images*/"><span class="screenreaderonly">Previous</span></a></div>',
+				htmlButtonNext: '<div class="item next"><a href="javascript:/*__scroll_to_next_images*/"><span class="screenreaderonly">Next</span></a></div>'
 			});
 		}
 	});

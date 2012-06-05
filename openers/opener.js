@@ -62,7 +62,7 @@ __.classes.opener = function(args){
 		this.elmToggler = document.createElement("div");
 		__.lib.addClass(this.elmToggler, this.classesToggler);
 		this.elmTogglerAnchor = document.createElement("a");
-		this.elmTogglerAnchor.setAttribute("href", "javascript:\'toggleContentDisplay()\';");
+		this.elmTogglerAnchor.setAttribute("href", "javascript:/*toggleContentDisplay()*/");
 		this.elmToggler.appendChild(this.elmTogglerAnchor);
 
 		//--add to DOM
