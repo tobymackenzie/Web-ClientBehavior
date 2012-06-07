@@ -84,13 +84,12 @@ __.classes.AnimateTransition = function(args){
 		else
 			var fncArgs = {elements: args};
 		var fncThis = this;
-
 		if(fncThis.onbefore)
 			fncThis.queue.queue({callback: function(){
 				fncThis.onbefore.call(fncThis, fncArgs);
 			}});
 		if(fncThis.callbackTransition){
-			if(fncThis.doMultistep){
+			if(fncThis.doMultistep && fncThis.stylesTransition){
 				for(var key in fncThis.stylesTransition){
 					if(fncThis.stylesTransition.hasOwnProperty(key)){
 						fncThis.queue.queue({callback: function(fncThis, key){
@@ -120,7 +119,9 @@ __.classes.AnimateTransition = function(args){
 		}
 		for(var key in fncElements){
 			if(fncElements.hasOwnProperty(key)){
-				if(typeof argKey != "undefined"){
+				if(!this.stylesTransition){
+					lopStylesTransition = null;
+				}else if(typeof argKey != "undefined"){
 					var lopStylesTransition = this.stylesTransition[argKey][key] || null;
 					if(this.duration.constructor == Array){
 						var lopDuration = this.duration[argKey];
@@ -133,7 +134,7 @@ __.classes.AnimateTransition = function(args){
 				}
 				if(lopStylesTransition){
 					if(typeof lopStylesTransition === "function")
-						lopStylesTransition = lopStylesTransition.call(this, fncElements[key]);
+						lopStylesTransition = lopStylesTransition.call(this, fncElements[key], args);
 					if(key == 0){
 						var lopCallbackDQ = callbackDQ;
 					}else{
@@ -152,11 +153,13 @@ __.classes.AnimateTransition = function(args){
 		var fncThis = this;
 		for(var key in fncElements){
 			if(fncElements.hasOwnProperty(key)){
-				var lopStylesBefore = this.stylesBefore[key] || null;
+				var lopStylesBefore = (this.stylesBefore && this.stylesBefore[key]) ? this.stylesBefore[key] : null;
 				if(lopStylesBefore){
-					if(typeof lopStyleBefore === "function")
-						lopStyleBefore = lopStyleBefore.call(this, fncElements[key]);
-					fncElements[key].css(lopStylesBefore);
+					if(typeof lopStylesBefore === "function"){
+						lopStylesBefore = lopStylesBefore.call(this, fncElements[key], args);
+					}
+					if(lopStylesBefore)
+						fncElements[key].css(lopStylesBefore);
 				}
 			}
 		}
@@ -166,11 +169,14 @@ __.classes.AnimateTransition = function(args){
 		var fncElements = args.elements;
 		for(var key in fncElements){
 			if(fncElements.hasOwnProperty(key)){
-				var lopStylesAfter = this.stylesAfter[key] || null;
+				var lopStylesAfter = (this.stylesAfter && this.stylesAfter[key]) ? this.stylesAfter[key] : null;
 				if(lopStylesAfter){
-					if(typeof lopStylesAfter === "function")
-						lopStyleBefore = lopStylesAfter.call(this, fncElements[key]);
-					fncElements[key].css(lopStylesAfter);
+					if(typeof lopStylesAfter === "function"){
+						lopStylesAfter = lopStylesAfter.call(this, fncElements[key], args);
+					}
+					if(lopStylesAfter){
+						fncElements[key].css(lopStylesAfter);
+					}
 				}
 			}
 		}

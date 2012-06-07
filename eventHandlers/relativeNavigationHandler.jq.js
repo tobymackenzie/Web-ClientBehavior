@@ -19,7 +19,7 @@ handle relative navigation buttons (next and previous)
 ---------*/
 __.classes.relativeNavigationHandler = function(args){
 		//--optional arguments
-		this.attrForLinkManagement = args.attrForLinkManagement || "href";
+		this.attrData = args.attrData || "href";
 		this.boot = args.boot || null;
 		this.elmWrapper = args.elmWrapper || null;
 		this.eventsBindTo = (args.eventsBindTo)? args.eventsBindTo: "click touch";
@@ -31,11 +31,11 @@ __.classes.relativeNavigationHandler = function(args){
 		this.onactivateprevious = args.onactivateprevious || null;
 		this.onactivatenext = args.onactivatenext || null;
 		this.oninit = args.oninit || null;
-		this.selectorElmForLinkManagement = args.selectorElmForLinkManagement || null;
+		this.selectorElmForLinkManagement = args.selectorElmForLinkManagement || 'this';
 		this.testShowNext = args.testShowNext || function(){return true;};
 		this.testShowPrevious = args.testShowPrevious || function(){return true;};
-		
-		
+
+
 		//--derived members
 		var fncThis = this;
 		//-create button navigation
@@ -45,36 +45,43 @@ __.classes.relativeNavigationHandler = function(args){
 		}else{
 			this.elmButtonContainer = this.elmWrapper;
 		}
-		if(args.elmButtonPrevious){
-			this.elmButtonPrevious = args.elmButtonPrevious;
-		}else if(this.htmlButtonPrevious){
-			this.elmButtonPrevious = jQuery(this.htmlButtonPrevious);
-			this.elmButtonContainer.append(this.elmButtonPrevious);
-		}
-		if(args.elmButtonNext){
+		if(args.elmButtonNext && args.elmButtonNext.length > 0){
 			this.elmButtonNext = args.elmButtonNext;
 		}else if(this.htmlButtonNext){
 			this.elmButtonNext = jQuery(this.htmlButtonNext);
 			this.elmButtonContainer.append(this.elmButtonNext);
 		}
-		
+		if(args.elmButtonPrevious && args.elmButtonPrevious.length > 0){
+			this.elmButtonPrevious = args.elmButtonPrevious;
+		}else if(this.htmlButtonPrevious){
+			this.elmButtonPrevious = jQuery(this.htmlButtonPrevious);
+			if(this.elmButtonNext)
+				this.elmButtonNext.before(this.elmButtonPrevious)
+			else
+				this.elmButtonContainer.prepend(this.elmButtonPrevious);
+		}
+
 		//--bind actions
 		if(this.elmButtonPrevious && this.elmButtonPrevious.length > 0)
 			this.bindActionPrevious(this.elmButtonPrevious);
 		if(this.elmButtonNext && this.elmButtonNext.length > 0)
 			this.bindActionNext(this.elmButtonNext)
-		
-		this.handleButtonShowHide();	
+
+		this.handleButtonShowHide();
+
+		//--oninit
+		if(this.oninit)
+			this.oninit.call(this);
 	}
 	__.classes.relativeNavigationHandler.prototype.bindActionPrevious = function(argElement){
 		var fncThis = this;
 		if(fncThis.onactivateprevious)
-			argElement.bind(this.eventsBindTo, function(){fncThis.onactivateprevious.call(fncThis)});
+			argElement.bind(this.eventsBindTo, function(argEvent){return fncThis.onactivateprevious.call(fncThis, this, argEvent)});
 	}
 	__.classes.relativeNavigationHandler.prototype.bindActionNext = function(argElement){
 		var fncThis = this;
 		if(fncThis.onactivatenext)
-			argElement.bind(this.eventsBindTo, function(){fncThis.onactivatenext.call(fncThis)});
+			argElement.bind(this.eventsBindTo, function(argEvent){return fncThis.onactivatenext.call(fncThis, this, argEvent)});
 	}
 	__.classes.relativeNavigationHandler.prototype.handleButtonShowHide = function(){
 		if(this.testShowPrevious()){
@@ -95,9 +102,9 @@ __.classes.relativeNavigationHandler = function(args){
 			else
 				var elmForLinkManagement = this.elmButtonPrevious.find(this.selectorElmForLinkManagement);
 			if(argLink)
-				elmForLinkManagement.attr(this.attrForLinkManagement, argLink);
+				elmForLinkManagement.attr(this.attrData, argLink);
 			else
-				elmForLinkManagement.removeAttr(this.attrForLinkManagement);
+				elmForLinkManagement.removeAttr(this.attrData);
 			if(argLink){
 				this.elmButtonPrevious.show();
 			}else{
@@ -113,9 +120,9 @@ __.classes.relativeNavigationHandler = function(args){
 			else
 				var elmForLinkManagement = this.elmButtonNext.find(this.selectorElmForLinkManagement);
 			if(argLink)
-				elmForLinkManagement.attr(this.attrForLinkManagement, argLink);
+				elmForLinkManagement.attr(this.attrData, argLink);
 			else
-				elmForLinkManagement.removeAttr(this.attrForLinkManagement);
+				elmForLinkManagement.removeAttr(this.attrData);
 			if(argLink){
 				this.elmButtonNext.show();
 			}else{

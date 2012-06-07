@@ -31,20 +31,21 @@ __.classes.navigationHandler = function(args){
 		//--required attributes
 		this.elmsItems = args.elmsItems || null;
 //->return
-		if(!this.elmsItems || this.elmsItems.length < 1) return false;
+		if((!this.elmsItems || this.elmsItems.length < 1) && !args.selectorItem) return false;
 
 		//--optional attributes
 		this.attrData = args.attrData || "href";
 		this.boot = args.boot || null;
 		this.classCurrent = args.classCurrent || "current";
 		this.doPreventDefault = (typeof args.doPreventDefault != "undefined")? args.doPreventDefault: true;
+		this.elmItemsWrap = args.elmItemsWrap || jQuery('body');
 		this.onpreswitch = args.onpreswitch || null;
 		this.onpreswitchtest = args.onpreswitchtest || null;
 		this.onpostswitch = args.onpostswitch || null;
 		this.onswitch = args.onswitch || null;
 		this.selectorElmForEvent = args.selectorElmForEvent || "a";
 		this.selectorElmForData = args.selectorElmForData || "a";
-		this.selectorItemContainer = args.selectorListItemContainer || "li";
+		this.selectorItem = args.selectorItem || "li";
 
 		//--derived attributes
 		this.inprogress = false;
@@ -55,45 +56,40 @@ __.classes.navigationHandler = function(args){
 	}
 	__.classes.navigationHandler.prototype.attachEvents = function(args){
 		var fncThis = this;
-		
-		if(fncThis.selectorElmForEvent == "this"){
-			var fncItems = fncThis.elmsItems;
-		}else{
-			var fncItems = fncThis.elmsItems.find(fncThis.selectorElmForEvent);
-		}
-
-		fncItems.bind("click touch", function(event){
+		var fncCallback = function(argEvent){
 //->return
 			if(fncThis.inprogress == true)
 				return false;
-			var fncEvent = event;
-			var localVariables = {elmThis: jQuery(this)};
+			var lcl = {elmThis: jQuery(this)};
 
 			//--determine old and new item
-			localVariables.oldItem = fncThis.elmsItems.filter("."+fncThis.classCurrent);
+			lcl.oldItem = (fncThis.elmsItems)
+				? fncThis.elmsItems.filter("."+fncThis.classCurrent)
+				: fncThis.elmItemsWrap.find(fncThis.selectorItem+"."+fncThis.classCurrent)
+			;
 			if(fncThis.selectorElmForEvent == "this"){
-				localVariables.newItem = localVariables.elmThis;
+				lcl.newItem = lcl.elmThis;
 			}else{
-				localVariables.newItem = localVariables.elmThis.closest(fncThis.selectorListItemContainer);
+				lcl.newItem = lcl.elmThis.closest(fncThis.selectorItem);
 			}
 //->return
-			if(localVariables.oldItem[0] == localVariables.newItem[0]) return false;
+			if(lcl.oldItem[0] == lcl.newItem[0]) return false;
 
 			//--get data
 			if(fncThis.selectorElmForData == "this"){
-				localVariables.dataOld = localVariables.oldItem.attr(fncThis.attrData);
-				localVariables.dataNew = localVariables.newItem.attr(fncThis.attrData);
+				lcl.dataOld = lcl.oldItem.attr(fncThis.attrData);
+				lcl.dataNew = lcl.newItem.attr(fncThis.attrData);
 			}else{
-				localVariables.dataOld = localVariables.oldItem.find(fncThis.selectorElmForData).attr(fncThis.attrData);
-				localVariables.dataNew = localVariables.newItem.find(fncThis.selectorElmForData).attr(fncThis.attrData);
+				lcl.dataOld = lcl.oldItem.find(fncThis.selectorElmForData).attr(fncThis.attrData);
+				lcl.dataNew = lcl.newItem.find(fncThis.selectorElmForData).attr(fncThis.attrData);
 			}
 
 			//--preswitchtest
 //->return
-			if(fncThis.onpreswitchtest && !fncThis.onpreswitchtest.call(fncThis, localVariables)){
+			if(fncThis.onpreswitchtest && !fncThis.onpreswitchtest.call(fncThis, lcl)){
 				if(fncThis.doPreventDefault){
-					if(typeof event.preventDefault != "undefined")
-						event.preventDefault();
+					if(typeof argEvent.preventDefault != "undefined")
+						argEvent.preventDefault();
 					return false;
 				}else{
 					return true;
@@ -101,26 +97,26 @@ __.classes.navigationHandler = function(args){
 			}
 			fncThis.inprogress = true;	
 			
-			if(fncThis.doPreventDefault && typeof event.preventDefault != "undefined")
-				event.preventDefault();
+			if(fncThis.doPreventDefault && typeof argEvent.preventDefault != "undefined")
+				argEvent.preventDefault();
 			
 			if(fncThis.onpreswitch)
 				fncThis.queue.queue(function(){
-					fncThis.onpreswitch.call(fncThis, localVariables);
+					fncThis.onpreswitch.call(fncThis, lcl);
 				});
 
 			fncThis.queue.queue(function(){
-				localVariables.oldItem.removeClass(fncThis.classCurrent);
-				localVariables.newItem.addClass(fncThis.classCurrent);
+				lcl.oldItem.removeClass(fncThis.classCurrent);
+				lcl.newItem.addClass(fncThis.classCurrent);
 				if(fncThis.onswitch)
-					fncThis.onswitch.call(fncThis, localVariables);
+					fncThis.onswitch.call(fncThis, lcl);
 				else
 					fncThis.queue.dequeue();
 			});
 
 			if(fncThis.onpostswitch)
 				fncThis.queue.queue(function(){
-					fncThis.onpostswitch.call(fncThis, localVariables);
+					fncThis.onpostswitch.call(fncThis, lcl);
 				});
 			fncThis.queue.queue(function(){
 				fncThis.inprogress = false;
@@ -130,7 +126,20 @@ __.classes.navigationHandler = function(args){
 			fncThis.queue.dequeue();
 			
 			return (fncThis.doPreventDefault)? false: true;
-		});
+		};
+		if(fncThis.elmsItems){
+			var fncItems = (fncThis.selectorElmForEvent == "this")
+				? fncThis.elmsItems
+				: fncThis.elmsItems.find(fncThis.selectorElmForEvent)
+			;
+			fncItems.bind("click touch", fncCallback);
+		}else{
+			var fncSelector = (fncThis.selectorElmForEvent == "this")
+				? fncThis.selectorItem
+				: fncThis.selectorItem + ' ' + fncThis.selectorElmForEvent
+			;
+			fncThis.elmItemsWrap.delegate(fncSelector, 'click touch', fncCallback)
+		}
 	}
 	__.classes.navigationHandler.prototype.switchToPrevious = function(){
 		var elmPrevious = this.elmsItems.filter(this.classCurrent).prev();
@@ -150,5 +159,4 @@ __.classes.navigationHandler = function(args){
 		else
 			return false;
 	}
-
 
