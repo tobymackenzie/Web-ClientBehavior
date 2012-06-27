@@ -128,7 +128,7 @@ __.classes.buttonScrollerHorizontal = function(args){
 		if(this.onresize){
 			this.onresize.call(this);		
 		}else{
-			this.widthWrapper = this.elmWrapper.outerWidth();
+			this.widthWrapper = this.elmWrapper.width();
 			this.toggleButtonEnable();
 		}
 	}
@@ -144,6 +144,6 @@ __.classes.buttonScrollerHorizontal = function(args){
 	}
 	__.classes.buttonScrollerHorizontal.prototype.setWrapper = function(argElement){
 		this.elmWrapper = argElement;
-		this.widthWrapper = this.elmWrapper.outerWidth();
+		this.widthWrapper = this.elmWrapper.width();
 	}
 
