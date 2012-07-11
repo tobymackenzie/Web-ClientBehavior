@@ -32,6 +32,8 @@ if(typeof $ !== 'undefined')
 __.classes.buttonScrollerHorizontal = function(args){
 		//--optional arguments
 		this.boot = args.boot || null;
+		this.doAutoAdvance = args.doAutoAdvance || false;
+		this.doStopAdvanceOnNavigate = (typeof args.doStopAdvanceOnNavigate != 'undefined') ? args.doStopAdvanceOnNavigate : true;
 		this.doUpdateWidthOnWindowResize = args.doUpdateWidthOnWindowResize || false;
 		this.duration = args.duration || 100;
 		if(args.elmWrapper)
@@ -44,6 +46,8 @@ __.classes.buttonScrollerHorizontal = function(args){
 		this.increment = args.increment || 100;
 		this.oninit = args.oninit || null;
 		this.onresize = args.onresize || null;
+		this.timeAutoAdvanceWait = (typeof args.timeAutoAdvanceWait != 'undefined') ? args.timeAutoAdvanceWait : 2000;
+		this.timeAutoAdvancePause = (typeof args.timeAutoAdvancePause != 'undefined') ? args.timeAutoAdvancePause : 5000;
 		
 		//--derived members
 		var fncThis = this;
@@ -58,12 +62,22 @@ __.classes.buttonScrollerHorizontal = function(args){
 		if(this.htmlButtonPrevious){
 			this.elmButtonPrevious = jQuery(this.htmlButtonPrevious);
 			this.elmButtonContainer.append(this.elmButtonPrevious);
-			this.elmButtonPrevious.bind("click", function(){fncThis.scrollLeft()});
+			this.elmButtonPrevious.bind("click", function(){
+				fncThis.scrollLeft();
+				if(fncThis.intervalAutoAdvance && fncThis.doStopAdvanceOnNavigate){
+					clearInterval(fncThis.intervalAutoAdvance);
+				}
+			});
 		}
 		if(this.htmlButtonNext){
 			this.elmButtonNext = jQuery(this.htmlButtonNext);
 			this.elmButtonContainer.append(this.elmButtonNext);
-			this.elmButtonNext.bind("click", function(){fncThis.scrollRight()});
+			this.elmButtonNext.bind("click", function(){
+				fncThis.scrollRight();
+				if(fncThis.intervalAutoAdvance && fncThis.doStopAdvanceOnNavigate){
+					clearInterval(fncThis.intervalAutoAdvance);
+				}
+			});
 		}
 		
 		//--adjust wrapper width on window resize
@@ -82,8 +96,28 @@ __.classes.buttonScrollerHorizontal = function(args){
 		//-*must be done for browsers with slow image loading
 //		setTimeout(function(){fncThis.resize();}, 500);
 
+		//--start auto advance
+		if(this.doAutoAdvance){
+			setTimeout(function(){
+				fncThis.intervalAutoAdvance = setInterval(function(){
+					fncThis.advance.call(fncThis);
+				}, fncThis.timeAutoAdvancePause);
+			}, this.timeAutoAdvanceWait);
+		}else{
+			this.intervalAutoAdvance = null;
+		}
+
 		if(fncThis.oninit)
 			fncThis.oninit.call(this);
+	}
+	__.classes.buttonScrollerHorizontal.prototype.advance = function(){
+		var currentPosition = this.elmContainer.position().left;
+		var currentPositionRight = this.widthContainer + currentPosition - this.widthWrapper;
+		if(currentPositionRight > 0){
+			this.scrollRight();
+		}else{
+			clearInterval(this.intervalAutoAdvance);
+		}
 	}
 	__.classes.buttonScrollerHorizontal.prototype.scrollLeft = function(){
 		var fncThis = this;
