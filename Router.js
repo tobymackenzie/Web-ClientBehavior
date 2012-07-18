@@ -104,37 +104,36 @@ if(typeof $ !== 'undefined'){
 		}});
 
 */
-/*-------
-©router
--------- */
-__.classes.router = function(args){
-		//--required attributes
+/*---
+==Router
+---*/
+__.classes.Router = function(args){
 		//--optional attributes
 		this.boot = args.boot || null;
-		this.currentRoot = args.currentRoot || "null";
+		this.pathInitial = args.pathInitial || document.location.pathname;
+		this.urlRoot = args.urlRoot || document.location.protocol + '//' + document.location.host;
 		
 		//--derived attributes
 		this.routes = [];
 		this.actions = [];
-		
-		//--do something
 	}
-	__.classes.router.prototype.addAction = function(args){
+	__.classes.Router.prototype.addAction = function(args){
 		var fncName = args.name;
 		var fncCallback = args.callback;
 		this.actions[fncName] = fncCallback;
 	}
-/*
-@param action (function): action to be performed by callroute for this route
-@param name: name for access by callroute
-@param path (optional): path regex to check
-*/
-	__.classes.router.prototype.addRoute = function(args){
+	/*--
+	=addRoute
+	@param action (function): action to be performed by callroute for this route
+	@param name: name for access by callroute
+	@param path (optional): path regex to check
+	--*/
+	__.classes.Router.prototype.addRoute = function(args){
 		var fncName = args.name;
 		var fncArgs = args;
 		this.routes[fncName] = fncArgs;
 	}
-	__.classes.router.prototype.callRoute = function(args){
+	__.classes.Router.prototype.callRoute = function(args){
 		var localvars = {};
 		if(typeof args == "string"){
 			localvars.name = args;
@@ -148,12 +147,12 @@ __.classes.router = function(args){
 
 		if(typeof localvars.name != "undefined"){
 			localvars.args.route = this.routes[localvars.name];
-			this.actions[this.routes[localvars.name].action].call(localvars.scope, localvars.args);
+			return this.actions[this.routes[localvars.name].action].call(localvars.scope, localvars.args);
 		}else{
-			this.callRouteForPath(localvars);
+			return this.callRouteForPath(localvars);
 		}
 	}
-	__.classes.router.prototype.callRouteForPath = function(args){
+	__.classes.Router.prototype.callRouteForPath = function(args){
 		var localvars = args;
 		if(typeof localvars.path == "undefined")
 			return false;
@@ -176,10 +175,12 @@ __.classes.router = function(args){
 					}
 				}
 			}
-			this.actions[fncRoute.action].call(localvars.scope, localvars.args)
+			return this.actions[fncRoute.action].call(localvars.scope, localvars.args)
+		}else{
+			return false;
 		}
 	}
-	__.classes.router.prototype.routeLookup = function(argPath){
+	__.classes.Router.prototype.routeLookup = function(argPath){
 		var fncReturn = false;
 		for(var key in this.routes){
 			var route = this.routes[key];
