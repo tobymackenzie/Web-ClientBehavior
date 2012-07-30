@@ -12,10 +12,13 @@ document.getElementsByTagName('html')[0].className += ' hasjavascript';
 	==lib
 	===*/
 
-	__.message = function(argument){
-		if(window.console)
-			window.console.log.apply(window.console, arguments);
-	//		else alert(argument);
+	__.message = function(arg){
+		if(window.console && window.console.log){
+			if(window.console.log.apply)
+				window.console.log.apply(window.console, arguments);
+			else
+				window.console.log(arg); //-# for ie8
+		}//else alert(arg); //-# for ielte7, other old browsers
 	}
 
 	/*===
