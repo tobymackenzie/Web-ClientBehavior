@@ -96,26 +96,28 @@ __.classes.stateChecker = function(args){
 		this.boot = args.boot || {};
 		this.callbackCheckState = args.callbackCheckState || function(){ return false; }
         this.collection = args.collection || new __.classes.collection();
-		this.oninit = args.oninit || this.defaultOninit;
+		this.eventsForBinding = args.eventsForBinding || "change";
+		this.oninit = args.oninit || this.defaultOnInit;
 
 		//--derived attributes
 		this.jq = jQuery({});
 		this.state = null;
-        this.checkState();
 
 		//--do something		
         if(this.oninit)
             this.oninit.call(this);
 	}
-	__.classes.stateChecker.prototype.defaultOninit = function(){
-	   var lcThis = this;
-	   //--by default, check state on change event of each item
-	   //-#requires every collection item to have a bind method
-	   this.collection.each(function(args){
-	       this.bind("change", function(){
-	           lcThis.checkState();
-	       });
-	   });
+	__.classes.stateChecker.prototype.defaultOnInit = function(){
+		var lcThis = this;
+		//--by default, check state on change event of each item
+		//-#requires every collection item to have a bind method
+		var lcFnCallback = function(){
+			lcThis.checkState();
+		};
+		this.collection.each(function(args){
+			this.bind(lcThis.eventsForBinding, lcFnCallback);
+		});
+		this.checkState();
 	}
 	__.classes.stateChecker.prototype.checkState = function(){
 	   var stateNew = this.callbackCheckState.call(this);
