@@ -6,7 +6,7 @@ document.getElementsByTagName('html')[0].className += ' hasjavascript';
 	==tmlib
 	=====*/
 
-	if(typeof window.__ === "undefined") var __ = window.__ = {ua: {}, cfg: {}, "class": {}, classes: {}, "data": {}, lib: {}, objects: {}};
+	if(typeof window.__ === 'undefined') var __ = window.__ = {ua: {}, cfg: {}, 'class': {}, classes: {}, 'data': {}, lib: {}, objects: {}};
 
 	/*===
 	==lib
@@ -29,7 +29,7 @@ document.getElementsByTagName('html')[0].className += ' hasjavascript';
 	/*=====
 	==config
 	=====*/
-	__.cfg.whatever = "whatever";
+	__.cfg.whatever = 'whatever';
 
 
 	/*=====
@@ -44,7 +44,7 @@ document.getElementsByTagName('html')[0].className += ' hasjavascript';
 	==init
 	===*/
 
-	//-!barejs-__.lib.addListeners(window, "load", __.onload, false);
+	//-!barejs-__.lib.addListeners(window, 'load', __.onload, false);
 	//-!havehead-head.ready(__.onload);
 	//-!havejquery-jQuery(__.onload);
 

@@ -3,14 +3,14 @@ description
 -----parameters
 -----instantiation
 x$(window).load(function(){
-	__.elmsEventArticles = x$("#page_calendar .eventlist article");
+	__.elmsEventArticles = x$('#page_calendar .eventlist article');
 	if(__.elmsEventArticles.length > 0){
 		__.articleHandlers = new Array();
 		__.elmsEventArticles.each(function(argElementHTML, argIndex, argElements){
 			var fncElement = x$(argElementHTML);
 			__.articleHandlers.push(new __.classes.toggler({
 				elmClickable: fncElement
-				,elmToToggle: fncElement.find(".description")
+				,elmToToggle: fncElement.find('.description')
 				,closeoninit: true
 				,onclose: function(argElement){
 					var fncThis = this;
@@ -25,8 +25,8 @@ x$(window).load(function(){
 					elmThis.css(fncThis.styleOpened).fadeIn(fncThis.duration, function(){
 					});
 				}
-				,styleClosed: {display: "none", opacity: 0}
-				,styleOpened: {display: "block"}
+				,styleClosed: {display: 'none', opacity: 0}
+				,styleOpened: {display: 'block'}
 			}));
 		});
 	}
@@ -39,31 +39,31 @@ x$(window).load(function(){
 ©toggler
 ----------*/
 __.classes.toggler = function(args){
-		if(typeof args == "undefined") args = {};
+		if(typeof args == 'undefined') args = {};
 
 		//--optional attributes
 		this.boot = args.boot || null;
-		this.classOpen = (typeof args.classOpen != "undefined")? args.classOpen : "open";
-		this.classClosed = (typeof args.classClosed != "undefined")? args.classClosed : "closed";
+		this.classOpen = (typeof args.classOpen != 'undefined')? args.classOpen : 'open';
+		this.classClosed = (typeof args.classClosed != 'undefined')? args.classClosed : 'closed';
 		this.closeoninit = args.closeoninit || false;
-		this.duration = (typeof args.duration != "undefined")? args.duration : 500;
+		this.duration = (typeof args.duration != 'undefined')? args.duration : 500;
 		this.elmClickable = args.elmClickable || null;
 		this.elmToToggle = args.elmToToggle || null;
 		this.onopen = args.onopen || null;
 		this.onclose = args.onclose || null;
 		this.ontoggle = args.ontoggle || null;
-		this.preventDefault = (typeof args.preventDefault != "undefined")? args.preventDefault : true;
-		this.styleClosed = args.styleClosed || {display: "none"};
-		this.styleOpened = args.styleOpened || {display: "block"};
-		this.typeEvent = args.typeEvent || "click";
+		this.preventDefault = (typeof args.preventDefault != 'undefined')? args.preventDefault : true;
+		this.styleClosed = args.styleClosed || {display: 'none'};
+		this.styleOpened = args.styleOpened || {display: 'block'};
+		this.typeEvent = args.typeEvent || 'click';
 
 		//--close elements on init
 		if(this.closeoninit)
-			this.elmToToggle/* .not("."+this.classClosed).not("."+this.classOpen) */.addClass(this.classClosed).css(this.styleClosed);
+			this.elmToToggle/* .not('.'+this.classClosed).not('.'+this.classOpen) */.addClass(this.classClosed).css(this.styleClosed);
 		else{
-			this.elmToToggle/* .not("."+this.classClosed).not("."+this.classOpen) */.addClass(this.classOpen).css(this.styleOpened);
+			this.elmToToggle/* .not('.'+this.classClosed).not('.'+this.classOpen) */.addClass(this.classOpen).css(this.styleOpened);
 		}
-		
+
 		this.attachListeners(this.elmClickable);
 
 	}
@@ -72,7 +72,7 @@ __.classes.toggler = function(args){
 		if(argElements && argElements.length > 0){
 			argElements.on(this.typeEvent, function(event){
 				var nodeName = event.target.nodeName;
-				if(!event.target.href || (nodeName != "A" && nodeName != "a")){
+				if(!event.target.href || (nodeName != 'A' && nodeName != 'a')){
 					fncThis.toggle(fncThis.elmToToggle);
 					if(fncThis.preventDefault){
 						if(event.preventDefault)

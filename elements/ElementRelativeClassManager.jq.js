@@ -1,5 +1,5 @@
 /*
-add classes to elements of a set based on their position in that set relative to a "current" element
+add classes to elements of a set based on their position in that set relative to a 'current' element
 -----dependencies
 tmlib: isnumeric
 jquery
@@ -14,17 +14,17 @@ jquery
 ©ElementRelativeClassManager
 -------- */
 __.classes.ElementRelativeClassManager = function(args){
-		if(typeof args == "undefined") var args = {};
+		if(typeof args == 'undefined') var args = {};
 		//--required attributes
 //->return
 
 		//--optional attributes
 		this.boot = args.boot || {};
-		this.classAfter = this.classAfter || "after";
-		this.classBefore = this.classBefore || "before";
-		this.classCurrent = args.classCurrent || "current";
-		this.classFirst = args.classFirst || "first-child";
-		this.classLast = args.classLast || "last-child";
+		this.classAfter = this.classAfter || 'after';
+		this.classBefore = this.classBefore || 'before';
+		this.classCurrent = args.classCurrent || 'current';
+		this.classFirst = args.classFirst || 'first-child';
+		this.classLast = args.classLast || 'last-child';
 		this.elements = args.elements || Array();
 		this.oninit = args.oninit || null;
 		this.onsetclassesall = args.onsetclassesall || null;
@@ -58,7 +58,7 @@ __.classes.ElementRelativeClassManager = function(args){
 	}
 	__.classes.ElementRelativeClassManager.prototype.setClassesForCurrent = function(){
 		if(this.elements.length > 0){
-			this.indexCurrent = this.elements.index(this.elements.filter("."+this.classCurrent));
+			this.indexCurrent = this.elements.index(this.elements.filter('.'+this.classCurrent));
 			if(this.indexCurrent >= 0){
 				jQuery(this.elements.get(this.indexCurrent)).removeClass(this.classBefore).removeClass(this.classAfter);
 				this.elements.slice(0, this.indexCurrent).removeClass(this.classAfter).addClass(this.classBefore);

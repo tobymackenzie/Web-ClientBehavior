@@ -11,9 +11,9 @@ callback: function to run when ajax content is received
 	data: data received from ajax callback
 
 -----instantiation
-		var elmPageGetAQuote = document.getElementById("page_getaquote");
+		var elmPageGetAQuote = document.getElementById('page_getaquote');
 		if(elmPageGetAQuote){
-			__.quoteUpdateSelect = new __.classes.updateSelect({elmSelectSource: $("#frm\\[getaquote\\]\\[type\\]"), elmSelectDestination: $("#frm\\[getaquote\\]\\[td-typeinfo\\]"), nameParameter: "type", urlData: "/content/forms/ajax_getaquote_inquiry_types.php"
+			__.quoteUpdateSelect = new __.classes.updateSelect({elmSelectSource: $('#frm\\[getaquote\\]\\[type\\]'), elmSelectDestination: $('#frm\\[getaquote\\]\\[td-typeinfo\\]'), nameParameter: 'type', urlData: '/content/forms/ajax_getaquote_inquiry_types.php'
 				,callback: function(data){
 					this.elmSelectDestination.html(data);
 				}
@@ -41,7 +41,7 @@ __.classes.updateSelect = function(args){
 		if(!this.elmSelectSource || !this.urlData){
 			return false;
 		}
-		this.elmSelectSource.on("change", function(){
+		this.elmSelectSource.on('change', function(){
 			fncThis.handleChange();
 		});
 		fncThis.handleChange();
@@ -49,13 +49,13 @@ __.classes.updateSelect = function(args){
 	__.classes.updateSelect.prototype.handleChange = function(){
 		var fncThis = this;
 		var valueSelect = fncThis.elmSelectSource.val();
-		if(valueSelect != "" || this.handleNull){
+		if(valueSelect != '' || this.handleNull){
 			var callback = function(data, textStatus, jqXHR){
 				fncThis.callback.call(fncThis, data, textStatus, jqXHR);
 			}
 			var fncParameters = {};
 			jQuery.extend(fncParameters, fncThis.parametersFixed);
-			if(this.nameParameter && valueSelect != "")
+			if(this.nameParameter && valueSelect != '')
 				fncParameters[this.nameParameter] = valueSelect;
 			jQuery.ajax({
 				type: 'GET'

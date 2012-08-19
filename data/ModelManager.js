@@ -15,7 +15,7 @@ jquery
 ©ModelManager
 -------- */
 __.classes.ModelManager = function(args){
-		if(typeof args == "undefined") args = {};
+		if(typeof args == 'undefined') args = {};
 		//--optional attributes
 		this.boot = args.boot || {};
 		this.clbFetch = args.clbFetch || null;
@@ -49,7 +49,7 @@ __.classes.ModelManager = function(args){
 	}
 	__.classes.ModelManager.prototype.defaultFnGetRequestData = function(args){
 		var fncReturn = [];
-		if(typeof args != "undefined"){
+		if(typeof args != 'undefined'){
 			if(__.isArray(args))
 				fncReturn = args;
 			else
@@ -59,7 +59,7 @@ __.classes.ModelManager = function(args){
 	}
 	__.classes.ModelManager.prototype.defaultFnFetch = function(argData, argURL, argCallback){
 		var lclThis = this;
-		var lclCallback = (typeof argCallback != "undefined")? argCallback: this.clbFetch;
+		var lclCallback = (typeof argCallback != 'undefined')? argCallback: this.clbFetch;
 		var lclParams = {
 			success: function(){
 				if(lclCallback)
@@ -73,7 +73,7 @@ __.classes.ModelManager = function(args){
 	}
 	__.classes.ModelManager.prototype.defaultFnPersist = function(argData, argURL, argCallback){
 		var lclThis = this;
-		var lclCallback = (typeof argCallback != "undefined")? argCallback: this.clbPersist;
+		var lclCallback = (typeof argCallback != 'undefined')? argCallback: this.clbPersist;
 		var lclParams = {
 			success: function(){
 				if(lclCallback)

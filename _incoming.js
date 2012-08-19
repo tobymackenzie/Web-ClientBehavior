@@ -46,7 +46,7 @@ __.classes.objectMonitor = function(args){
 			var rules = args;
 		for(var key in rules){
 //->return missing required arguments
-			if(rules.hasOwnProperty(key) && typeof rules[key].event != "undefined" || typeof rules[key].handler != "undefined"){
+			if(rules.hasOwnProperty(key) && typeof rules[key].event != 'undefined' || typeof rules[key].handler != 'undefined'){
 				rules[key].applied = false;
 				this.rules.push(rules[key]);
 				this.applyRules(rules[key]);

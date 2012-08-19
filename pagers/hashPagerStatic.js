@@ -2,7 +2,7 @@
 -----dependencies
 tmlib: addclass, removeclass, hasclass, attachListeners
 -----instantiation
-__.pager = new __.classes.hashPagerStatic({elmsPages: document.getElementById("maincontent").getElementsByClassName("tabpage"), elmsNavigation: document.getElementById("maincontent").getElementsByClassName("tab")});
+__.pager = new __.classes.hashPagerStatic({elmsPages: document.getElementById('maincontent').getElementsByClassName('tabpage'), elmsNavigation: document.getElementById('maincontent').getElementsByClassName('tab')});
 
 ------------*/
 
@@ -20,8 +20,8 @@ __.classes.pager = function(args){
 		this.boot = args.boot || {};
 		this.callbackGetCurrentNavigation = args.callbackGetCurrentNavigation || this.defaultCallbackGetCurrentNavigation;
 		this.callbackGetCurrentPage = args.callbackGetCurrentPage || this.defaultCallbackGetCurrentPage;
-		this.classCurrentNavigation = args.classCurrentNavigation || "current";
-		this.classCurrentPage = args.classCurrentPage || "current";
+		this.classCurrentNavigation = args.classCurrentNavigation || 'current';
+		this.classCurrentPage = args.classCurrentPage || 'current';
 		this.elmsNavigation = args.elmsNavigation || null;
 		this.elmsPages = args.elmsPages || null;
 		this.idInitial = args.idInitial || null;
@@ -44,7 +44,7 @@ __.classes.pager = function(args){
 		if(!this.elmPageCurrent)
 			this.elmPageCurrent = this.callbackGetCurrentPage(this.getIDForNavigation(this.elmNavigationCurrent));
 		this.setClasses();
-			
+
 		//--do something
 		if(this.oninit)
 			this.oninit.call(fncThis);
@@ -98,9 +98,9 @@ __.classes.pager = function(args){
 		if(argElement.href)
 			var fncElement = argElement;
 		else
-			var fncElement = argElement.getElementsByTagName("a")[0];
-		var fncHrefSplit = fncElement.href.split("#");
-		if(fncHrefSplit[1].indexOf("#") == 0)
+			var fncElement = argElement.getElementsByTagName('a')[0];
+		var fncHrefSplit = fncElement.href.split('#');
+		if(fncHrefSplit[1].indexOf('#') == 0)
 			var fncReturn = fncHrefSplit[1].substring(1);
 		else
 			fncReturn = fncHrefSplit[1];

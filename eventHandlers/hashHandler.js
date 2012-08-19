@@ -4,13 +4,13 @@ allows binding of events to hashchange, and will hashify urls so that they can b
 -----parameters
 
 -----instantiation
-		__.hashHandler = new __.classes.hashHandler({elmsContainer: document.getElementById("topnavigationlist")
+		__.hashHandler = new __.classes.hashHandler({elmsContainer: document.getElementById('topnavigationlist')
 			, onhashchange: function(argHash){
 				var url = argHash;
-				if(url.substring(0,1) == "#")
+				if(url.substring(0,1) == '#')
 					url = url.substring(1, url.length - 1);
 				if(!url)
-					url = "/";
+					url = '/';
 				__.router.callRoute({path: url, arguments: {url: url}});
 			}
 			,oninit: function(argHash){
@@ -38,7 +38,7 @@ __.classes.hashHandler = function(args){
 //!		this.elmsContainer = args.elmsContainer || null;
 		this.onhashchange = args.onhashchange || null;
 		this.oninit = args.oninit || null;
-		this.selectorAnchors = args.selectorAnchors || "a";
+		this.selectorAnchors = args.selectorAnchors || 'a';
 		this.selectorExclude = args.selectorExclude || null;
 		this.selectorInclude = args.selectorInclude || null;
 
@@ -47,11 +47,11 @@ __.classes.hashHandler = function(args){
 		//--hashify urls
 //!		if(this.elmsContainer)
 //!			this.hashifyURLs(this.elmsContainer);
-		
+
 		//--attach listener for hash change
 		if(this.onhashchange){
-			if(typeof window.hashchange != "undefined"){
-				__.lib.addListeners(window, "hashchange", function(){
+			if(typeof window.hashchange != 'undefined'){
+				__.lib.addListeners(window, 'hashchange', function(){
 					fncThis.onhashchange.call(fncThis, fncThis.cleanHash(location.hash));
 				});
 			//-emulate listener for older browsers
@@ -70,8 +70,8 @@ __.classes.hashHandler = function(args){
 			this.oninit.call(fncThis, this.cleanHash(location.hash));
 	}
 	__.classes.hashHandler.prototype.cleanHash = function(argHash){
-		var fncHash = argHash || "";
-		if(fncHash.substring(0,1) == "#")
+		var fncHash = argHash || '';
+		if(fncHash.substring(0,1) == '#')
 			fncHash = fncHash.substring(1, fncHash.length);
 		return fncHash;
 	}
@@ -85,9 +85,9 @@ __.classes.hashHandler = function(args){
 				elmsAnchors = elmsAnchors.filter(this.selectorInclude);
 			elmsAnchors.each(function(){
 				var elmThis = jQuery(this);
-				var currentHref = elmThis.attr("href");
-				if(currentHref && currentHref.substring(0,1) == "/")
-					elmThis.attr("href", "#"+currentHref);
+				var currentHref = elmThis.attr('href');
+				if(currentHref && currentHref.substring(0,1) == '/')
+					elmThis.attr('href', '#'+currentHref);
 			});
 		}
 	}

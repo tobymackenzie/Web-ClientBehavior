@@ -17,17 +17,17 @@ jquery
 ©pagerAnimatorDissolve
 ------------*/
 __.classes.pagerAnimatorDissolve = function(args){
-		if(typeof args== "undefined") args = {};
+		if(typeof args== 'undefined') args = {};
 		//--optional attribributes
-		this.classCurrent = args.classCurrent || "current";
+		this.classCurrent = args.classCurrent || 'current';
 		this.cssZIndexBehind = args.cssZIndexBehind || -1;
 		this.cssZIndexNormal = args.cssZIndexNormal || 0;
-		this.duration = (typeof args.duration != "undefined")? args.duration: 500;
+		this.duration = (typeof args.duration != 'undefined')? args.duration: 500;
 		this.oninit = args.oninit || null;
 		this.onpreswitch = args.onpreswitch || null;
 		this.onpostswitch = args.onpostswitch || null;
 		this.boot = args.boot || null;
-		
+
 		//--derived attributes
 		this.inprogress = false;
 		this.queue = new __.classes.animationQueue();
@@ -38,7 +38,7 @@ __.classes.pagerAnimatorDissolve = function(args){
 	__.classes.pagerAnimatorDissolve.prototype.switche = function(args){
 		var fncThis = this;
 //-> return
-		if(fncThis.inprogress==true) return false;		
+		if(fncThis.inprogress==true) return false;
 
 		fncThis.inprogress = true;
 
@@ -52,14 +52,14 @@ __.classes.pagerAnimatorDissolve = function(args){
 				fncThis.onpreswitch.call(fncThis, localVariables);
 			}});
 		fncThis.queue.queue({callback: function(){
-			localVariables.elmToZIndex = localVariables.elmTo.css("z-index") || fncThis.cssZIndexNormal;
-			localVariables.elmTo.css("z-index", fncThis.cssZIndexBehind).show();
+			localVariables.elmToZIndex = localVariables.elmTo.css('z-index') || fncThis.cssZIndexNormal;
+			localVariables.elmTo.css('z-index', fncThis.cssZIndexBehind).show();
 			localVariables.elmFrom.fadeOut(fncThis.duration, function(){
 				fncThis.queue.dequeue();
 			});
 		}});
 		fncThis.queue.queue({callback: function(){
-			localVariables.elmTo.css("z-index", localVariables.elmToZIndex).addClass(fncThis.classCurrent);
+			localVariables.elmTo.css('z-index', localVariables.elmToZIndex).addClass(fncThis.classCurrent);
 			localVariables.elmFrom.removeClass(fncThis.classCurrent);
 			fncThis.queue.dequeue();
 		}});
@@ -72,7 +72,7 @@ __.classes.pagerAnimatorDissolve = function(args){
 			fncThis.queue.dequeue();
 		}});
 
-		//--start queue		
+		//--start queue
 		fncThis.queue.dequeue();
 	}
 

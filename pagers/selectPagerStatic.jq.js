@@ -12,14 +12,14 @@ style:
 
 
 // init
-if(typeof $ !== "undefined"){
+if(typeof $ !== 'undefined'){
 	$(document).ready(function(){
 		//--gallery pager
-		var elmsPagesGallery = $("#page_gallerynew #maincontent .page");
+		var elmsPagesGallery = $('#page_gallerynew #maincontent .page');
 		if(elmsPagesGallery.length > 0){
-			__.pagerGallery = new __.classes.selectPagerStatic({elmsPages: elmsPagesGallery, elmSelect: $(".galleryswitch select"), keepHeight: $("#maincontent .contentwrap"),
+			__.pagerGallery = new __.classes.selectPagerStatic({elmsPages: elmsPagesGallery, elmSelect: $('.galleryswitch select'), keepHeight: $('#maincontent .contentwrap'),
 				callbackSetHashForValue: function(argValue){
-					return "/"+argValue;
+					return '/'+argValue;
 				}
 			});
 		}
@@ -41,12 +41,12 @@ __.classes.selectPagerStatic = function(args){
 //-> return
 		this.elmSelect = args.elmSelect || false; if(!this.elmSelect) return false;
 //-> return
-		this.classCurrentPage = args.classCurrentPage || "current";
+		this.classCurrentPage = args.classCurrentPage || 'current';
 		this.duration = (args.duration !== undefined) ? args.duration : 500;
 		this.keepHeight = args.keepHeight || false;
 		if(__.ua.isIphone() == true) this.keepHeight = false;
 		this.callbackSetHashForValue = args.callbackSetHashForValue || function(argValue){
-			return "/"+argValue;
+			return '/'+argValue;
 		}
 
 		this.inProgress = true;
@@ -65,7 +65,7 @@ __.classes.selectPagerStatic = function(args){
 	}
 	__.classes.selectPagerStatic.prototype.attachListeners = function(){
 		var fncThis = this;
-		fncThis.elmSelect.on("change", function(event){
+		fncThis.elmSelect.on('change', function(event){
 			if(event.preventDefault)
 				event.preventDefault();
 			fncThis.switche(fncThis.getSelectedPageID());
@@ -79,18 +79,18 @@ __.classes.selectPagerStatic = function(args){
 		}else{
 			var fncThis = this;
 			var elmNextPage = this.elmsPages.filter(argID);
-			var elmCurrentPage = this.elmsPages.filter("."+this.classCurrentPage);
+			var elmCurrentPage = this.elmsPages.filter('.'+this.classCurrentPage);
 
 			fncThis.inProgress = true;
 
 			if(fncThis.keepHeight){
-				fncThis.keepHeight.css("height", elmCurrentPage.outerHeight());
+				fncThis.keepHeight.css('height', elmCurrentPage.outerHeight());
 				var nextOriginalSettings = {
-					position: elmNextPage.css("position"),
-					left: elmNextPage.css("left"),
-					top: elmNextPage.css("top")
+					position: elmNextPage.css('position'),
+					left: elmNextPage.css('left'),
+					top: elmNextPage.css('top')
 				}
-				var heightNew = elmNextPage.css({"position":"absolute", "left":"-9000px", "top":"-1000px"}).outerHeight();
+				var heightNew = elmNextPage.css({'position':'absolute', 'left':'-9000px', 'top':'-1000px'}).outerHeight();
 				elmNextPage.css(nextOriginalSettings);
 			}
 
@@ -111,7 +111,7 @@ __.classes.selectPagerStatic = function(args){
 		}
 	}
 	__.classes.selectPagerStatic.prototype.getSelectedPageID = function(){
-		var elmSelected = this.elmSelect.find(":selected");
-		return "#"+this.callbackSetHashForValue(elmSelected.attr("value")).replace(/\//g, "\\/");
+		var elmSelected = this.elmSelect.find(':selected');
+		return '#'+this.callbackSetHashForValue(elmSelected.attr('value')).replace(/\//g, '\\/');
 	}
 

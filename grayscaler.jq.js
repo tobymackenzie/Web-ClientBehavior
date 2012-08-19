@@ -6,7 +6,7 @@ must use callback in navigation handling functions to gray and degray new and ol
 /*-------------
 external access
 
-	var elmsPhotoNavigation = $("#page_internal .photos .navigation li");
+	var elmsPhotoNavigation = $('#page_internal .photos .navigation li');
 	__.navGrayscaler = new __.classes.navigationGrayscaler({elmsItems: elmsPhotoNavigation});
 ------------*/
 
@@ -21,9 +21,9 @@ __.classes.navigationGrayscaler = function(args){
 		// not needed in ie
 		if(jQuery.browser.msie) return false;
 		this.elmsItems = args.elmsItems || false; if(this.elmsItems.length < 1) return false;
-		this.classCurrent = args.classCurrent || "current";
-		this.eventCurrentChange = args.eventCurrentChange || "changeCurrent";
-		this.classGrayed = args.classGrayed || "grayed";
+		this.classCurrent = args.classCurrent || 'current';
+		this.eventCurrentChange = args.eventCurrentChange || 'changeCurrent';
+		this.classGrayed = args.classGrayed || 'grayed';
 		this.duration = args.duration || 500;
 
 		this.init(this.elmsItems)
@@ -33,9 +33,9 @@ __.classes.navigationGrayscaler = function(args){
 		if(argElms.length > 0){
 			argElms.each(function(){
 				var elmThis = jQuery(this);
-				if(elmThis.css("position") == "static" || elmThis.css("position") == "")
-					elmThis.css("position", "relative");
-				var elmClone = elmThis.find("img").clone().addClass(fncThis.classGrayed).attr("alt","").css({"position":"absolute", "top":"0", "left":"0", "z-index":"10"});
+				if(elmThis.css('position') == 'static' || elmThis.css('position') == '')
+					elmThis.css('position', 'relative');
+				var elmClone = elmThis.find('img').clone().addClass(fncThis.classGrayed).attr('alt','').css({'position':'absolute', 'top':'0', 'left':'0', 'z-index':'10'});
 
 				elmThis.append(elmClone);
 				fncLoaded = function(){
@@ -53,12 +53,12 @@ __.classes.navigationGrayscaler = function(args){
 					elmClone.load(fncLoaded);
 			});
 
-			argElms.on("mouseenter focus", function(){
+			argElms.on('mouseenter focus', function(){
 				var elmThis = jQuery(this);
 				if(!elmThis.hasClass(fncThis.classCurrent))
 					fncThis.colorify(elmThis, 0);
 			});
-			argElms.on("mouseleave blur", function(){
+			argElms.on('mouseleave blur', function(){
 				var elmThis = jQuery(this);
 				if(!elmThis.hasClass(fncThis.classCurrent))
 					fncThis.grayify(elmThis, 0);
@@ -66,10 +66,10 @@ __.classes.navigationGrayscaler = function(args){
 		}
 	}
 	__.classes.navigationGrayscaler.prototype.grayify = function(argElms, argDuration){
-		var fncElms = argElms.not("."+this.classCurrent);
+		var fncElms = argElms.not('.'+this.classCurrent);
 		if(fncElms.length > 0){
 			var fncDuration = (argDuration === undefined) ? this.duration : argDuration;
-			var fncElmsImages = fncElms.find("img."+this.classGrayed);
+			var fncElmsImages = fncElms.find('img.'+this.classGrayed);
 			if(fncDuration == 0)
 				fncElmsImages.show(fncDuration);
 			else
@@ -78,7 +78,7 @@ __.classes.navigationGrayscaler = function(args){
 	}
 	__.classes.navigationGrayscaler.prototype.colorify = function(argElms, argDuration){
 			var fncDuration = (argDuration === undefined) ? this.duration : argDuration;
-			var fncElmsImages = argElms.find("img."+this.classGrayed);
+			var fncElmsImages = argElms.find('img.'+this.classGrayed);
 			if(fncDuration == 0)
 				fncElmsImages.hide(fncDuration);
 			else

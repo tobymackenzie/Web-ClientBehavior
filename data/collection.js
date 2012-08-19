@@ -11,7 +11,7 @@ manages collection of items that has both numeric and named indexes, with an abi
 ©collection
 ----------*/
 __.classes.collection = function(args){
-		if(typeof args == "undefined") var args = {};
+		if(typeof args == 'undefined') var args = {};
 		//--required attributes
 
 		//--optional attributes
@@ -53,10 +53,10 @@ __.classes.collection = function(args){
 		if(this.onadd)
 			this.onadd.call(this, loc);
 /*
-		fncItem.on("change", function(event){
-			fncThis.jq.trigger("change");
+		fncItem.on('change', function(event){
+			fncThis.jq.trigger('change');
 		});
-		this.jq.trigger("change");
+		this.jq.trigger('change');
 */
 		return this;
 	}
@@ -65,7 +65,7 @@ __.classes.collection = function(args){
 			var index = argNameOrIndex;
 		else
 			var index = __.lib.arraySearch(argNameOrIndex, this.itemsNames);
-		if(typeof this.items[index] != "undefined")
+		if(typeof this.items[index] != 'undefined')
 			return index;
 		else
 			return false;

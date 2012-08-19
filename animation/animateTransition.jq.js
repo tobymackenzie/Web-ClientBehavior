@@ -13,7 +13,7 @@ arguments:
 		__.animateImage = new __.classes.AnimateTransition({
 			stylesBefore: [
 				{}
-				,{left: __.bannerlist.width(), display: "block"}
+				,{left: __.bannerlist.width(), display: 'block'}
 			]
 			,stylesTransition: [
 				{left: -(__.bannerlist.width())}
@@ -29,7 +29,7 @@ arguments:
 			,duration: [this.boot.duration * 1/3, this.boot.duration *2/3]
 			,stylesBefore: [
 				{}
-				,{bottom:  -(elmLabel.outerHeight()), display: "block"}
+				,{bottom:  -(elmLabel.outerHeight()), display: 'block'}
 			]
 			,stylesTransition: [
 				[
@@ -44,10 +44,10 @@ arguments:
 				]
 			]
 			,stylesAfter: [
-				{display: "none"}
+				{display: 'none'}
 				,{}
 			]
-			,boot: {attrDataBottom: "data-bottom"}
+			,boot: {attrDataBottom: 'data-bottom'}
 		})
 -----html
 -----css
@@ -61,14 +61,14 @@ __.classes.AnimateTransition = function(args){
 //->return
 		//--optional attributes
 		this.boot = args.boot || null;
-		this.callbackTransition = (typeof args.callbackTransition != "undefined")? args.callbackTransition: this.defaultCallbackTransition;
+		this.callbackTransition = (typeof args.callbackTransition != 'undefined')? args.callbackTransition: this.defaultCallbackTransition;
 		this.doMultistep = args.doMultistep || false;
 		this.duration = args.duration || 500;
 		this.stylesBefore = args.stylesBefore || null;
 		this.stylesTransition = args.stylesTransition || null;
 		this.stylesAfter = args.stylesAfter || null;
-		this.onbefore = (typeof args.onbefore != "undefined")? args.onbefore: this.defaultOnBefore;
-		this.onafter = (typeof args.onafter != "undefined")? args.onafter: this.defaultOnAfter;
+		this.onbefore = (typeof args.onbefore != 'undefined')? args.onbefore: this.defaultOnBefore;
+		this.onafter = (typeof args.onafter != 'undefined')? args.onafter: this.defaultOnAfter;
 		this.oninit = args.oninit || null;
 
 		//--derived attributes
@@ -79,7 +79,7 @@ __.classes.AnimateTransition = function(args){
 			this.oninit.call(this);
 	}
 	__.classes.AnimateTransition.prototype.transitionForElements = function(args){
-		if(typeof args.elements != "undefined")
+		if(typeof args.elements != 'undefined')
 			var fncArgs = args;
 		else
 			var fncArgs = {elements: args};
@@ -121,7 +121,7 @@ __.classes.AnimateTransition = function(args){
 			if(fncElements.hasOwnProperty(key)){
 				if(!this.stylesTransition){
 					lopStylesTransition = null;
-				}else if(typeof argKey != "undefined"){
+				}else if(typeof argKey != 'undefined'){
 					var lopStylesTransition = this.stylesTransition[argKey][key] || null;
 					if(this.duration.constructor == Array){
 						var lopDuration = this.duration[argKey];
@@ -133,14 +133,14 @@ __.classes.AnimateTransition = function(args){
 					var lopDuration = this.duration;
 				}
 				if(lopStylesTransition){
-					if(typeof lopStylesTransition === "function")
+					if(typeof lopStylesTransition === 'function')
 						lopStylesTransition = lopStylesTransition.call(this, fncElements[key], args);
 					if(key == 0){
 						var lopCallbackDQ = callbackDQ;
 					}else{
 						var lopCallbackDQ = null;
 					}
-						
+
 					fncElements[key].animate(lopStylesTransition, lopDuration, lopCallbackDQ);
 				}else{
 					callbackDQ();
@@ -155,7 +155,7 @@ __.classes.AnimateTransition = function(args){
 			if(fncElements.hasOwnProperty(key)){
 				var lopStylesBefore = (this.stylesBefore && this.stylesBefore[key]) ? this.stylesBefore[key] : null;
 				if(lopStylesBefore){
-					if(typeof lopStylesBefore === "function"){
+					if(typeof lopStylesBefore === 'function'){
 						lopStylesBefore = lopStylesBefore.call(this, fncElements[key], args);
 					}
 					if(lopStylesBefore)
@@ -171,7 +171,7 @@ __.classes.AnimateTransition = function(args){
 			if(fncElements.hasOwnProperty(key)){
 				var lopStylesAfter = (this.stylesAfter && this.stylesAfter[key]) ? this.stylesAfter[key] : null;
 				if(lopStylesAfter){
-					if(typeof lopStylesAfter === "function"){
+					if(typeof lopStylesAfter === 'function'){
 						lopStylesAfter = lopStylesAfter.call(this, fncElements[key], args);
 					}
 					if(lopStylesAfter){

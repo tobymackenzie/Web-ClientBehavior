@@ -12,11 +12,11 @@ jquery
 -----init
 if(typeof $ !== 'undefined')
 	$(document).ready(function(){
-		var elmCategoryImages = $("#page_portfolio_category #maincontent .images");
+		var elmCategoryImages = $('#page_portfolio_category #maincontent .images');
 		if(elmCategoryImages.length > 0){
 			__.scrollerCategoryImages = new __.classes.buttonScrollerHorizontal({
 				elmWrapper: elmCategoryImages,
-				elmContainer: elmCategoryImages.find(".imagelist"),
+				elmContainer: elmCategoryImages.find('.imagelist'),
 				htmlButtonContainer: '<div class="relativenavigation"><h3 class="screenreaderonly">Image Navigation</h3></div>',
 				htmlButtonPrevious: '<div class="item previous"><a href="javascript:/*__scroll_to_previous_images*/"><span class="screenreaderonly">Previous</span></a></div>',
 				htmlButtonNext: '<div class="item next"><a href="javascript:/*__scroll_to_next_images*/"><span class="screenreaderonly">Next</span></a></div>'
@@ -62,7 +62,7 @@ __.classes.buttonScrollerHorizontal = function(args){
 		if(this.htmlButtonPrevious){
 			this.elmButtonPrevious = jQuery(this.htmlButtonPrevious);
 			this.elmButtonContainer.append(this.elmButtonPrevious);
-			this.elmButtonPrevious.on("click", function(){
+			this.elmButtonPrevious.on('click', function(){
 				fncThis.scrollLeft();
 				if(fncThis.intervalAutoAdvance && fncThis.doStopAdvanceOnNavigate){
 					clearInterval(fncThis.intervalAutoAdvance);
@@ -72,7 +72,7 @@ __.classes.buttonScrollerHorizontal = function(args){
 		if(this.htmlButtonNext){
 			this.elmButtonNext = jQuery(this.htmlButtonNext);
 			this.elmButtonContainer.append(this.elmButtonNext);
-			this.elmButtonNext.on("click", function(){
+			this.elmButtonNext.on('click', function(){
 				fncThis.scrollRight();
 				if(fncThis.intervalAutoAdvance && fncThis.doStopAdvanceOnNavigate){
 					clearInterval(fncThis.intervalAutoAdvance);
@@ -82,7 +82,7 @@ __.classes.buttonScrollerHorizontal = function(args){
 
 		//--adjust wrapper width on window resize
 		if(fncThis.doUpdateWidthOnWindowResize){
-			jQuery(window).on("resize", function(){
+			jQuery(window).on('resize', function(){
 				fncThis.resize();
 			});
 		}

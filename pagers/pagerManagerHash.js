@@ -6,10 +6,10 @@ tmlib base
 jquery
 
 -----instantiation
-			var elmHomeBGContainer = $("#bgmainimages");
-			
+			var elmHomeBGContainer = $('#bgmainimages');
+
 			if(elmHomeBGContainer.length > 0){
-				__.homeBGPager = new __.classes.pagerManagerHash({elmsItems: elmHomeBGContainer.find(".bgmainpiece"), doUseHash: false, doShowHide: false
+				__.homeBGPager = new __.classes.pagerManagerHash({elmsItems: elmHomeBGContainer.find('.bgmainpiece'), doUseHash: false, doShowHide: false
 					,oninit: function(){
 						this.elmsItems.hide();
 						this.getPageCurrent().show();
@@ -34,11 +34,11 @@ __.classes.pagerManagerHash = function(args){
 		//--optional attributes
 		this.handlerAnimation = args.handlerAnimation || null;
 		this.handlerNavigation = args.handlerNavigation || null;
-		this.classCurrent = args.classCurrent || "current";
-		this.doCarousel = (typeof args.doCarousel != "undefined")? args.doCarousel: true;
-		this.doShowHide = (typeof args.doShowHide != "undefined")? args.doShowHide: true;
-		this.doUseHash = (typeof args.doUseHash != "undefined")? args.doUseHash: true;
-		this.duration = (typeof args.duration != "undefined")? args.duration: 500;
+		this.classCurrent = args.classCurrent || 'current';
+		this.doCarousel = (typeof args.doCarousel != 'undefined')? args.doCarousel: true;
+		this.doShowHide = (typeof args.doShowHide != 'undefined')? args.doShowHide: true;
+		this.doUseHash = (typeof args.doUseHash != 'undefined')? args.doUseHash: true;
+		this.duration = (typeof args.duration != 'undefined')? args.duration: 500;
 		this.oninit = args.oninit || null;
 		this.onpreswitch = args.onpreswitch || null;
 		this.onpostswitch = args.onpostswitch || null;
@@ -48,7 +48,7 @@ __.classes.pagerManagerHash = function(args){
 		var fncThis = this;
 		this.inprogress = true;
 		this.queue = new __.classes.animationQueue();
-		
+
 		//--hide all, display first
 		if(window.location.hash && this.doUseHash){
 			this.idCurrent = window.location.hash;
@@ -61,32 +61,32 @@ __.classes.pagerManagerHash = function(args){
 				elmCurrentPage = this.elmsItems.first();
 				elmCurrentPage.addClass(this.classCurrent);
 			}
-			this.idCurrent = "#"+elmCurrentPage.attr("id");
+			this.idCurrent = '#'+elmCurrentPage.attr('id');
 		}
 		if(this.doShowHide){
 			this.elmsItems.hide();
 			elmCurrentPage.show();
 		}
-				
+
 		this.inprogress = false;
-		
+
 		//--set up event handlers for event manager
 		if(this.handlerNavigation){
 			this.handlerNavigation.onswitch = function(args){
 				fncThis.switche(args.dataNew);
 			}
 		}
-		
+
 		//--set up animation handler
 		if(this.handlerAnimation){
 			this.handlerAnimation.onpostswitch = function(args){
 				fncThis.inprogress = false;
 				this.queue.dequeue();
-				fncThis.idCurrent = "#"+args.elmTo.attr("id");
+				fncThis.idCurrent = '#'+args.elmTo.attr('id');
 				fncThis.queue.dequeue();
 			}
 		}
-		
+
 		if(this.oninit)
 			this.oninit.call(this);
 	}
@@ -103,7 +103,7 @@ __.classes.pagerManagerHash = function(args){
 			}else{
 				var elmPrevious = this.elmsItems.last();
 			}
-			this.switche("#"+elmPrevious.attr("id"));
+			this.switche('#'+elmPrevious.attr('id'));
 		}
 	}
 	__.classes.pagerManagerHash.prototype.switchToNext = function(){
@@ -119,7 +119,7 @@ __.classes.pagerManagerHash = function(args){
 			}else{
 				var elmNext = this.elmsItems.first();
 			}
-			this.switche("#"+elmNext.attr("id"));
+			this.switche('#'+elmNext.attr('id'));
 		}
 	}
 	__.classes.pagerManagerHash.prototype.switche = function(argID){
@@ -147,7 +147,7 @@ __.classes.pagerManagerHash = function(args){
 				}
 				var callbackPostHideCurrent = function(){
 				}
-				
+
 				//--set up queue
 				if(fncThis.onpreswitch)
 					fncThis.queue.queue({callback: function(){
@@ -184,8 +184,8 @@ __.classes.pagerManagerHash = function(args){
 					fncThis.inprogress = false;
 					fncThis.queue.dequeue();
 				}});
-		
-				//--start queue		
+
+				//--start queue
 				fncThis.queue.dequeue();
 			}
 		}
@@ -195,7 +195,7 @@ __.classes.pagerManagerHash = function(args){
 		if(this.idCurrent)
 			fncReturn = this.elmsItems.filter(__.lib.escapeHash(this.idCurrent));
 		if(!fncReturn || (fncReturn && fncReturn.length < 1))
-			fncReturn = this.elmsItems.filter("."+this.classCurrent);
+			fncReturn = this.elmsItems.filter('.'+this.classCurrent);
 		return (fncReturn && fncReturn.length > 0)? fncReturn: false;
 	}
 

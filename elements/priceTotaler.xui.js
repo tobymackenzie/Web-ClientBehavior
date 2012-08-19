@@ -12,19 +12,19 @@ x$(window).load(function(){
 	__.elmPrice = x$('<div class="formitem pricetotal showvalue"><span class="label">Total Cost</span> $</div>');
 	__.elmPriceValue = x$('<span class="value">Init</span>');
 	__.elmPrice.bottom(__.elmPriceValue);
-	x$("#frm_donatationdetails>:last-child").after(__.elmPrice);
+	x$('#frm_donatationdetails>:last-child').after(__.elmPrice);
 	__.priceManager = new __.classes.priceTotaler({
 		elmPrice: __.elmPriceValue
 		,boot: {
-			elmInputRequired: x$("form[name='mobilegearorder'] input[name='req_fields']")
-			,requiredFieldsBase: "firstname(first name),lastname(last name),email"
-			,requiredFieldsCC: "address1(address),city,state,zip(zip code),phone1,custom_1(employer's name),custom_2(employer's city),custom_3(employer's state)"
+			elmInputRequired: x$('form[name="mobilegearorder"] input[name="req_fields"]')
+			,requiredFieldsBase: 'firstname(first name),lastname(last name),email'
+			,requiredFieldsCC: 'address1(address),city,state,zip(zip code),phone1,custom_1(employer/'s name),custom_2(employer/'s city),custom_3(employer/'s state)'
 		}
 		,doUpdate: false
 		,onchange: function(argTotal){
-			var fncTotal = (typeof argTotal != "undefined")? argTotal: this.getTotal();
+			var fncTotal = (typeof argTotal != 'undefined')? argTotal: this.getTotal();
 			if(fncTotal > 0){
-				this.boot.elmInputRequired[0].value = this.boot.requiredFieldsBase+","+this.boot.requiredFieldsCC; //-bug- xui
+				this.boot.elmInputRequired[0].value = this.boot.requiredFieldsBase+','+this.boot.requiredFieldsCC; //-bug- xui
 				__.ccInfoToggler.open();
 			}else{
 				this.boot.elmInputRequired[0].value = this.boot.requiredFieldsStarting; //-bug- xui
@@ -33,7 +33,7 @@ x$(window).load(function(){
 		}
 		,oninit: function(){
 			var fncThis = this;
-			
+
 			setTimeout(function(){
 				fncThis.doUpdate = true;
 				fncThis.updateTotal();
@@ -43,18 +43,18 @@ x$(window).load(function(){
 
 	//--add price items
 	//-order items
-	x$("#maincontent .orderlist .orderitem").each(function(element, index, xui){
+	x$('#maincontent .orderlist .orderitem').each(function(element, index, xui){
 		var elmThis = x$(this);
 		__.priceManager.addPriceItem({
-			elmValueManagerPrice: new __.classes.elementValueManager({element:elmThis, dataSource: "attribute", attribute: "data-price"})
-			,elmValueManagerQuantity: new __.classes.elementValueManager({element:elmThis.find("select"), dataSource: "value"})
+			elmValueManagerPrice: new __.classes.elementValueManager({element:elmThis, dataSource: 'attribute', attribute: 'data-price'})
+			,elmValueManagerQuantity: new __.classes.elementValueManager({element:elmThis.find('select'), dataSource: 'value'})
 		});
 	});
 	//-donation
 	var elmWrapDonation = x$();
 	__.priceManager.addPriceItem({
-		elmValueManagerPrice: new __.classes.elementValueManager({element:x$("#maincontent select[name='donationamount']"), dataSource: "value"})
-		,elmValueManagerBoolean: new __.classes.elementValueManager({element: x$("#fldwilldonate"), dataSource: "checked"})
+		elmValueManagerPrice: new __.classes.elementValueManager({element:x$('#maincontent select[name="donationamount"]'), dataSource: 'value'})
+		,elmValueManagerBoolean: new __.classes.elementValueManager({element: x$('#fldwilldonate'), dataSource: 'checked'})
 	});
 }
 
@@ -69,14 +69,14 @@ __.classes.priceTotaler = function(args){
 		//--required attributes
 		//--optional attributes
 		this.boot = args.boot || null;
-		this.doUpdate = (typeof args.doUpdate != "undefined")? args.doUpdate: true;
+		this.doUpdate = (typeof args.doUpdate != 'undefined')? args.doUpdate: true;
 		this.elmPrice = args.elmPrice || null;
 		this.onchange = args.onchange || null;
 		this.oninit = args.oninit || null;
-				
+
 		//--derived attributes
 		this.priceItems = new Array();
-		
+
 		if(this.oninit)
 			this.oninit.call(this);
 	}
@@ -87,7 +87,7 @@ __.classes.priceTotaler = function(args){
 		fncPriceItem.addChangeListener(function(event){
 			fncThis.updateTotal();
 		});
-		
+
 		this.updateTotal();
 	}
 	__.classes.priceTotaler.prototype.getTotal = function(){
@@ -114,14 +114,14 @@ __.classes.priceTotaler.prototype.classes = {};
 __.classes.priceTotaler.prototype.classes.priceItem = function(args){
 		//--required attributes
 		this.elmValueManagerPrice = args.elmValueManagerPrice || null; if(!this.elmValueManagerPrice) return false;
-		
+
 		//--optional attributes
 		this.elmValueManagerQuantity = args.elmValueManagerQuantity || null;
 		this.elmValueManagerBoolean = args.elmValueManagerBoolean || null;
-		
+
 		//--derived attributes
 		var fncThis = this;
-		
+
 		//--watch elements for price changes
 		var callback = function(event){
 			fncThis.updatePrice();
@@ -132,9 +132,9 @@ __.classes.priceTotaler.prototype.classes.priceItem = function(args){
 			localvar.price = this.elmValueManagerPrice.getValue();
 			localvar.quantity = (this.elmValueManagerQuantity)? this.elmValueManagerQuantity.getValue(): 1;
 			localvar.boolean = (this.elmValueManagerBoolean)? this.elmValueManagerBoolean.getValue(): true;
-			
+
 			return (localvar.boolean)? (localvar.price * localvar.quantity): 0;
-		}	
+		}
 	__.classes.priceTotaler.prototype.classes.priceItem.prototype.addChangeListener = function(argCallback){
 		var fncThis = this;
 		var fncArgCallback = argCallback;

@@ -15,7 +15,7 @@ jquery
 ©AjaxForm
 -----*/
 __.classes.AjaxForm = function(args){
-		if(typeof args == "undefined") var args = {};
+		if(typeof args == 'undefined') var args = {};
 		//--required attributes
 //->return
 
@@ -37,9 +37,9 @@ __.classes.AjaxForm = function(args){
 	__.classes.AjaxForm.prototype.submit = function(){
 		var lclThis = this;
 		var lclValues = {};
-		this.elmForm.find("input, select, textarea").each(function(){
+		this.elmForm.find('input, select, textarea').each(function(){
 			var elmThis = $(this);
-			lclValues[elmThis.attr("name")] = elmThis.val();
+			lclValues[elmThis.attr('name')] = elmThis.val();
 		});
 		if(this.onsubmitpreajax)
 			this.onsubmitpreajax.call(lclThis, lclValues);
@@ -49,14 +49,14 @@ __.classes.AjaxForm = function(args){
 				if(lclThis.onsuccess)
 					lclThis.onsuccess.apply(lclThis, arguments);
 			}
-			,type: "POST"
-			,url: (this.elmForm.attr("action"))? this.elmForm.attr("action"): document.URL
+			,type: 'POST'
+			,url: (this.elmForm.attr('action'))? this.elmForm.attr('action'): document.URL
 		});
 	}
 	__.classes.AjaxForm.prototype.bindSubmit = function(argElm){
 		var lclThis = this;
-		if(typeof argElm == "undefined") argElm = this.elmForm;
-		argElm.on("submit", function(argEvent){
+		if(typeof argElm == 'undefined') argElm = this.elmForm;
+		argElm.on('submit', function(argEvent){
 			lclThis.submit.call(lclThis);
 			if(argEvent.preventDefault)
 				argEvent.preventDefault();

@@ -4,13 +4,13 @@ allows binding of events to hashchange, and will hashify urls so that they can b
 -----parameters
 
 -----instantiation
-		__.hashHandler = new __.classes.hashHandler({elmsContainer: $("#topnavigationlist, #maindescription, #maindescriptionwrap, #logo")
+		__.hashHandler = new __.classes.hashHandler({elmsContainer: $('#topnavigationlist, #maindescription, #maindescriptionwrap, #logo')
 			, onhashchange: function(argHash){
 				var url = argHash;
-				if(url.substring(0,1) == "#")
+				if(url.substring(0,1) == '#')
 					url = url.substring(1, url.length - 1);
 				if(!url)
-					url = "/";
+					url = '/';
 				__.router.callRoute({path: url, arguments: {url: url}});
 			}
 			,oninit: function(argHash){
@@ -35,7 +35,7 @@ __.classes.hashHandler = function(args){
 		this.elmsContainer = args.elmsContainer || null;
 		this.onhashchange = args.onhashchange || null;
 		this.oninit = args.oninit || null;
-		this.selectorAnchors = args.selectorAnchors || "a";
+		this.selectorAnchors = args.selectorAnchors || 'a';
 		this.selectorExclude = args.selectorExclude || null;
 		this.selectorInclude = args.selectorInclude || null;
 
@@ -47,8 +47,8 @@ __.classes.hashHandler = function(args){
 
 		//--attach listener for hash change
 		if(this.onhashchange)
-			jQuery(window).on("hashchange", function(){
-				var url = location.hash || "/";
+			jQuery(window).on('hashchange', function(){
+				var url = location.hash || '/';
 				fncThis.onhashchange.call(fncThis, url);
 			});
 
@@ -64,9 +64,9 @@ __.classes.hashHandler = function(args){
 				elmsAnchors = elmsAnchors.filter(this.selectorInclude);
 			elmsAnchors.each(function(){
 				var elmThis = jQuery(this);
-				var currentHref = elmThis.attr("href");
-				if(currentHref && currentHref.substring(0,1) == "/")
-					elmThis.attr("href", "#"+currentHref);
+				var currentHref = elmThis.attr('href');
+				if(currentHref && currentHref.substring(0,1) == '/')
+					elmThis.attr('href', '#'+currentHref);
 			});
 		}
 	}

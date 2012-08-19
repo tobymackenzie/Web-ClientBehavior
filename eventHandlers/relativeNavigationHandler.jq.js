@@ -8,7 +8,7 @@ handle relative navigation buttons (next and previous)
 			,htmlButtonContainer: '<div class="relativenavigation"><h3 class="screenreaderonly">Image Navigation</h3></div>'
 			,htmlButtonPrevious: '<div class="item previous"><a href="javascript:/*__go_to_previous_image*/"><span class="screenreaderonly">Previous</span></a></div>'
 			,htmlButtonNext: '<div class="item next"><a href="javascript:/*__go_to_next_image*/"><span class="screenreaderonly">Next</span></a></div>'
-			,selectorElmForLinkManagement: "a"
+			,selectorElmForLinkManagement: 'a'
 		});
 /*
 */
@@ -19,10 +19,10 @@ handle relative navigation buttons (next and previous)
 ---------*/
 __.classes.relativeNavigationHandler = function(args){
 		//--optional arguments
-		this.attrData = args.attrData || "href";
+		this.attrData = args.attrData || 'href';
 		this.boot = args.boot || null;
 		this.elmWrapper = args.elmWrapper || null;
-		this.eventsBindTo = (args.eventsBindTo)? args.eventsBindTo: "click touch";
+		this.eventsBindTo = (args.eventsBindTo)? args.eventsBindTo: 'click touch';
 		this.elmButtonPrevious = args.elmButtonPrevious || null;
 		this.elmButtonNext = args.elmButtonNext || null;
 		this.htmlButtonContainer = args.htmlButtonContainer || null;
@@ -97,7 +97,7 @@ __.classes.relativeNavigationHandler = function(args){
 	}
 	__.classes.relativeNavigationHandler.prototype.setPreviousLink = function(argLink){
 		if(this.selectorElmForLinkManagement){
-			if(this.selectorElmForLinkManagement == "this")
+			if(this.selectorElmForLinkManagement == 'this')
 				var elmForLinkManagement = this.elmButtonPrevious;
 			else
 				var elmForLinkManagement = this.elmButtonPrevious.find(this.selectorElmForLinkManagement);
@@ -115,7 +115,7 @@ __.classes.relativeNavigationHandler = function(args){
 	}
 	__.classes.relativeNavigationHandler.prototype.setNextLink = function(argLink){
 		if(this.selectorElmForLinkManagement){
-			if(this.selectorElmForLinkManagement == "this")
+			if(this.selectorElmForLinkManagement == 'this')
 				var elmForLinkManagement = this.elmButtonNext;
 			else
 				var elmForLinkManagement = this.elmButtonNext.find(this.selectorElmForLinkManagement);

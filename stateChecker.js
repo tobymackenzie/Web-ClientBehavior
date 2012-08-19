@@ -9,42 +9,42 @@ tmlib
 -----instantiation
 $(document).ready(function(){
     var collection = new __.classes.collection();
-    var inputs = $("input, select, textarea");
+    var inputs = $('input, select, textarea');
     inputs.each(function(){
         collection.add($(this));
     });
     __.stateChecker = new __.classes.stateChecker({
         collection: collection
         ,callbackCheckState: function(args){
-            var lclReturn = "";
+            var lclReturn = '';
             this.collection.each(function(args){
                 lclReturn += this.val();
             });
             return lclReturn
         }
     });
-    __.stateChecker.on("change", function(argEvent, argData){
+    __.stateChecker.on('change', function(argEvent, argData){
 __.message(this);
 __.message(argData);
-        __.message("change: "+argData.new);
+        __.message('change: '+argData.new);
     });
 
 	//--complicated
         __.colInputsTax = new __.classes.collection();
-        __.colInputsTax.add(__.elmFormCheckout.find("#fld\\[checkout\\]\\[address1\\]"), "address1");
-        __.colInputsTax.add(__.elmFormCheckout.find("#fld\\[checkout\\]\\[city\\]"), "city");
-        __.colInputsTax.add(__.elmFormCheckout.find("#fld\\[checkout\\]\\[state\\]"), "state");
-        __.colInputsTax.add(__.elmFormCheckout.find("#fld\\[checkout\\]\\[zip\\]"), "zip");
-        __.colInputsTax.add(__.elmFormCheckout.find("#fld\\[checkout\\]\\[sameasbilling\\]"), "sameasbilling");
-        __.colInputsTax.add(__.elmFormCheckout.find("#fld\\[checkout\\]\\[shippingaddress1\\]"), "shippingaddress1");
-        __.colInputsTax.add(__.elmFormCheckout.find("#fld\\[checkout\\]\\[shippingcity\\]"), "shippingcity");
-        __.colInputsTax.add(__.elmFormCheckout.find("#fld\\[checkout\\]\\[shippingstate\\]"), "shippingstate");
-        __.colInputsTax.add(__.elmFormCheckout.find("#fld\\[checkout\\]\\[shippingzip\\]"), "shippingzip");
+        __.colInputsTax.add(__.elmFormCheckout.find('#fld\\[checkout\\]\\[address1\\]'), 'address1');
+        __.colInputsTax.add(__.elmFormCheckout.find('#fld\\[checkout\\]\\[city\\]'), 'city');
+        __.colInputsTax.add(__.elmFormCheckout.find('#fld\\[checkout\\]\\[state\\]'), 'state');
+        __.colInputsTax.add(__.elmFormCheckout.find('#fld\\[checkout\\]\\[zip\\]'), 'zip');
+        __.colInputsTax.add(__.elmFormCheckout.find('#fld\\[checkout\\]\\[sameasbilling\\]'), 'sameasbilling');
+        __.colInputsTax.add(__.elmFormCheckout.find('#fld\\[checkout\\]\\[shippingaddress1\\]'), 'shippingaddress1');
+        __.colInputsTax.add(__.elmFormCheckout.find('#fld\\[checkout\\]\\[shippingcity\\]'), 'shippingcity');
+        __.colInputsTax.add(__.elmFormCheckout.find('#fld\\[checkout\\]\\[shippingstate\\]'), 'shippingstate');
+        __.colInputsTax.add(__.elmFormCheckout.find('#fld\\[checkout\\]\\[shippingzip\\]'), 'shippingzip');
         __.stateCheckerTaxFields = new __.classes.stateChecker({
             collection: __.colInputsTax
             ,callbackCheckState: function(args){
-                var lclReturn = "";
-                if(this.collection.get("sameasbilling").filter(":checked").length > 0)
+                var lclReturn = '';
+                if(this.collection.get('sameasbilling').filter(':checked').length > 0)
                     var fields = this.boot.fieldsBillingAddress;
                 else
                     var fields = this.boot.fieldsShippingAddress;
@@ -58,24 +58,24 @@ __.message(argData);
             }
             ,boot: {
                 fieldsBillingAddress: [
-                    "address1"
-                    ,"city"
-                    ,"state"
-                    ,"zip"
+                    'address1'
+                    ,'city'
+                    ,'state'
+                    ,'zip'
                 ]
                 ,fieldsShippingAddress: [
-                    "shippingaddress1"
-                    ,"shippingcity"
-                    ,"shippingstate"
-                    ,"shippingzip"
+                    'shippingaddress1'
+                    ,'shippingcity'
+                    ,'shippingstate'
+                    ,'shippingzip'
                 ]
             }
         });
-        __.stateCheckerTaxFields.on("change", function(argEvent, argData){
+        __.stateCheckerTaxFields.on('change', function(argEvent, argData){
             //--do ajax query to change taxes
             __.orderAddressManager.store();
-            //--modify "data-taxes" on ".mainhead .cost" on change
-            //!__.orderManager.serviceRequest(null, "read", ["order"]);
+            //--modify 'data-taxes' on '.mainhead .cost' on change
+            //!__.orderManager.serviceRequest(null, 'read', ['order']);
         });
 });
 
@@ -87,7 +87,7 @@ __.message(argData);
 ©stateChecker
 -------- */
 __.classes.stateChecker = function(args){
-        if(typeof args == "undefined") var args = {};
+        if(typeof args == 'undefined') var args = {};
         var fncThis = this;
 		//--required attributes
 //->return
@@ -96,7 +96,7 @@ __.classes.stateChecker = function(args){
 		this.boot = args.boot || {};
 		this.callbackCheckState = args.callbackCheckState || function(){ return false; }
         this.collection = args.collection || new __.classes.collection();
-		this.eventsForBinding = args.eventsForBinding || "change";
+		this.eventsForBinding = args.eventsForBinding || 'change';
 		this.oninit = args.oninit || this.defaultOnInit;
 
 		//--derived attributes
@@ -124,7 +124,7 @@ __.classes.stateChecker = function(args){
 	   if(this.state != stateNew){
 	       var stateOld = this.state;
 	       this.state = stateNew;
-	       this.jq.trigger("change", {'old': this.state, 'new': stateNew});
+	       this.jq.trigger('change', {'old': this.state, 'new': stateNew});
 	   }
 	}
 	__.classes.stateChecker.prototype.on = function(){

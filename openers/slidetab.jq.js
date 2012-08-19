@@ -64,7 +64,7 @@ not for ie 6 or less currently
 .section_portfolio .portfolioitem h2{
 	margin: 0;
 	font-weight: 300;
-	font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Arial, Helvetica, sans-serif;
+	font-family: 'Helvetica Neue Light', 'HelveticaNeue-Light', 'Helvetica Neue', Arial, Helvetica, sans-serif;
 }
 
 .section_portfolio .portfolioitem  .imagelistwrap{
@@ -162,31 +162,31 @@ $(function(){
 	//-not for ie6 at the moment
 	if(!($.browser.msie && $.browser.version < 7)){
 		var elmsPortfolios = [
-			$(".portfoliolist.n1")
-			,$(".portfoliolist.n2")
-			,$(".portfoliolist.n3")
+			$('.portfoliolist.n1')
+			,$('.portfoliolist.n2')
+			,$('.portfoliolist.n3')
 		];
 		var callbackPreOpen = function(argElement){
 			argElement.find(this.selectorTab).fadeOut(this.duration);
-			argElement.find(".head").fadeIn(this.duration);
-			argElement.find(".imagelist").animate({"margin-left": 0}, this.duration);
+			argElement.find('.head').fadeIn(this.duration);
+			argElement.find('.imagelist').animate({'margin-left': 0}, this.duration);
 		}
 		var callbackPreClose = function(argElement){
-			argElement.find(".head").fadeOut(this.duration);
+			argElement.find('.head').fadeOut(this.duration);
 			argElement.find(this.selectorTab).fadeIn(this.duration);
-			argElement.find(".imagelist").animate({"margin-left": "20px"}, this.duration);
+			argElement.find('.imagelist').animate({'margin-left': '20px'}, this.duration);
 			if($.browser.msie){
-				argElement.find(this.selectorTab).css({filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=3)"});
+				argElement.find(this.selectorTab).css({filter: 'progid:DXImageTransform.Microsoft.BasicImage(rotation=3)'});
 			}
 		}
 		var callbackPostOpen = function(argElement){
 			//-set cookie based on change
-			if(typeof this.boot.cookie != "undefined" && typeof page.portfolioType != "undefined" && page.portfolioType){
+			if(typeof this.boot.cookie != 'undefined' && typeof page.portfolioType != 'undefined' && page.portfolioType){
 				var arrNewValues = new Array();
 				var portfolios = this.boot.elmsPortfolios
 				for(var i = 0; i < portfolios.length; ++i){
 					var portfolio = portfolios[i];
-					arrNewValues.push(portfolio.find(this.selectorItems+"."+this.classCurrent).attr(this.boot.attrUnid));
+					arrNewValues.push(portfolio.find(this.selectorItems+'.'+this.classCurrent).attr(this.boot.attrUnid));
 				}
 
 				try{
@@ -205,15 +205,15 @@ $(function(){
 		var callbackPostClose = function(argElement){
 		}
 		var parmSlidetabAll = {
-			selectorItems: ".portfolioitem",
-			selectorTab: ".tab",
-			widthTabMin: "18px",
-			selectorContent: ".imagelist",
+			selectorItems: '.portfolioitem',
+			selectorTab: '.tab',
+			widthTabMin: '18px',
+			selectorContent: '.imagelist',
 			callbackPreOpen: callbackPreOpen,
 			callbackPreClose: callbackPreClose,
 			callbackPostOpen: callbackPostOpen,
 			callbackPostClose: callbackPostClose,
-			boot: {cookie: "selectedportfolios", elmsPortfolios: elmsPortfolios, attrUnid: "data-unid"}
+			boot: {cookie: 'selectedportfolios', elmsPortfolios: elmsPortfolios, attrUnid: 'data-unid'}
 		}
 		__.slidetabs = new Array();
 		for(var i = 0; i < elmsPortfolios.length; ++i){
@@ -240,7 +240,7 @@ __.classes.slidetab = function(arguments){
 		this.selectorTab = arguments.selectorTab || null;
 		this.selectorContentWrap = arguments.selectorContentWrap || null;
 		this.selectorContent = arguments.selectorContent || null;
-		this.classCurrent = arguments.classCurrent || "current";
+		this.classCurrent = arguments.classCurrent || 'current';
 		this.cookie = arguments.cookie || false;
 		this.duration = arguments.duration || 1500;
 		this.callbackPreOpen = arguments.callbackPreOpen || null;
@@ -256,14 +256,14 @@ __.classes.slidetab = function(arguments){
 		this.inProgress = false;
 
 		/*--show first if not shown */
-		var elmCurrent = this.elmsItems.filter("."+this.classCurrent);
+		var elmCurrent = this.elmsItems.filter('.'+this.classCurrent);
 		if(elmCurrent.length < 1){
 			this.elmsItems.first().addClass(this.classCurrent);
 		}
 
 		/*--construct */
 		//--attach listeners to tabs
-		this.elmsItems.find(this.selectorTab).on("click focus", function(event){
+		this.elmsItems.find(this.selectorTab).on('click focus', function(event){
 			event.preventDefault();
 
 			fncThis.switchTo(jQuery(this).closest(fncThis.selectorItems));
@@ -277,7 +277,7 @@ __.classes.slidetab = function(arguments){
 //-> return
 		var fncThis = this;
 		this.inProgress = true;
-		var elmCurrent = this.elmsItems.filter("."+this.classCurrent);
+		var elmCurrent = this.elmsItems.filter('.'+this.classCurrent);
 		var elmNext = argElement;
 
 		this.close(elmCurrent, function(){fncThis.open(elmNext);});

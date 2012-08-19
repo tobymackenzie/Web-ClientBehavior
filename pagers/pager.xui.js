@@ -8,25 +8,25 @@ xui
 -----parameters
 
 -----instantiation
-	__.elmsBanners = xui(".bannerlist .banner");
+	__.elmsBanners = xui('.bannerlist .banner');
 	if(__.elmsBanners.length > 0){
 		__.pager = new __.classes.Pager({
 			elmsPages: __.elmsBanners
 			,oninit: function(){
-				this.elmsPages.setStyle("display", "none");
-				this.elmPageCurrent.setStyle("display", "block");
+				this.elmsPages.setStyle('display', 'none');
+				this.elmPageCurrent.setStyle('display', 'block');
 			}
 			,onswitch: function(args){
 				var lclThis = this;
 				var lclArgs = args;
-				args.elmPageNext.setStyle("left", __.cfg.widthPage+"px")
-					.setStyle("display", "block")
-					.setStyle("z-index", "1")
+				args.elmPageNext.setStyle('left', __.cfg.widthPage+'px')
+					.setStyle('display', 'block')
+					.setStyle('z-index', '1')
 					.tween({left: 0, duration: __.cfg.durationPager})
 				;
-				this.elmPageCurrent.tween({left: "-"+__.cfg.widthPage+"px", duration: __.cfg.durationPager}
+				this.elmPageCurrent.tween({left: '-'+__.cfg.widthPage+'px', duration: __.cfg.durationPager}
 					,function(){
-						lclThis.elmPageCurrent.setStyle("z-index", 0);
+						lclThis.elmPageCurrent.setStyle('z-index', 0);
 						lclThis.elmPageCurrent = args.elmPageNext;
 						lclThis.setClasses();
 					}
@@ -49,13 +49,13 @@ __.classes.Pager = function(args){
 		//--required attributes
 //->return
 		//--optional attributes
-		this.attrId = args.attrId || "id";
+		this.attrId = args.attrId || 'id';
 		this.boot = args.boot || {};
 		this.callbackGetNavigationForID = args.callbackGetNavigationForID || this.defaultCallbackGetNavigationForID;
 		this.callbackGetPageForID = args.callbackGetPageForID || this.defaultCallbackGetPageForID;
-		this.classCurrentNavigation = args.classCurrentNavigation || "current";
-		this.classCurrentPage = args.classCurrentPage || "current";
-		this.doCarousel = (typeof args.doCarousel != "undefined")? args.doCarousel: true;
+		this.classCurrentNavigation = args.classCurrentNavigation || 'current';
+		this.classCurrentPage = args.classCurrentPage || 'current';
+		this.doCarousel = (typeof args.doCarousel != 'undefined')? args.doCarousel: true;
 		this.elmsNavigation = args.elmsNavigation || null;
 		this.elmsPages = args.elmsPages || null;
 		this.idInitial = args.idInitial || null;
@@ -76,7 +76,7 @@ __.classes.Pager = function(args){
 		if(!this.elmNavigationCurrent && this.elmsNavigation)
 			this.elmNavigationCurrent = this.callbackGetNavigationForID(this.elmPageCurrent.id);
 		this.setClasses();
-			
+
 		//--do something
 		if(this.oninit)
 			this.oninit.call(this);
@@ -125,7 +125,7 @@ __.classes.Pager = function(args){
 	__.classes.Pager.prototype.switchToNext = function(){
 		var localvars = {};
 		localvars.elmPageNext = this.elmPageCurrent.next();
-		if(typeof localvars.elmPageNext.length == "undefined" && this.doCarousel){
+		if(typeof localvars.elmPageNext.length == 'undefined' && this.doCarousel){
 			localvars.elmPageNext = this.elmsPages.first();
 		}
 		if(!!localvars.elmPageNext && localvars.elmPageNext.length){
@@ -139,17 +139,17 @@ __.classes.Pager = function(args){
 	__.classes.Pager.prototype.defaultCallbackGetNavigationForID = function(argId){
 		if(this.elmsNavigation){
 			var fncThis = this;
-			var fncReturn = xui(this.elmsNavigation.has("[href='#"+__.lib.escapeHash(argId)+"']"));
+			var fncReturn = xui(this.elmsNavigation.has('[href="#'+__.lib.escapeHash(argId)+'"]'));
 			return (fncReturn.length > 0)? fncReturn: false;
 		}
 		return false;
 	}
 	__.classes.Pager.prototype.defaultCallbackGetPageForID = function(argId){
 		if(this.elmsPages){
-			if(this.attrId == "id"){
-				return xui("#"+argId);
+			if(this.attrId == 'id'){
+				return xui('#'+argId);
 			}else{
-				var fncReturn = this.elmsPages.has("["+this.attrId+"='"+argId+"']");
+				var fncReturn = this.elmsPages.has('['+this.attrId+'='"+argId+'"]');
 				return (fncReturn.length > 0)? fncReturn: false;
 			}
 		}

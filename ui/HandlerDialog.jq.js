@@ -16,14 +16,14 @@ jqueryui: dialog
 @HandlerDialog
 ----------*/
 __.classes.HandlerDialog = function(args){
-		if(typeof args == "undefined") var args = {};
+		if(typeof args == 'undefined') var args = {};
 		var fncThis = this;
 		//--required attributes
 //->return
 		//--optional attributes
 		this.ajaxData = jQuery.extend({ajaxcall: 1}, (args.ajaxData || null));
 		this.boot = args.boot || {};
-		this.classLoading = args.classLoading || "loading";
+		this.classLoading = args.classLoading || 'loading';
 		this.clbHandleFormSuccess = args.clbHandleFormSuccess || this.defaultHandleFormSuccess;
 		this.clbHandleFormSuccessHTML = args.clbHandleFormSuccessHTML || null;
 		this.clbHandleFormSuccessJSON = args.clbHandleFormSuccessJSON || null;
@@ -38,19 +38,19 @@ __.classes.HandlerDialog = function(args){
 			}
 		};
 		this.dialogArguments = jQuery.extend(this.dialogArguments, (args.dialogArguments || {}));
-		this.doManageWidth = (typeof args.doManageWidth != "undefined")? args.doManageWidth: true;
-		this.doManageHeight = (typeof args.doManageHeight != "undefined")? args.doManageHeight: true;
-		this.htmlLoading = args.htmlLoading || "";
+		this.doManageWidth = (typeof args.doManageWidth != 'undefined')? args.doManageWidth: true;
+		this.doManageHeight = (typeof args.doManageHeight != 'undefined')? args.doManageHeight: true;
+		this.htmlLoading = args.htmlLoading || '';
 		this.onhandleformsuccess = args.onhandleformsuccess || null;
 		this.oninit = args.oninit || null;
 		this.onshow = args.onshow || null;
 		this.onsuccess = args.onsuccess || null;
 		this.widthModifierContent = args.widthModifierContent || 0;
-		this.widthScrollbar = (typeof args.widthScrollbar != "undefined")? args.widthScrollbar: __.lib.getWidthScrollbar();
-		this.heightMax = args.heightMax || "viewport";
+		this.widthScrollbar = (typeof args.widthScrollbar != 'undefined')? args.widthScrollbar: __.lib.getWidthScrollbar();
+		this.heightMax = args.heightMax || 'viewport';
 		this.heightModifierContent = args.heightModifierContent || 0;
-		this.heightModifierContainer = (typeof args.heightModifierContainer != "undefined")? args.heightModifierContainer: -40;
-		this.selectorAjaxForm = args.selectorAjaxForm || "";
+		this.heightModifierContainer = (typeof args.heightModifierContainer != 'undefined')? args.heightModifierContainer: -40;
+		this.selectorAjaxForm = args.selectorAjaxForm || '';
 		this.url = args.url || null;
 
 		//--derived attributes
@@ -60,15 +60,15 @@ __.classes.HandlerDialog = function(args){
 		this.request = null;
 
 		//--prevent scrolling of document
-		if(this.doManageHeight && this.heightMax == "viewport"){
-			this.elmHTML = $("html");
-			this.valueHTMLOverflow = this.elmHTML.css("overflow");
+		if(this.doManageHeight && this.heightMax == 'viewport'){
+			this.elmHTML = $('html');
+			this.valueHTMLOverflow = this.elmHTML.css('overflow');
 			this.initDialog();
-			this.elmDialog.on("dialogopen", function(argEvent, argUI){
-				fncThis.elmHTML.css("overflow", "hidden");
+			this.elmDialog.on('dialogopen', function(argEvent, argUI){
+				fncThis.elmHTML.css('overflow', 'hidden');
 			});
-			this.elmDialog.on("dialogclose", function(argEvent, argUI){
-				fncThis.elmHTML.css("overflow", fncThis.valueHTMLOverflow);
+			this.elmDialog.on('dialogclose', function(argEvent, argUI){
+				fncThis.elmHTML.css('overflow', fncThis.valueHTMLOverflow);
 			});
 		}
 
@@ -77,7 +77,7 @@ __.classes.HandlerDialog = function(args){
 	}
 	__.classes.HandlerDialog.prototype.bindAjaxForm = function(argElmsForm){
 		var lclThis = this;
-		if(typeof argElmsForm == "undefined")
+		if(typeof argElmsForm == 'undefined')
 			argElmsForm = this.elmDialog.find(this.selectorAjaxForm);
 		argElmsForm.each(function(){
 			lclThis.arrAjaxForms.push(new __.classes.AjaxForm({
@@ -89,8 +89,8 @@ __.classes.HandlerDialog = function(args){
 		});
 	}
 	__.classes.HandlerDialog.prototype.defaultHandleFormSuccess = function(argData, argStatus, argXHR){
-		var lclContentType = argXHR.getResponseHeader("content-type");
-		if(lclContentType.indexOf("text/html") > -1){
+		var lclContentType = argXHR.getResponseHeader('content-type');
+		if(lclContentType.indexOf('text/html') > -1){
 			if(this.clbHandleFormSuccessHTML)
 				this.clbHandleFormSuccessHTML.call(this, argData);
 			else{
@@ -100,7 +100,7 @@ __.classes.HandlerDialog = function(args){
 			if(this.clbHandleFormSuccessJSON){
 				this.clbHandleFormSuccessJSON.call(this, argData);
 			}else{
-				this.dialog("close");
+				this.dialog('close');
 			}
 		}
 		if(this.onhandleformsuccess)
@@ -108,9 +108,9 @@ __.classes.HandlerDialog = function(args){
 	}
 	__.classes.HandlerDialog.prototype.initDialog = function(){
 		if(!this.elmDialog){
-			this.elmDialog = jQuery("<div>");
+			this.elmDialog = jQuery('<div>');
 			if(this.doManageHeight)
-				this.elmDialog.css({overflow: "auto"});
+				this.elmDialog.css({overflow: 'auto'});
 			this.elmDialog.dialog(this.dialogArguments);
 		}
 	}
@@ -121,8 +121,8 @@ __.classes.HandlerDialog = function(args){
 		if(this.doManageWidth || this.doManageHeight){
 			this.clbManageWidthHeight.call(this, elmNewHTML);
 		}
-		this.dialog("option", "closeText", this.dialogArguments.closeText);
-		this.dialog("open");
+		this.dialog('option', 'closeText', this.dialogArguments.closeText);
+		this.dialog('open');
 		if(this.selectorAjaxForm)
 			this.bindAjaxForm();
 		if(this.onshow)
@@ -131,22 +131,22 @@ __.classes.HandlerDialog = function(args){
 	__.classes.HandlerDialog.prototype.showForAjax = function(args){
 		var fncThis = this;
 		this.initDialog();
-		if(typeof args.url == "undefined")
+		if(typeof args.url == 'undefined')
 			args.url = this.url;
 		args.data = jQuery.extend({}, this.ajaxData, (args.data || null));
-		if(typeof args.success == "undefined")
+		if(typeof args.success == 'undefined')
 			args.success = function(data){ fncThis.callbackAjaxSuccess(data, this) };
 
 		if(this.doManageWidth)
-			this.dialog("option", "width", "auto");
+			this.dialog('option', 'width', 'auto');
 		if(this.doManageHeight){
-			this.dialog("option", "height", "auto");
+			this.dialog('option', 'height', 'auto');
 			this.isLimitingHeight = false;
 		}
 
-		this.dialog("option", "closeText", this.dialogArguments.closeText);
+		this.dialog('option', 'closeText', this.dialogArguments.closeText);
 		this.displayLoading();
-		this.elmDialog.dialog("open");
+		this.elmDialog.dialog('open');
 
 		this.request = jQuery.ajax(args);
 	}
@@ -155,7 +155,7 @@ __.classes.HandlerDialog = function(args){
 			argData = this.onsuccess.call(this, argData) || argData;
 		this.showWithContent(argData);
 		this.elmDialog.removeClass(this.classLoading);
-		this.dialog("option", "position", this.dialog("option", "position"));
+		this.dialog('option', 'position', this.dialog('option', 'position'));
 		this.request = null;
 	}
 	__.classes.HandlerDialog.prototype.dialog = function(){
@@ -164,9 +164,9 @@ __.classes.HandlerDialog = function(args){
 	__.classes.HandlerDialog.prototype.defaultManageWidthHeight = function(argElmNewHTML){
 		var lcl = {};
 		lcl.elmNewHTMLClone = jQuery('<div class="ui-dialog">').html(argElmNewHTML.clone());
-		lcl.elmNewHTMLClone.addClass("ui-dialog-content "+this.dialogArguments.dialogClass);
-		lcl.elmNewHTMLClone.css({position: "absolute", left: "-9000px", top: "-9000px", display: "table"});
-		jQuery("body").append(lcl.elmNewHTMLClone);
+		lcl.elmNewHTMLClone.addClass('ui-dialog-content '+this.dialogArguments.dialogClass);
+		lcl.elmNewHTMLClone.css({position: 'absolute', left: '-9000px', top: '-9000px', display: 'table'});
+		jQuery('body').append(lcl.elmNewHTMLClone);
 		lcl.widthNewHTML = lcl.elmNewHTMLClone.width();
 		lcl.widthNewHTML += this.widthModifierContent;
 		lcl.heightNewHTML = lcl.elmNewHTMLClone.height();
@@ -174,7 +174,7 @@ __.classes.HandlerDialog = function(args){
 		lcl.elmNewHTMLClone.remove();
 
 		if(this.doManageHeight){
-			if(this.heightMax == "viewport"){
+			if(this.heightMax == 'viewport'){
 				lcl.heightMax = $(window).height() + this.heightModifierContainer;
 			}else if(isNumeric(this.heightMax)){
 				lcl.heightMax = this.heightMax;
@@ -183,17 +183,17 @@ __.classes.HandlerDialog = function(args){
 			}
 			if(lcl.heightMax && lcl.heightNewHTML > lcl.heightMax){
 				this.isLimitingHeight = true;
-				this.elmDialog.dialog("option", "height", lcl.heightMax);
+				this.elmDialog.dialog('option', 'height', lcl.heightMax);
 			}else{
 				this.isLimitingHeight = false;
-				this.dialog("option", "height", "auto");
+				this.dialog('option', 'height', 'auto');
 			}
 		}
 		if(this.doManageWidth){
 			if(this.isLimitingHeight){
 				lcl.widthNewHTML += this.widthScrollbar;
 			}
-			this.dialog("option", "width", lcl.widthNewHTML);
+			this.dialog('option', 'width', lcl.widthNewHTML);
 		}
 	}
 	__.classes.HandlerDialog.prototype.displayLoading = function(){

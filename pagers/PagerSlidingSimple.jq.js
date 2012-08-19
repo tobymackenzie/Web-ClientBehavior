@@ -98,11 +98,11 @@ __.classes.pagerSlidingSimple = function(args){
 			fncThis.inprogress = false;
 		};
 		switch(argDirection){
-			case "right":
+			case 'right':
 				elmCurrent.animate({'left': width+'px'}, fncThis.duration, callbackPostAnimationCurrent);
 				elmNewPage.show().css({'left': '-'+width+'px'}).animate({'left': 0}, fncThis.duration, callbackPostAnimationNew);
 			break;
-			case "left":
+			case 'left':
 				elmCurrent.animate({'left': '-'+width+'px'}, fncThis.duration, callbackPostAnimationCurrent);
 				elmNewPage.show().css({'left': width+'px'}).animate({'left': 0}, fncThis.duration, callbackPostAnimationNew);
 			break;

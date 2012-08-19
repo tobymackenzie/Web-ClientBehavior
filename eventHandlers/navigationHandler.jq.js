@@ -7,19 +7,19 @@ handles clicks on a selection of elements
 @param selectorElmForData (a): selector of children of elmsItems that hold necessary data if type is parent
 
 -----instantiation
-		var mainnavigationItems = $("#topnavigationlist .topitem, #logo");
+		var mainnavigationItems = $('#topnavigationlist .topitem, #logo');
 		if(mainnavigationItems.length > 0){
 			__.mainnavigationHandler = new __.classes.navigationHandler({
 				elmsItems: mainnavigationItems
 				,onpreswitch: function(args){
 					var fncThis = this;
 					var urlAjax = args.newItem.find(this.selectorElmForData).attr(this.attrData);
-					if(urlAjax.substring(0,1) == "#")
+					if(urlAjax.substring(0,1) == '#')
 						urlAjax = urlAjax.substring(1, urlAjax.length - 1);
 					var pagetype = args.newItem.attr(this.boot.attrType);
 					__.router.callRoute({path: urlAjax, arguments: {url: urlAjax}});
 				}
-				,boot: {attrType: "data-pagetype"}
+				,boot: {attrType: 'data-pagetype'}
 			});
 		}
 */
@@ -34,18 +34,18 @@ __.classes.navigationHandler = function(args){
 		if((!this.elmsItems || this.elmsItems.length < 1) && !args.selectorItem) return false;
 
 		//--optional attributes
-		this.attrData = args.attrData || "href";
+		this.attrData = args.attrData || 'href';
 		this.boot = args.boot || null;
-		this.classCurrent = args.classCurrent || "current";
-		this.doPreventDefault = (typeof args.doPreventDefault != "undefined")? args.doPreventDefault: true;
+		this.classCurrent = args.classCurrent || 'current';
+		this.doPreventDefault = (typeof args.doPreventDefault != 'undefined')? args.doPreventDefault: true;
 		this.elmItemsWrap = args.elmItemsWrap || jQuery('body');
 		this.onpreswitch = args.onpreswitch || null;
 		this.onpreswitchtest = args.onpreswitchtest || null;
 		this.onpostswitch = args.onpostswitch || null;
 		this.onswitch = args.onswitch || null;
-		this.selectorElmForEvent = args.selectorElmForEvent || "a";
-		this.selectorElmForData = args.selectorElmForData || "a";
-		this.selectorItem = args.selectorItem || "li";
+		this.selectorElmForEvent = args.selectorElmForEvent || 'a';
+		this.selectorElmForData = args.selectorElmForData || 'a';
+		this.selectorItem = args.selectorItem || 'li';
 
 		//--derived attributes
 		this.inprogress = false;
@@ -64,10 +64,10 @@ __.classes.navigationHandler = function(args){
 
 			//--determine old and new item
 			lcl.oldItem = (fncThis.elmsItems)
-				? fncThis.elmsItems.filter("."+fncThis.classCurrent)
-				: fncThis.elmItemsWrap.find(fncThis.selectorItem+"."+fncThis.classCurrent)
+				? fncThis.elmsItems.filter('.'+fncThis.classCurrent)
+				: fncThis.elmItemsWrap.find(fncThis.selectorItem+'.'+fncThis.classCurrent)
 			;
-			if(fncThis.selectorElmForEvent == "this"){
+			if(fncThis.selectorElmForEvent == 'this'){
 				lcl.newItem = lcl.elmThis;
 			}else{
 				lcl.newItem = lcl.elmThis.closest(fncThis.selectorItem);
@@ -76,7 +76,7 @@ __.classes.navigationHandler = function(args){
 			if(lcl.oldItem[0] == lcl.newItem[0]) return false;
 
 			//--get data
-			if(fncThis.selectorElmForData == "this"){
+			if(fncThis.selectorElmForData == 'this'){
 				lcl.dataOld = lcl.oldItem.attr(fncThis.attrData);
 				lcl.dataNew = lcl.newItem.attr(fncThis.attrData);
 			}else{
@@ -88,7 +88,7 @@ __.classes.navigationHandler = function(args){
 //->return
 			if(fncThis.onpreswitchtest && !fncThis.onpreswitchtest.call(fncThis, lcl)){
 				if(fncThis.doPreventDefault){
-					if(typeof argEvent.preventDefault != "undefined")
+					if(typeof argEvent.preventDefault != 'undefined')
 						argEvent.preventDefault();
 					return false;
 				}else{
@@ -97,7 +97,7 @@ __.classes.navigationHandler = function(args){
 			}
 			fncThis.inprogress = true;
 
-			if(fncThis.doPreventDefault && typeof argEvent.preventDefault != "undefined")
+			if(fncThis.doPreventDefault && typeof argEvent.preventDefault != 'undefined')
 				argEvent.preventDefault();
 
 			if(fncThis.onpreswitch)
@@ -128,13 +128,13 @@ __.classes.navigationHandler = function(args){
 			return (fncThis.doPreventDefault)? false: true;
 		};
 		if(fncThis.elmsItems){
-			var fncItems = (fncThis.selectorElmForEvent == "this")
+			var fncItems = (fncThis.selectorElmForEvent == 'this')
 				? fncThis.elmsItems
 				: fncThis.elmsItems.find(fncThis.selectorElmForEvent)
 			;
-			fncItems.on("click touch", fncCallback);
+			fncItems.on('click touch', fncCallback);
 		}else{
-			var fncSelector = (fncThis.selectorElmForEvent == "this")
+			var fncSelector = (fncThis.selectorElmForEvent == 'this')
 				? fncThis.selectorItem
 				: fncThis.selectorItem + ' ' + fncThis.selectorElmForEvent
 			;

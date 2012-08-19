@@ -4,7 +4,7 @@ basic pager with navigation and pages collection
 tmlib addClass, removeClass
 -----parameters
 -----instantiation
-__.pager = new __.classes.Pager({elmsPages: jQuery("#maincontent .tabpage"), elmsNavigation: jQuery("#maincontent .tab")});
+__.pager = new __.classes.Pager({elmsPages: jQuery('#maincontent .tabpage'), elmsNavigation: jQuery('#maincontent .tab')});
 -----html
 -----css
 */
@@ -16,13 +16,13 @@ __.classes.Pager = function(args){
 		//--required attributes
 //->return
 		//--optional attributes
-		this.attrId = args.attrId || "id";
+		this.attrId = args.attrId || 'id';
 		this.boot = args.boot || {};
 		this.callbackGetNavigationForID = args.callbackGetNavigationForID || this.defaultCallbackGetNavigationForID;
 		this.callbackGetPageForID = args.callbackGetPageForID || this.defaultCallbackGetPageForID;
-		this.classCurrentNavigation = args.classCurrentNavigation || "current";
-		this.classCurrentPage = args.classCurrentPage || "current";
-		this.doCarousel = (typeof args.doCarousel != "undefined")? args.doCarousel: true;
+		this.classCurrentNavigation = args.classCurrentNavigation || 'current';
+		this.classCurrentPage = args.classCurrentPage || 'current';
+		this.doCarousel = (typeof args.doCarousel != 'undefined')? args.doCarousel: true;
 		this.elmsNavigation = args.elmsNavigation || null;
 		this.elmsPages = args.elmsPages || null;
 		this.idInitial = args.idInitial || null;
@@ -43,7 +43,7 @@ __.classes.Pager = function(args){
 		if(!this.elmNavigationCurrent && this.elmsNavigation)
 			this.elmNavigationCurrent = this.callbackGetNavigationForID(this.elmPageCurrent.id);
 		this.setClasses();
-			
+
 		//--do something
 		if(this.oninit)
 			this.oninit.call(this);
@@ -105,17 +105,17 @@ __.classes.Pager = function(args){
 	__.classes.Pager.prototype.defaultCallbackGetNavigationForID = function(argId){
 		if(this.elmsNavigation){
 			var fncThis = this;
-			var fncReturn = jQuery(this.elmsNavigation.filter("[href='#"+__.lib.escapeHash(argId)+"']"));
+			var fncReturn = jQuery(this.elmsNavigation.filter('[href="#'+__.lib.escapeHash(argId)+'"]'));
 			return (fncReturn.length > 0)? fncReturn: false;
 		}
 		return false;
 	}
 	__.classes.Pager.prototype.defaultCallbackGetPageForID = function(argId){
 		if(this.elmsPages){
-			if(this.attrId == "id"){
+			if(this.attrId == 'id'){
 				return document.getElementById(argId);
 			}else{
-				var fncReturn = this.elmsPages.filter("["+this.attrId+"='"+argId+"']");
+				var fncReturn = this.elmsPages.filter('['+this.attrId+'='"+argId+'"]');
 				return (fncReturn.length > 0)? fncReturn: false;
 			}
 		}

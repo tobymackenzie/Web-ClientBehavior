@@ -6,17 +6,17 @@ slides open and closed specified element(s)
 ---init
 */
 $(document).ready(function(){
-	__.wishlistSlideOpen = new __.classes.slideOpen({element: elmMoreList, strToggler: "", strTogglerClosed: elmMoreList.attr("data-count")+" more&hellip;", strTogglerOpened: "Hide additional items"
+	__.wishlistSlideOpen = new __.classes.slideOpen({element: elmMoreList, strToggler: '', strTogglerClosed: elmMoreList.attr('data-count')+' more&hellip;', strTogglerOpened: 'Hide additional items'
 		,callbackPlaceToggler: function(argElement){
-			this.element.closest(".wishlist").children(".wishlistitems.primary").after(argElement);
+			this.element.closest('.wishlist').children('.wishlistitems.primary').after(argElement);
 		}
 		,callbackInit: function(){
 			var fncThis = this;
 			var elmCloserWrap = $('<div class="closerwrap">');
 			var elmCloser = $('<a class="closer" href="javascript:/*hideAdditionalInformation()*/;">hide</a>');
-			elmCloserWrap.append("(").append(elmCloser).append(")");
-			this.element.find("h3.header").after(elmCloserWrap);
-			elmCloser.on("click touchstart", function(){
+			elmCloserWrap.append('(').append(elmCloser).append(')');
+			this.element.find('h3.header').after(elmCloserWrap);
+			elmCloser.on('click touchstart', function(){
 				fncThis.close();
 			});
 		}
@@ -32,11 +32,11 @@ depends on: jquery, tmlib
 ------------*/
 __.classes.slideOpen = function(args){
 		this.element = args.element || null; if(!this.element) return false;
-		this.strToggler = (args.strToggler !== undefined)? args.strToggler: "more";
-		this.strTogglerClosed = (args.strTogglerClosed !== undefined)? args.strTogglerClosed: "View ";
-		this.strTogglerOpened = (args.strTogglerOpened !== undefined)? args.strTogglerOpened: "Hide ";
-		this.classOpen = args.classOpen || "open";
-		this.classClosed = args.classClosed || "closed";
+		this.strToggler = (args.strToggler !== undefined)? args.strToggler: 'more';
+		this.strTogglerClosed = (args.strTogglerClosed !== undefined)? args.strTogglerClosed: 'View ';
+		this.strTogglerOpened = (args.strTogglerOpened !== undefined)? args.strTogglerOpened: 'Hide ';
+		this.classOpen = args.classOpen || 'open';
+		this.classClosed = args.classClosed || 'closed';
 		this.callbackInit = args.callbackInit || false;
 		this.callbackPlaceToggler = args.callbackPlaceToggler || null;
 		this.callbackOpen = args.callbackOpen || null;
@@ -44,14 +44,14 @@ __.classes.slideOpen = function(args){
 		this.duration = args.duration || 500;
 
 		var fncThis = this;
-		this.element.css("display", "none").addClass(this.classClosed).removeClass(this.classOpen);
+		this.element.css('display', 'none').addClass(this.classClosed).removeClass(this.classOpen);
 		// init toggle clickable
-		this.elmToggler = jQuery('<div class="toggler"><a href="javascript:\'toggleContentDisplay()\';">'+this.strTogglerClosed+this.strToggler+'</a></div>');
+		this.elmToggler = jQuery('<div class="toggler"><a href="javascript:/* toggle content display */;">'+this.strTogglerClosed+this.strToggler+'</a></div>');
 		if(this.callbackPlaceToggler)
 			this.callbackPlaceToggler.call(this, this.elmToggler);
 		else
 			this.element.after(this.elmToggler);
-		this.elmTogglerAnchor = this.elmToggler.find("a");
+		this.elmTogglerAnchor = this.elmToggler.find('a');
 		this.elmTogglerAnchor.click(function(){
 			fncThis.toggle();
 		});

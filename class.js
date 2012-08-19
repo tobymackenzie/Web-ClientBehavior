@@ -21,10 +21,10 @@ __.class.define = function(args, argName){
 			__.lib.each(this.__.def.attributes, function(argValue, argKey){
 				var lopOptions = __.lib.merge(
 					this.defaultAttributeOptions
-					,(typeof argValue == "object" && argValue.hasOwnProperty("default"))? argValue: {default: argValue}
+					,(typeof argValue == 'object' && argValue.hasOwnProperty('default'))? argValue: {default: argValue}
 				);
 				//- if passed in argument map, use that value
-				if(typeof lclArguments[0][argKey] != "undefined"){
+				if(typeof lclArguments[0][argKey] != 'undefined'){
 					var lclValue = lclArguments[0][argKey];
 				//- if function, run function for default value
 				}else if(__.lib.isFunction(lopOptions.default)){
@@ -48,18 +48,18 @@ __.class.define = function(args, argName){
 				return false;
 			}
 			//-- apply init if defined
-			if(typeof this.__.def.init != "undefined"){
+			if(typeof this.__.def.init != 'undefined'){
 				this.__.def.init.apply(this, arguments);
 			}
 		}
 	};
 	//-- set parent if one exists
 	switch(typeof args.parent){
-		case "string":
+		case 'string':
 			var lclParent = __.objects[args.parent];
 		break;
-		case "object":
-		case "function":
+		case 'object':
+		case 'function':
 			var lclParent = args.parent;
 		break;
 		default:
@@ -77,16 +77,16 @@ __.class.define = function(args, argName){
 	//- extend parent def, important parts only
 	if(lclParent){
 		var lclDef = lclClass.prototype.__.def;
-		if(typeof lclParent.prototype.__.def.attributes != "undefined" || typeof lclDef.attributes != "undefined"){
+		if(typeof lclParent.prototype.__.def.attributes != 'undefined' || typeof lclDef.attributes != 'undefined'){
 			lclDef.attributes = __.lib.merge(
-				(typeof lclParent.prototype.__.def.attributes != "undefined")? lclParent.prototype.__.def.attributes: {}
-				,(typeof lclDef.attributes != "undefined")? lclDef.attributes: {}
+				(typeof lclParent.prototype.__.def.attributes != 'undefined')? lclParent.prototype.__.def.attributes: {}
+				,(typeof lclDef.attributes != 'undefined')? lclDef.attributes: {}
 			);
 		}
-		if(typeof lclParent.prototype.__.def.methods != "undefined" || typeof lclDef.methods != "undefined"){
+		if(typeof lclParent.prototype.__.def.methods != 'undefined' || typeof lclDef.methods != 'undefined'){
 			lclDef.methods = __.lib.merge(
-				(typeof lclParent.prototype.__.def.methods != "undefined")? lclParent.prototype.__.def.methods: {}
-				,(typeof lclDef.methods != "undefined")? lclDef.methods: {}
+				(typeof lclParent.prototype.__.def.methods != 'undefined')? lclParent.prototype.__.def.methods: {}
+				,(typeof lclDef.methods != 'undefined')? lclDef.methods: {}
 			);
 		}
 	}
@@ -103,13 +103,13 @@ __.class.define = function(args, argName){
 		lclClass.prototype[argKey] = __.class.newMethod(argKey, argValue);
 	});
 	//-- place in objects bucket if name set
-	if(typeof argName != "undefined")
+	if(typeof argName != 'undefined')
 		__.objects[className] = lclClass;
 	return lclClass;
 }
 __.class.defaultAttributeOptions = {
-	"default": null
-	,"required": false
+	'default': null
+	,'required': false
 }
 //-- create a class attribute
 __.class.newAttribute = function(argName, args){

@@ -1,7 +1,7 @@
 /*------
 external access
 
-__.pager = new __.classes.hashPagerStatic({elmsPages: $(".pagecontentpieces .pagecontentpiece"), elmsNavigation: $(".pageswitcher li")});
+__.pager = new __.classes.hashPagerStatic({elmsPages: $('.pagecontentpieces .pagecontentpiece'), elmsNavigation: $('.pageswitcher li')});
 
 ------------*/
 
@@ -14,9 +14,9 @@ __.classes.hashPagerStatic = function(args){
 		this.elmsPages = args.elmsPages || false; if(!this.elmsPages || this.elmsPages.length < 1) return false;
 		this.elmsNavigation = args.elmsNavigation || false;
 			if(!this.elmsNavigation) return false;
-			this.elmsNavigation = this.elmsNavigation.has("a[href^='#']");
-		this.classCurrentNavigation = args.classCurrentNavigation || "current";
-		this.classCurrentPage = args.classCurrentPage || "current";
+			this.elmsNavigation = this.elmsNavigation.has('a[href^='#']');
+		this.classCurrentNavigation = args.classCurrentNavigation || 'current';
+		this.classCurrentPage = args.classCurrentPage || 'current';
 		this.duration = (args.duration !== undefined) ? args.duration : 500;
 		this.onpreswitch = args.onpreswitch || false;
 		this.onpostswitch = args.onpostswitch || false;
@@ -27,13 +27,13 @@ __.classes.hashPagerStatic = function(args){
 		this.elmsPages.hide();
 		if(window.location.hash){
 			this.idCurrent = window.location.hash;
-			this.elmsNavigation.has("a[href="+window.location.hash+"]").addClass(this.classCurrentNavigation);
+			this.elmsNavigation.has('a[href="'+window.location.hash+'"]').addClass(this.classCurrentNavigation);
 		}else{
-			var elmCurrentNavigation = this.elmsNavigation.filter("."+this.classCurrentNavigation);
+			var elmCurrentNavigation = this.elmsNavigation.filter('.'+this.classCurrentNavigation);
 			if(elmCurrentNavigation.length > 0){
-				this.idCurrent = elmCurrentNavigation.find("a").attr("href");
+				this.idCurrent = elmCurrentNavigation.find('a').attr('href');
 			}else{
-				this.idCurrent = this.elmsNavigation.first().addClass(this.classCurrentNavigation).find("a").attr("href");
+				this.idCurrent = this.elmsNavigation.first().addClass(this.classCurrentNavigation).find('a').attr('href');
 			}
 		}
 		this.elmsPages.filter(__.lib.escapeHash(this.idCurrent)).show().addClass(this.classCurrentPage);
@@ -45,10 +45,10 @@ __.classes.hashPagerStatic = function(args){
 	}
 	__.classes.hashPagerStatic.prototype.attachListeners = function(argElements){
 		var fncThis = this;
-		argElements.on("click", function(event){
+		argElements.on('click', function(event){
 			if(event.preventDefault)
 				event.preventDefault();
-			fncThis.switche(jQuery(this).find("a").attr("href"));
+			fncThis.switche(jQuery(this).find('a').attr('href'));
 
 			return false;
 		});
@@ -60,10 +60,10 @@ __.classes.hashPagerStatic = function(args){
 			var fncThis = this;
 			var localvars = {};
 			localvars.idNext = argID;
-			localvars.elmNextNavigation = this.elmsNavigation.has("a[href='"+argID+"']");
+			localvars.elmNextNavigation = this.elmsNavigation.has('a[href="'+argID+'"]');
 			localvars.elmNextPage = this.elmsPages.filter(__.lib.escapeHash(argID));
-			localvars.elmCurrentNavigation = this.elmsNavigation.filter("."+this.classCurrentNavigation);
-			localvars.elmCurrentPage = this.elmsPages.filter("."+this.classCurrentPage);
+			localvars.elmCurrentNavigation = this.elmsNavigation.filter('.'+this.classCurrentNavigation);
+			localvars.elmCurrentPage = this.elmsPages.filter('.'+this.classCurrentPage);
 
 			fncThis.inProgress = true;
 

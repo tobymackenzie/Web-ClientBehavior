@@ -4,7 +4,7 @@ requires: tmlib base, tmlib.addlistener, tmlib getRealWindowWidth
 
 // instantiation sample
 __.scrOnload = function(){
-	var elmSidebar = document.getElementById("sidebar");
+	var elmSidebar = document.getElementById('sidebar');
 	if(elmSidebar){
 		__.sidebarWidthHandler = new __.classes.maxWidthWindow({element: elmSidebar, handleWidth: true, subtractWidth: 840, pageWidth: 960, minWidth: 120});
 	}
@@ -27,11 +27,11 @@ __.classes.maxWidthWindow = function(args){
 		this.pageWidth = args.pageWidth || null;
 		this.bodyMarginWidth = args.bodyMarginWidth || 0;
 		this.bodyMarginHeight = args.bodyMarginHeight || 0;
-		
-		
-		var fncThis = this;	
+
+
+		var fncThis = this;
 		this.update();
-		__.lib.addListeners(window, "resize", function(){ fncThis.update() });
+		__.lib.addListeners(window, 'resize', function(){ fncThis.update() });
 	}
 	__.classes.maxWidthWindow.prototype.update = function(){
 		var fncThis = this;
@@ -52,7 +52,7 @@ __.classes.maxWidthWindow = function(args){
 				newWidth = fncThis.minWidth;
 			if(fncThis.maxWidth && newWidth > fncThis.maxWidth)
 				newWidth = fncThis.maxWidth;
-			fncThis.element.style.width = newWidth+"px";
+			fncThis.element.style.width = newWidth+'px';
 		}
 		if(fncThis.handleHeight){
 			var windowHeight = window.innerHeight || document.documentElement.clientHeight;
@@ -62,7 +62,7 @@ __.classes.maxWidthWindow = function(args){
 			var newHeight = newContainerHeight - fncThis.subtractHeight;
 			if(fncThis.maxHeight && newHeight > fncThis.maxHeight)
 				newHeight = fncThis.maxHeight;
-			fncThis.element.style.height = newHeight+"px";
+			fncThis.element.style.height = newHeight+'px';
 		}
 	}
 

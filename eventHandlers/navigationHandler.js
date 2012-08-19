@@ -5,10 +5,10 @@ handles clicks on a selection of elements
 
 -----instantiation
 __.scrOnload = function(){
-	var videoNavGrid = document.getElementById(__.cfg.idVideoNavGrid);		
+	var videoNavGrid = document.getElementById(__.cfg.idVideoNavGrid);
 	if(videoNavGrid){
 		__.mainnavigationHandler = new __.classes.navigationHandler({
-			elmsItems: videoNavGrid.getElementsByTagName("a")
+			elmsItems: videoNavGrid.getElementsByTagName('a')
 			,doPreventDefault: false
 			,oninit: function(){
 				this.boot.elmVideoPlayerYoutube.style.left = __.cfg.offscreen;
@@ -18,16 +18,16 @@ __.scrOnload = function(){
 				var fncThis = this;
 				var elmThis = args.elmThis;
 				var elmID = elmThis.getAttribute(fncThis.boot.attrID);
-				if(elmThis.getAttribute(fncThis.boot.attrType) == "youtube"){
+				if(elmThis.getAttribute(fncThis.boot.attrType) == 'youtube'){
 					fncThis.boot.elmVideoPlayerLocal.style.left = __.cfg.offscreen;
-					fncThis.boot.elmVideoPlayerYoutube.style.left = "0";
+					fncThis.boot.elmVideoPlayerYoutube.style.left = '0';
 				}else{
-					fncThis.boot.elmVideoPlayerLocal.style.left = "0";
+					fncThis.boot.elmVideoPlayerLocal.style.left = '0';
 					fncThis.boot.elmVideoPlayerYoutube.style.left = __.cfg.offscreen;
  				}
-				highlightVideo(__.cfg.idVideoNavGrid,'video'+elmID);			
+				highlightVideo(__.cfg.idVideoNavGrid,'video'+elmID);
 			}
-			,boot: {elmVideoBox: document.getElementById(__.cfg.idVideoBox), elmVideoPlayerLocal: document.getElementById(__.cfg.idVideoPlayerLocal), elmVideoPlayerYoutube: document.getElementById(__.cfg.idVideoPlayerYoutube), attrType: "data-type", attrID: "data-id"}
+			,boot: {elmVideoBox: document.getElementById(__.cfg.idVideoBox), elmVideoPlayerLocal: document.getElementById(__.cfg.idVideoPlayerLocal), elmVideoPlayerYoutube: document.getElementById(__.cfg.idVideoPlayerYoutube), attrType: 'data-type', attrID: 'data-id'}
 		});
 	}
 }
@@ -39,10 +39,10 @@ __.scrOnload = function(){
 __.classes.navigationHandler = function(args){
 		//--optional attributes
 		this.elmsItems = args.elmsItems || null;
-		this.attrData = args.attrData || "href";
+		this.attrData = args.attrData || 'href';
 		this.boot = args.boot || null;
-		this.classCurrent = args.classCurrent || "current";
-		this.doPreventDefault = (typeof args.doPreventDefault != "undefined")? args.doPreventDefault: true;
+		this.classCurrent = args.classCurrent || 'current';
+		this.doPreventDefault = (typeof args.doPreventDefault != 'undefined')? args.doPreventDefault: true;
 		this.oninit = args.oninit || null;
 		this.onpreswitch = args.onpreswitch || null;
 		this.onpreswitchtest = args.onpreswitchtest || null;
@@ -54,14 +54,14 @@ __.classes.navigationHandler = function(args){
 
 		//--attach events
 		this.attachEvents(this.elmsItems);
-		
+
 		//--init
 		if(this.oninit)
 			this.oninit.call(this);
 	}
 	__.classes.navigationHandler.prototype.attachEvents = function(args){
 		var fncThis = this;
-		
+
 		var fncCallback = function(event, arg2, arg3, arg4){
 //->return
 			if(fncThis.inprogress == true)
@@ -75,18 +75,18 @@ __.classes.navigationHandler = function(args){
 //->return
 			if(fncThis.onpreswitchtest && !fncThis.onpreswitchtest.call(fncThis, localVariables)){
 				if(fncThis.doPreventDefault){
-					if(typeof event.preventDefault != "undefined")
+					if(typeof event.preventDefault != 'undefined')
 						event.preventDefault();
 					return false;
 				}else{
 					return true;
 				}
 			}
-			fncThis.inprogress = true;	
-			
-			if(fncThis.doPreventDefault && typeof event.preventDefault != "undefined")
+			fncThis.inprogress = true;
+
+			if(fncThis.doPreventDefault && typeof event.preventDefault != 'undefined')
 				event.preventDefault();
-			
+
 			if(fncThis.onpreswitch)
 				fncThis.onpreswitch.call(fncThis, localVariables);
 
@@ -101,11 +101,11 @@ __.classes.navigationHandler = function(args){
 				fncThis.onpostswitch.call(fncThis, localVariables);
 
 			fncThis.inprogress = false;
-			
-			return (fncThis.doPreventDefault)? false: true;
-		}		
 
-		__.lib.addListeners(fncThis.elmsItems, "mouseup", fncCallback);
-		__.lib.addListeners(fncThis.elmsItems, "touch", fncCallback);
+			return (fncThis.doPreventDefault)? false: true;
+		}
+
+		__.lib.addListeners(fncThis.elmsItems, 'mouseup', fncCallback);
+		__.lib.addListeners(fncThis.elmsItems, 'touch', fncCallback);
 	}
 

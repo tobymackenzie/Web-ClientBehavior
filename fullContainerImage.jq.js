@@ -61,8 +61,8 @@ __.classes.fullContainerImage = function(args){
 		//--optional attributes
 		this.boot = args.boot || null;
 		this.elmContainer = args.elmContainer || jQuery(window);
-		this.classFitWidth = args.classFitWidth || "fitwidth";
-		this.classFitHeight = args.classFitHeight || "fitheight";
+		this.classFitWidth = args.classFitWidth || 'fitwidth';
+		this.classFitHeight = args.classFitHeight || 'fitheight';
 		this.doCenterHorizontally = args.doCenterHorizontally || false;
 		this.doCenterVertically = args.doCenterVertically || false;
 		this.oninit = args.oninit || null;
@@ -73,7 +73,7 @@ __.classes.fullContainerImage = function(args){
 		this.setImage(fncElmImage);
 
 		//--bind events
-		this.elmContainer.on("resize", function(){
+		this.elmContainer.on('resize', function(){
 			fncThis.setClass();
 		});
 
@@ -86,18 +86,18 @@ __.classes.fullContainerImage = function(args){
 				if(!this.elmImage.hasClass(this.classFitHeight)){
 					this.elmImage.removeClass(this.classFitWidth).addClass(this.classFitHeight);
 					if(this.doCenterVertically)
-						this.elmImage.css("top", 0);
+						this.elmImage.css('top', 0);
 				}
 				if(this.doCenterHorizontally)
-					this.elmImage.css("left", -((this.elmImage.width() - this.elmContainer.width()) / 2));
+					this.elmImage.css('left', -((this.elmImage.width() - this.elmContainer.width()) / 2));
 			}else{
 				if(!this.elmImage.hasClass(this.classFitWidth)){
 					this.elmImage.removeClass(this.classFitHeight).addClass(this.classFitWidth);
 					if(this.doCenterHorizontally)
-						this.elmImage.css("left", 0);
+						this.elmImage.css('left', 0);
 				}
 				if(this.doCenterVertically)
-					this.elmImage.css("top", -((this.elmImage.height() - this.elmContainer.height()) / 2));
+					this.elmImage.css('top', -((this.elmImage.height() - this.elmContainer.height()) / 2));
 			}
 		}
 	}
@@ -113,7 +113,7 @@ __.classes.fullContainerImage = function(args){
 			if(this.elmImage.width() > 0){
 				fncCallback.call(this);;
 			}else{
-				this.elmImage.on("load", function(){
+				this.elmImage.on('load', function(){
 					fncCallback.call(fncThis);
 				});
 			}

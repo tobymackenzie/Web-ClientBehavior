@@ -5,22 +5,22 @@ handles adding favorites list to cookies via dragondrop location
 if(typeof $ != 'undefined'){
 	$(function(){
 		// dragondrop
-		var elmDroppableContainer = $("#footer .favoriteslist");
+		var elmDroppableContainer = $('#footer .favoriteslist');
 		if(elmDroppableContainer.length > 0){
 			var callbackShrinkItems =
 			__.favorites = new __.classes.favorites({
 				elmDroppableContainer: elmDroppableContainer,
-				elmsDraggable: $("#maincontent .portfolioimage"),
-//				member: (typeof page.member != "undefined" && cogneatoMember.isLoggedIn)?cogneatoMember: false),
+				elmsDraggable: $('#maincontent .portfolioimage'),
+//				member: (typeof page.member != 'undefined' && cogneatoMember.isLoggedIn)?cogneatoMember: false),
 				callbackItemAdd: function(argElmsItem){
-					argElmsItem.find("img").css("height", "65px");
+					argElmsItem.find('img').css('height', '65px');
 				},
 				callbackDraggableStart: function(event, ui){
-__.message("start");
+__.message('start');
 					//-resize image and element to match favorites bar sizes
-					var elmImage = ui.helper.find("img");
-					elmImage.css({height: "65px"});
-					ui.helper.css({width: elmImage.outerWidth()+"px"});
+					var elmImage = ui.helper.find('img');
+					elmImage.css({height: '65px'});
+					ui.helper.css({width: elmImage.outerWidth()+'px'});
 				}
 			});
 		}
@@ -35,13 +35,13 @@ __.message("start");
 __.classes.favorites = function(args){
 		this.elmDroppableContainer = args.elmDroppableContainer || null;
 		this.elmsDraggable = args.elmsDraggable || null;
-		this.selectorAccepts = args.selectorAccepts || "li";
-		this.classAdded = args.classAdded || "ui-added";
-		this.nameCookie = (args.nameCookie)? args.nameCookie: "favorites";
+		this.selectorAccepts = args.selectorAccepts || 'li';
+		this.classAdded = args.classAdded || 'ui-added';
+		this.nameCookie = (args.nameCookie)? args.nameCookie: 'favorites';
 		this.htmlDeleteButton = (args.htmlDeleteButton)? args.htmlDeleteButton: '<a class="delete button" href="javascript:/*__remove_item_from_favorites*/"><span>delete</span></a>';
 		this.callbackItemAdd = args.callbackItemAdd || null;
 		this.callbackDraggableStart = args.callbackDraggableStart || null;
-		this.attrID = args.attrID || "data-unid";
+		this.attrID = args.attrID || 'data-unid';
 		this.member = args.member || false;
 
 		var fncThis = this;
@@ -53,9 +53,9 @@ __.classes.favorites = function(args){
 		this.elmDroppableContainer.droppable({accept: this.selectorAccepts, drop: this.addDroppableItem});
 */
 		this.initDraggableItems(this.elmsDraggable);
-/* 		jQuery(".imagelist").sortable({helper: "clone", connectWith: "#footer .favoriteslist"}); */
+/* 		jQuery('.imagelist').sortable({helper: 'clone', connectWith: '#footer .favoriteslist'}); */
 		this.elmDroppableContainer.sortable({
-//			containment: "parent",
+//			containment: 'parent',
 			forcePlaceholderSize: true,
 			receive: function(event, ui){
 // cannot be used currently due to bug
@@ -70,7 +70,7 @@ __.classes.favorites = function(args){
 			}
 			,stop: function(event, ui){
 				var elmNew = ui.item;
-// hack to work around "receive" bug
+// hack to work around 'receive' bug
 				if(!elmNew.hasClass(fncThis.classAdded)){
 					var idNew = elmNew.attr(fncThis.attrID);
 					var isIDAlreadyAdded = false;
@@ -83,23 +83,23 @@ __.classes.favorites = function(args){
 						jQuery(this).sortable('cancel');
 						elmNew.remove();
 					}else{
-						elmNew.css({position: "relative"});
+						elmNew.css({position: 'relative'});
 						fncThis.handleAddItem(elmNew);
 					}
 				}
 			}
 			,over: function(event, ui){
-				ui.sender.addClass("receiving");
+				ui.sender.addClass('receiving');
 			}
 			,out: function(event, ui){
-				ui.sender.removeClass("receiving");
+				ui.sender.removeClass('receiving');
 			}
 		});
 		this.handleAddItem(this.elmDroppableContainer.find(this.selectorAccepts));
 	}
 	__.classes.favorites.prototype.initDraggableItems = function(argElements){
 		var parmDraggable = {
-			appendTo: jQuery("body"),
+			appendTo: jQuery('body'),
 			helper: 'clone',
 			cursorAt: {left: 5, top: 5},
 			connectToSortable: this.elmDroppableContainer
@@ -110,10 +110,10 @@ __.classes.favorites = function(args){
 	}
 	__.classes.favorites.prototype.handleAddItem = function(argElmItem){
 		var fncThis = this;
-		var elmsItems = argElmItem.not("."+fncThis.classAdded);
+		var elmsItems = argElmItem.not('.'+fncThis.classAdded);
 		elmsItems.addClass(fncThis.classAdded);
 		elmsItems.append(function(){
-			return jQuery(fncThis.htmlDeleteButton).on("click", function(event){
+			return jQuery(fncThis.htmlDeleteButton).on('click', function(event){
 				if(event.preventDefault)
 					event.preventDefault();
 				//-ajax remove item from user db
@@ -135,9 +135,9 @@ __.classes.favorites = function(args){
 			arrUnids.push(jQuery(this).attr(fncThis.attrID));
 		});
 		if(fncThis.nameCookie){
-			__.lib.cookies.set({name: fncThis.nameCookie, value: arrUnids.join(","), expires: 180});
+			__.lib.cookies.set({name: fncThis.nameCookie, value: arrUnids.join(','), expires: 180});
 			if(fncThis.member)
-				__.message("saving to member database");
+				__.message('saving to member database');
 		}
 	}
 	__.classes.favorites.prototype.whatever = function(){

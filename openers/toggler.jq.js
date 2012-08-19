@@ -8,9 +8,9 @@ depends on:
 
 if(typeof $ !== 'undefined'){
 	$(document).ready(function(){
-		var toggleItems = $("#leftbar.products .box.further_selection");
+		var toggleItems = $('#leftbar.products .box.further_selection');
 		if(toggleItems.length > 0)
-			new __.classes.Toggler({"elmsItems":toggleItems, "selectorElmClick":"h3", closeoninit: true});
+			new __.classes.Toggler({'elmsItems':toggleItems, 'selectorElmClick':'h3', closeoninit: true});
 	});
 }
 
@@ -21,9 +21,9 @@ if(typeof $ !== 'undefined'){
 __.classes.Toggler = function(args){
 		this.boot = args.boot || {};
 		this.elmsItems = args.elmsItems || null;
-		this.classOpen = args.classOpen || "open";
-		this.classClosed = args.classClosed || "closed";
-		this.event = args.event || "click";
+		this.classOpen = args.classOpen || 'open';
+		this.classClosed = args.classClosed || 'closed';
+		this.event = args.event || 'click';
 		this.closeoninit = args.closeoninit || false;
 		this.onopen = args.onopen || null;
 		this.onclose = args.onclose || null;
@@ -32,11 +32,11 @@ __.classes.Toggler = function(args){
 		this.selectorElmClick = args.selectorElmClick || null;
 
 		if(this.closeoninit)
-			this.elmsItems.not("."+this.classClosed).not("."+this.classOpen).addClass(this.classClosed);
-//			this.close(this.elmsItems.not("."+this.classClosed).not("."+this.classOpen));
+			this.elmsItems.not('.'+this.classClosed).not('.'+this.classOpen).addClass(this.classClosed);
+//			this.close(this.elmsItems.not('.'+this.classClosed).not('.'+this.classOpen));
 		else
-			this.elmsItems.not("."+this.classClosed).not("."+this.classOpen).addClass(this.classOpen);
-//			this.open(this.elmsItems.not("."+this.classClosed).not("."+this.classOpen));
+			this.elmsItems.not('.'+this.classClosed).not('.'+this.classOpen).addClass(this.classOpen);
+//			this.open(this.elmsItems.not('.'+this.classClosed).not('.'+this.classOpen));
 
 		this.attachListeners(this.elmsItems);
 
@@ -46,7 +46,7 @@ __.classes.Toggler = function(args){
 		var fncThis = this;
 		argElements.each(function(){
 			var elmParent = jQuery(this);
-			elmParent.find(fncThis.selectorElmClick).css("cursor", "pointer").on(fncThis.event, function(event){
+			elmParent.find(fncThis.selectorElmClick).css('cursor', 'pointer').on(fncThis.event, function(event){
 				fncThis.toggle(elmParent);
 				if(event.preventDefault)
 					event.preventDefault();

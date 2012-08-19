@@ -3,41 +3,41 @@ __.classes.simplePager = function(args){
 		this.elmsPages = args.elmsPages || null; if(!this.elmsPages) return false;
 		this.elmPagerControlSingle = args.elmPagerControlSingle || null;
 		this.elmPagerControlsIndexed = args.elmPagerControlsIndexed || null;
-		this.labelPrefix = args.labelPrefix || "";
+		this.labelPrefix = args.labelPrefix || '';
 		this.onchange = args.onchange || null;
-		
+
 		this.indexCurrent = null;
 		this.indexPrevious = null;
 		this.countPages = this.elmsPages.length;
-		
+
 		this.switchToPage(0);
 		if(this.elmPagerControlSingle){
-			__.lib.addListener(this.elmPagerControlSingle, "click", function(){
+			__.lib.addListener(this.elmPagerControlSingle, 'click', function(){
 				fncThis.toggle();
 			});
-			this.elmPagerControlSingle.style.cursor = "pointer";
+			this.elmPagerControlSingle.style.cursor = 'pointer';
 		}
 		__.message(this.elmPagerControlsIndexed);
 		if(this.elmPagerControlsIndexed){
-			__.message("indexed setup");
-			this.elmPagerControlsIndexedItems = __.lib.getElementsByClassName({"className":"item", "element": this.elmPagerControlsIndexed});
+			__.message('indexed setup');
+			this.elmPagerControlsIndexedItems = __.lib.getElementsByClassName({'className':'item', 'element': this.elmPagerControlsIndexed});
 			for(var i = 0; i < this.elmsPages.length; ++i){
-				var pageID = this.elmsPages[i].getAttribute("id");
+				var pageID = this.elmsPages[i].getAttribute('id');
 				for(var j = 0; j < this.elmPagerControlsIndexedItems.length; ++j){
-					__.message(this.elmPagerControlsIndexedItems[j].getAttribute("href")+" vs #"+pageID);
-					if(this.elmPagerControlsIndexedItems[j].getAttribute("href") == pageID){
-						__.message("if success");
+					__.message(this.elmPagerControlsIndexedItems[j].getAttribute('href')+' vs #'+pageID);
+					if(this.elmPagerControlsIndexedItems[j].getAttribute('href') == pageID){
+						__.message('if success');
 						var thisElement = this.elmPagerControlsIndexedItems[j];
 						var thisIndex = i;
 						var handler = function(fncThis, thisIndex){
 							return function(){
-								__.message("Switch to "+thisIndex);
+								__.message('Switch to '+thisIndex);
 								fncThis.switchToPage(thisIndex);
 								return false;
 							}
 						}(fncThis, thisIndex);
-						__.lib.addListener(thisElement, "click", handler);
-						__.lib.addListener(thisElement, "click", function(){__.message("clicked"); });
+						__.lib.addListener(thisElement, 'click', handler);
+						__.lib.addListener(thisElement, 'click', function(){__.message('clicked'); });
 					}
 				}
 			}
@@ -51,16 +51,16 @@ __.classes.simplePager = function(args){
 		// set all to non-current if none have been current before
 		if(this.indexCurrent === null){
 			for(var i = 0; i < this.elmsPages.length; ++i){
-				__.lib.removeClass(this.elmsPages[i], "current");
-				__.lib.addClass(this.elmsPages[i], "noncurrent");
+				__.lib.removeClass(this.elmsPages[i], 'current');
+				__.lib.addClass(this.elmsPages[i], 'noncurrent');
 			}
 		}else{
-			__.lib.removeClass(this.elmsPages[this.indexCurrent], "current");
-			__.lib.addClass(this.elmsPages[this.indexCurrent], "noncurrent");
+			__.lib.removeClass(this.elmsPages[this.indexCurrent], 'current');
+			__.lib.addClass(this.elmsPages[this.indexCurrent], 'noncurrent');
 		}
-		__.lib.removeClass(this.elmsPages[argIndex], "noncurrent");
-		__.lib.addClass(this.elmsPages[argIndex], "current");
-		
+		__.lib.removeClass(this.elmsPages[argIndex], 'noncurrent');
+		__.lib.addClass(this.elmsPages[argIndex], 'current');
+
 		this.indexPrevious = this.indexCurrent;
 		this.indexCurrent = argIndex;
 		this.setControlLabelSingle();
@@ -69,8 +69,8 @@ __.classes.simplePager = function(args){
 	}
 	__.classes.simplePager.prototype.setControlLabelSingle = function(){
 		if(this.elmPagerControlSingle){
-			var nextLabel = this.elmsPages[this.getNextIndex()].getAttribute("data-label");
-			if(!nextLabel) nextLabel = "next page";
+			var nextLabel = this.elmsPages[this.getNextIndex()].getAttribute('data-label');
+			if(!nextLabel) nextLabel = 'next page';
 			this.elmPagerControlSingle.innerHTML = this.labelPrefix+nextLabel;
 		}
 	}

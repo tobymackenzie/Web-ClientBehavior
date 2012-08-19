@@ -4,7 +4,7 @@ basic pager with navigation and pages collection
 tmlib addClass, removeClass
 -----parameters
 -----instantiation
-__.pager = new __.classes.pager({elmsPages: document.getElementById("maincontent").getElementsByClassName("tabpage"), elmsNavigation: document.getElementById("maincontent").getElementsByClassName("tab")});
+__.pager = new __.classes.pager({elmsPages: document.getElementById('maincontent').getElementsByClassName('tabpage'), elmsNavigation: document.getElementById('maincontent').getElementsByClassName('tab')});
 -----html
 -----css
 */
@@ -16,12 +16,12 @@ __.classes.pager = function(args){
 		//--required attributes
 //->return
 		//--optional attributes
-		this.attrId = args.attrId || "id";
+		this.attrId = args.attrId || 'id';
 		this.boot = args.boot || {};
 		this.callbackGetCurrentNavigation = args.callbackGetCurrentNavigation || this.defaultCallbackGetCurrentNavigation;
 		this.callbackGetCurrentPage = args.callbackGetCurrentPage || this.defaultCallbackGetCurrentPage;
-		this.classCurrentNavigation = args.classCurrentNavigation || "current";
-		this.classCurrentPage = args.classCurrentPage || "current";
+		this.classCurrentNavigation = args.classCurrentNavigation || 'current';
+		this.classCurrentPage = args.classCurrentPage || 'current';
 		this.elmsNavigation = args.elmsNavigation || null;
 		this.elmsPages = args.elmsPages || null;
 		this.idInitial = args.idInitial || null;
@@ -44,7 +44,7 @@ __.classes.pager = function(args){
 		if(!this.elmNavigationCurrent && this.elmsNavigation)
 			this.elmNavigationCurrent = this.callbackGetCurrentNavigation(this.elmPageCurrent.id);
 		this.setClasses();
-			
+
 		//--do something
 		if(this.oninit)
 			this.oninit.call(fncThis);
@@ -91,11 +91,11 @@ __.classes.pager = function(args){
 	}
 	__.classes.pager.prototype.defaultCallbackGetCurrentPage = function(argId){
 		if(this.elmsPages){
-			if(this.attrId == "id"){
+			if(this.attrId == 'id'){
 				return document.getElementById(argId);
 			}else{
 				for(var key in this.elmsPages){
-					if(this.elmsPages.hasOwnProperty(key) && typeof this.elmsPages[key].id != "undefined"){
+					if(this.elmsPages.hasOwnProperty(key) && typeof this.elmsPages[key].id != 'undefined'){
 						var fncId = this.elmsPages[key].getAttribute(this.attrId);
 						if(fncId == argId)
 							return this.elmsPages[key];
@@ -108,9 +108,9 @@ __.classes.pager = function(args){
 		if(argElement.href)
 			var fncElement = argElement;
 		else
-			var fncElement = argElement.getElementsByTagName("a")[0];
-		var fncHrefSplit = fncElement.href.split("#");
-		if(fncHrefSplit[1].indexOf("#") == 0)
+			var fncElement = argElement.getElementsByTagName('a')[0];
+		var fncHrefSplit = fncElement.href.split('#');
+		if(fncHrefSplit[1].indexOf('#') == 0)
 			var fncReturn = fncHrefSplit[1].substring(1);
 		else
 			fncReturn = fncHrefSplit[1];
