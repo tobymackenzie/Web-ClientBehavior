@@ -57,14 +57,14 @@ __.classes.pagerSliding = function(args){
 		this.contentLeft = args.contentLeft || 0;
 		this.elmNavigationPointer = args.elmNavigationPointer || null;
 		this.elmNavigationOrientation = args.elmNavigationOrientation || "horizontal";
-		
+
 		this.elmCurrent = this.elmsPages.filter("."+this.classCurrentItem);
 		this.pageOffsetLeft = (args.contentLeft)? 0: this.elmCurrent.offset().left;
 		if(this.elmCurrent.length < 1)
 			this.elmCurrent = elmsPages.first();
 		if(!args.contentLeft){
 			this.pageOffsetRight = (args.contentLeft)?false:jQuery("body").outerWidth();
-			
+
 		}
 		this.elmsPages.filter("."+this.classPreviousItem).css({"left":0 - this.pageOffsetLeft - this.contentWidth, "display":"none"});
 		this.elmsPages.filter("."+this.nextClass).css({"left":this.pageOffsetRight + this.contentWidth, "display":"none"});
@@ -85,15 +85,15 @@ __.classes.pagerSliding = function(args){
 			lastItemImage.load(callback);
 */
 		}
-		
+
 		this.inprogress = 0;
-		
+
 		this.attachEvents();
 	}
 	__.classes.pagerSliding.prototype.attachEvents = function(){
 		var fncThis = this;
 		if(fncThis.elmPreviousButton){
-			fncThis.elmPreviousButton.children("a").bind("click", function(){
+			fncThis.elmPreviousButton.children("a").on("click", function(){
 				if(fncThis.inprogress == 0){
 					fncThis.inprogress = 1;
 					if(!fncThis.switchPagesByID(fncThis.parsePath(fncThis.elmPreviousButton.children("a").attr("href"))))
@@ -103,7 +103,7 @@ __.classes.pagerSliding = function(args){
 			});
 		}
 		if(fncThis.elmNextButton){
-			fncThis.elmNextButton.children("a").bind("click", function(){
+			fncThis.elmNextButton.children("a").on("click", function(){
 				if(fncThis.inprogress == 0){
 					fncThis.inprogress = 1;
 					if(!fncThis.switchPagesByID(fncThis.parsePath(fncThis.elmNextButton.children("a").attr("href"))))
@@ -113,7 +113,7 @@ __.classes.pagerSliding = function(args){
 			});
 		}
 		if(fncThis.elmsItemNavigation){
-			fncThis.elmsItemNavigation.bind("click", function(){
+			fncThis.elmsItemNavigation.on("click", function(){
 				if(fncThis.inprogress == 0){
 					fncThis.inprogress = 1;
 					if(!fncThis.switchPagesByID(fncThis.parsePath(jQuery(this).children("a").attr("href"))))
@@ -134,7 +134,7 @@ __.classes.pagerSliding = function(args){
 			fncThis.elmCurrent.removeClass(fncThis.classCurrentItem);
 			elmNewPage.removeClass(fncThis.nextClass).removeClass(fncThis.classPreviousItem).addClass(fncThis.classCurrentItem);
 			fncThis.elmCurrent = elmNewPage;
-			
+
 			var elmsPagesLength = fncThis.elmsPages.length;
 			var elmIndexCurrent = fncThis.getPageIndex(elmNewPage);
 			// set all previous elements to previous
@@ -145,7 +145,7 @@ __.classes.pagerSliding = function(args){
 			for(var i = elmIndexCurrent + 1; i < elmsPagesLength; ++i){
 				jQuery(fncThis.elmsPages[i]).addClass(fncThis.nextClass).removeClass(fncThis.classPreviousItem).css({"display":"none"});
 			}
-			
+
 			//elmNewPage.prevAll(fncThis.itemSelector).removeClass(fncThis.nextClass).addClass(fncThis.classPreviousItem).css({"display":"none", "left":0 - this.pageOffsetLeft - this.contentWidth});
 			//elmNewPage.nextAll(fncThis.itemSelector).addClass(fncThis.nextClass).removeClass(fncThis.classPreviousItem).css({"display":"none", "left":this.pageOffsetRight + this.contentWidth});
 			fncThis.inprogress = 0;
@@ -170,11 +170,11 @@ __.classes.pagerSliding = function(args){
 			fncThis.elmNextButton.fadeIn(fncThis.duration).children("a").attr("href", nextURL);
 		else
 			fncThis.elmNextButton.fadeOut(fncThis.duration).children("a").attr("href", "");
-			
+
 		if(fncThis.elmsItemNavigation){
 			fncThis.pointToCurrentNavigation(elmNewPage.attr(this.attrID));
 		}
-		
+
 		return true;
 	}
 	__.classes.pagerSliding.prototype.parsePath = function(path){

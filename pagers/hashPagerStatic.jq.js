@@ -20,9 +20,9 @@ __.classes.hashPagerStatic = function(args){
 		this.duration = (args.duration !== undefined) ? args.duration : 500;
 		this.onpreswitch = args.onpreswitch || false;
 		this.onpostswitch = args.onpostswitch || false;
-		
+
 		this.inProgress = true;
-		
+
 		// hide all, display first
 		this.elmsPages.hide();
 		if(window.location.hash){
@@ -37,19 +37,19 @@ __.classes.hashPagerStatic = function(args){
 			}
 		}
 		this.elmsPages.filter(__.lib.escapeHash(this.idCurrent)).show().addClass(this.classCurrentPage);
-		
+
 		// attach listeners
 		this.attachListeners(this.elmsNavigation);
-		
+
 		this.inProgress = false;
 	}
 	__.classes.hashPagerStatic.prototype.attachListeners = function(argElements){
 		var fncThis = this;
-		argElements.bind("click", function(event){
+		argElements.on("click", function(event){
 			if(event.preventDefault)
 				event.preventDefault();
 			fncThis.switche(jQuery(this).find("a").attr("href"));
-			
+
 			return false;
 		});
 	}

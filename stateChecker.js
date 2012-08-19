@@ -23,7 +23,7 @@ $(document).ready(function(){
             return lclReturn
         }
     });
-    __.stateChecker.bind("change", function(argEvent, argData){
+    __.stateChecker.on("change", function(argEvent, argData){
 __.message(this);
 __.message(argData);
         __.message("change: "+argData.new);
@@ -54,7 +54,7 @@ __.message(argData);
                     }
                 }
                 return lclReturn;
-                
+
             }
             ,boot: {
                 fieldsBillingAddress: [
@@ -71,7 +71,7 @@ __.message(argData);
                 ]
             }
         });
-        __.stateCheckerTaxFields.bind("change", function(argEvent, argData){
+        __.stateCheckerTaxFields.on("change", function(argEvent, argData){
             //--do ajax query to change taxes
             __.orderAddressManager.store();
             //--modify "data-taxes" on ".mainhead .cost" on change
@@ -103,19 +103,19 @@ __.classes.stateChecker = function(args){
 		this.jq = jQuery({});
 		this.state = null;
 
-		//--do something		
+		//--do something
         if(this.oninit)
             this.oninit.call(this);
 	}
 	__.classes.stateChecker.prototype.defaultOnInit = function(){
 		var lcThis = this;
 		//--by default, check state on change event of each item
-		//-#requires every collection item to have a bind method
+		//-#requires every collection item to have a on method
 		var lcFnCallback = function(){
 			lcThis.checkState();
 		};
 		this.collection.each(function(args){
-			this.bind(lcThis.eventsForBinding, lcFnCallback);
+			this.on(lcThis.eventsForBinding, lcFnCallback);
 		});
 		this.checkState();
 	}
@@ -127,7 +127,7 @@ __.classes.stateChecker = function(args){
 	       this.jq.trigger("change", {'old': this.state, 'new': stateNew});
 	   }
 	}
-	__.classes.stateChecker.prototype.bind = function(){
-		this.jq.bind.apply(this.jq, arguments);
+	__.classes.stateChecker.prototype.on = function(){
+		this.jq.on.apply(this.jq, arguments);
 	}
 

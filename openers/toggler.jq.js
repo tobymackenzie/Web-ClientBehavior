@@ -30,14 +30,14 @@ __.classes.Toggler = function(args){
 		this.oninit = args.oninit || null;
 		this.ontoggle = args.ontoggle || null;
 		this.selectorElmClick = args.selectorElmClick || null;
-		
+
 		if(this.closeoninit)
 			this.elmsItems.not("."+this.classClosed).not("."+this.classOpen).addClass(this.classClosed);
 //			this.close(this.elmsItems.not("."+this.classClosed).not("."+this.classOpen));
 		else
 			this.elmsItems.not("."+this.classClosed).not("."+this.classOpen).addClass(this.classOpen);
 //			this.open(this.elmsItems.not("."+this.classClosed).not("."+this.classOpen));
-		
+
 		this.attachListeners(this.elmsItems);
 
 		if(this.oninit) this.oninit.call(this);
@@ -46,7 +46,7 @@ __.classes.Toggler = function(args){
 		var fncThis = this;
 		argElements.each(function(){
 			var elmParent = jQuery(this);
-			elmParent.find(fncThis.selectorElmClick).css("cursor", "pointer").bind(fncThis.event, function(event){
+			elmParent.find(fncThis.selectorElmClick).css("cursor", "pointer").on(fncThis.event, function(event){
 				fncThis.toggle(elmParent);
 				if(event.preventDefault)
 					event.preventDefault();

@@ -66,17 +66,17 @@ __.classes.fullContainerImage = function(args){
 		this.doCenterHorizontally = args.doCenterHorizontally || false;
 		this.doCenterVertically = args.doCenterVertically || false;
 		this.oninit = args.oninit || null;
-		
+
 		//--derived attributes
 		var fncThis = this;
 		var fncElmImage = args.elmImage || null;
 		this.setImage(fncElmImage);
-		
+
 		//--bind events
-		this.elmContainer.bind("resize", function(){
+		this.elmContainer.on("resize", function(){
 			fncThis.setClass();
 		});
-		
+
 		if(this.oninit)
 			this.oninit.call(this);
 	}
@@ -113,7 +113,7 @@ __.classes.fullContainerImage = function(args){
 			if(this.elmImage.width() > 0){
 				fncCallback.call(this);;
 			}else{
-				this.elmImage.bind("load", function(){
+				this.elmImage.on("load", function(){
 					fncCallback.call(fncThis);
 				});
 			}

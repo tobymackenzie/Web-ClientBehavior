@@ -44,14 +44,14 @@ __.classes.hashHandler = function(args){
 		//--hashify urls
 		if(this.elmsContainer)
 			this.hashifyURLs(this.elmsContainer);
-		
+
 		//--attach listener for hash change
 		if(this.onhashchange)
-			jQuery(window).bind("hashchange", function(){
+			jQuery(window).on("hashchange", function(){
 				var url = location.hash || "/";
 				fncThis.onhashchange.call(fncThis, url);
 			});
-		
+
 		if(this.oninit)
 			this.oninit.call(fncThis, location.hash);
 	}

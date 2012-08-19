@@ -6,7 +6,7 @@ __.classes.objectMonitor = function(args){
 		//--optional arguments
 		if(args.object)
 			this.setObject(args.object);
-		
+
 		//--derived members
 		this.rules = {};
 	}
@@ -14,14 +14,14 @@ __.classes.objectMonitor = function(args){
 		this.object = args.object;
 //->return no object
 		if(!this.object) return false;
-		
+
 		//--set old rules to unapplied
 		for(var key in localvars.rules){
 			if(localvars.rules.hasOwnProperty(key){
 				localvars.rules[key].applied = false;
 			}
 		}
-		
+
 		//--apply rules
 		this.applyRules();
 	}
@@ -33,7 +33,7 @@ __.classes.objectMonitor = function(args){
 			if(localvars.rules.hasOwnProperty(key){
 				var lopRule = localvars.rules[key];
 				if(lopRule.applied == false){
-					localvars.object.bind(lopRule.event, lopRule.handler);
+					localvars.object.on(lopRule.event, lopRule.handler);
 					localvars.rules[key].applied = true;
 				}
 			}

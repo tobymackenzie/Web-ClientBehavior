@@ -25,11 +25,11 @@ __.classes.verticalMenuAnimation = function(args){
 		this.classClosed = args.classClosed || "closed";
 		this.classOpen = args.classOpen || "open";
 		this.easing = args.easing || "swing";
-		
+
 		this.elmCurrent = false;
 		//- remove elmsMenus without submenus
 		this.elmsMenus = this.elmsMenus.has("."+this.classSubmenu);
-		
+
 		// set href of toplevel items to # so they are keyboard navigable but have no target for non-js browsers/bots
 		this.elmsMenus.find("."+this.classTopitem).attr("href","javascript:/*openmenu()*/;");
 		// must set height so there is no jump
@@ -49,7 +49,7 @@ __.classes.verticalMenuAnimation = function(args){
 	__.classes.verticalMenuAnimation.prototype.attachListeners = function(argElmsMenus){
 		var fncThis = this;
 		var elmsMenus = argElmsMenus || this.elmsMenus;
-		elmsMenus.find("."+this.classTopitem).bind("click", function(){
+		elmsMenus.find("."+this.classTopitem).on("click", function(){
 			var elmMenu = jQuery(this).parent(this.classToplevelitem);
 			if(elmMenu[0] == fncThis.elmCurrent[0]){
 				fncThis.close(elmMenu);
@@ -57,7 +57,7 @@ __.classes.verticalMenuAnimation = function(args){
 			}else{
 				fncThis.close(fncThis.elmCurrent);
 				fncThis.open(elmMenu);
-			}			
+			}
 			return false;
 		});
 	}

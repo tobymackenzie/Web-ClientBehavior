@@ -50,7 +50,7 @@ __.classes.navigationHandler = function(args){
 		//--derived attributes
 		this.inprogress = false;
 		this.queue = new __.classes.animationQueue();
-		
+
 		//--attach events
 		this.attachEvents(this.elmsItems);
 	}
@@ -95,11 +95,11 @@ __.classes.navigationHandler = function(args){
 					return true;
 				}
 			}
-			fncThis.inprogress = true;	
-			
+			fncThis.inprogress = true;
+
 			if(fncThis.doPreventDefault && typeof argEvent.preventDefault != "undefined")
 				argEvent.preventDefault();
-			
+
 			if(fncThis.onpreswitch)
 				fncThis.queue.queue(function(){
 					fncThis.onpreswitch.call(fncThis, lcl);
@@ -122,9 +122,9 @@ __.classes.navigationHandler = function(args){
 				fncThis.inprogress = false;
 				fncThis.queue.dequeue();
 			});
-			
+
 			fncThis.queue.dequeue();
-			
+
 			return (fncThis.doPreventDefault)? false: true;
 		};
 		if(fncThis.elmsItems){
@@ -132,13 +132,13 @@ __.classes.navigationHandler = function(args){
 				? fncThis.elmsItems
 				: fncThis.elmsItems.find(fncThis.selectorElmForEvent)
 			;
-			fncItems.bind("click touch", fncCallback);
+			fncItems.on("click touch", fncCallback);
 		}else{
 			var fncSelector = (fncThis.selectorElmForEvent == "this")
 				? fncThis.selectorItem
 				: fncThis.selectorItem + ' ' + fncThis.selectorElmForEvent
 			;
-			fncThis.elmItemsWrap.delegate(fncSelector, 'click touch', fncCallback)
+			fncThis.elmItemsWrap.on('click touch', fncSelector, fncCallback)
 		}
 	}
 	__.classes.navigationHandler.prototype.switchToPrevious = function(){

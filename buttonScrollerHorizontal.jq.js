@@ -48,10 +48,10 @@ __.classes.buttonScrollerHorizontal = function(args){
 		this.onresize = args.onresize || null;
 		this.timeAutoAdvanceWait = (typeof args.timeAutoAdvanceWait != 'undefined') ? args.timeAutoAdvanceWait : 2000;
 		this.timeAutoAdvancePause = (typeof args.timeAutoAdvancePause != 'undefined') ? args.timeAutoAdvancePause : 5000;
-		
+
 		//--derived members
 		var fncThis = this;
-		
+
 		//--create button navigation, bind handlers
 		if(this.htmlButtonContainer){
 			this.elmButtonContainer = jQuery(this.htmlButtonContainer)
@@ -62,7 +62,7 @@ __.classes.buttonScrollerHorizontal = function(args){
 		if(this.htmlButtonPrevious){
 			this.elmButtonPrevious = jQuery(this.htmlButtonPrevious);
 			this.elmButtonContainer.append(this.elmButtonPrevious);
-			this.elmButtonPrevious.bind("click", function(){
+			this.elmButtonPrevious.on("click", function(){
 				fncThis.scrollLeft();
 				if(fncThis.intervalAutoAdvance && fncThis.doStopAdvanceOnNavigate){
 					clearInterval(fncThis.intervalAutoAdvance);
@@ -72,27 +72,27 @@ __.classes.buttonScrollerHorizontal = function(args){
 		if(this.htmlButtonNext){
 			this.elmButtonNext = jQuery(this.htmlButtonNext);
 			this.elmButtonContainer.append(this.elmButtonNext);
-			this.elmButtonNext.bind("click", function(){
+			this.elmButtonNext.on("click", function(){
 				fncThis.scrollRight();
 				if(fncThis.intervalAutoAdvance && fncThis.doStopAdvanceOnNavigate){
 					clearInterval(fncThis.intervalAutoAdvance);
 				}
 			});
 		}
-		
+
 		//--adjust wrapper width on window resize
 		if(fncThis.doUpdateWidthOnWindowResize){
-			jQuery(window).bind("resize", function(){
+			jQuery(window).on("resize", function(){
 				fncThis.resize();
 			});
 		}
-		
+
 		//--set container
 		if(args.elmContainer)
 			this.setContainer(args.elmContainer);
 		else
 			this.elmContainer = null;
-		
+
 		//-*must be done for browsers with slow image loading
 //		setTimeout(function(){fncThis.resize();}, 500);
 
@@ -125,11 +125,11 @@ __.classes.buttonScrollerHorizontal = function(args){
 		if(currentPosition < 0){
 			if(currentPosition < 0 - this.increment)
 				var nextPosition = currentPosition + this.increment;
-			else 
-				var nextPosition = 0;			
+			else
+				var nextPosition = 0;
 			this.elmContainer.animate({left:  nextPosition }, this.duration, function(){fncThis.toggleButtonEnable();});
 		}
-		
+
 	}
 	__.classes.buttonScrollerHorizontal.prototype.scrollRight = function(){
 		var fncThis = this;
@@ -138,7 +138,7 @@ __.classes.buttonScrollerHorizontal = function(args){
 		if(currentPositionRight > 0){
 			if(currentPositionRight > 0 + this.increment)
 				var nextPosition = currentPosition - this.increment;
-			else 
+			else
 				var nextPosition = -(this.widthContainer - this.widthWrapper);
 			this.elmContainer.animate({left:  nextPosition }, this.duration, function(){fncThis.toggleButtonEnable();});
 		}
@@ -156,11 +156,11 @@ __.classes.buttonScrollerHorizontal = function(args){
 		}else{
 			this.elmButtonNext.show();
 		}
-		
+
 	}
 	__.classes.buttonScrollerHorizontal.prototype.resize = function(){
 		if(this.onresize){
-			this.onresize.call(this);		
+			this.onresize.call(this);
 		}else{
 			this.widthWrapper = this.elmWrapper.width();
 			this.toggleButtonEnable();

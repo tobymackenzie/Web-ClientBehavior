@@ -64,7 +64,7 @@ not for ie 6 or less currently
 .section_portfolio .portfolioitem h2{
 	margin: 0;
 	font-weight: 300;
-	font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Arial, Helvetica, sans-serif;	
+	font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 
 .section_portfolio .portfolioitem  .imagelistwrap{
@@ -188,7 +188,7 @@ $(function(){
 					var portfolio = portfolios[i];
 					arrNewValues.push(portfolio.find(this.selectorItems+"."+this.classCurrent).attr(this.boot.attrUnid));
 				}
-				
+
 				try{
 					var oldCookieValue = $.parseJSON(__.lib.cookies.get(this.boot.cookie));
 				}catch(e){
@@ -200,7 +200,7 @@ $(function(){
 				__.lib.cookies.set({name: this.boot.cookie, value: $.toJSON(oldCookieValue), expires: 180});
 			}
 			//-ajax submit change in selection
-			
+
 		}
 		var callbackPostClose = function(argElement){
 		}
@@ -209,9 +209,9 @@ $(function(){
 			selectorTab: ".tab",
 			widthTabMin: "18px",
 			selectorContent: ".imagelist",
-			callbackPreOpen: callbackPreOpen, 
-			callbackPreClose: callbackPreClose, 
-			callbackPostOpen: callbackPostOpen, 
+			callbackPreOpen: callbackPreOpen,
+			callbackPreClose: callbackPreClose,
+			callbackPostOpen: callbackPostOpen,
 			callbackPostClose: callbackPostClose,
 			boot: {cookie: "selectedportfolios", elmsPortfolios: elmsPortfolios, attrUnid: "data-unid"}
 		}
@@ -249,37 +249,37 @@ __.classes.slidetab = function(arguments){
 		this.callbackPostClose = arguments.callbackPostClose || null;
 		this.widthTabMin = arguments.widthTabMin || 0;
 		this.boot = arguments.boot || null;
-		
+
 		/*--derived attributes */
 		var fncThis = this;
 		this.elmsItems = this.elmContainer.find(this.selectorItems);
 		this.inProgress = false;
-		
+
 		/*--show first if not shown */
 		var elmCurrent = this.elmsItems.filter("."+this.classCurrent);
 		if(elmCurrent.length < 1){
 			this.elmsItems.first().addClass(this.classCurrent);
-		}	
-		
+		}
+
 		/*--construct */
 		//--attach listeners to tabs
-		this.elmsItems.find(this.selectorTab).bind("click focus", function(event){
+		this.elmsItems.find(this.selectorTab).on("click focus", function(event){
 			event.preventDefault();
-			
+
 			fncThis.switchTo(jQuery(this).closest(fncThis.selectorItems));
-			return false;	
+			return false;
 		});
 	}
 	__.classes.slidetab.prototype.switchTo = function(argElement){
 		if(this.inProgress == true) return false;
-//-> return		
+//-> return
 		if(argElement.hasClass(this.classCurrent)) return false;
 //-> return
 		var fncThis = this;
 		this.inProgress = true;
 		var elmCurrent = this.elmsItems.filter("."+this.classCurrent);
 		var elmNext = argElement;
-		
+
 		this.close(elmCurrent, function(){fncThis.open(elmNext);});
 	}
 	__.classes.slidetab.prototype.open = function(argElement, argCallback){
@@ -290,7 +290,7 @@ __.classes.slidetab = function(arguments){
 			var elmContentWrap = argElement.find(this.selectorContentWrap);
 		else
 			var elmContentWrap = argElement;
-		var elmContent = argElement.find(this.selectorContent);	
+		var elmContent = argElement.find(this.selectorContent);
 		var newWidthHeight = __.lib.getHiddenElementWidthHeight(elmContent);
 
 		var callback = function(){
@@ -313,8 +313,8 @@ __.classes.slidetab = function(arguments){
 			var elmContentWrap = argElement.find(this.selectorContentWrap);
 		else
 			var elmContentWrap = argElement;
-		var elmContent = argElement.find(this.selectorContent);	
-		
+		var elmContent = argElement.find(this.selectorContent);
+
 		var callback = function(){
 			fncElement.removeClass(fncThis.classCurrent);
 			if(fncCallback)
@@ -322,9 +322,9 @@ __.classes.slidetab = function(arguments){
 			if(fncThis.callbackPostClose)
 				fncThis.callbackPostClose.call(fncThis, fncElement);
 		};
-		
+
 		if(fncThis.callbackPreClose)
-			fncThis.callbackPreClose.call(fncThis, fncElement);		
+			fncThis.callbackPreClose.call(fncThis, fncElement);
 		elmContentWrap.animate({width: this.widthTabMin}, {duration: this.duration, complete: callback});
 	}
 

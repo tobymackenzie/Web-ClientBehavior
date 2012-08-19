@@ -12,7 +12,7 @@ jquery
 		top: -14px;
 		height: -14px;
 	}
-	
+
 
 -----instantiation
 if(typeof $ != 'undefined'){
@@ -60,7 +60,7 @@ __.classes.hashPagerStaticKeepHeight = function(args){
 		this.boot = args.boot || {};
 
 		this.inProgress = true;
-		
+
 		// hide all, display first
 		this.elmsPages.hide();
 		if(window.location.hash){
@@ -80,18 +80,18 @@ __.classes.hashPagerStaticKeepHeight = function(args){
 		elmCurrentPage.show().addClass(this.classCurrentPage);
 		this.elmsNavigation.children("a").closest(this.selectorNavigation).removeClass(this.classCurrentNavigation)
 		this.elmsNavigation.children("a").filter("[href='"+this.idCurrent+"']").closest(this.selectorNavigation).addClass(this.classCurrentNavigation);
-		
+
 		// attach listeners
 		this.attachListeners(this.elmsNavigation);
-		
+
 		this.inProgress = false;
-		
+
 		if(this.callbackInit)
 			this.callbackInit.call(this);
 	}
 	__.classes.hashPagerStaticKeepHeight.prototype.attachListeners = function(argElements){
 		var fncThis = this;
-		argElements.bind("click", function(event){
+		argElements.on("click", function(event){
 			if(event.preventDefault)
 				event.preventDefault();
 
@@ -100,10 +100,10 @@ __.classes.hashPagerStaticKeepHeight = function(args){
 				var elmA = elmThis;
 			else
 				var elmA = elmThis.find("a");
-			
+
 			fncThis.switche(elmA.attr("href"));
 
-			
+
 			return false;
 		});
 	}
@@ -139,10 +139,10 @@ __.classes.hashPagerStaticKeepHeight = function(args){
 			var elmCurrentPage = this.elmsPages.filter("."+this.classCurrentPage);
 
 			fncThis.inProgress = true;
-			
+
 			if(fncThis.callbackPreSwitch)
 				fncThis.callbackPreSwitch.call(this, {elmNextNavigation: elmNextNavigation, elmNextPage: elmNextPage, elmCurrentNavigation: elmCurrentNavigation, elmCurrentPage: elmCurrentPage});
-			
+
 			if(fncThis.keepHeight){
 				fncThis.keepHeight.css("height", elmCurrentPage.outerHeight());
 				var nextOriginalSettings = {
@@ -153,7 +153,7 @@ __.classes.hashPagerStaticKeepHeight = function(args){
 				var heightNew = elmNextPage.css({"position":"absolute", "left":"-9000px", "top":"-1000px"}).outerHeight() + fncThis.dimKeepDimensionsAddedHeight;
 				elmNextPage.css(nextOriginalSettings);
 			}
-			
+
 			elmCurrentNavigation.removeClass(fncThis.classCurrentNavigation);
 			elmNextNavigation.addClass(fncThis.classCurrentNavigation);
 			elmCurrentPage.removeClass(fncThis.classCurrentPage).fadeOut(this.duration, function(){
@@ -164,7 +164,7 @@ __.classes.hashPagerStaticKeepHeight = function(args){
 						fncThis.inProgress = false;
 					});
 				}
-				
+
 				if(fncThis.keepHeight){
 					fncThis.keepHeight.animate({height: heightNew}, fncThis.duration, callbackFadeIn);
 				}else

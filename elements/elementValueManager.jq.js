@@ -38,7 +38,7 @@ __.classes.elementValueManager = function(args){
 
 /*
 		if(this.event){
-			this.element.bind(this.event, function(event){
+			this.element.on(this.event, function(event){
 				fncThis.element.trigger("change", {value: fncThis.getValue(), manager: fncThis});
 			});
 		}
@@ -74,7 +74,7 @@ __.classes.elementValueManager = function(args){
 		}
 		return fncReturn;
 	}
-	
+
 	__.classes.elementValueManager.prototype.setValue = function(argValue){
 		var fncDataSource = this.dataSource;
 		if(fncDataSource.substr(0, 7) == "checked"){
@@ -110,7 +110,7 @@ __.classes.elementValueManager = function(args){
 
 		return this;
 	}
-	__.classes.elementValueManager.prototype.bind = function(){
-		this.element.bind.apply(this.element, arguments);
+	__.classes.elementValueManager.prototype.on = function(){
+		this.element.on.apply(this.element, arguments);
 	}
 

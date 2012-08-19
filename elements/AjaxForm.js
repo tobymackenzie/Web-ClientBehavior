@@ -30,7 +30,7 @@ __.classes.AjaxForm = function(args){
 
 		//--do something
 		this.bindSubmit();
-		
+
 		if(this.oninit)
 			this.oninit.call(this);
 	}
@@ -56,7 +56,7 @@ __.classes.AjaxForm = function(args){
 	__.classes.AjaxForm.prototype.bindSubmit = function(argElm){
 		var lclThis = this;
 		if(typeof argElm == "undefined") argElm = this.elmForm;
-		argElm.bind("submit", function(argEvent){
+		argElm.on("submit", function(argEvent){
 			lclThis.submit.call(lclThis);
 			if(argEvent.preventDefault)
 				argEvent.preventDefault();

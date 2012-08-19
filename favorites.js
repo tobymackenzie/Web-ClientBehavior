@@ -7,7 +7,7 @@ if(typeof $ != 'undefined'){
 		// dragondrop
 		var elmDroppableContainer = $("#footer .favoriteslist");
 		if(elmDroppableContainer.length > 0){
-			var callbackShrinkItems = 
+			var callbackShrinkItems =
 			__.favorites = new __.classes.favorites({
 				elmDroppableContainer: elmDroppableContainer,
 				elmsDraggable: $("#maincontent .portfolioimage"),
@@ -43,9 +43,9 @@ __.classes.favorites = function(args){
 		this.callbackDraggableStart = args.callbackDraggableStart || null;
 		this.attrID = args.attrID || "data-unid";
 		this.member = args.member || false;
-		
+
 		var fncThis = this;
-		
+
 		if(!this.elmDroppableContainer || this.elmDroppableContainer.length < 1 || !this.elmsDraggable || this.elmsDraggable.length < 1)
 			return false;
 //-> return
@@ -113,7 +113,7 @@ __.classes.favorites = function(args){
 		var elmsItems = argElmItem.not("."+fncThis.classAdded);
 		elmsItems.addClass(fncThis.classAdded);
 		elmsItems.append(function(){
-			return jQuery(fncThis.htmlDeleteButton).bind("click", function(event){
+			return jQuery(fncThis.htmlDeleteButton).on("click", function(event){
 				if(event.preventDefault)
 					event.preventDefault();
 				//-ajax remove item from user db
@@ -122,7 +122,7 @@ __.classes.favorites = function(args){
 				fncThis.update();
 
 				return false;
-			});		
+			});
 		});
 		if(fncThis.callbackItemAdd)
 			fncThis.callbackItemAdd.call(this, elmsItems);

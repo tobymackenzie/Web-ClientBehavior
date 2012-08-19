@@ -33,8 +33,8 @@ __.classes.collection = function(args){
 			this.oninit.call(this);
 	}
 /*
-	__.classes.collectionElementValueManager.prototype.bind = function(){
-		this.jq.bind.apply(this.jq, arguments);
+	__.classes.collectionElementValueManager.prototype.on = function(){
+		this.jq.on.apply(this.jq, arguments);
 	}
 */
 	__.classes.collection.prototype.add = function(argItem, argName, argData){
@@ -53,9 +53,9 @@ __.classes.collection = function(args){
 		if(this.onadd)
 			this.onadd.call(this, loc);
 /*
-		fncItem.bind("change", function(event){
+		fncItem.on("change", function(event){
 			fncThis.jq.trigger("change");
-		});	
+		});
 		this.jq.trigger("change");
 */
 		return this;

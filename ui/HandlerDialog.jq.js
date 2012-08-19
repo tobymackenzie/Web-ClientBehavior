@@ -58,16 +58,16 @@ __.classes.HandlerDialog = function(args){
 		this.elmDialog = null;
 		this.isLimitingHeight = false;
 		this.request = null;
-		
+
 		//--prevent scrolling of document
 		if(this.doManageHeight && this.heightMax == "viewport"){
 			this.elmHTML = $("html");
 			this.valueHTMLOverflow = this.elmHTML.css("overflow");
 			this.initDialog();
-			this.elmDialog.bind("dialogopen", function(argEvent, argUI){
+			this.elmDialog.on("dialogopen", function(argEvent, argUI){
 				fncThis.elmHTML.css("overflow", "hidden");
 			});
-			this.elmDialog.bind("dialogclose", function(argEvent, argUI){
+			this.elmDialog.on("dialogclose", function(argEvent, argUI){
 				fncThis.elmHTML.css("overflow", fncThis.valueHTMLOverflow);
 			});
 		}

@@ -13,7 +13,7 @@ external access
 
 /*------
 ©navigationGrayscaler
-depends on: 
+depends on:
 	jquery
 	grayscale.js: http://james.padolsey.com/javascript/grayscaling-in-non-ie-browsers/
 ------------*/
@@ -25,7 +25,7 @@ __.classes.navigationGrayscaler = function(args){
 		this.eventCurrentChange = args.eventCurrentChange || "changeCurrent";
 		this.classGrayed = args.classGrayed || "grayed";
 		this.duration = args.duration || 500;
-		
+
 		this.init(this.elmsItems)
 	}
 	__.classes.navigationGrayscaler.prototype.init = function(argElms){
@@ -36,7 +36,7 @@ __.classes.navigationGrayscaler = function(args){
 				if(elmThis.css("position") == "static" || elmThis.css("position") == "")
 					elmThis.css("position", "relative");
 				var elmClone = elmThis.find("img").clone().addClass(fncThis.classGrayed).attr("alt","").css({"position":"absolute", "top":"0", "left":"0", "z-index":"10"});
-				
+
 				elmThis.append(elmClone);
 				fncLoaded = function(){
 					grayscale.prepare(elmClone);
@@ -46,19 +46,19 @@ __.classes.navigationGrayscaler = function(args){
 						elmClone.hide(); // for Safari only, colorify doesn't seem to take
 					}
 				}
-				
+
 				if(elmClone.height() > 0)
 					fncLoaded();
 				else
 					elmClone.load(fncLoaded);
 			});
-			
-			argElms.bind("mouseenter focus", function(){
+
+			argElms.on("mouseenter focus", function(){
 				var elmThis = jQuery(this);
 				if(!elmThis.hasClass(fncThis.classCurrent))
 					fncThis.colorify(elmThis, 0);
 			});
-			argElms.bind("mouseleave blur", function(){
+			argElms.on("mouseleave blur", function(){
 				var elmThis = jQuery(this);
 				if(!elmThis.hasClass(fncThis.classCurrent))
 					fncThis.grayify(elmThis, 0);

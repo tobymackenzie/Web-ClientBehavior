@@ -31,14 +31,14 @@ __.classes.ModelManager = function(args){
 		//--direct attributes
 		this.fetch = args.fnFetch || this.defaultFnFetch;
 		this.persist = args.fnPersist || this.defaultFnFetch;
-	
+
 		//--derived attributes
 		this.binder = $({});
 
 		if(this.oninit) this.oninit.call(this);
 	}
-	__.classes.ModelManager.prototype.bind = function(){
-		this.binder.bind.apply(this.binder, arguments);
+	__.classes.ModelManager.prototype.on = function(){
+		this.binder.on.apply(this.binder, arguments);
 	}
 	__.classes.ModelManager.prototype.data = function(){
 		this.binder.data.apply(this.binder, arguments);

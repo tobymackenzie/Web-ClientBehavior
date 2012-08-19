@@ -59,7 +59,7 @@ __.classes.imageSwitcher = function(args){
 		this.selectorListItemContainer = (typeof args.selectorListItemContainer != "undefined")? args.selectorListItemContainer:"li";
 		this.selectorElmImageUrl = args.selectorElmImageUrl || "a";
 		this.typeAnimation = args.typeAnimation || "fadeoutfadein";
-		
+
 		//--derived members
 		this.inprogress=false;
 		this.queue = new __.classes.animationQueue({name: "image", autoDequeue: false});
@@ -71,7 +71,7 @@ __.classes.imageSwitcher = function(args){
 			this.setListItems(args.elmsListItems);
 		else
 			this.elmsListItems = null;
-		
+
 		if(this.oninit)
 			this.oninit.call(this);
 	}
@@ -106,12 +106,12 @@ __.classes.imageSwitcher = function(args){
 	__.classes.imageSwitcher.prototype.attachEvents = function(){
 		if(this.elmsListItems.length == 0) return false;
 		var fncThis = this;
-		fncThis.elmsListItems.children("a").bind("click", function(event){
+		fncThis.elmsListItems.children("a").on("click", function(event){
 			if(event.preventDefault) event.preventDefault();
 
 			var thisItem = jQuery(this).closest(fncThis.selectorListItemContainer);
 			fncThis.switchToItem(thisItem);
-			
+
 			return false;
 		});
 	}
@@ -126,7 +126,7 @@ __.classes.imageSwitcher = function(args){
 	__.classes.imageSwitcher.prototype.switchToItem = function(elmNewItem){
 		var currentItem = this.elmsListItems.filter("."+this.classCurrent);
 //->return
-		if(elmNewItem[0] == currentItem[0] || elmNewItem.length < 1) return false;		
+		if(elmNewItem[0] == currentItem[0] || elmNewItem.length < 1) return false;
 		if(this.selectorElmImageUrl == "this"){
 			var newImageURL = elmNewItem.attr(this.attrImageURL);
 		}else{
@@ -142,8 +142,8 @@ __.classes.imageSwitcher = function(args){
 		var fncThis = this;
 
 //-> return
-		if(fncThis.inprogress==true) return false;		
-		
+		if(fncThis.inprogress==true) return false;
+
 		var oldLI = fncThis.elmsListItems.filter("."+fncThis.classCurrent);
 		var newLI = this.findElmLIForURL(jQuery.trim(newImageURL));
 		var newA = newLI.find("a");
@@ -155,9 +155,9 @@ __.classes.imageSwitcher = function(args){
 			fncThis.onpredeselect.call(fncthis, oldLI);
 		if(fncThis.onpreselect)
 			fncThis.onpreselect.call(fncThis, newLI);
-		
+
 		var elmTempImage = jQuery("<img class=\"tempimage\" src='"+newImageURL+"' />").css({"position":"absolute", "left":"-9000px", "top":"-9000px"}).appendTo("body");
-		
+
 		if(fncThis.elmKeepDimensions){
 			fncThis.elmKeepDimensions.css({"width": fncThis.elmImage.width() + fncThis.dimKeepDimensionsAddedWidth, "height": fncThis.elmImage.height() + fncThis.dimKeepDimensionsAddedHeight});
 			var widthNew = false, heightNew = false;
@@ -165,7 +165,7 @@ __.classes.imageSwitcher = function(args){
 				widthNew = newLI.attr(fncThis.attrKeepWidth) || false;
 			if(fncThis.attrKeepHeight)
 				heightNew = newLI.attr(fncThis.attrKeepHeight) || false;
-			
+
 			var callbackGetNewWidthHeight = function(){
 				if(!(widthNew || heightNew)){
 					widthNew = widthNew || elmTempImage.width();
@@ -179,12 +179,12 @@ __.classes.imageSwitcher = function(args){
 					elmTempImage.load(callbackGetNewWidthHeight);
 				}
 			}
-			
+
 			if(!(widthNew || heightNew)){
 				fncThis.queue.queue({name: "image", callback: callbackGetNewWidthHeight});
 			}
 		}
-		
+
 		var fncLocalVariables = {newLI: newLI, oldLI: oldLI};
 
 		//--animate navigation
@@ -199,7 +199,7 @@ __.classes.imageSwitcher = function(args){
 		}});
 
 		fncThis.queue.dequeue({name: "navigation"});
-		
+
 		//--animate image
 		newLI.addClass(fncThis.classCurrent);
 		if(fncThis.onpreimageanimation)
@@ -221,7 +221,7 @@ __.classes.imageSwitcher = function(args){
 				if(fncThis.elmImage.width() > 0){
 					fncThis.queue.dequeue("image");
 				}else{
-					fncThis.elmImage.bind("load", function(){
+					fncThis.elmImage.on("load", function(){
 						fncThis.queue.dequeue("image");
 					});
 				}
@@ -286,7 +286,7 @@ __.classes.imageSwitcher = function(args){
 				fncThis.onpostimageanimation.call(fncThis, fncLocalVariables);
 			fncThis.inprogress = false;
 		}});
-		
+
 		fncThis.queue.dequeue({name: "image"});
 	}
 	__.classes.imageSwitcher.prototype.updateElements = function(args){

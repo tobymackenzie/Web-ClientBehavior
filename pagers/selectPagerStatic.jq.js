@@ -3,7 +3,7 @@ dependencies: tmlib base, tmlib isiphone, jquery
 
 style:
 .galleryswitch select{
-	display: none; /* if select is to not be used by for non javascript applications 
+	display: none; /* if select is to not be used by for non javascript applications
 }
 .page{
 	width: 890px; /* width must be specified so that height will be the same when page goes off screen
@@ -50,26 +50,26 @@ __.classes.selectPagerStatic = function(args){
 		}
 
 		this.inProgress = true;
-		
+
 		//--hide all, display first
 		this.elmsPages.hide();
 		this.elmsPages.filter(this.getSelectedPageID()).show().addClass(this.classCurrentPage);
-		
+
 		//--show select
 		this.elmSelect.show();
 
 		//--attach listeners
 		this.attachListeners();
-		
+
 		this.inProgress = false;
 	}
 	__.classes.selectPagerStatic.prototype.attachListeners = function(){
 		var fncThis = this;
-		fncThis.elmSelect.bind("change", function(event){
+		fncThis.elmSelect.on("change", function(event){
 			if(event.preventDefault)
 				event.preventDefault();
 			fncThis.switche(fncThis.getSelectedPageID());
-			
+
 			return false;
 		});
 	}
@@ -93,7 +93,7 @@ __.classes.selectPagerStatic = function(args){
 				var heightNew = elmNextPage.css({"position":"absolute", "left":"-9000px", "top":"-1000px"}).outerHeight();
 				elmNextPage.css(nextOriginalSettings);
 			}
-			
+
 			elmCurrentPage.removeClass(fncThis.classCurrentPage).fadeOut(this.duration, function(){
 				var callbackFadeIn = function(){
 					elmNextPage.fadeIn(fncThis.duration, function(){
@@ -101,7 +101,7 @@ __.classes.selectPagerStatic = function(args){
 						fncThis.inProgress = false;
 					});
 				}
-				
+
 				if(fncThis.keepHeight){
 					fncThis.keepHeight.animate({height: heightNew}, fncThis.duration, callbackFadeIn);
 				}else

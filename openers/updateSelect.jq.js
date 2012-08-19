@@ -19,7 +19,7 @@ callback: function to run when ajax content is received
 				}
 			});
 		}
-		
+
 -----html
 -----css
 */
@@ -37,11 +37,11 @@ __.classes.updateSelect = function(args){
 		this.nameParameter = args.nameParameter || null;
 		this.parametersFixed = args.parametersFixed || null;
 		this.urlData = args.urlData || null;
-		
+
 		if(!this.elmSelectSource || !this.urlData){
 			return false;
 		}
-		this.elmSelectSource.bind("change", function(){
+		this.elmSelectSource.on("change", function(){
 			fncThis.handleChange();
 		});
 		fncThis.handleChange();

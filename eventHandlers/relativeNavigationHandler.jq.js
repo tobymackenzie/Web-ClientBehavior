@@ -76,12 +76,12 @@ __.classes.relativeNavigationHandler = function(args){
 	__.classes.relativeNavigationHandler.prototype.bindActionPrevious = function(argElement){
 		var fncThis = this;
 		if(fncThis.onactivateprevious)
-			argElement.bind(this.eventsBindTo, function(argEvent){return fncThis.onactivateprevious.call(fncThis, this, argEvent)});
+			argElement.on(this.eventsBindTo, function(argEvent){return fncThis.onactivateprevious.call(fncThis, this, argEvent)});
 	}
 	__.classes.relativeNavigationHandler.prototype.bindActionNext = function(argElement){
 		var fncThis = this;
 		if(fncThis.onactivatenext)
-			argElement.bind(this.eventsBindTo, function(argEvent){return fncThis.onactivatenext.call(fncThis, this, argEvent)});
+			argElement.on(this.eventsBindTo, function(argEvent){return fncThis.onactivatenext.call(fncThis, this, argEvent)});
 	}
 	__.classes.relativeNavigationHandler.prototype.handleButtonShowHide = function(){
 		if(this.testShowPrevious()){

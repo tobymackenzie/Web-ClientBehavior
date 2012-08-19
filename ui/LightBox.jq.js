@@ -51,7 +51,7 @@ description
 			this.typeDefault = args.typeDefault || 'image';
 			if(args.animateClose) this.animateClose = args.animateClose;
 			if(args.animateOpen) this.animateOpen = args.animateOpen;
-			
+
 			//--derived attributes
 			if(!this.elmWrap){
 				this.elmWrap = jQuery(this.htmlWrap).hide();
@@ -63,14 +63,14 @@ description
 			}
 			this.isOpened = false;
 			this.typeCurrent = null;
-			
+
 			//--add relative navigation if needed
 			if(this.doRelativeNavigation){
 				if(!this.elmWrapRelativeNavigation){
 					this.elmWrapRelativeNavigation = jQuery(this.htmlWrapRelativeNavigation);
 					this.elmWrap.append(this.elmWrapRelativeNavigation);
 				}
-				this.elmWrapRelativeNavigation.delegate.apply(this.elmWrapRelativeNavigation, this.argsDelegateHandleRelativeNavigation)
+				this.elmWrapRelativeNavigation.on.apply(this.elmWrapRelativeNavigation, this.argsDelegateHandleRelativeNavigation)
 				if(!this.elmButtonPrevious){
 					this.elmWrapButtonPrevious = jQuery(this.htmlWrapButtonPrevious);
 					this.elmButtonPrevious = jQuery(this.htmlButtonPrevious)

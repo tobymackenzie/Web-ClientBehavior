@@ -22,7 +22,7 @@ __.logger = {
 		fncThis.elmContainer.css({overflow: "hidden", display: "block", position: "absolute", top: 0, left: 0, background: "#fff"});
 		fncThis.elmList = $("<ol>");
 		fncThis.elmContainer.append(fncThis.elmList);
-		//__.elmError.delegate("pre", "click", function(){ $(this).remove(); });
+		//__.elmError.on('click', 'pre', function(){ $(this).remove(); });
 		fncThis.elmContainer.click(function(){
 			if(fncThis.elmContainer.data("open")){
 				fncThis.hide();

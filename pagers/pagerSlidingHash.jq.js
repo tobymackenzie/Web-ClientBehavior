@@ -79,7 +79,7 @@ __.classes.pagerSlidingHash = function(args){
 		this.onpreslide = args.onpreslide || null;
 		this.onpostslide = args.onpostslide || null;
 		this.boot = args.boot || null;
-		
+
 		//--set up current pages
 		if(window.location.hash){
 			this.elmCurrent = this.elmsPages.filter(this.parsePath(window.location.hash)).addClass(this.classCurrentItem);
@@ -90,7 +90,7 @@ __.classes.pagerSlidingHash = function(args){
 				this.elmCurrent.addClass(this.classCurrentItem);
 			}
 		}
-		
+
 		if(this.elmKeepHeight){
 			this.elmKeepHeight.css("height", __.getHiddenElementHeight(this.elmCurrent));
 		}
@@ -98,18 +98,18 @@ __.classes.pagerSlidingHash = function(args){
 		//--show navigation
 		if(this.elmNavigation)
 			this.elmNavigation.show();
-		
+
 		//--set up page offsets
 /* for whole body
 		this.pageOffsetLeft = (args.contentLeft)? 0: this.elmCurrent.offset().left;
 		if(!args.contentLeft){
 			this.pageOffsetRight = (args.contentLeft)?false:$("body").outerWidth();
-			
+
 		}
 */
 		this.pageOffsetLeft = args.pageOffsetLeft || 0;
 		this.pageOffsetRight = args.pageOffsetRight || 0;
-		
+
 		//--set up non-current pages
 		var elmsPrevious = this.elmsPages.filter("."+this.classCurrentItem).prevAll()
 		elmsPrevious.addClass(this.classPreviousItem);
@@ -117,12 +117,12 @@ __.classes.pagerSlidingHash = function(args){
 		elmsNext.addClass(this.classNextItem);
 		elmsPrevious.css({"left":0 - this.pageOffsetLeft - this.contentWidth, "display":"none"});
 		elmsNext.css({"left":this.pageOffsetRight + this.contentWidth, "display":"none"});
-		
+
 		//--set up relative navigation
 		this.updateRelativeNavigation(0);
-		
+
 		this.inprogress = 0;
-		
+
 		this.attachEvents();
 
 		if(this.oninit)
@@ -131,7 +131,7 @@ __.classes.pagerSlidingHash = function(args){
 	__.classes.pagerSlidingHash.prototype.attachEvents = function(){
 		var fncThis = this;
 		if(fncThis.elmPreviousButton){
-			fncThis.elmPreviousButton.children("a").bind("click", function(){
+			fncThis.elmPreviousButton.children("a").on("click", function(){
 				if(fncThis.inprogress == 0 && jQuery(this).attr("href")){
 					fncThis.inprogress = 1;
 					if(!fncThis.switchPagesByID(fncThis.parsePath(fncThis.elmPreviousButton.children("a").attr("href"))))
@@ -141,7 +141,7 @@ __.classes.pagerSlidingHash = function(args){
 			});
 		}
 		if(fncThis.elmNextButton){
-			fncThis.elmNextButton.children("a").bind("click", function(){
+			fncThis.elmNextButton.children("a").on("click", function(){
 				if(fncThis.inprogress == 0 && jQuery(this).attr("href")){
 					fncThis.inprogress = 1;
 					if(!fncThis.switchPagesByID(fncThis.parsePath(fncThis.elmNextButton.children("a").attr("href"))))
@@ -151,7 +151,7 @@ __.classes.pagerSlidingHash = function(args){
 			});
 		}
 		if(fncThis.elmsItemNavigation){
-			fncThis.elmsItemNavigation.bind("click", function(){
+			fncThis.elmsItemNavigation.on("click", function(){
 				if(fncThis.inprogress == 0){
 					fncThis.inprogress = 1;
 					if(!fncThis.switchPagesByID(fncThis.parsePath(jQuery(this).children("a").attr("href"))))
@@ -186,7 +186,7 @@ __.classes.pagerSlidingHash = function(args){
 			fncThis.elmCurrent.removeClass(fncThis.classCurrentItem);
 			elmNewPage.removeClass(fncThis.classNextItem).removeClass(fncThis.classPreviousItem).addClass(fncThis.classCurrentItem);
 			fncThis.elmCurrent = elmNewPage;
-			
+
 			var elmsPagesLength = fncThis.elmsPages.length;
 			var elmIndexCurrent = fncThis.getPageIndex(elmNewPage);
 			//-set all previous elements to previous
@@ -202,14 +202,14 @@ __.classes.pagerSlidingHash = function(args){
 				fncThis.onpostslide.call(fncThis, this);
 
 			fncThis.updateRelativeNavigation();
-			
+
 			fncThis.inprogress = 0;
 		}
-		
+
 		//--call preslide callback
 		if(fncThis.onpreslide)
 			fncThis.onpreslide.call(this, elmNewPage);
-		
+
 		//--animate new height
 		if(fncThis.elmKeepHeight){
 			fncThis.elmKeepHeight.animate({height: __.getHiddenElementHeight(elmNewPage)}, fncThis.duration);
@@ -226,8 +226,8 @@ __.classes.pagerSlidingHash = function(args){
 			fncThis.elmCurrent.css("display","block").animate({left: this.pageOffsetRight + this.contentWidth}, fncThis.duration)
 			elmNewPage.css({"display":"block", "left":0 - this.pageOffsetLeft - this.contentWidth}).animate({left: fncThis.contentLeft}, fncThis.duration, callback);
 		}
-		
-		
+
+
 		return true;
 	}
 	__.classes.pagerSlidingHash.prototype.updateRelativeNavigation = function(argDuration){
@@ -248,7 +248,7 @@ __.classes.pagerSlidingHash = function(args){
 				this.elmNextButton.removeClass(this.classEnabled).addClass(this.classDisabled).children("a").attr("href", "");
 		}
 
-		
+
 		//-set up current navigation item
 		if(this.elmsItemNavigation)
 			this.elmsItemNavigation.removeClass(this.classCurrentNavItem).has("[href=#"+this.elmCurrent.attr("id")+"]").addClass(this.classCurrentNavItem);

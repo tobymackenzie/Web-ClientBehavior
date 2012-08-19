@@ -16,7 +16,7 @@ $(document).ready(function(){
 			var elmCloser = $('<a class="closer" href="javascript:/*hideAdditionalInformation()*/;">hide</a>');
 			elmCloserWrap.append("(").append(elmCloser).append(")");
 			this.element.find("h3.header").after(elmCloserWrap);
-			elmCloser.bind("click touchstart", function(){
+			elmCloser.on("click touchstart", function(){
 				fncThis.close();
 			});
 		}
@@ -42,7 +42,7 @@ __.classes.slideOpen = function(args){
 		this.callbackOpen = args.callbackOpen || null;
 		this.callbackClose = args.callbackClose || null;
 		this.duration = args.duration || 500;
-		
+
 		var fncThis = this;
 		this.element.css("display", "none").addClass(this.classClosed).removeClass(this.classOpen);
 		// init toggle clickable
@@ -55,7 +55,7 @@ __.classes.slideOpen = function(args){
 		this.elmTogglerAnchor.click(function(){
 			fncThis.toggle();
 		});
-		
+
 		if(this.callbackInit)
 			this.callbackInit.call(this);
 	}
@@ -74,4 +74,4 @@ __.classes.slideOpen = function(args){
 		this.elmTogglerAnchor.html(this.strTogglerClosed+this.strToggler);
 	}
 
-	
+
