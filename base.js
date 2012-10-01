@@ -25,10 +25,14 @@ document.getElementsByTagName('html')[0].className += ' hasjavascript';
 
 	__.message = function(arg){
 		if(window.console && window.console.log){
-			if(window.console.log.apply)
+			if(window.console.log.apply){
 				window.console.log.apply(window.console, arguments);
-			else
-				window.console.log(arg); //-# for ie8
+			}else{ //--ie 8+, doesn't support multi-argument console.log, so we will loop through the arguments and log each one
+				window.console.log('-----message:');
+				for(var key in arguments){
+					window.console.log(arguments[key]);
+				}
+			}
 		}//else alert(arg); //-# for ielte7, other old browsers
 	}
 
