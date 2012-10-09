@@ -35,6 +35,7 @@ __.scrOnload = function(){
 ©TMlib suckerfish
 ----------*/
 __.classes.suckerfish = function (args){
+		this.delay = (typeof args.delay != 'undefined') ? args.delay : 750;
 		this.wrapperClass = (args.wrapperClass)? args.wrapperClass : 'topItem';
 		this.topLevelClass = (args.topLevelClass)? args.topLevelClass : 'topLevel';
 		this.subMenuClass = (args.subMenuClass)? args.subMenuClass : 'subMenu';
@@ -83,7 +84,7 @@ __.classes.suckerfish = function (args){
 				}(forElmMenuItemArray, fncThis);
 				var callbackMouseout = function(fncThis){
 					return function(){
-						fncThis.timeout = setTimeout(function(fncThis){ return function(){fncThis.dropdownCloseCurrent(); };}(fncThis) ,750);
+						fncThis.timeout = setTimeout(function(fncThis){ return function(){fncThis.dropdownCloseCurrent(); };}(fncThis), fncThis.delay);
 					};
 
 				}(fncThis);
