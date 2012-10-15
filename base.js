@@ -1,6 +1,17 @@
 document.getElementsByTagName('html')[0].className += ' hasjavascript';
 
-(function(window, undefined){
+(function(dependencies, undefined){
+	/*=====
+	==dependencies
+	Allow injection of dependencies so they can be theoretically modified for testing.
+	Local names allow them to be minified.
+	=====*/
+
+	var window = dependencies.window || window;
+	if(dependencies.head) var head = dependencies.head;
+	else if(window.head) var head = window.head;
+	if(dependencies.jQuery) var jQuery = dependencies.jQuery;
+	else if(window.jQuery) var jQuery = window.jQuery;
 
 	/*=====
 	==tmlib
@@ -14,10 +25,14 @@ document.getElementsByTagName('html')[0].className += ' hasjavascript';
 
 	__.message = function(arg){
 		if(window.console && window.console.log){
-			if(window.console.log.apply)
+			if(window.console.log.apply){
 				window.console.log.apply(window.console, arguments);
-			else
-				window.console.log(arg); //-# for ie8
+			}else{ //--ie 8+, doesn't support multi-argument console.log, so we will loop through the arguments and log each one
+				window.console.log('-----message:');
+				for(var key in arguments){
+					window.console.log(arguments[key]);
+				}
+			}
 		}//else alert(arg); //-# for ielte7, other old browsers
 	}
 
@@ -48,5 +63,4 @@ document.getElementsByTagName('html')[0].className += ' hasjavascript';
 	//-!havehead-head.ready(__.onload);
 	//-!havejquery-jQuery(__.onload);
 
-})(window);
-
+})({'window': window});

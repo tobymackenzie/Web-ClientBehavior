@@ -48,6 +48,10 @@ description
 			this.htmlWrapButtonNext = args.htmlWrapButtonNext || '<li class="itemNavigationRelative itemNavigationRelativeNext">';
 			this.htmlWrapButtonPrevious = args.htmlWrapButtonPrevious || '<li class="itemNavigationRelative itemNavigationRelativePrevious">';
 			this.htmlWrapRelativeNavigation = args.htmlWrapRelativeNavigation || '<ul class="relativeNavigation imageRelativeNavigation plain">';
+			this.onPreClose = args.onPreClose || null;
+			this.onPostClose = args.onPostClose || null;
+			this.onPreOpen = args.onPreOpen || null;
+			this.onPostOpen = args.onPostOpen || null;
 			this.typeDefault = args.typeDefault || 'image';
 			if(args.animateClose) this.animateClose = args.animateClose;
 			if(args.animateOpen) this.animateOpen = args.animateOpen;
@@ -89,24 +93,30 @@ description
 		__.classes.LightBox.prototype.animateClose = function(args){
 			if(!args) args = {};
 			var lcThis = this;
-			var elmAnimateWrap = (args.elmAnimateWrap) ? args.elmAnimateWrap : this.elmWrap;
+			var elmAnimateWrap = (args.elmAnimateWrap) ? args.elmAnimateWrap : lcThis.elmWrap;
+			if(args.onPreClose) args.onPreClose.call(lcThis, args);
+			if(lcThis.onPreClose) this.onPreClose.call(lcThis, args);
 			elmAnimateWrap[this.fxClose](
 				this.duration
 				,function(){
 					lcThis.isOpened = false;
-					if(args.onPostClose) args.onPostClose(args);
+					if(args.onPostClose) args.onPostClose.call(lcThis, args);
+					if(lcThis.onPostClose) lcThis.onPostClose.call(lcThis, args);
 				}
 			);
 		}
 		__.classes.LightBox.prototype.animateOpen = function(args){
 			var lcThis = this;
-			var elmAnimateWrap = (args.elmAnimateWrap) ? args.elmAnimateWrap : this.elmWrap;
+			var elmAnimateWrap = (args.elmAnimateWrap) ? args.elmAnimateWrap : lcThis.elmWrap;
+			if(args.onPreOpen) args.onPreOpen.call(lcThis, args);
+			if(lcThis.onPreOpen) lcThis.onPreOpen.call(lcThis, args);
 			elmAnimateWrap[this.fxOpen](
 				this.duration
 				,function(){
 					lcThis.isOpened = true;
 					lcThis.updateRelativeNavigation(args);
-					if(args.onPostOpen) args.onPostOpen(args);
+					if(args.onPostOpen) args.onPostOpen.call(lcThis, args);
+					if(lcThis.onPostOpen) lcThis.onPostOpen.call(lcThis, args);
 				}
 			);
 		}
@@ -180,4 +190,3 @@ description
 				this.elmButtonPrevious.hide();
 			}
 		}
-
