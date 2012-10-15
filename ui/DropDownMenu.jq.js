@@ -136,6 +136,7 @@ __.classes.DropDownMenu = function (args){
 	__.classes.DropDownMenu.prototype.openDropDown = function(argElement){
 		var doOnOpen = (this.elmCurrentlySelected !== argElement)
 		if(this.elmCurrentlySelected && this.elmCurrentlySelected !== argElement){
+			clearTimeout(this.timeout);
 			this.closeCurrentDrowDown();
 		}
 		if(argElement){
