@@ -116,17 +116,12 @@ __.classes.AnimateTransition = function(args){
 		var lcCountElements = fncElements.length;
 		var fncThis = this;
 		fncThis.countItemsCompleted = 0;
-		var callbackDQ = (typeof argKeyStep != 'undefined')
-			? function(){
-				++fncThis.countItemsCompleted;
-				if(fncThis.countItemsCompleted >= lcCountElements){
-					fncThis.queue.dequeue();
-				}
-			}
-			: function(){
+		var callbackDQ = function(){
+			++fncThis.countItemsCompleted;
+			if(fncThis.countItemsCompleted >= lcCountElements){
 				fncThis.queue.dequeue();
 			}
-		;
+		};
 		for(var keyItem in fncElements){
 			if(fncElements.hasOwnProperty(keyItem)){
 				if(!this.stylesTransition){
