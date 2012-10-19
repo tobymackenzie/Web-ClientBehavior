@@ -9,22 +9,81 @@ jquery
 -----parameters
 @param doUpdateWidth: update width of wrapper on window resize?
 
+-----styling
+disables for IE 7 and lower.  can work for simple inlineable items, but not for block style items, unless they are moved into table cells or some other thing allowing them to be inline and not wrap
+*/
+/*==buttonScroller */
+.hasjavascript .buttonScrollerWrap{
+	position: relative; /* make a positioning parent */
+	height: -!repHeightOfContent!-px; /* must be a fixed height that can show content */
+	overflow: hidden; /* hide part of list extending outside of wrapper */
+}
+.uaielte7.hasjavascript .buttonScrollerWrap{
+	height: auto;
+}
+.hasjavascript .buttonScrollerList{
+	position: absolute; /* position list absolutely so it can be full width and moved */
+	top: 0;
+	left: 0;
+	white-space: nowrap; /* ensure items don't wrap */
+}
+.uaielte7.hasjavascript .buttonScrollerList{
+	position: static;
+}
+.hasjavascript .buttonScrollerItem{
+	display: inline;
+	display: inline-block; /* display inline instead of float to take advantage of the 'nowrap' 'white-space' */
+	float: none;
+	white-space: normal; /* reset 'white-space' for content */
+}
+.uaielte7.hasjavascript .buttonScrollerItem{
+	display: inline;
+}
+
+/*===navigation */
+.buttonScrollerNavigationItem{
+	position: absolute; /* allow moving into position */
+	top: 50%; /* halfway from the top of the container */
+	margin-top: --!repHalfHeightOfButton!-px; /* then back up half the height of the button */
+}
+.buttonScrollerNavigationItem.previous{
+	left: -!repOffsetPreviousButton!-; /* on the left */
+}
+.buttonScrollerNavigationItem.next{
+	right: -!repOffsetNextButton!-; /* on the right */
+}
+.buttonScrollerNavigationItem a{
+	display: block; /* replace text with icon */
+	width: -!repWidthOfImageSlice!-px;
+	height: -!repHeightOfImageSlice!-px;
+	background-image: url('-!repPathToImageSliceFile!-');
+	background-repeat: none;
+}
+.buttonScrollerNavigationItem.previous a{
+	background-position: -!repOffsetOfPreviousSlice!-px top;
+}
+.buttonScrollerNavigationItem.next a{
+	background-position: -!repOffsetOfNextSlice!- top;
+}
+
+/*
 -----init
+*/
 if(typeof $ !== 'undefined')
 	$(document).ready(function(){
 		var elmCategoryImages = $('#page_portfolio_category #maincontent .images');
 		if(elmCategoryImages.length > 0){
 			__.scrollerCategoryImages = new __.classes.buttonScrollerHorizontal({
-				elmWrapper: elmCategoryImages,
-				elmContainer: elmCategoryImages.find('.imagelist'),
-				htmlButtonContainer: '<div class="relativenavigation"><h3 class="screenreaderonly">Image Navigation</h3></div>',
-				htmlButtonPrevious: '<div class="item previous"><a href="javascript:/*__scroll_to_previous_images*/"><span class="screenreaderonly">Previous</span></a></div>',
-				htmlButtonNext: '<div class="item next"><a href="javascript:/*__scroll_to_next_images*/"><span class="screenreaderonly">Next</span></a></div>'
+				elmWrapper: elmCategoryImages
+				,elmContainer: elmCategoryImages.find('.imageList'),
+				,htmlButtonContainer: '<div class="buttonScrollerNavigation"><h3 class="screenReaderOnly">Image Navigation</h3></div>'
+				,htmlButtonPrevious: '<div class="buttonScrollerNavigationItem previous"><a href="javascript:/* scroll to previous images */"><span class="screenReaderOnly">Previous</span></a></div>'
+				,htmlButtonNext: '<div class="buttonScrollerNavigationItem next"><a href="javascript:/* scroll to next images*/"><span class="screenReaderOnly">Next</span></a></div>'
 			});
 		}
 	});
 
------*/
+/*-----*/
 
 /*-----------
 ©buttonScrollerHorizontal
@@ -180,4 +239,3 @@ __.classes.buttonScrollerHorizontal = function(args){
 		this.elmWrapper = argElement;
 		this.widthWrapper = this.elmWrapper.width();
 	}
-
