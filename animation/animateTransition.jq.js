@@ -139,6 +139,9 @@ __.classes.AnimateTransition = function(args){
 				}else{
 					var lopStylesTransition = fncThis.stylesTransition[keyItem] || null;
 					var lopDuration = this.duration;
+					if(lopDuration.constructor == Array){
+						lopDuration = this.duration[keyItem];
+					}
 				}
 				if(lopStylesTransition){
 					if(typeof lopStylesTransition === 'function'){
