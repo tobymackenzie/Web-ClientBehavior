@@ -66,12 +66,28 @@ __.classes.slideOpen = function(args){
 			this.open();
 	}
 	__.classes.slideOpen.prototype.open = function(){
-		this.element.slideDown(this.duration, this.callbackOpen).addClass(this.classOpen).removeClass(this.classClosed);
+		var lcThis = this;
+		this.element
+			.slideDown(
+				this.duration
+				,function(){
+					lcThis.callbackOpen.call(lcThis);
+				}
+			).addClass(this.classOpen)
+			.removeClass(this.classClosed)
+		;
 		this.elmTogglerAnchor.html(this.strTogglerOpened+this.strToggler);
 	}
 	__.classes.slideOpen.prototype.close = function(){
-		this.element.slideUp(this.duration, this.callbackClose).addClass(this.classClosed).removeClass(this.classOpen);
+		var lcThis = this;
+		this.element
+			.slideUp(
+				this.duration
+				,function(){
+					lcThis.callbackClose.call(lcThis);
+				}
+			).addClass(this.classClosed)
+			.removeClass(this.classOpen)
+		;
 		this.elmTogglerAnchor.html(this.strTogglerClosed+this.strToggler);
 	}
-
-
