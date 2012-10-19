@@ -4,7 +4,7 @@ animates transition between two elements
 tmlib: animationQueue
 -----parameters
 arguments:
-	duration (integer || array[integers]): duration of animation or of each animation step
+	duration (integer || array[integers] || array[arrays[integers]]): duration of animation or of each animation step or for each item of each step
 	stylesBefore (array[map of style properties and values]): styles to apply to elements before animation starts
 	stylesTransition (array[stylemap || array[stylemap]]): styles to animate elements to
 	stylesAfter (array[stylemap]): styles to apply to elements after animation
@@ -135,6 +135,9 @@ __.classes.AnimateTransition = function(args){
 					var lopStylesTransition = this.stylesTransition[argKeyStep][keyItem] || null;
 					if(this.duration.constructor == Array){
 						var lopDuration = this.duration[argKeyStep];
+						if(lopDuration.constructor == Array){
+							lopDuration = this.duration[argKeyStep][keyItem];
+						}
 					}else{
 						var lopDuration = this.duration;
 					}
