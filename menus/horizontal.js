@@ -96,8 +96,10 @@ __.classes.suckerfish = function (args){
 				__.lib.addListeners(forElmMenuItemArray['elmItemWrapper'], 'touchstart', callbackFull, false);
 				__.lib.addListeners(forElmMenuItemArray['elmItemWrapper'], 'mouseout', callbackMouseout, false);
 
-				forElmMenuItemArray['elmtopLevel'].href='javascript:/*openMenu()*/;';
-				forElmMenuItemArray['elmtopLevel'].style.cursor = 'default';
+				if(!forElmMenuItemArray['elmtopLevel'].href){
+					forElmMenuItemArray['elmtopLevel'].href='javascript:/*openMenu()*/;';
+					forElmMenuItemArray['elmtopLevel'].style.cursor = 'default';
+				}
 			}
 			// empty menu items
 			else{
