@@ -28,7 +28,7 @@ tmlib, jquery
 .hasjavascript .hoverTip{
 	display: none;
 }
-.hasjavascript .current .hoverTip
+.hasjavascript .hoverTipItem.current .hoverTip
 ,.hasjavascript .hoverTipItem:hover .hoverTip
 ,.hasjavascript .hoverTipItem a:focus .hoverTip
 {
