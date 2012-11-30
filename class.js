@@ -19,7 +19,7 @@ __.class.define = function(args, argName){
 			//-- set attributes to args values or defaults
 			this._instance = {data: {}};
 			__.lib.each(this.__.def.attributes, function(argValue, argKey){
-				var lopOptions = __.lib.merge(
+				var lopOptions = __.core.Objects.merge(
 					this.defaultAttributeOptions
 					,(typeof argValue == 'object' && argValue.hasOwnProperty('default'))? argValue: {default: argValue}
 				);
@@ -78,13 +78,13 @@ __.class.define = function(args, argName){
 	if(lclParent){
 		var lclDef = lclClass.prototype.__.def;
 		if(typeof lclParent.prototype.__.def.attributes != 'undefined' || typeof lclDef.attributes != 'undefined'){
-			lclDef.attributes = __.lib.merge(
+			lclDef.attributes = __.core.Objects.merge(
 				(typeof lclParent.prototype.__.def.attributes != 'undefined')? lclParent.prototype.__.def.attributes: {}
 				,(typeof lclDef.attributes != 'undefined')? lclDef.attributes: {}
 			);
 		}
 		if(typeof lclParent.prototype.__.def.methods != 'undefined' || typeof lclDef.methods != 'undefined'){
-			lclDef.methods = __.lib.merge(
+			lclDef.methods = __.core.Objects.merge(
 				(typeof lclParent.prototype.__.def.methods != 'undefined')? lclParent.prototype.__.def.methods: {}
 				,(typeof lclDef.methods != 'undefined')? lclDef.methods: {}
 			);

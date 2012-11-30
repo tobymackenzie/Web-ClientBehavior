@@ -55,7 +55,7 @@ __.classes.updateSelect = function(args){
 				fncThis.callback.call(fncThis, argResponse.responseText, argResponse);
 			}
 			var fncParameters = {};
-			fncParameters = __.lib.merge(fncParameters, fncThis.parametersFixed);
+			fncParameters = __.core.Objects.merge(fncParameters, fncThis.parametersFixed);
 			if(this.nameParameter && valueSelect != '')
 				fncParameters[this.nameParameter] = valueSelect;
 			__.lib.ajaxCall({
