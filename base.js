@@ -17,7 +17,7 @@ document.getElementsByTagName('html')[0].className += ' hasjavascript';
 	==tmlib
 	=====*/
 
-	if(typeof window.__ === 'undefined') var __ = window.__ = {ua: {}, cfg: {}, 'class': {}, classes: {}, 'data': {}, lib: {}, objects: {}};
+	if(typeof window.__ === 'undefined') var __ = window.__ = {ua: {}, cfg: {}, 'class': {}, classes: {}, core: {}, 'data': {}, lib: {}, objects: {}};
 
 	/*===
 	==lib
