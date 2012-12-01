@@ -9,7 +9,7 @@ __.core.Classes = {
 
 	Parameters:
 		argOptions(map):
-			init(Function): Function to run as constructor
+			init(Function|null): Function to run as constructor.  null prevents parent constructor from being run
 			name(String): A string name for the class.  Currently used only to assign to the window namespace, though will support any namespace and will use this for class meta data later.
 			parent(Object|String): Object to extend.  If none is passed, will extend a base object or the built in object.
 			properties(map): Properties to add to object's prototype.  Currently added directly, but will eventually support per property configuration by passing a map.
@@ -45,9 +45,17 @@ __.core.Classes = {
 		function lcClass(){
 			//--don't run 
 			if(!__.core.Classes.__isCreatingPrototype){
-				//--call class's init method, if it exists
-				if(this.init){
-					this.init.apply(this, arguments);
+				//--call defined constructor or parent constructor
+				switch(typeof this.init){
+					//--call class's init method, if it exists
+					case 'function':
+						this.init.apply(this, arguments);
+					break;
+					//--call parent's constructor (useful for non-tmlib classes)
+					case 'undefined':
+						lcParent.apply(this, arguments);
+					break;
+					//--all other possibilities cause nothing to happen
 				}
 			}
 		}
@@ -64,7 +72,7 @@ __.core.Classes = {
 		}
 
 		//--set prototypes init method, if it exists
-		if(typeof argOptions.init == 'function'){
+		if(typeof argOptions.init != 'undefined'){
 			lcPrototype.init = argOptions.init;
 		}
 
