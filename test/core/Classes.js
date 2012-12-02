@@ -40,8 +40,8 @@ test('core.Classes.create', function(){
 	assert.equal(parentClassInstance.parentClassProperty2, 'bar', 'parentClassInstance.parentClassProperty2 should match prototype');
 	//---child
 	assert.equal(childClassInstance.parentClassProperty1, 'foo', 'childClassInstance.parentClassProperty1 should match parent prototype');
-	assert.equal(childClassInstance.parentClassProperty2, 'overriddenBar', 'parentClassInstance.parentClassProperty2 should match subclass prototype');
-	assert.equal(childClassInstance.childClassProperty1, 'boo', 'parentClassInstance.childClassProperty1 should match subclass prototype');
+	assert.equal(childClassInstance.parentClassProperty2, 'overriddenBar', 'childClassInstance.parentClassProperty2 should match subclass prototype');
+	assert.equal(childClassInstance.childClassProperty1, 'boo', 'childClassInstance.childClassProperty1 should match subclass prototype');
 	//-! for currently removed functionality
 	//assert.equal(childClassInstance.childClassProperty2, 'overriddenFar', 'parentClassInstance.childClassProperty2 should match instance value');
 	//assert.equal(childClassInstance.childClassProperty2, 'overriddenFar', 'parentClassInstance.childClassProperty2 should match instance value');
