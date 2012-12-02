@@ -1,3 +1,106 @@
+test('core.Functions.contains', function(){
+	//==initial setup
+	var testFunction = function(argOne, argTwo){
+		var thisBase = this.__base || undefined;
+	}
+
+	var strings = [
+		{
+			'message': 'Arguments should be tested'
+			,'regex': /\bargOne\b/
+			,'string': 'argOne'
+			,'shouldBe': true
+		}
+		,{
+			'message': 'Function body should be tested'
+			,'regex': /\b__base\b/
+			,'string': '__base'
+			,'shouldBe': true
+		}
+		,{
+			'message': 'Non-existing string should not be found'
+			,'regex': /\bfoo\b/
+			,'string': 'foo'
+			,'shouldBe': false
+		}
+	];
+
+	//==tests
+	//--strings
+	for(
+		var i = 0, stringsLength = strings.length
+		; i < stringsLength
+		; ++i
+	){
+		var lopItem = strings[i];
+		if(lopItem.string || false){
+			var expect = (typeof lopItem.shouldBe == 'boolean') ? lopItem.shouldBe : true;
+			var message =
+				'String test (' + lopItem.string + ')'
+				+ (
+					(lopItem.message || false)
+					? ': ' + lopItem.message
+					: ''
+				)
+			;
+			assert.equal(
+				__.core.Functions.contains(testFunction, lopItem.string)
+				,expect
+				,message
+			);
+		}
+	}
+
+	//--regex
+	for(
+		var i = 0, stringsLength = strings.length
+		; i < stringsLength
+		; ++i
+	){
+		var lopItem = strings[i];
+		if(lopItem.regex || false){
+			var expect = (typeof lopItem.shouldBe == 'boolean') ? lopItem.shouldBe : true;
+			var message =
+				'Straight regex test (' + lopItem.string + ')'
+				+ (
+					(lopItem.message || false)
+					? ': ' + lopItem.message
+					: ''
+				)
+			;
+			assert.equal(
+				__.core.Functions.contains(testFunction, lopItem.regex)
+				,expect
+				,message
+			);
+		}
+	}
+
+	//--string regex
+	for(
+		var i = 0, stringsLength = strings.length
+		; i < stringsLength
+		; ++i
+	){
+		var lopItem = strings[i];
+		if(lopItem.string || false){
+			var expect = (typeof lopItem.shouldBe == 'boolean') ? lopItem.shouldBe : true;
+			var message =
+				'String regex test (' + lopItem.string + ')'
+				+ (
+					(lopItem.message || false)
+					? ': ' + lopItem.message
+					: ''
+				)
+			;
+			assert.equal(
+				__.core.Functions.contains(testFunction, '\\b' + lopItem.string + '\\b')
+				,expect
+				,message
+			);
+		}
+	}
+});
 test('core.Functions.duckPunch', function(){
 	//==initial setup
 	//--base function to duck punch
@@ -52,7 +155,7 @@ test('core.Functions.duckPunch', function(){
 		, 'window[' + __.core.Functions.configuration.duckPunchKey + '] should be reset to original value of 26'
 	);
 	//---now try when a value is set
-	window[__.core.Functions.configuration.duckPunchKey] = 26;	
+	window[__.core.Functions.configuration.duckPunchKey] = 26;
 	punchedThisTypeFunction.apply(window, args)
 	assert.equal(
 		window[__.core.Functions.configuration.duckPunchKey]
