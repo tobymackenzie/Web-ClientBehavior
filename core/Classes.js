@@ -3,6 +3,15 @@ Library: Classes
 Basic functions for creating and working with classes.
 */
 __.core.Classes = {
+	/*=====
+	==configuration
+	=====*/
+	'configuration': {
+		'overriddenParentKey': '__base'
+	}
+	/*=====
+	==Library functions
+	=====*/
 	/*
 	Function: create
 	Create a class.  Provides an abstraction to creating classes directly by creating functions and manipulating their prototypes.  Will become much more capable, though ideally this'll be designed to be minimal but extensible to support other functionality.  Eventually all non-library classes will be migrated to be created by this function.  Meant to replace __.class.define, though it may take some bits from it before it gets removed.
@@ -17,8 +26,14 @@ __.core.Classes = {
 
 	Return:
 		Function object, the constructor of the class, but representing the class itself.
+
+	Dependencies:
+		__.core.Functions
+			.contains
+			.duckPunch
+		__.core.Objects.mergeInto
 	*/
-	'create': function(argOptions){
+	,'create': function(argOptions){
 		if(typeof argOptions == 'undefined') var argOptions = {};
 
 		//--create base prototype inheriting from parent
@@ -43,7 +58,7 @@ __.core.Classes = {
 
 		//--create class/constructor
 		function lcClass(){
-			//--don't run 
+			//--don't run if creating prototype via this.createPrototype
 			if(!__.core.Classes.__isCreatingPrototype){
 				//--call defined constructor or parent constructor
 				switch(typeof this.init){
@@ -81,10 +96,25 @@ __.core.Classes = {
 		if(typeof argOptions.init != 'undefined'){
 			lcProperties.init = argOptions.init;
 		}
-
-		//--merge definition properties into prototype
-		if(typeof argOptions.properties == 'object'){
-			lcPrototype = __.core.Objects.mergeInto(lcPrototype, argOptions.properties);
+		//--duck punch overridden methods to have access to parent class
+		for(var name in lcProperties){
+			if(
+				//--only override if function is in both parent and child classes
+				typeof lcProperties[name] == 'function'
+				&& typeof lcPrototype[name] == 'function'
+				//--only override if function actually calls the parent
+				&& __.core.Functions.contains(lcProperties[name], '\\b' + this.configuration.overriddenParentKey + '\\(\\b')
+			){
+				lcProperties[name] = __.core.Functions.duckPunch(
+					lcPrototype[name]
+					,lcProperties[name]
+					,{
+						key: this.configuration.overriddenParentKey
+						,type: 'this'
+						,name: name
+					}
+				);
+			}
 		}
 		//---merge properties into prototype
 		lcPrototype = __.core.Objects.mergeInto(lcPrototype, lcProperties);

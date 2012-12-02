@@ -2,33 +2,34 @@ test('core.Classes.create', function(){
 	//==initial setup
 	//--create parent class
 	var parentClass = __.core.Classes.create({
-	    'init': function(){
-	    	this.propertyFromParentClassInit = 'woo';
-	    }
-	    ,properties: {
-	        'parentClassProperty1': 'foo'
-	        ,'parentClassProperty2': 'bar'
-	    }
+		'init': function(){
+			this.propertyFromParentClassInit = 'woo';
+		}
+		,properties: {
+			'parentClassProperty1': 'foo'
+			,'parentClassProperty2': 'bar'
+		}
 	});
 	//--create instance of parent class
 	var parentClassInstance = new parentClass();
 	//--create child class
 	var childClass = __.core.Classes.create({
-	    'parent': parentClass
-	    ,'init': function(){
-	    	this.propertyFromChildClassInit = 'woo';
-	    }
-	    ,'properties': {
-	        'childClassProperty1': 'boo'
-	        ,'childClassProperty2': 'far'
-	        ,'parentClassProperty2': 'overriddenBar'
-	    }
+		'parent': parentClass
+		,'init': function(){
+			this.__base(arguments);
+			this.propertyFromChildClassInit = 'woo';
+		}
+		,'properties': {
+			'childClassProperty1': 'boo'
+			,'childClassProperty2': 'far'
+			,'parentClassProperty2': 'overriddenBar'
+		}
 	});
 	//--create instance of child class
 	var childClassInstance = new childClass(/*{
 		//-! for currently removed functionality
-	    'instanceProperty1': 'ifoo'
-	    ,'childClassProperty2': 'overriddenFar'
+		'instanceProperty1': 'ifoo'
+		,'childClassProperty2': 'overriddenFar'
 	}*/);
 
 	//==test
@@ -37,7 +38,7 @@ test('core.Classes.create', function(){
 	assert.ok(parentClassInstance.parentClassProperty1, 'parentClassInstance.parentClassProperty1 should be set');
 	assert.equal(parentClassInstance.parentClassProperty1, 'foo', 'parentClassInstance.parentClassProperty1 should match prototype');
 	assert.equal(parentClassInstance.parentClassProperty2, 'bar', 'parentClassInstance.parentClassProperty2 should match prototype');
-	//---child	
+	//---child
 	assert.equal(childClassInstance.parentClassProperty1, 'foo', 'childClassInstance.parentClassProperty1 should match parent prototype');
 	assert.equal(childClassInstance.parentClassProperty2, 'overriddenBar', 'parentClassInstance.parentClassProperty2 should match subclass prototype');
 	assert.equal(childClassInstance.childClassProperty1, 'boo', 'parentClassInstance.childClassProperty1 should match subclass prototype');
@@ -60,6 +61,6 @@ test('core.Classes.create', function(){
 	//---parent
 	assert.ok(typeof parentClassInstance.propertyFromParentClassInit != 'undefined', 'parentClassInstance should have property propertyFromParentClassInit');
 	assert.ok(typeof parentClassInstance.propertyFromChildClassInit == 'undefined', 'parentClassInstance should not have property propertyFromChildClassInit');
-	assert.ok(typeof childClassInstance.propertyFromParentClassInit == 'undefined', 'childClassInstance should not have property propertyFromParentClassInit');
+	assert.ok(typeof childClassInstance.propertyFromParentClassInit != 'undefined', 'childClassInstance should have property propertyFromParentClassInit via duck punching');
 	assert.ok(typeof childClassInstance.propertyFromChildClassInit != 'undefined', 'childClassInstance should have property propertyFromChildClassInit');
 });
