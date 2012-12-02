@@ -20,7 +20,7 @@ __.core.Functions = {
 
 	/*
 	Function: duckPunch
-	Duck punch a function with a wrapper, ie create a function that runs the wrapper with the original funciton available inside.  Unshifts the original function into the first parameter for the wrapper, since we cannot close into an already existing function.  Wrapper must shift off first argument as original function to be able to apply to said function.
+	Duck punch a function with a wrapper, ie create a function that runs the wrapper with the original function available inside.  Unshifts the original function into the first parameter for the wrapper, since we cannot close into an already existing function.  Wrapper must shift off first argument as original function to be able to apply to said function.
 
 	Example:
 		(start code)
@@ -44,7 +44,7 @@ __.core.Functions = {
 	,'duckPunch': function(argFunction, argWrapper){
 	    return function(){
 	        Array.prototype.unshift.call(arguments, argFunction)
-	        argWrapper.apply(this, arguments);
+	        return argWrapper.apply(this, arguments);
 	    }
 	}
 };
