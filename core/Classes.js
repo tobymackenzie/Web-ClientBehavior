@@ -103,7 +103,7 @@ __.core.Classes = {
 				typeof lcProperties[name] == 'function'
 				&& typeof lcPrototype[name] == 'function'
 				//--only override if function actually calls the parent
-				&& __.core.Functions.contains(lcProperties[name], '\\b' + this.configuration.overriddenParentKey + '\\(\\b')
+				&& __.core.Functions.contains(lcProperties[name], '\\b' + this.configuration.overriddenParentKey + '(\\(|\\.apply|\\.call)\\b')
 			){
 				lcProperties[name] = __.core.Functions.duckPunch(
 					lcPrototype[name]
