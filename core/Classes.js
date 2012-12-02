@@ -71,15 +71,23 @@ __.core.Classes = {
 			lcClass = __.core.Objects.mergeInto(lcClass, argOptions.statics);
 		}
 
-		//--set prototypes init method, if it exists
+		//--add properties to object
+		var lcProperties =
+			(typeof argOptions.properties == 'object')
+			? argOptions.properties
+			: {}
+		;
+		//---add init method to properties if it exists
 		if(typeof argOptions.init != 'undefined'){
-			lcPrototype.init = argOptions.init;
+			lcProperties.init = argOptions.init;
 		}
 
 		//--merge definition properties into prototype
 		if(typeof argOptions.properties == 'object'){
 			lcPrototype = __.core.Objects.mergeInto(lcPrototype, argOptions.properties);
 		}
+		//---merge properties into prototype
+		lcPrototype = __.core.Objects.mergeInto(lcPrototype, lcProperties);
 
 		//--set class prototype
 		lcClass.prototype = lcPrototype;
