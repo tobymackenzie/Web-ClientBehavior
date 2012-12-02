@@ -1,7 +1,7 @@
 test('core.Classes.create', function(){
 	//==initial setup
 	//--create parent class
-	parentClass = __.core.Classes.create({
+	var parentClass = __.core.Classes.create({
 	    'init': function(){
 	    	this.propertyFromParentClassInit = 'woo';
 	    }
@@ -11,9 +11,9 @@ test('core.Classes.create', function(){
 	    }
 	});
 	//--create instance of parent class
-	parentClassInstance = new parentClass();
+	var parentClassInstance = new parentClass();
 	//--create child class
-	childClass = __.core.Classes.create({
+	var childClass = __.core.Classes.create({
 	    'parent': parentClass
 	    ,'init': function(){
 	    	this.propertyFromChildClassInit = 'woo';
@@ -25,7 +25,7 @@ test('core.Classes.create', function(){
 	    }
 	});
 	//--create instance of child class
-	childClassInstance = new childClass(/*{
+	var childClassInstance = new childClass(/*{
 		//-! for currently removed functionality
 	    'instanceProperty1': 'ifoo'
 	    ,'childClassProperty2': 'overriddenFar'
