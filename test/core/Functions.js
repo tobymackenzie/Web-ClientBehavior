@@ -103,67 +103,121 @@ test('core.Functions.contains', function(){
 });
 test('core.Functions.duckPunch', function(){
 	//==initial setup
+	//--base context for checking changes
+	var baseContext = {
+		fromBase: false
+		,fromWrapper: false
+	}
+	var resetBaseContext = function(){
+		baseContext.fromBase = false;
+		baseContext.fromWrapper = false;
+	}
+
 	//--base function to duck punch
 	var baseFunction = function(argOne, argTwo){
+		this.fromBase = true;
 		return argOne + argTwo;
 	}
 
-	//--wrapper functions of both types
+	//--wrapper functions
+	//---for value and context testing
 	var wrapperFunctionArgumentType = function(argOne, argTwo){
 		var originalFunction = Array.prototype.shift.call(arguments);
+		this.fromWrapper = true;
 		argOne += 10;
-		return baseFunction.apply(this, arguments);
+		return originalFunction.apply(this, arguments);
 	}
 	var wrapperFunctionThisType = function(argOne, argTwo){
+		this.fromWrapper = true;
 		argOne += 10;
 		return this.__original.apply(this, arguments);
 	}
+	var wrapperFunctionArgumentTypeAutoApply = function(argOne, argTwo){
+		var originalFunction = Array.prototype.shift.call(arguments);
+		this.fromWrapper = true;
+		argOne += 10;
+		return originalFunction(arguments);
+	}
+	var wrapperFunctionThisTypeAutoApply = function(argOne, argTwo){
+		this.fromWrapper = true;
+		argOne += 10;
+		return this.__original(arguments);
+	}
 
 	//--duck punch baseFunction
+	//---for value and context testing
 	var punchedArgumentTypeFunction = __.core.Functions.duckPunch(baseFunction, wrapperFunctionArgumentType);
 	var punchedThisTypeFunction = __.core.Functions.duckPunch(baseFunction, wrapperFunctionThisType, {type: 'this'});
+	var punchedArgumentTypeFunctionAutoApply = __.core.Functions.duckPunch(baseFunction, wrapperFunctionArgumentTypeAutoApply, {autoApply: true});
+	var punchedThisTypeFunctionAutoApply = __.core.Functions.duckPunch(baseFunction, wrapperFunctionThisTypeAutoApply, {autoApply: true, type: 'this'});
 
 	//--arguments to run through all runs of function
 	var args = [10, 20];
 
-	//--grap duck punch key value so it can be reset on teardown
-	var originalValueForDuckPunchKey = window[__.core.Functions.configuration.duckPunchKey] || undefined;
-
 	//==tests
-	//--test values through all three versions of function
+	//--test context is making it through
+	baseFunction.apply(baseContext, args);
+	assert.ok(baseContext.fromBase, 'baseContext.fromBase should be true when only baseFunction called');
+	assert.ok(!baseContext.fromWrapper, 'baseContext.fromWrapper should be false when only baseFunction called');
+	resetBaseContext();
+
+	punchedArgumentTypeFunction.apply(baseContext, args);
+	assert.ok(baseContext.fromBase, 'baseContext.fromBase should be true when punchedArgumentTypeFunction called');
+	assert.ok(baseContext.fromWrapper, 'baseContext.fromWrapper should be true when punchedArgumentTypeFunction called');
+	resetBaseContext();
+
+	punchedThisTypeFunction.apply(baseContext, args);
+	assert.ok(baseContext.fromBase, 'baseContext.fromBase should be true when punchedThisTypeFunction called');
+	assert.ok(baseContext.fromWrapper, 'baseContext.fromWrapper should be true when punchedThisTypeFunction called');
+	resetBaseContext();
+
+	//-# this test will not work for punchedArgumentTypeFunctionAutoApply because it does not properly handle 'this' in base function
+
+	punchedThisTypeFunctionAutoApply.apply(baseContext, args);
+	assert.ok(baseContext.fromBase, 'baseContext.fromBase should be true when punchedThisTypeFunctionAutoApply called');
+	assert.ok(baseContext.fromWrapper, 'baseContext.fromWrapper should be true when punchedThisTypeFunctionAutoApply called');
+	resetBaseContext();
+
+	//--test values through all versions of function
 	assert.equal(
-		baseFunction.apply(window, args)
+		baseFunction.apply(baseContext, args)
 		,30
 		,'baseFunction should return 30'
 	);
 	assert.equal(
-		punchedArgumentTypeFunction.apply(window, args)
+		punchedArgumentTypeFunction.apply(baseContext, args)
 		,40
 		,'punchedArgumentTypeFunction should return 40 (30 + 10)'
 	);
 	assert.equal(
-		punchedThisTypeFunction.apply(window, args)
+		punchedThisTypeFunction.apply(baseContext, args)
 		,40
 		,'punchedThisTypeFunction should return 40 (30 + 10)'
 	);
+	assert.equal(
+		punchedArgumentTypeFunctionAutoApply.apply(baseContext, args)
+		,40
+		,'punchedArgumentsTypeFunctionAutoApply should return 40 (30 + 10)'
+	);
+	assert.equal(
+		punchedThisTypeFunctionAutoApply.apply(baseContext, args)
+		,40
+		,'punchedThisTypeFunctionAutoApply should return 40 (30 + 10)'
+	);
 
-	//--ensure window key is reset from 'this' duck punch type
+	//--ensure baseContext key is reset from 'this' duck punch type
 	//---should be reset to undefined since it wasn't before
 	assert.equal(
-		window[__.core.Functions.configuration.duckPunchKey]
+		baseContext[__.core.Functions.configuration.duckPunchKey]
 		,undefined
-		, 'window[' + __.core.Functions.configuration.duckPunchKey + '] should be reset to original value of 26'
+		, 'baseContext[' + __.core.Functions.configuration.duckPunchKey + '] should be reset to original value of undefined'
 	);
 	//---now try when a value is set
-	window[__.core.Functions.configuration.duckPunchKey] = 26;
-	punchedThisTypeFunction.apply(window, args)
+	baseContext[__.core.Functions.configuration.duckPunchKey] = 26;
+	punchedThisTypeFunction.apply(baseContext, args)
 	assert.equal(
-		window[__.core.Functions.configuration.duckPunchKey]
+		baseContext[__.core.Functions.configuration.duckPunchKey]
 		,26
-		, 'window[' + __.core.Functions.configuration.duckPunchKey + '] should be reset to original value of 26'
+		, 'baseContext[' + __.core.Functions.configuration.duckPunchKey + '] should be reset to original value of 26'
 	);
-
-	//==teardown
-	//--reset duck punch key
-	window[__.core.Functions.configuration.duckPunchKey] = originalValueForDuckPunchKey;
 });

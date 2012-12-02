@@ -35,6 +35,7 @@ __.core.Functions = {
 		argFunction(Function): Function to wrap
 		argWrapper(Function): Function to wrap with.  Must call wrapped function by appropriate means from within.
 		argOptions(map):
+			autoApply(Boolean): Will wrap argFunction in a wrapper that applies first argument so argWrapper can just call this.__base or arguments[0] directly rather than applying.  The scope of 'this' only works on 'this' type.  For 'arguments', 'this' will be 'window'.
 			key(String): key for attaching to 'this' when using the 'this' type
 			type(String):
 				this: attach argFunction to the 'this' context used on invocation, using the key specified by the 'key' option.  Will be restored to its original value after invocation
@@ -69,15 +70,25 @@ __.core.Functions = {
 			newFunction = __.core.Functions.duckPunch(original, wrapper, {type: 'this'});
 			newFunction('one', 'two');
 			(end code)
+	Performance:
+		The 'this' type is a bit slower than the 'arguments' type. So is the 'autoApply' option.  See http://jsperf.com/duck-punching-variants
 	*/
 	,'duckPunch': function(argFunction, argWrapper, argOptions){
 		var argOptions = argOptions || {};
-		switch(argOptions.type || 'arguments'){
+		argOptions.autoApply = argOptions.autoApply || false;
+		var originalFunction =
+			(argOptions.autoApply)
+			? function(argArguments){
+				return argFunction.apply(this, argArguments);
+			}
+			: argFunction
+		;
+		switch(argOptions.type || null){
 			case 'this':
 				var argKey = argOptions.key || this.configuration.duckPunchKey;
 				return function(){
 					var originalValue = this[argKey] || undefined;
-					this[argKey] = argFunction;
+					this[argKey] = originalFunction;
 					var fnReturn = argWrapper.apply(this, arguments);
 					if(originalValue === undefined){
 						delete this[argKey];
@@ -89,7 +100,7 @@ __.core.Functions = {
 			break;
 			default:
 				return function(){
-					Array.prototype.unshift.call(arguments, argFunction)
+					Array.prototype.unshift.call(arguments, originalFunction)
 					return argWrapper.apply(this, arguments);
 				}
 			break;
