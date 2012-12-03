@@ -50,8 +50,8 @@ __.core.Classes = {
 				lcParent = argOptions.parent;
 			break;
 			default:
-				if(typeof __.classes.Object != 'undefined'){
-					lcParent = __.classes.Object;
+				if(typeof __.core.Classes.BaseClass != 'undefined'){
+					lcParent = __.core.Classes.BaseClass;
 				}else{
 					lcParent = window.Object;
 				}
@@ -157,3 +157,32 @@ __.core.Classes = {
 		return lcPrototype;
 	}
 }
+
+/*=====
+==base classes
+=====*/
+/*
+Class: BaseClass
+Class to be used as parent for most other classes.  Provides the default behavior of accepting a map as the first parameter of the constructor and merging each key into the resulting instance object.
+*/
+__.core.Classes.BaseClass = __.core.Classes.create({
+	/*
+	Function: init
+	Parameters:
+		argOptions(map): receives a key value map of properties to add or apply to instance being created.
+	*/
+	'init': function(argOptions){
+		var lcOptions = argOptions || {};
+		//--set value of members from arguments
+		for(var key in lcOptions){
+			if(lcOptions.hasOwnProperty(key)){
+				this.__setInitial(key, lcOptions[key]);
+			}
+		}
+	}
+	,'properties': {
+		'__setInitial': function(argKey, argValue){
+			this[argKey] = argValue;
+		}
+	}
+})
