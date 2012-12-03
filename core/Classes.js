@@ -7,7 +7,9 @@ __.core.Classes = {
 	==configuration
 	=====*/
 	'configuration': {
-		'overriddenParentKey': '__base'
+		//--using autoapply makes for a nicer interface, but also has a performance penalty
+		'autoApplyForFunctionInheritance': true
+		,'overriddenParentKey': '__base'
 	}
 	/*=====
 	==Library functions
@@ -96,7 +98,7 @@ __.core.Classes = {
 		if(typeof argOptions.init != 'undefined'){
 			lcProperties.init = argOptions.init;
 		}
-		//--duck punch overridden methods to have access to parent class
+		//--duck punch overridden methods to have access to parent class.  This has a noticable performance penalty, so if you need increased performance, call/apply with the prototype of the parent class directly
 		for(var name in lcProperties){
 			if(
 				//--only override if function is in both parent and child classes
@@ -109,9 +111,10 @@ __.core.Classes = {
 					lcPrototype[name]
 					,lcProperties[name]
 					,{
-						key: this.configuration.overriddenParentKey
-						,type: 'this'
+						autoApply: this.configuration.autoApplyForFunctionInheritance
+						,key: this.configuration.overriddenParentKey
 						,name: name
+						,type: 'this'
 					}
 				);
 			}
