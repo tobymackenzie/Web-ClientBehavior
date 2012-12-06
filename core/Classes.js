@@ -3,13 +3,24 @@ Library: Classes
 Basic functions for creating and working with classes.
 */
 __.core.Classes = {
+	/*=====
+	==configuration
+	=====*/
+	'configuration': {
+		//--using autoapply makes for a nicer interface, but also has a performance penalty
+		'autoApplyForFunctionInheritance': true
+		,'overriddenParentKey': '__base'
+	}
+	/*=====
+	==Library functions
+	=====*/
 	/*
 	Function: create
 	Create a class.  Provides an abstraction to creating classes directly by creating functions and manipulating their prototypes.  Will become much more capable, though ideally this'll be designed to be minimal but extensible to support other functionality.  Eventually all non-library classes will be migrated to be created by this function.  Meant to replace __.class.define, though it may take some bits from it before it gets removed.
 
 	Parameters:
 		argOptions(map):
-			init(Function): Function to run as constructor
+			init(Function|null): Function to run as constructor.  null prevents parent constructor from being run
 			name(String): A string name for the class.  Currently used only to assign to the window namespace, though will support any namespace and will use this for class meta data later.
 			parent(Object|String): Object to extend.  If none is passed, will extend a base object or the built in object.
 			properties(map): Properties to add to object's prototype.  Currently added directly, but will eventually support per property configuration by passing a map.
@@ -17,8 +28,14 @@ __.core.Classes = {
 
 	Return:
 		Function object, the constructor of the class, but representing the class itself.
+
+	Dependencies:
+		__.core.Functions
+			.contains
+			.duckPunch
+		__.core.Objects.mergeInto
 	*/
-	'create': function(argOptions){
+	,'create': function(argOptions){
 		if(typeof argOptions == 'undefined') var argOptions = {};
 
 		//--create base prototype inheriting from parent
@@ -33,8 +50,8 @@ __.core.Classes = {
 				lcParent = argOptions.parent;
 			break;
 			default:
-				if(typeof __.classes.Object != 'undefined'){
-					lcParent = __.classes.Object;
+				if(typeof __.core.Classes.BaseClass != 'undefined'){
+					lcParent = __.core.Classes.BaseClass;
 				}else{
 					lcParent = window.Object;
 				}
@@ -43,11 +60,19 @@ __.core.Classes = {
 
 		//--create class/constructor
 		function lcClass(){
-			//--don't run 
+			//--don't run if creating prototype via this.createPrototype
 			if(!__.core.Classes.__isCreatingPrototype){
-				//--call class's init method, if it exists
-				if(this.init){
-					this.init.apply(this, arguments);
+				//--call defined constructor or parent constructor
+				switch(typeof this.init){
+					//--call class's init method, if it exists
+					case 'function':
+						this.init.apply(this, arguments);
+					break;
+					//--call parent's constructor (useful for non-tmlib classes)
+					case 'undefined':
+						lcParent.apply(this, arguments);
+					break;
+					//--all other possibilities cause nothing to happen
 				}
 			}
 		}
@@ -63,15 +88,39 @@ __.core.Classes = {
 			lcClass = __.core.Objects.mergeInto(lcClass, argOptions.statics);
 		}
 
-		//--set prototypes init method, if it exists
-		if(typeof argOptions.init == 'function'){
-			lcPrototype.init = argOptions.init;
+		//--add properties to object
+		var lcProperties =
+			(typeof argOptions.properties == 'object')
+			? argOptions.properties
+			: {}
+		;
+		//---add init method to properties if it exists
+		if(typeof argOptions.init != 'undefined'){
+			lcProperties.init = argOptions.init;
 		}
-
-		//--merge definition properties into prototype
-		if(typeof argOptions.properties == 'object'){
-			lcPrototype = __.core.Objects.mergeInto(lcPrototype, argOptions.properties);
+		//--duck punch overridden methods to have access to parent class.  This has a noticable performance penalty, so if you need increased performance, call/apply with the prototype of the parent class directly
+		for(var name in lcProperties){
+			if(
+				//--only override if function is in both parent and child classes
+				typeof lcProperties[name] == 'function'
+				&& typeof lcPrototype[name] == 'function'
+				//--only override if function actually calls the parent
+				&& __.core.Functions.contains(lcProperties[name], '\\b' + this.configuration.overriddenParentKey + '(\\(|\\.apply|\\.call)\\b')
+			){
+				lcProperties[name] = __.core.Functions.duckPunch(
+					lcPrototype[name]
+					,lcProperties[name]
+					,{
+						autoApply: this.configuration.autoApplyForFunctionInheritance
+						,key: this.configuration.overriddenParentKey
+						,name: name
+						,type: 'this'
+					}
+				);
+			}
 		}
+		//---merge properties into prototype
+		lcPrototype = __.core.Objects.mergeInto(lcPrototype, lcProperties);
 
 		//--set class prototype
 		lcClass.prototype = lcPrototype;
@@ -108,3 +157,32 @@ __.core.Classes = {
 		return lcPrototype;
 	}
 }
+
+/*=====
+==base classes
+=====*/
+/*
+Class: BaseClass
+Class to be used as parent for most other classes.  Provides the default behavior of accepting a map as the first parameter of the constructor and merging each key into the resulting instance object.
+*/
+__.core.Classes.BaseClass = __.core.Classes.create({
+	/*
+	Function: init
+	Parameters:
+		argOptions(map): receives a key value map of properties to add or apply to instance being created.
+	*/
+	'init': function(argOptions){
+		var lcOptions = argOptions || {};
+		//--set value of members from arguments
+		for(var key in lcOptions){
+			if(lcOptions.hasOwnProperty(key)){
+				this.__setInitial(key, lcOptions[key]);
+			}
+		}
+	}
+	,'properties': {
+		'__setInitial': function(argKey, argValue){
+			this[argKey] = argValue;
+		}
+	}
+})
