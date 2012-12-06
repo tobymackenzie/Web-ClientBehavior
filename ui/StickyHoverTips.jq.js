@@ -18,24 +18,19 @@ tmlib, jquery
 
 -----css
 / *==hovertip * /
-.no-js .hoverTip{
-	margin: 10px 0 0 10px;
-}
-.hasjavascript .hoverTipList{
+.hoverTipList{
 	position: relative;
-	padding-right: 99px;
 }
-.hasjavascript .hoverTip{
+html.hasjavascript .hoverTipItem .hoverTip{
 	display: none;
+	position: absolute;
 }
-.hasjavascript .hoverTipItem.current .hoverTip
-,.hasjavascript .hoverTipItem:hover .hoverTip
-,.hasjavascript .hoverTipItem a:focus .hoverTip
+html.hasjavascript .hoverTipItem.current .hoverTip
+,html.hasjavascript .hoverTipItem:hover .hoverTip
+,html.hasjavascript .hoverTipItem a:focus .hoverTip
 {
 	display: block;
 	position: absolute;
-	top: 0;
-	right: 0;
 }
 -----instantiation
 */
@@ -44,7 +39,7 @@ tmlib, jquery
 		if(__.elmsHoverTipsWraps.length > 0){
 			__.hoverTipWidgets = [];
 			__.elmsHoverTipsWraps.each(function(){
-				__.hoverTipWidgets.push(new __.classes.stickyHoverTips({
+				__.hoverTipWidgets.push(new __.classes.StickyHoverTips({
 					elmWrapper: jQuery(this)
 				}));
 			});
@@ -64,7 +59,7 @@ tmlib, jquery
 			var fncThis = this;
 			//--required attributes
 			this.elmWrapper = args.elmWrapper || null;
-			if(!(this.elmWrapper && elmWrapper.length > 0))
+			if(!(this.elmWrapper && this.elmWrapper.length > 0))
 				return null;
 	//->return
 
