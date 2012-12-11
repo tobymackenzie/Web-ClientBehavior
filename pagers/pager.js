@@ -32,6 +32,7 @@ __.classes.pager = function(args){
 		this.boot = args.boot || {};
 		this.classCurrentNavigation = args.classCurrentNavigation || 'current';
 		this.classCurrentPage = args.classCurrentPage || 'current';
+		this.doCarousel = (typeof args.doCarousel != 'undefined') ? args.doCarousel : true;
 		this.elmNavigationCurrent = args.elmNavigationCurrent || null;
 		this.elmsNavigation = args.elmsNavigation || null;
 		this.elmPageCurrent = args.elmPageCurrent || null;
@@ -126,16 +127,29 @@ __.classes.pager = function(args){
 			var elmNavigationNew = this.getNavigationItemForPageItem(argElmNew);
 		}
 		if(this.transition){
-			//--unimplemented
-		}else{
+			if(typeof this.transition == 'string'){
+				//-! unimplemented, will presumably have named transitions prebuilt
+			}else{
+				var transition = this.transition;
+			}
+			var transitionElements = [
+				this.elmPageCurrent
+				,argElmNew
+			];
 			if(this.elmsNavigation){
-				this.elmNavigationCurrent = elmNavigationNew;
+				transitionElements.push(this.elmNavigationCurrent);
+				transitionElements.push(elmNavigationNew);
 			}
-			this.elmPageCurrent = argElmNew;
-			this.setClasses();
-			if(this.onswitch){
-				this.onswitch.call(this);
+			if(typeof transition == 'object'){
+				var transitionArgs = {
+					elements: transitionElements
+				};
+				transition.transitionForElements(transitionArgs);
+			}else if(typeof transition == 'function'){
+				transition.apply(this, transitionElements);
 			}
+		}else{
+			this.onPostTransition(argElmNew);
 		}
 	}
 /*
