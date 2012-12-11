@@ -62,6 +62,59 @@ test('core.Classes.create', function(){
 	assert.equal(typeof childClass.prototype.propertyFromParentClassInit, 'undefined', 'childClassInstance should not have propertyFromParentClassInit from parent init function');
 
 });
+test('core.Classes.pluginize', function(){
+	//==initial setup
+	//--create testClass
+	var testClass = function(argOptions){
+		this.elements = null;
+		jQuery.extend(this, argOptions);
+	}
+	testClass.prototype.getElementCount = function(){
+		return this.elements.length;
+	}
+
+	//--pluginize class
+	__.core.Classes.pluginize({
+		'class': testClass
+		,'name': 'testPlugin'
+	});
+
+	//--get test jQuery instance
+	var jQueryInstance = jQuery('body');
+
+	//--store reference to first-run version of plugin function
+	var firstRunPluginFunction = jQueryInstance.testPlugin;
+
+	//--instantiate class in both pluginized and non-pluginize versions
+	var instanceOptions = {
+		testProperty: 'testValue'
+	};
+	//---plugin
+	jQueryInstance.testPlugin(instanceOptions);
+	//---non-plugin
+	var nonPluginInstance = new testClass(
+		jQuery.extend({}, instanceOptions, {elements: jQueryInstance})
+	);
+
+	//==tests
+	//--ensure plugin function is unchanged (tests exist only because it was replaced before)
+	assert.strictEqual(jQueryInstance.testPlugin, firstRunPluginFunction, 'plugin function should be the same on subsequent runs');
+	assert.strictEqual(firstRunPluginFunction, jQuery.fn.testPlugin, 'pluginize should not replace prototypes plugin handler when replacing instances handler');
+
+	//--test function calls
+	assert.equal(
+		jQueryInstance.testPlugin('getElementCount')
+		,nonPluginInstance.getElementCount()
+		,'pluginized and non-pluginized version of "getElementCount" function should return same value'
+	);
+
+	//--test parameters for instantiation
+	assert.equal(
+		jQueryInstance.testPlugin('testProperty')
+		,nonPluginInstance.testProperty
+		,'pluginized and non-pluginized instances should have the same value for "testProperty" property'
+	);
+});
 
 /*=====
 ==Classes
