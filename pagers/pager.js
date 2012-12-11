@@ -32,6 +32,7 @@ __.classes.pager = function(args){
 		this.boot = args.boot || {};
 		this.classCurrentNavigation = args.classCurrentNavigation || 'current';
 		this.classCurrentPage = args.classCurrentPage || 'current';
+		this.cycler = args.cycler || null;
 		this.doCarousel = (typeof args.doCarousel != 'undefined') ? args.doCarousel : true;
 		this.elmNavigationCurrent = args.elmNavigationCurrent || null;
 		this.elmsNavigation = args.elmsNavigation || null;
@@ -57,6 +58,38 @@ __.classes.pager = function(args){
 		//--do something
 		if(this.oninit)
 			this.oninit.call(fncThis);
+	}
+	__.classes.pager.prototype.cycle = function(argAction, argOptions){
+		var action = (typeof argAction == 'string') ? argAction : 'init';
+		var options = (typeof argAction == 'object') ? argAction : argOptions;
+		if(!options){
+			options = (action == 'init') ? {} : [];
+		}
+		if(action == 'init'){
+			var cyclerOptions = {
+				'method': 'switchTo'
+				,'methodArguments': ['next']
+				,'object': this
+			};
+			if(jQuery || false){
+				jQuery.extend(cyclerOptions, options);
+			}else{
+
+			}
+			this.cycler = new __.classes.Cycler(cyclerOptions);
+		}else{
+			this.cycler[action].apply(this.cycler, options);
+		}
+	}
+	__.classes.pager.prototype.onPostTransition = function(argElmNew){
+		if(this.elmsNavigation){
+			this.elmNavigationCurrent = elmNavigationNew;
+		}
+		this.elmPageCurrent = argElmNew;
+		this.setClasses();
+		if(this.onswitch){
+			this.onswitch.call(this);
+		}
 	}
 	__.classes.pager.prototype.setClasses = function(){
 		if(this.elmsNavigation){
