@@ -102,7 +102,15 @@ __.classes.pager = function(args){
 		}else if(typeof argTo == 'string'){
 			switch(argTo){
 				case 'previous':
-					//-!unimplemented
+					if(this.elmsPages.prev){ //--jQuery
+						var elmPagePrevious = this.elmPageCurrent.prev();
+						if(elmPagePrevious.length < 1 && this.doCarousel){
+							elmPagePrevious = this.elmsPages.last();
+						}
+						if(elmPagePrevious.length > 0){
+							this.switche(elmPagePrevious);
+						}
+					}
 				break;
 				case 'random':
 					var newElement = null;
@@ -117,10 +125,19 @@ __.classes.pager = function(args){
 				break;
 				case 'next':
 				default:
-					//-!unimplemented
+					if(this.elmsPages.next){ //--jQuery
+						var elmPageNext = this.elmPageCurrent.next();
+						if(elmPageNext.length < 1 && this.doCarousel){
+							elmPageNext = this.elmsPages.first();
+						}
+						if(elmPageNext.length > 0){
+							this.switche(elmPageNext);
+						}
+					}
 				break;
 			}
 		}
+		return this;
 	}
 	__.classes.pager.prototype.switche = function(argElmNew){
 		if(this.elmsNavigation){
