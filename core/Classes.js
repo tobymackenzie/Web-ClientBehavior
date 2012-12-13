@@ -192,7 +192,7 @@ __.core.Classes = {
 						if(typeof options.object == 'object'){
 							handler.instance = options.object;
 						}else{
-							handler.instance = new options.class(
+							handler.instance = new options['class'](
 								arguments[0]
 								,arguments[1]
 								,arguments[2]
