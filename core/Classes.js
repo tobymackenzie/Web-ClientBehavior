@@ -176,16 +176,17 @@ __.core.Classes = {
 		};
 		jQuery.extend(options, argOptions);
 		var handler = function(){
-			if(typeof handler.instance == 'undefined' || typeof arguments[0] == 'undefined'){
+			var lcArgs = arguments; //-# enhancement for obfuscation to allow arguments to become a shorter variable, saving 128 bytes at time of commit
+			if(typeof handler.instance == 'undefined' || typeof lcArgs[0] == 'undefined'){
 				switch(typeof options.mapToThis){
 					case 'string':
-						if(typeof arguments[0] != 'object'){
-							arguments[0] = {};
+						if(typeof lcArgs[0] != 'object'){
+							lcArgs[0] = {};
 						}
-						arguments[0][options.mapToThis] = this;
+						lcArgs[0][options.mapToThis] = this;
 					break;
 					case 'number':
-						arguments[options.mapToThis] = this;
+						lcArgs[options.mapToThis] = this;
 					break;
 					default:
 						throw new Error('Pluginize does not support a "mapToThis" type of ' + typeof options.mapToThis);
@@ -194,23 +195,23 @@ __.core.Classes = {
 					handler.instance = options.object;
 				}else{
 					handler.instance = new options['class'](
-						arguments[0]
-						,arguments[1]
-						,arguments[2]
-						,arguments[3]
-						,arguments[4]
-						,arguments[5]
-						,arguments[6]
-						,arguments[7]
-						,arguments[8]
-						,arguments[9]
+						lcArgs[0]
+						,lcArgs[1]
+						,lcArgs[2]
+						,lcArgs[3]
+						,lcArgs[4]
+						,lcArgs[5]
+						,lcArgs[6]
+						,lcArgs[7]
+						,lcArgs[8]
+						,lcArgs[9]
 					);
 				}
-			}else if(typeof arguments[0] == 'string'){
+			}else if(typeof lcArgs[0] == 'string'){
 				//--shift off first argument as name of function
-				var propertyName = Array.prototype.shift.call(arguments);
+				var propertyName = Array.prototype.shift.call(lcArgs);
 				if(typeof handler.instance[propertyName] == 'function'){
-					return handler.instance[propertyName].apply(handler.instance, arguments);
+					return handler.instance[propertyName].apply(handler.instance, lcArgs);
 				}else{
 					return handler.instance[propertyName];
 				}
