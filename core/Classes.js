@@ -158,65 +158,71 @@ __.core.Classes = {
 	}
 	/*
 	Function: pluginize
-	Converts any class/object into a jQuery (or potentially other type of) plugin.
+	Converts any class/object into a function to be used by another class/object to give it an instance of the 'pluginized' class/object.  With the jQuery type, this function is added to the jQuery object, effectively making it a plugin.
 	Parameters:
 		argOptions(map):
-			class(Function): Class to instantiate for use as plugin.  Used if each jQuery object will have its own instance of the class, in place of the 'object' option
-			mapToThis(String): string will be key used for passing jQuery object's 'this' to object's constructor
-			object(Object): Object to use for plugin.  Used if one object instance is shared among all jQuery instances, in place of the 'class' option
+			class(Function): Class to instantiate for use as plugin.  Used if each containing object will have its own instance of the class, in place of the 'object' option
+			mapToThis(String): string will be key used for passing containing object's 'this' to pluginized object's constructor
+			object(Object): Object to use for plugin.  Used if one object instance is shared among all containing object instances, in place of the 'class' option
+			type(String): name of the type of plugin to create.  default: method
+				method: returns the pluganized method that can be added to any object/class
+				jQuery: attaches the pluganized method to the jQuery object
 	*/
 	,'pluginize': function(argOptions){
-		var type = argOptions.type || 'jQuery';
-		switch(type){
-			case 'jQuery':
-				var jQuery = argOptions.jQuery || window.jQuery;
-				var options = {
-					'mapToThis': 'elements'
-				};
-				jQuery.extend(options, argOptions);
-				var handler = function(){
-					if(typeof handler.instance == 'undefined' || typeof arguments[0] == 'undefined'){
-						switch(typeof options.mapToThis){
-							case 'string':
-								if(typeof arguments[0] != 'object'){
-									arguments[0] = {};
-								}
-								arguments[0][options.mapToThis] = this;
-							break;
-							case 'number':
-								arguments[options.mapToThis] = this;
-							break;
-							default:
-								throw new Error('Pluginize does not support a "mapToThis" type of ' + typeof options.mapToThis);
+		var type = argOptions.type || 'method';
+		var jQuery = argOptions.jQuery || window.jQuery;
+		var options = {
+			'mapToThis': 'elements'
+		};
+		jQuery.extend(options, argOptions);
+		var handler = function(){
+			if(typeof handler.instance == 'undefined' || typeof arguments[0] == 'undefined'){
+				switch(typeof options.mapToThis){
+					case 'string':
+						if(typeof arguments[0] != 'object'){
+							arguments[0] = {};
 						}
-						if(typeof options.object == 'object'){
-							handler.instance = options.object;
-						}else{
-							handler.instance = new options['class'](
-								arguments[0]
-								,arguments[1]
-								,arguments[2]
-								,arguments[3]
-								,arguments[4]
-								,arguments[5]
-								,arguments[6]
-								,arguments[7]
-								,arguments[8]
-								,arguments[9]
-							);
-						}
-					}else if(typeof arguments[0] == 'string'){
-						//--shift off first argument as name of function
-						var propertyName = Array.prototype.shift.call(arguments);
-						if(typeof handler.instance[propertyName] == 'function'){
-							return handler.instance[propertyName].apply(handler.instance, arguments);
-						}else{
-							return handler.instance[propertyName];
-						}
-					}else{
-						throw new Error('Must pass name of function to call for plugin.');
-					}
+						arguments[0][options.mapToThis] = this;
+					break;
+					case 'number':
+						arguments[options.mapToThis] = this;
+					break;
+					default:
+						throw new Error('Pluginize does not support a "mapToThis" type of ' + typeof options.mapToThis);
 				}
+				if(typeof options.object == 'object'){
+					handler.instance = options.object;
+				}else{
+					handler.instance = new options['class'](
+						arguments[0]
+						,arguments[1]
+						,arguments[2]
+						,arguments[3]
+						,arguments[4]
+						,arguments[5]
+						,arguments[6]
+						,arguments[7]
+						,arguments[8]
+						,arguments[9]
+					);
+				}
+			}else if(typeof arguments[0] == 'string'){
+				//--shift off first argument as name of function
+				var propertyName = Array.prototype.shift.call(arguments);
+				if(typeof handler.instance[propertyName] == 'function'){
+					return handler.instance[propertyName].apply(handler.instance, arguments);
+				}else{
+					return handler.instance[propertyName];
+				}
+			}else{
+				throw new Error('Must pass name of function to call for plugin.');
+			}
+		}
+		switch(type){
+			case 'method':
+				return handler;
+			break;
+			case 'jQuery':
 				jQuery.fn[options.name] = handler;
 			break;
 			default:

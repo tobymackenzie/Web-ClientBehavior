@@ -74,22 +74,36 @@ test('core.Classes.pluginize', function(){
 	}
 
 	//--pluginize class
+	//---method
+	var pluginizedMethod = __.core.Classes.pluginize({
+		'class': testClass
+		,'name': 'testPlugin'
+		,'type': 'method'
+	});
+	//---jQuery
 	__.core.Classes.pluginize({
 		'class': testClass
 		,'name': 'testPlugin'
+		,'type': 'jQuery'
 	});
 
-	//--get test jQuery instance
+	//--get object instances
+	//---method
+	var instanceWithMethod = document.getElementsByTagName('body');
+	instanceWithMethod.testPlugin = pluginizedMethod;
+	//---jQuery
 	var jQueryInstance = jQuery('body');
 
 	//--store reference to first-run version of plugin function
 	var firstRunPluginFunction = jQueryInstance.testPlugin;
 
-	//--instantiate class in both pluginized and non-pluginize versions
+	//--instantiate class in both pluginized versions and a non-pluginize version
 	var instanceOptions = {
 		testProperty: 'testValue'
 	};
-	//---plugin
+	//--method plugin
+	instanceWithMethod.testPlugin(instanceOptions);
+	//---jQuery plugin
 	jQueryInstance.testPlugin(instanceOptions);
 	//---non-plugin
 	var nonPluginInstance = new testClass(
@@ -103,16 +117,26 @@ test('core.Classes.pluginize', function(){
 
 	//--test function calls
 	assert.equal(
+		instanceWithMethod.testPlugin('getElementCount')
+		,nonPluginInstance.getElementCount()
+		,'method pluginized and non-pluginized version of "getElementCount" function should return same value'
+	);
+	assert.equal(
 		jQueryInstance.testPlugin('getElementCount')
 		,nonPluginInstance.getElementCount()
-		,'pluginized and non-pluginized version of "getElementCount" function should return same value'
+		,'jQuery pluginized and non-pluginized version of "getElementCount" function should return same value'
 	);
 
 	//--test parameters for instantiation
 	assert.equal(
+		instanceWithMethod.testPlugin('testProperty')
+		,nonPluginInstance.testProperty
+		,'method pluginized and non-pluginized instances should have the same value for "testProperty" property'
+	);
+	assert.equal(
 		jQueryInstance.testPlugin('testProperty')
 		,nonPluginInstance.testProperty
-		,'pluginized and non-pluginized instances should have the same value for "testProperty" property'
+		,'jQuery pluginized and non-pluginized instances should have the same value for "testProperty" property'
 	);
 });
 
