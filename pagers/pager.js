@@ -26,36 +26,44 @@ __.pager = new __.classes.pager({elmsPages: jQuery('.bannerList .bannerItem')})
 ©pager
 -------- */
 __.classes.pager = function(args){
+		var lcThis = this;
 		//--required attributes
 //->return
 		//--optional attributes
 		this.boot = args.boot || {};
-		this.classCurrentNavigation = args.classCurrentNavigation || 'current';
-		this.classCurrentPage = args.classCurrentPage || 'current';
+		this.classCurrent = args.classCurrent || 'current';
 		this.cycler = args.cycler || null;
 		this.doCarousel = (typeof args.doCarousel != 'undefined') ? args.doCarousel : true;
-		this.elmNavigationCurrent = args.elmNavigationCurrent || null;
-		this.elmsNavigation = args.elmsNavigation || null;
-		this.elmPageCurrent = args.elmPageCurrent || null;
+		this.elmCurrent = args.elmCurrent || null;
 		this.elmsPages = args.elmsPages || null;
-		this.transition = args.transition || null;
 		this.oninit = args.oninit || null;
 		this.onswitch = args.onswitch || null;
-
-		//--overridden methods
-		if(args.getCurrentNavigationItem){
-			this.getCurrentNavigationItem = args.getCurrentNavigationItem;
+		this.navigation = args.navigation || null;
+		this.transition = args.transition || null;
+		if(!this.transition.onafter){
+			this.transition.onafter = function(args){
+				lcThis.setTo(args.elements[0]);
+			}
 		}
 
 		//--derived attributes
 		this.inProgress = true;
-		if(!this.elmPageCurrent)
-			this.elmPageCurrent = (this.elmsPages.first) ? this.elmsPages.first() : this.elmsPages[0];
-		if(!this.elmNavigationCurrent && this.elmsNavigation)
-			this.elmNavigationCurrent = this.getCurrentNavigationItem(this.elmPageCurrent);
-		this.setClasses();
+		if(!this.elmCurrent)
+			this.elmCurrent = (this.elmsPages.first) ? this.elmsPages.first() : this.elmsPages[0];
+		if(this.navigation){
+			this.navigation.setTo(this.navigation.getElementForItem(this.elmCurrent));
+			if(!this.navigation.onActivate){
+				this.navigation.onActivate = function(argNavElement){
+					lcThis.switchTo(argNavElement.data('tjmNavigationItem'));
+					lcThis.cycle('stop');
+				}
+			}
+		}
 
 		//--do something
+		this.setClasses();
+		this.inProgress = false;
+
 		if(this.oninit)
 			this.oninit.call(fncThis);
 	}
@@ -81,14 +89,17 @@ __.classes.pager = function(args){
 			this.cycler[action].apply(this.cycler, options);
 		}
 	}
-	__.classes.pager.prototype.onPostTransition = function(argElmNew){
-		if(this.elmsNavigation){
-			this.elmNavigationCurrent = elmNavigationNew;
-		}
-		this.elmPageCurrent = argElmNew;
-		this.setClasses();
-		if(this.onswitch){
-			this.onswitch.call(this);
+	__.classes.pager.prototype.setTo = function(argElmNew){
+		if(argElmNew[0] !== this.elmCurrent[0]){
+			if(this.navigation && !this.inProgress){
+				this.navigation.setTo(this.navigation.getElementForItem(this.elmCurrent));
+			}
+			this.elmCurrent = argElmNew;
+			this.setClasses();
+			if(this.onswitch){
+				this.onswitch.call(this);
+			}
+			this.inProgress = false;
 		}
 	}
 	__.classes.pager.prototype.setClasses = function(){
@@ -109,16 +120,16 @@ __.classes.pager = function(args){
 		}
 		if(this.elmsPages){
 			if(jQuery){
-				this.elmsPages.removeClass(this.classCurrentPage);
-				this.elmPageCurrent.addClass(this.classCurrentPage);
+				this.elmsPages.removeClass(this.classCurrent);
+				this.elmCurrent.addClass(this.classCurrent);
 			}else{
 				for(var key in this.elmsPages){
 					if(this.elmsPages.hasOwnProperty(key) && this.elmsPages[key].getElementsByTagName){
-						__.lib.removeClass(this.elmsPages[key], this.classCurrentPage);
+						__.lib.removeClass(this.elmsPages[key], this.classCurrent);
 					}
 				}
-				if(this.elmPageCurrent){
-					__.lib.addClass(this.elmPageCurrent, this.classCurrentPage);
+				if(this.elmCurrent){
+					__.lib.addClass(this.elmCurrent, this.classCurrent);
 				}
 			}
 		}
@@ -136,7 +147,7 @@ __.classes.pager = function(args){
 			switch(argTo){
 				case 'previous':
 					if(this.elmsPages.prev){ //--jQuery
-						var elmPagePrevious = this.elmPageCurrent.prev();
+						var elmPagePrevious = this.elmCurrent.prev();
 						if(elmPagePrevious.length < 1 && this.doCarousel){
 							elmPagePrevious = this.elmsPages.last();
 						}
@@ -151,7 +162,7 @@ __.classes.pager = function(args){
 						if(this.elmsPages.random){
 							do{
 								newElement = this.elmsPages.random();
-							}while(this.elmPageCurrent && newElement[0] == this.elmPageCurrent[0]);
+							}while(this.elmCurrent && newElement[0] == this.elmCurrent[0]);
 							this.switche(newElement);
 						}
 					}
@@ -159,7 +170,7 @@ __.classes.pager = function(args){
 				case 'next':
 				default:
 					if(this.elmsPages.next){ //--jQuery
-						var elmPageNext = this.elmPageCurrent.next();
+						var elmPageNext = this.elmCurrent.next();
 						if(elmPageNext.length < 1 && this.doCarousel){
 							elmPageNext = this.elmsPages.first();
 						}
@@ -173,68 +184,35 @@ __.classes.pager = function(args){
 		return this;
 	}
 	__.classes.pager.prototype.switche = function(argElmNew){
-		if(this.elmsNavigation){
-			var elmNavigationNew = this.getNavigationItemForPageItem(argElmNew);
-		}
-		if(this.transition){
-			if(typeof this.transition == 'string'){
-				//-! unimplemented, will presumably have named transitions prebuilt
-			}else{
-				var transition = this.transition;
+		if(!this.inProgress && argElmNew[0] !== this.elmCurrent[0]){
+			this.inProgress = true;
+			if(this.navigation){
+				this.navigation.switchTo(this.navigation.getElementForItem(argElmNew));
 			}
-			var transitionElements = [
-				this.elmPageCurrent
-				,argElmNew
-			];
-			if(this.elmsNavigation){
-				transitionElements.push(this.elmNavigationCurrent);
-				transitionElements.push(elmNavigationNew);
-			}
-			if(typeof transition == 'object'){
-				var transitionArgs = {
-					elements: transitionElements
-				};
-				transition.transitionForElements(transitionArgs);
-			}else if(typeof transition == 'function'){
-				transition.apply(this, transitionElements);
-			}
-		}else{
-			this.onPostTransition(argElmNew);
-		}
-	}
-/*
--!unimpemented
-	__.classes.pager.prototype.getCurrentNavigationItem = function(){
-		return this.getNavigationItemForPageItem(this.elmCurrentPage);
-	}
-	__.classes.pager.prototype.getNavigationItemForPageItem = function(argItem){
-		if(this.elmsNavigation){
-			if(this.elmsNavigation.each){
-				this.elmsNavigation.each(function(){
-
-				});
-			}else{
-				for(var key in this.elmsNavigation){
-					if(this.elmsNavigation.hasOwnProperty(key) && this.elmsNavigation[key].getElementsByTagName){
-						var fncHref = this.getIDForNavigation(this.elmsNavigation[key]);
-						if(fncHref == argId)
-							return this.elmsNavigation[key];
-					}
+			if(this.transition){
+				if(typeof this.transition == 'string'){
+					//-! unimplemented, will presumably have named transitions prebuilt
+				}else{
+					var transition = this.transition;
 				}
+				var transitionElements = [
+					this.elmCurrent
+					,argElmNew
+				];
+				if(this.elmsNavigation){
+					transitionElements.push(this.elmNavigationCurrent);
+					transitionElements.push(elmNavigationNew);
+				}
+				if(typeof transition == 'object'){
+					var transitionArgs = {
+						elements: transitionElements
+					};
+					transition.transitionForElements(transitionArgs);
+				}else if(typeof transition == 'function'){
+					transition.apply(this, transitionElements);
+				}
+			}else{
+				this.setTo(argElmNew);
 			}
 		}
-		return false;
 	}
-	__.classes.pager.prototype.getIDForNavigation = function(argElement){
-		if(argElement.href)
-			var fncElement = argElement;
-		else
-			var fncElement = argElement.getElementsByTagName('a')[0];
-		var fncHrefSplit = fncElement.href.split('#');
-		if(fncHrefSplit[1].indexOf('#') == 0)
-			var fncReturn = fncHrefSplit[1].substring(1);
-		else
-			fncReturn = fncHrefSplit[1];
-		return fncReturn;
-	}
-*/
