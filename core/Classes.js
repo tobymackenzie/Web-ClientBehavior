@@ -11,6 +11,51 @@ __.core.Classes = {
 		'autoApplyForFunctionInheritance': true
 		,'overriddenParentKey': '__base'
 	}
+	,'creationPlugins': {
+		/*
+		Function: addParentAccessToMethods
+		Adds ability to call 'this.base(arguments)' from child class methods to access parent class methods of same name
+		*/
+		'addParentAccessToMethods': function(argOptions){
+			var lcClass = argOptions['class'];
+			var lcParent = argOptions['parent'];
+			var lcPrototype = argOptions['prototype'];
+			var lcOptions = argOptions['options'];
+			var lcProperties =
+				(typeof lcOptions.properties == 'object')
+				? __.core.Objects.merge(lcOptions.properties)
+				: {}
+			;
+			//--add init method to properties if it exists
+			if(typeof lcOptions.init != 'undefined'){
+				lcProperties.init = lcOptions.init;
+			}
+			//--duck punch overridden methods to have access to parent class.  This has a noticable performance penalty, so if you need increased performance, call/apply with the prototype of the parent class directly
+			for(var name in lcProperties){
+				if(
+					//--only override if function is in both parent and child classes
+					typeof lcPrototype[name] == 'function'
+					&& typeof lcParent.prototype[name] == 'function'
+					//--only override if function actually calls the parent
+					&& __.core.Functions.contains(lcPrototype[name], '\\b' + this.configuration.overriddenParentKey + '(\\(|\\.apply|\\.call)\\b')
+				){
+					var duckPunchedFunction =
+					lcPrototype[name] =
+					__.core.Functions.duckPunch(
+						lcParent.prototype[name]
+						,lcPrototype[name]
+						,{
+							autoApply: this.configuration.autoApplyForFunctionInheritance
+							,key: this.configuration.overriddenParentKey
+							,name: name
+							,type: 'this'
+						}
+					);
+				}
+			}
+		}
+	}
+
 	/*=====
 	==Library functions
 	=====*/
@@ -33,7 +78,10 @@ __.core.Classes = {
 		__.core.Functions
 			.contains
 			.duckPunch
-		__.core.Objects.mergeInto
+		__.core.Objects
+			.addProperties
+			.addProperty
+			.mergeInto
 	*/
 	,'create': function(argOptions){
 		if(typeof argOptions == 'undefined') var argOptions = {};
@@ -59,68 +107,38 @@ __.core.Classes = {
 		}
 
 		//--create class/constructor
-		function lcClass(){
-			//--don't run if creating prototype via this.createPrototype
-			if(!__.core.Classes.__isCreatingPrototype){
-				//--call defined constructor or parent constructor
-				switch(typeof this.init){
-					//--call class's init method, if it exists
-					case 'function':
-						this.init.apply(this, arguments);
-					break;
-					//--call parent's constructor (useful for non-tmlib classes)
-					case 'undefined':
-						lcParent.apply(this, arguments);
-					break;
-					//--all other possibilities cause nothing to happen
-				}
-			}
-		}
+		var lcClass = this.createConstructor(lcParent);
 
 		//--create prototype from parent
 		var lcPrototype = this.createPrototype(lcParent);
 
 		//--merge statics into class
 		//---must explicitely merge in parent statics, since this is a new 'class'
-		lcClass = __.core.Objects.mergeInto(lcClass, lcParent);
+		__.core.Objects.mergeInto(lcClass, lcParent);
 		//---now merge with overwrite the passed in statics
 		if(typeof argOptions.statics == 'object'){
 			lcClass = __.core.Objects.mergeInto(lcClass, argOptions.statics);
 		}
 
 		//--add properties to object
-		var lcProperties =
-			(typeof argOptions.properties == 'object')
-			? argOptions.properties
-			: {}
-		;
-		//---add init method to properties if it exists
-		if(typeof argOptions.init != 'undefined'){
-			lcProperties.init = argOptions.init;
+		if(typeof argOptions.properties == 'object'){
+			__.core.Objects.addProperties(lcPrototype, argOptions.properties);
 		}
-		//--duck punch overridden methods to have access to parent class.  This has a noticable performance penalty, so if you need increased performance, call/apply with the prototype of the parent class directly
-		for(var name in lcProperties){
-			if(
-				//--only override if function is in both parent and child classes
-				typeof lcProperties[name] == 'function'
-				&& typeof lcPrototype[name] == 'function'
-				//--only override if function actually calls the parent
-				&& __.core.Functions.contains(lcProperties[name], '\\b' + this.configuration.overriddenParentKey + '(\\(|\\.apply|\\.call)\\b')
-			){
-				lcProperties[name] = __.core.Functions.duckPunch(
-					lcPrototype[name]
-					,lcProperties[name]
-					,{
-						autoApply: this.configuration.autoApplyForFunctionInheritance
-						,key: this.configuration.overriddenParentKey
-						,name: name
-						,type: 'this'
-					}
-				);
+		if(typeof argOptions.init == 'function'){
+			__.core.Objects.addProperty(lcPrototype, 'init', argOptions.init);
+		}
+
+		//--perform plugin functionality
+		for(var key in this.creationPlugins){
+			if(this.creationPlugins.hasOwnProperty(key)){
+				this.creationPlugins[key].call(this, {
+					'class': lcClass
+					,'parent': lcParent
+					,'prototype': lcPrototype
+					,'options': argOptions
+				});
 			}
 		}
-		//---merge properties into prototype
-		lcPrototype = __.core.Objects.mergeInto(lcPrototype, lcProperties);
 
 		//--set class prototype
 		lcClass.prototype = lcPrototype;
@@ -134,6 +152,34 @@ __.core.Classes = {
 			window[argOptions.name] = lcClass;
 		}
 		return lcClass;
+	}
+
+	/*
+	Function: createConstructor
+	Creates default constructor function for class.  Done as separate function so that it can be overridable.
+	Parameters:
+		argParent(Class): 'class' (constructor) of parent class
+	Return:
+		Function to act as constructor of class
+	*/
+	,'createConstructor': function(argParent){
+		return function lcClass(){
+			//--don't run if creating prototype via this.createPrototype
+			if(!__.core.Classes.__isCreatingPrototype){
+				//--call defined constructor or parent constructor
+				switch(typeof this.init){
+					//--call class's init method, if it exists
+					case 'function':
+						this.init.apply(this, arguments);
+					break;
+					//--call parent's constructor (useful for non-tmlib classes)
+					case 'undefined':
+						argParent.apply(this, arguments);
+					break;
+					//--all other possibilities cause nothing to happen
+				}
+			}
+		};
 	}
 
 	/*
@@ -156,6 +202,7 @@ __.core.Classes = {
 
 		return lcPrototype;
 	}
+
 	/*
 	Function: pluginize
 	Converts any class/object into a function to be used by another class/object to give it an instance of the 'pluginized' class/object.  With the jQuery type, this function is added to the jQuery object, effectively making it a plugin.
