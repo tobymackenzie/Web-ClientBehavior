@@ -204,6 +204,45 @@ __.core.Classes = {
 	}
 
 	/*
+	Function: mixIn
+	Parameters:
+		argMixin(Array|Map): If an array of class definitions, run mixIn on each definition.  If a definition, mix this definition in to object/parent.
+		argObject(Object): object to mix properties into
+		argParent(Function): function to mix statics into
+	*/
+	,'mixIn': function(argMixin, argObject, argParent){
+		if(typeof argMixin == 'object'){
+			//--if argMixin is an array, mix in all objects in array
+			if(argMixin instanceof Array){
+				for(
+					var i = 0, mixinsLength = argMixin.length
+					; i < mixinsLength
+					; ++i
+				){
+					this.mixIn(argMixin[i], argObject, argParent);
+				}
+			}else{
+				//--mix in statics
+				if(typeof argMixin.statics == 'object' && typeof argParent == 'function'){
+					for(var key in argMixin.statics){
+						if(argMixin.statics.hasOwnProperty(key)){
+							argParent[key] = argMixin.statics[key];
+						}
+					}
+				}
+				//--mix in properties
+				if(typeof argMixin.properties == 'object'){
+					for(var key in argMixin.properties){
+						if(argMixin.properties.hasOwnProperty(key)){
+							argObject[key] = argMixin.properties[key];
+						}
+					}
+				}
+			}
+		}
+	}
+
+	/*
 	Function: pluginize
 	Converts any class/object into a function to be used by another class/object to give it an instance of the 'pluginized' class/object.  With the jQuery type, this function is added to the jQuery object, effectively making it a plugin.
 	Parameters:

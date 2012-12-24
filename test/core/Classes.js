@@ -62,6 +62,83 @@ test('core.Classes.create', function(){
 	assert.equal(typeof childClass.prototype.propertyFromParentClassInit, 'undefined', 'childClassInstance should not have propertyFromParentClassInit from parent init function');
 
 });
+test('core.Classes.mixIn', function(){
+	//==initial setup
+	var targetClass = function(){};
+	targetClass.originalStatic = 'originalValue';
+	targetClass.staticToBeOverridden = 'originalValue';
+	var targetObject = {
+		'originalProperty': 'originalValue'
+		,'propertyToBeOverridden': 'originalValue'
+		,'originalMethod': function(){ return this.originalProperty; }
+		,'methodToBeOverridden': function(){ return 2; }
+	};
+	var mixinDefinition = {
+		'properties': {
+			'mixinProperty': 'mixinValue'
+			,'propertyToBeOverridden': 'mixinValue'
+			,'mixinMethod': function(){ return this.mixinProperty; }
+			,'methodToBeOverridden': function(){ return 'two'; }
+		}
+		,'statics': {
+			'mixinStatic': 'mixinValue'
+			,'staticToBeOverridden': 'mixinValue'
+		}
+	}
+
+	__.core.Classes.mixIn(mixinDefinition, targetObject, targetClass);
+	//==tests
+	//--properties
+	assert.equal(
+		targetObject.originalProperty
+		,'originalValue'
+		,'Non-overridden property should remain unchanged'
+	);
+	assert.equal(
+		targetObject.originalMethod()
+		,'originalValue'
+		,'Non-overridden method should remain unchanged'
+	);
+	assert.equal(
+		targetObject.mixinProperty
+		,'mixinValue'
+		,'Mixin property should be added'
+	);
+	assert.equal(
+		targetObject.propertyToBeOverridden
+		,'mixinValue'
+		,'Overridden property should have mixin value'
+	);
+	assert.equal(
+		targetObject.mixinMethod()
+		,'mixinValue'
+		,'Mixin method should be added'
+	);
+	assert.equal(
+		targetObject.methodToBeOverridden()
+		,'two'
+		,'Overridden method should return mixin method result'
+	);
+console.log(targetObject);
+	//--statics
+	assert.equal(
+		targetClass.originalStatic
+		,'originalValue'
+		,'Non-overridden static should remain unchanged'
+	);
+	assert.equal(
+		targetClass.mixinStatic
+		,'mixinValue'
+		,'Mixin static should be added to parent class'
+	);
+	assert.equal(
+		targetClass.staticToBeOverridden
+		,'mixinValue'
+		,'Overridden static should have overriding value'
+	);
+__.message(targetClass);
+temp = targetClass;
+});
 test('core.Classes.pluginize', function(){
 	//==initial setup
 	//--create testClass
