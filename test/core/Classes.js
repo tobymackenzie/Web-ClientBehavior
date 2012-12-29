@@ -61,7 +61,108 @@ test('core.Classes.create', function(){
 	//---child
 	assert.equal(typeof childClass.prototype.propertyFromParentClassInit, 'undefined', 'childClassInstance should not have propertyFromParentClassInit from parent init function');
 
+
+	//==mixins init
+	var mixinMixinA = {
+		properties: {
+			propertyC: 'mmAvalueC'
+		}
+	};
+	var mixinMixinB = {
+		properties: {
+			propertyD: 'mmBvalueD'
+		}
+	}
+	var mixinMixinC = {
+		properties: {
+			propertyD: 'mmCvalueD'
+		}
+		,postMixins: [
+			mixinMixinB
+		]
+	};
+	var preMixinA = {
+		properties: {
+			propertyA: 'pAvalueA'
+			,propertyB: 'pAvalueB'
+		}
+	};
+	var preMixinB = {
+		properties: {
+			propertyB: 'pBvalueB'
+			,propertyC: 'pBvalueC'
+		}
+	};
+	var mixinA = {
+		properties: {
+			propertyA: 'mAvalueA'
+			,propertyC: 'mAvalueC'
+			,propertyD: 'mAvalueD'
+			,methodA: function(){ return 'from mixinA'; }
+		}
+	};
+	var mixinB = {
+		mixins: mixinMixinA
+		,properties: {
+			propertyE: 'mBvalueE'
+			,propertyF: 'mBvalueF'
+			,methodA: function(){ return 'from mixinB'; }
+		}
+	};
+	var postMixinA = {
+		mixins: mixinMixinC
+		,properties: {
+			methodB: function(){ return 'from postMixinA'; }
+		}
+		,nonPropertyA: 'nonProperty'
+	};
+	var postMixinB = {
+		properties: {
+			propertyG: 'pBvalueG'
+		}
+	};
+	var containerClass = __.core.Classes.create({
+		preMixins: [
+			preMixinA
+			,preMixinB
+		]
+		,mixins: [
+			mixinA
+			,mixinB
+		]
+		,properties: {
+			propertyC: 'valueC'
+			,propertyE: 'valueE'
+			,propertyG: 'valueG'
+			,methodB: function(){ return 'from containerClass'; }
+		}
+		,postMixins: [
+			postMixinA
+			,postMixinB
+		]
+	});
+
+	var myInstance = new containerClass();
+	var otherInstance = new containerClass();
+
+	//--tests
+	//---prototype
+	assert.strictEqual(myInstance.methodA, otherInstance.methodA, 'Mixed in properties should be part of classes prototype');
+
+	//---overriding order
+	assert.equal(myInstance.methodA(), 'from mixinB', 'Properties in later mixins in same array should override previous mixin properties');
+	assert.equal(myInstance.propertyA, 'mAvalueA', 'Properties in mixins should override pre mixin properties');
+	assert.equal(myInstance.propertyE, 'valueE', 'Properties in class should override mixin properties');
+	assert.equal(myInstance.methodB(), 'from postMixinA', 'Properties in post mixins should override class properties');
+
+	//---multilevel mixing in
+	assert.equal(myInstance.propertyC, 'valueC', 'Nested mixins should still be included in proper order to the base mixin');
+	assert.equal(myInstance.propertyD, 'mmBvalueD', 'mixinMixinB overrides mixinMixinC overrides mixinA overrides preMixinB');
+
+	//---non properties
+	assert.equal(typeof myInstance.nonPropertyA, 'undefined', 'Non properties should not be added to class.')
 });
+
 test('core.Classes.mixIn', function(){
 	//==initial setup
 	var targetClass = function(){};
@@ -119,7 +220,6 @@ test('core.Classes.mixIn', function(){
 		,'two'
 		,'Overridden method should return mixin method result'
 	);
-console.log(targetObject);
 	//--statics
 	assert.equal(
 		targetClass.originalStatic

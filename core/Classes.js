@@ -66,8 +66,11 @@ __.core.Classes = {
 	Parameters:
 		argOptions(map):
 			init(Function|null): Function to run as constructor.  null prevents parent constructor from being run
+			mixins(Array): Collection of class definitions to mix in properties of to class.  Mixed in before class properties, so that class properties will override mixin properties.
 			name(String): A string name for the class.  Currently used only to assign to the window namespace, though will support any namespace and will use this for class meta data later.
 			parent(Object|String): Object to extend.  If none is passed, will extend a base object or the built in object.
+			preMixins(Array): Collection of class definitions to mix in properties of to class.  Mixed in before classes properties and before regular mixins.  Here primarily to match postMixins naming convention.
+			postMixins(Array): Collection of class definitions to mix in properties of to class.  Mixed in after all other property definitions, and thus will override them.
 			properties(map): Properties to add to object's prototype.  Currently added directly, but will eventually support per property configuration by passing a map.
 			statics(map): Properties to add directly to class, to be called statically.
 
@@ -121,9 +124,7 @@ __.core.Classes = {
 		}
 
 		//--add properties to object
-		if(typeof argOptions.properties == 'object'){
-			__.core.Objects.addProperties(lcPrototype, argOptions.properties);
-		}
+		this.mixIn(argOptions, lcPrototype, lcClass);
 		if(typeof argOptions.init == 'function'){
 			__.core.Objects.addProperty(lcPrototype, 'init', argOptions.init);
 		}
