@@ -222,6 +222,14 @@ __.core.Classes = {
 					this.mixIn(argMixin[i], argObject, argParent);
 				}
 			}else{
+				//--mix in pre mixins
+				if(typeof argMixin.preMixins == 'object'){
+					this.mixIn(argMixin.preMixins, argObject, argParent);
+				}
+				//--mix in mixins
+				if(typeof argMixin.mixins == 'object'){
+					this.mixIn(argMixin.mixins, argObject, argParent);
+				}
 				//--mix in statics
 				if(typeof argMixin.statics == 'object' && typeof argParent == 'function'){
 					for(var key in argMixin.statics){
@@ -237,6 +245,10 @@ __.core.Classes = {
 							argObject[key] = argMixin.properties[key];
 						}
 					}
+				}
+				//--mix in postmixins
+				if(typeof argMixin.postMixins == 'object'){
+					this.mixIn(argMixin.postMixins, argObject, argParent);
 				}
 			}
 		}
