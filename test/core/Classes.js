@@ -236,8 +236,6 @@ test('core.Classes.mixIn', function(){
 		,'mixinValue'
 		,'Overridden static should have overriding value'
 	);
-__.message(targetClass);
-temp = targetClass;
 });
 test('core.Classes.pluginize', function(){
 	//==initial setup
