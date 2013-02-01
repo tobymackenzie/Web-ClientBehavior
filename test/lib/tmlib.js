@@ -1,4 +1,4 @@
-test('tmlib strings', function(){
+test('tmlib strings', function(assert){
 	//==initial setup
 	var plainStrings = [
 		'google.com'

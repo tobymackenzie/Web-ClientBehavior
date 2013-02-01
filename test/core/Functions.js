@@ -1,4 +1,4 @@
-test('core.Functions.contains', function(){
+test('core.Functions.contains', function(assert){
 	//==initial setup
 	var testFunction = function(argOne, argTwo){
 		var thisBase = this.__base || undefined;
@@ -101,7 +101,7 @@ test('core.Functions.contains', function(){
 		}
 	}
 });
-test('core.Functions.duckPunch', function(){
+test('core.Functions.duckPunch', function(assert){
 	//==initial setup
 	//--store this for cleanup later
 	var originalFromBase = window.fromBase || undefined;
