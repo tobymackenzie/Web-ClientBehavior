@@ -58,9 +58,11 @@ document.getElementsByTagName('html')[0].className += ' hasjavascript';
 	/*===
 	==init
 	===*/
-
-	//-!barejs-__.lib.addListeners(window, 'load', __.onload, false);
-	//-!havehead-head.ready(__.onload);
-	//-!havejquery-jQuery(__.onload);
-
+	if(typeof jQuery != 'undefined'){
+		jQuery(__.onload);
+	}else if(typeof head != 'undefined'){
+		head.ready(__.onload);
+	}else if(typeof __.lib.addListeners != 'undefined'){
+		__.lib.addListeners(window, 'load', __.onload, false);
+	}
 })({'window': window});
