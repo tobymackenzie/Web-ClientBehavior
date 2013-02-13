@@ -350,12 +350,16 @@ __.core.Classes.BaseClass = __.core.Classes.create({
 		//--set value of members from arguments
 		for(var key in lcOptions){
 			if(lcOptions.hasOwnProperty(key)){
-				this.__setInitial(key, lcOptions[key]);
+				this.__directSet(key, lcOptions[key]);
 			}
 		}
 	}
 	,'properties': {
-		'__setInitial': function(argKey, argValue){
+		/*
+		Method: __directSet
+		Directly set a property, without invoking any sort of set helper functions
+		*/
+		'__directSet': function(argKey, argValue){
 			this[argKey] = argValue;
 		}
 	}
