@@ -1,4 +1,4 @@
-test('core.Functions.contains', function(){
+test('core.Functions.contains', function(assert){
 	//==initial setup
 	var testFunction = function(argOne, argTwo){
 		var thisBase = this.__base || undefined;
@@ -101,8 +101,10 @@ test('core.Functions.contains', function(){
 		}
 	}
 });
-test('core.Functions.duckPunch', function(){
+test('core.Functions.duckPunch', function(assert){
 	//==initial setup
+	//--store this for cleanup later
+	var originalFromBase = window.fromBase || undefined;
 	//--base context for checking changes
 	var baseContext = {
 		fromBase: false
@@ -194,6 +196,7 @@ test('core.Functions.duckPunch', function(){
 		,40
 		,'punchedThisTypeFunction should return 40 (30 + 10)'
 	);
+	//-# this returns the correct result, but also sets a global variable, because 'this' is window
 	assert.equal(
 		punchedArgumentTypeFunctionAutoApply.apply(baseContext, args)
 		,40
@@ -220,4 +223,12 @@ test('core.Functions.duckPunch', function(){
 		,26
 		, 'baseContext[' + __.core.Functions.configuration.duckPunchKey + '] should be reset to original value of 26'
 	);
+
+	//==cleanup
+	//-#because punchedArgumentTypeFunctionAutoApply is in the scope of window, fromBase gets set on window, so we must reset it
+	if(originalFromBase === undefined){
+		delete window.fromBase;
+	}else{
+		window.fromBase = originalFromBase;
+	}
 });

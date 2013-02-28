@@ -1,4 +1,4 @@
-test('core.Classes.create', function(){
+test('core.Classes.create', function(assert){
 	//==initial setup
 	//--create parent class
 	var parentClass = __.core.Classes.create({
@@ -28,6 +28,7 @@ test('core.Classes.create', function(){
 	});
 	//--create instance of child class
 	var childClassInstance = new childClass();
+
 	//==test
 	//--properties
 	//---parent
@@ -55,6 +56,7 @@ test('core.Classes.create', function(){
 	assert.ok(typeof parentClassInstance.propertyFromParentClassInit != 'undefined', 'parentClassInstance should have property propertyFromParentClassInit');
 	assert.ok(typeof parentClassInstance.propertyFromChildClassInit == 'undefined', 'parentClassInstance should not have property propertyFromChildClassInit');
 	assert.ok(typeof childClassInstance.propertyFromParentClassInit != 'undefined', 'childClassInstance should have property propertyFromParentClassInit via duck punching');
+	assert.equal(childClassInstance.propertyFromParentClassInit, 'woo', 'childClassInstance should have proper property propertyFromParentClassInit value');
 	assert.ok(typeof childClassInstance.propertyFromChildClassInit != 'undefined', 'childClassInstance should have property propertyFromChildClassInit');
 
 	//--prototype
@@ -163,7 +165,7 @@ test('core.Classes.create', function(){
 	assert.equal(typeof myInstance.nonPropertyA, 'undefined', 'Non properties should not be added to class.')
 });
 
-test('core.Classes.mixIn', function(){
+test('core.Classes.mixIn', function(assert){
 	//==initial setup
 	var targetClass = function(){};
 	targetClass.originalStatic = 'originalValue';
@@ -237,7 +239,7 @@ test('core.Classes.mixIn', function(){
 		,'Overridden static should have overriding value'
 	);
 });
-test('core.Classes.pluginize', function(){
+test('core.Classes.pluginize', function(assert){
 	//==initial setup
 	//--create testClass
 	var testClass = function(argOptions){
@@ -318,7 +320,7 @@ test('core.Classes.pluginize', function(){
 /*=====
 ==Classes
 =====*/
-test('core.Classes.BaseClass', function(){
+test('core.Classes.BaseClass', function(assert){
 	//==initial setup
 	var myInstance = new __.core.Classes.BaseClass({
 		'instanceProperty1': 'value1'

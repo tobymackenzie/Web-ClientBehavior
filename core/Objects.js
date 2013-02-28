@@ -22,11 +22,12 @@ __.core.Objects = {
 	Parameters:
 		argObject(Object): Object to add properties to
 		argName(String): Name of property, key in object
-		argProperty(mixed): Property definition/value
+		argProperty(mixed): Property definition/value.  Keep in mind that, when setting properties on an object prototyp, setting an initial value to an object will cause it to be shared among all instances (eg adding an element to an array object property will affect that property for all instances.  If an object that has an 'init' property, will be added as a complex type with special functionality or options (not yet implemented).  Complex objects can have the follow properties:
+			init(mixed): initial value for property
 	*/
 	,'addProperty': function(argObject, argName, argProperty){
-		if(typeof argProperty == 'object'){
-			//--unimplemented
+		if(typeof argProperty == 'object' && typeof argProperty.init != 'undefined'){
+			argObject[argName] = argProperty.init;
 		}else{
 			argObject[argName] = argProperty;
 		}
