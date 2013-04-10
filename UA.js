@@ -13,7 +13,14 @@ get various characteristics of the user agent
 __.ua = {
 	init: function(){
 		if(!this._data.browser) this._data.browser = navigator.appName;
-		if(!this._data.version) this._data.version = parseFloat(navigator.appVersion);
+		if(!this._data.version){
+			if(this.isIE()){
+				//-@ http://obvcode.blogspot.com/2007/11/easiest-way-to-check-ie-version-with.html
+				this._data.version = parseFloat(navigator.appVersion.split("MSIE")[1]);
+			}else{
+				this._data.version = parseFloat(navigator.appVersion);
+			}
+		}
 	}
 	,_data: {}
 	,browser: function(){
@@ -29,7 +36,8 @@ __.ua = {
 	}
 	,isIE: function(){
 		if(typeof this._data.isie == 'undefined'){
-			this.init();
+			//-# since this calls init, we must make sure we don't create an infinite loop
+			if(typeof this._data.browser == 'undefined') this.init(true);
 			if(this._data.browser.indexOf('Internet Explorer', 0) == -1) this._data.isie = false;
 			else this._data.isie = true;
 		}
@@ -37,12 +45,7 @@ __.ua = {
 	}
 	,isIE6: function(){
 		if(this.isIE()){
-			if(typeof this._data.ieversion == 'undefined') // http://www.javascriptkit.com/javatutors/navigator.shtml
-				if(/MSIE (\d+\.\d+);/.test(navigator.userAgent))
-					this._data.ieversion = new Number(RegExp.$1) // capture x.x portion and store as a number
-				else
-					return false;
-			if(this._data.ieversion == 6)
+			if(this.version() == 6)
 				return true;
 			else return false;
 		}else
