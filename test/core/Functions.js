@@ -1,3 +1,57 @@
+test('core.Functions.clone', function(assert){
+	var _clone, _func, _functions, _key, _subKey;
+	//==initial setup
+	_functions = [
+		{
+			func: function(){ return 'anonymous function'; }
+			,result: 'anonymous function'
+			,string: "function anonymous() {\n return 'anonymous function'; \n}"
+		}
+		,{
+			func: function Foo(){ return 'named function'; }
+			,result: 'named function'
+			,string: "function anonymous() {\n return 'named function'; \n}"
+		}
+		,{
+			func: function Bar(){ var a = function(){ return 'function with internal function declaration'; }; return a(); }
+			,result: 'function with internal function declaration'
+			,string: "function anonymous() {\n var a = function(){ return 'function with internal function declaration'; }; return a(); \n}"
+		}
+		,{
+			func: function Biz(a,$boo,_c){ return 'function with parameters'; }
+			,result: 'function with parameters'
+			,string: "function anonymous(a, $boo, _c) {\n return 'function with parameters'; \n}"
+		}
+	];
+	//--properties
+	_functions[0].func.a = 'a';
+	_functions[0].func.b = 'b';
+    _functions[1].func.b = 'b';
+
+    //==tests
+	for(_key in _functions){
+		_func = _functions[_key].func;
+		_clone = __.core.Functions.clone(_func);
+		console.log(_clone.toString(), _clone);
+		assert.equal(
+			_clone.toString()
+			,_functions[_key].string
+			,'toString of clone should equal desired result'
+		);
+		assert.equal(
+			_clone()
+			,_func()
+			,'return of function should equal desired result'
+		);
+		for(_subKey in _func){
+			assert.equal(
+				_func[_subKey]
+				,_clone[_subKey]
+				,'Properties of function and clone should be the same'
+			);
+		}
+	}
+});
 test('core.Functions.contains', function(assert){
 	//==initial setup
 	var testFunction = function(argOne, argTwo){

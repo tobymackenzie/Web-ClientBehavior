@@ -3,11 +3,37 @@ __.core.Functions = {
 	==configuraiton
 	=====*/
 	'configuration': {
-		'duckPunchKey': '__original'
+		'argumentsRegex': /((?!=^|,)([\w\$_]))+/g
+		,'duckPunchKey': '__original'
+		,'functionRegex': /^function[\s]+[\w]*\(([\w\s,_\$]*)?\)\{(.*)\}$/
 	}
 	/*=====
 	==Library functions
 	=====*/
+	/*
+	Function: clone
+	Clones a function.  Clone will have the same function body, but will lose name and lose scope of any closed over variables.
+	*/
+	,clone: function(_function){
+		var _arguments, _body, _result;
+		var _matches = _function.toString().match(this.configuration.functionRegex)
+		if(_matches){
+			if(_matches[1]){
+				_result = _matches[1].match(this.configuration.argumentsRegex);
+			}else{
+				_result = [];
+			}
+			_result.push(_matches[2]);
+		}else{
+			_result = [];
+		}
+		var _clone = Function.apply(Function, _result);
+		// if you want to grab existing parameters
+		for(var _key in _function){
+			_clone[_key] = _function[_key];
+		}
+		return _clone;
+	}
 	/*
 	Function: contains
 	In support browsers, determines if a function contains a given string / matches a given regex.  Useful to see if a certain variable is used or function is called, particularly for checking if a child class calls a parent class's method.  For unsupported browsers, always returns true to allow them to function (may change this behavior in the future.)
