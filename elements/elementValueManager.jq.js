@@ -1,116 +1,111 @@
 /*
-provides uniform interface for getting and (setting) 'values' of an element, monitoring them for changes
+Class: ElementValueManager
+Provides uniform interface for getting and (setting) 'values' of an element (or collection of radio buttons), monitoring them for changes
 
------dependencies
-tmlib
-jquery
+Dependencies:
+	tmlib
+	jquery
 
------parameters
-@param dataSource(required string)
-	[dataSourceValue] value of specified element attribute or data key
-	[checked] boolean checked or not checked value of input[checkbox] or input[radiobutton]
-	[value] value of input, select, or textarea
------instantiation
-$(document).ready(function(){
-	var elmValueManagerPrice = new __.classes.elementValueManager({element:elmThis, dataSource: 'attribute', dataSourceValue: 'data-price'})
-	var elmValueManagerQuantity = new __.classes.elementValueManager({element:elmThis.find('select'), dataSource: 'value'})
-}
+Parameters:
+	dataSourceValue(String): value of specified element attribute or data key
+	elements(jQuery): element(s) this interface provides data for
+	event(String): event to trigger on change
+	type(String): type of source this class is, changes what to monitor.  Can be one of 'attribute', checked', 'data', or 'value'
+Example:
+	$(document).ready(function(){
+		var elmValueManagerPrice = new __.classes.elementValueManager({element:elmThis, type: 'attribute', dataSourceValue: 'data-price'})
+		var elmValueManagerQuantity = new __.classes.elementValueManager({element:elmThis.find('select'), type: 'value'})
+	}
 
------html
------css
 */
+__.classes.ElementValueManager = __.core.Classes.create({
+	'properties': {
+		'type': 'value'
+		,'dataSourceValue': null
+		,'elements': null
+		,'event': 'change'
 
-
-/*----------
-©elementValueManager
-----------*/
-__.classes.elementValueManager = function(args){
-		//--require attributes
-		this.element = args.element || null; if(!this.element) return false; else if(this.element.length != 1) return false;
-
-		//--optional attributes
-		this.dataSourceValue = args.dataSourceValue || null;
-		this.dataSource = args.dataSource || 'value';
-		this.event = args.event || 'change';
-
-		//--derived attributes
-		fncThis = this;
-
-/*
-		if(this.event){
-			this.element.on(this.event, function(event){
-				fncThis.element.trigger('change', {value: fncThis.getValue(), manager: fncThis});
-			});
-		}
-*/
-	}
-	__.classes.elementValueManager.prototype.val = function(){
-		if(arguments.length == 0){
-			return this.getValue.apply(this, arguments);
-		}else{
-			return this.setValue.apply(this, arguments);
-		}
-	}
-	__.classes.elementValueManager.prototype.getValue = function(){
-		var fncReturn = false;
-		var fncDataSource = this.dataSource;
-		if(fncDataSource.substr(0, 7) == 'checked'){
-			var newDataSource = fncDataSource.substr(7);
-			if(fncReturn)
-				fncDataSource = (newDataSource)? newDataSource: fncDataSource;
-			else
-				fncDataSource = false;
-		}
-		switch(fncDataSource){
-			case 'attribute':
-				fncReturn = this.element.attr(this.dataSourceValue);
-				break;
-			case 'data':
-				fncReturn = this.element.data(this.dataSourceValue);
-				break;
-			case 'value':
-				fncReturn = this.element.val();
-				break;
-		}
-		return fncReturn;
-	}
-
-	__.classes.elementValueManager.prototype.setValue = function(argValue){
-		var fncDataSource = this.dataSource;
-		if(fncDataSource.substr(0, 7) == 'checked'){
-			var newDataSource = fncDataSource.substr(7);
-			if(newDataSource){
-				this.element.attr('checked', 'checked');
-				if(argValue != 'checked')
-					fncDataSource = (newDataSource)? newDataSource: fncDataSource;
-				else
-					fncDataSource = false;
-			}else{
-				if(argValue == 'checked'){
-					this.element.attr('checked', 'checked');
+		,getValue: function(){
+			var _return = false;
+			var _type = this.type;
+			var _elements = (this.elements.length > 1)
+				? this.elements.filter(':checked')
+				: this.elements
+			;
+			if(_type.substr(0, 7) == 'checked'){
+				var _newDataSource = _type.substr(7);
+				if(_return){
+					_type = (_newDataSource) ? _newDataSource : _type;
 				}else{
-					this.element.removeAttr('checked');
+					_type = false;
 				}
-				fncDataSource = false;
+			}
+			switch(_type){
+				case 'attribute':
+					_return = _elements.attr(this.dataSourceValue);
+				break;
+				case 'data':
+					_return = _elements.data(this.dataSourceValue);
+				break;
+				case 'value':
+					_return = _elements.val();
+				break;
+			}
+			return _return;
+		}
+		,on: function(){
+			this.elements.on.apply(this.elements, arguments);
+			return this;
+		}
+		,setValue: function(_value){
+			var _type = this.type;
+			var _elements = (this.elements.length > 1)
+				? this.elements.filter(':checked')
+				: this.elements
+			;
+			if(_type.substr(0, 7) == 'checked'){
+				_elements.checked = true;
+				if(_value != 'checked'){
+					_type = (_newDataSource) ? _newDataSource : _type;
+				}else{
+					_type = false;
+				}
+			}else{
+				if(_value == 'checked'){
+					_elements.attr('checked', 'checked');
+				}else{
+					_elements.removeAttr('checked');
+				}
+			}
+			if(this.elements.length > 1 && _type == 'value'){
+				_elements = this.elements.filter('[value="' + _value + '"]');
+				_elements.attr('checked', 'checked');
+			}else{
+				switch(_type){
+					case 'attribute':
+						_elements.attr(this.dataSourceValue, _value);
+					break;
+					case 'data':
+						_elements.data(this.dataSourceValue, _value);
+					break;
+					case 'value':
+						_elements.val(_value);
+					break;
+				}
+			}
+
+			//--trigger event for listeners
+			_elements.trigger(this.event, {value: this.getValue(), manager: this});
+
+			return this;
+		}
+		,val: function(){
+			var _args = arguments;
+			if(_args.length === 0){
+				return this.getValue.apply(this, _args);
+			}else{
+				return this.setValue.apply(this, _args);
 			}
 		}
-		switch(fncDataSource){
-			case 'attribute':
-				this.element.attr(this.dataSourceValue, argValue);
-				break;
-			case 'data':
-				this.element.data(this.dataSourceValue, argValue);
-				break;
-			case 'value':
-				this.element.val(argValue);
-				break;
-		}
-
-		this.element.trigger('change', {value: this.getValue(), manager: this});
-
-		return this;
 	}
-	__.classes.elementValueManager.prototype.on = function(){
-		this.element.on.apply(this.element, arguments);
-	}
-
+});
