@@ -17,10 +17,9 @@ __.core.Classes = {
 		Adds ability to call 'this.base(arguments)' from child class methods to access parent class methods of same name
 		*/
 		'addParentAccessToMethods': function(argOptions){
-			var lcClass = argOptions['class'];
-			var lcParent = argOptions['parent'];
-			var lcPrototype = argOptions['prototype'];
-			var lcOptions = argOptions['options'];
+			var lcParent = argOptions.parent;
+			var lcPrototype = argOptions.prototype;
+			var lcOptions = argOptions.options;
 			var lcProperties =
 				(typeof lcOptions.properties == 'object')
 				? __.core.Objects.merge(lcOptions.properties)
@@ -39,9 +38,7 @@ __.core.Classes = {
 					//--only override if function actually calls the parent
 					&& __.core.Functions.contains(lcPrototype[name], '\\b' + this.configuration.overriddenParentKey + '(\\(|\\.apply|\\.call)\\b')
 				){
-					var duckPunchedFunction =
-					lcPrototype[name] =
-					__.core.Functions.duckPunch(
+					lcPrototype[name] = __.core.Functions.duckPunch(
 						lcParent.prototype[name]
 						,lcPrototype[name]
 						,{
@@ -87,7 +84,9 @@ __.core.Classes = {
 			.mergeInto
 	*/
 	,'create': function(argOptions){
-		if(typeof argOptions == 'undefined') var argOptions = {};
+		if(typeof argOptions == 'undefined'){
+			argOptions = {};
+		}
 
 		//--create base prototype inheriting from parent
 		var lcParent;
@@ -193,11 +192,11 @@ __.core.Classes = {
 	Return:
 		Object to serve as a prototype for another object that will properly inherit from the given class object.
 	*/
-	,'createPrototype': function(argClass){
+	,'createPrototype': function(Class){
 		//--ensure parent constructor not run
 		this.__isCreatingPrototype = true;
 		//--create prototype with 'new' keyword so that classes using this prototype will be seen as instances of the class
-		var lcPrototype = new argClass();
+		var lcPrototype = new Class();
 		//--ensure constructor will be run on future creations
 		this.__isCreatingPrototype = false;
 
@@ -317,7 +316,7 @@ __.core.Classes = {
 			}else{
 				throw new Error('Must pass name of function to call for plugin.');
 			}
-		}
+		};
 		switch(type){
 			case 'method':
 				return handler;
@@ -330,7 +329,7 @@ __.core.Classes = {
 			break;
 		}
 	}
-}
+};
 
 /*=====
 ==base classes
@@ -363,4 +362,4 @@ __.core.Classes.BaseClass = __.core.Classes.create({
 			this[argKey] = argValue;
 		}
 	}
-})
+});
