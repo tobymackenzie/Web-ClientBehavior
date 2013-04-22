@@ -13,18 +13,6 @@ define(function(__require){
 	var __TMLib = function TMLib(){
 		if(!(this instanceof __TMLib)){
 			return new __TMLib();
-/*
-		}else{
-			var _proto = __TMLib.prototype;
-			var _this = function(){
-			}
-			if(_this.__proto__){
-				_this.__proto__ = _proto;
-			}else{
-				__mergeInto(_this, _proto)
-			}
-			return _this;
-*/
 		}else{
 			//--attach this to __ helper so it will have access to it even if methods are invoked directly
 			this.__._this = this;

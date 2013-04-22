@@ -2,8 +2,6 @@ define(function(__require){
 	var __deps = __require('./deps');
 	var __mergeInto = __require('./mergeInto');
 
-var __console = __deps.console;
-var __log = __console.log;
 	var __globals = __deps.globals;
 
 	/*
@@ -161,8 +159,5 @@ var __log = __console.log;
 	};
 
 	//--export directly only, since we can't reference tmlib yet
-	// _tmlib.__('.core', {
-	// 	Namespace: __Namespace
-	// });
 	return __Namespace;
 });

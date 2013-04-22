@@ -15,14 +15,17 @@ define(function(__require){
 		//--tmlib
 		'__' //--original global value, only here for noConflict
 		,'tmlib' //--original global value, only here for noConflict
+
 		//--browser
 		// ,'alert'
 		,'console'
+
 		//--js
 		,'Array'
 		// ,'Math'
 		,'Object'
 		,'undefined'
+
 		//--other libraries
 		,'head'
 		,'jQuery'
