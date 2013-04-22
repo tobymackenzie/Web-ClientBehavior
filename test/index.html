@@ -4,24 +4,46 @@
 		<title>Test tmblib</title>
 		<script src="http://code.jquery.com/qunit/qunit-1.11.0.js"></script>
 		<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.11.0.css"></link>
+
+		<script src="../vendor/require.js"></script>
+
+		<script>
+			//--make sure QUnit doesn't start immediately, so we can load all files first
+			QUnit.config.autostart = false;
+
+			//--configure require.js inline
+			requirejs.config({
+				baseUrl: '../src'
+				,paths: {
+					jquery: 'http://code.jquery.com/jquery-1.9.1.min'
+					,tmlib: '../src'
+					,test: '../test'
+				}
+				,shim: {
+				}
+			});
+
+			//--require 'global' vendor libraries
+			require([
+					'jquery'
+				], function(jQuery){
+					//--require tests
+					require([
+							'test/core/functions'
+							,'test/core/objects'
+							,'test/core/classes'
+						]
+						,function(){
+							//--start tests
+							QUnit.start();
+					});
+
+			});
+			//--pull in all tests and run them
+		</script>
 	</head>
 	<body>
 		<h1>Testing tmlib.</h1>
 		<div id="qunit">Should hold qunit results</div>
-
-		<!--include vendor stuff-->
-		<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
-
-		<!-- include base tmlib files -->
-		<script src="../base.js"></script>
-		<script src="../lib/tmlib.js"></script>
-		<script src="../core/Functions.js"></script>
-		<script src="../core/Objects.js"></script>
-		<script src="../core/Classes.js"></script>
-
-		<!-- include tests -->
-		<script src="core/Functions.js"></script>
-		<script src="core/Objects.js"></script>
-		<script src="core/Classes.js"></script>
-		<script src="lib/tmlib.js"></script>
+	</body>
 </html>
