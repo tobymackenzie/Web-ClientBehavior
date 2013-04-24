@@ -68,7 +68,7 @@ define(function(__require){
 	__TMLib.prototype.__ = _helper;
 
 	//--instantiate
-	__tmlib = new __TMLib();
+	var __tmlib = new __TMLib();
 
 	//--export tmlib as both module and global
 	__globals.tmlib = __tmlib;

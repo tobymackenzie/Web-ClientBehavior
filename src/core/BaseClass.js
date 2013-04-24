@@ -6,7 +6,7 @@ define(function(__require){
 	Class: BaseClass
 	Class to be used as parent for most other classes.  Provides the default behavior of accepting a map as the first parameter of the constructor and merging each key into the resulting instance object.
 	*/
-	__BaseClass = __classes.create({
+	var __BaseClass = __classes.create({
 		/*
 		Function: init
 		Parameters:

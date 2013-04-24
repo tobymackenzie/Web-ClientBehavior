@@ -12,7 +12,7 @@ define(function(__require){
 
 	Library for working with javascript objects
 	*/
-	__objects = new __Library({
+	var __objects = new __Library({
 		/*
 		Function: addProperties
 
