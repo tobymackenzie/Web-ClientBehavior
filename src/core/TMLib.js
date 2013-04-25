@@ -1,8 +1,4 @@
-define(function(__require){
-	var __deps = __require('./deps');
-	var __mergeInto = __require('./mergeInto');
-	var __Namespace = __require('./Namespace');
-
+define(['./deps', './mergeInto', './Namespace'], function(__deps, __mergeInto, __Namespace){
 	var __Array = __deps.Array;
 	var __globals = __deps.globals;
 
@@ -67,18 +63,5 @@ define(function(__require){
 	//---add helper method to TMLib
 	__TMLib.prototype.__ = _helper;
 
-	//--instantiate
-	var __tmlib = new __TMLib();
-
-	//--export tmlib as both module and global
-	__globals.tmlib = __tmlib;
-	__globals.__ = __tmlib;
-
-	//---properlty namespace Namespace into tmlib, since it is created before tmlib
-	__tmlib.__('.core', {
-		deps: __deps
-		,Namespace: __Namespace
-		,TMLib: __TMLib
-	});
-	return this.tmlib;
+	return __TMLib;
 });

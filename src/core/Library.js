@@ -1,8 +1,4 @@
-define(function(__require){
-	var __deps = __require('./deps');
-	var __mergeInto = __require('./mergeInto');
-	var __tmlib = __require('./TMLib');
-
+define(['./deps', './mergeInto', './__'], function(__deps, __mergeInto, __tmlib){
 	var __undefined = __deps.undefined;
 
 	/*

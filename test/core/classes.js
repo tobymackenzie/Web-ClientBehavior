@@ -1,10 +1,5 @@
-define(function(__require){
+define(['tmlib/core/__', 'tmlib/core/deps', 'tmlib/core/classes', 'tmlib/core/BaseClass'], function(__, __deps){
 	//--get requirements
-	var __ = __require('tmlib/core/TMLib');
-	var __deps = __require('tmlib/core/deps');
-	__require('tmlib/core/classes');
-	__require('tmlib/core/BaseClass');
-
 	var __jQuery = __deps.jQuery;
 
 	//--name module

@@ -1,8 +1,4 @@
-define(function(__require){
-	//--get requirements
-	var __ = __require('tmlib/core/TMLib');
-	__require('tmlib/core/functions');
-
+define(['tmlib/core/__', 'tmlib/core/functions'], function(__){
 	//--name module
 	QUnit.module('tmlib.core.functions');
 
@@ -41,7 +37,6 @@ define(function(__require){
 		for(_key in _functions){
 			_func = _functions[_key].func;
 			_clone = __.core.functions.clone(_func);
-			console.log(_clone.toString(), _clone);
 			assert.equal(
 				_clone.toString()
 				,_functions[_key].string

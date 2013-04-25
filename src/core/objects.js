@@ -1,9 +1,4 @@
-define(function(__require){
-	var __deps = __require('./deps');
-	var __Library = __require('./Library');
-	var __mergeInto = __require('./mergeInto');
-	var __tmlib = __require('./TMLib');
-
+define(['./deps', './Library', './mergeInto', './__'], function(__deps, __Library, __mergeInto, __tmlib){
 	var __Array = __deps.Array;
 	var __undefined = __deps.undefined;
 

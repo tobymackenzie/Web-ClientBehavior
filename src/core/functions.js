@@ -1,8 +1,4 @@
-define(function(__require){
-	var __deps = __require('./deps');
-	var __Library = __require('./Library');
-	var __tmlib = __require('./TMLib');
-
+define(['./deps', './Library', './__'], function(__deps, __Library, __tmlib){
 	var __undefined = __deps.undefined;
 
 	/*

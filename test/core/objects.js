@@ -1,8 +1,4 @@
-define(function(__require){
-	//--get requirements
-	var __ = __require('tmlib/core/TMLib');
-	__require('tmlib/core/objects');
-
+define(['tmlib/core/__', 'tmlib/core/objects'], function(__){
 	//--define module
 	QUnit.module('tmlib.core.objects');
 

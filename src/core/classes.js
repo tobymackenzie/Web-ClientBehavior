@@ -1,11 +1,4 @@
-define(function(__require){
-	var __deps = __require('./deps');
-	var __functions = __require('./functions');
-	var __Library = __require('./Library');
-	var __mergeInto = __require('./mergeInto');
-	var __objects = __require('./objects');
-	var __tmlib = __require('./TMLib');
-
+define(['./deps', './functions', './Library', './mergeInto', './objects', './__'], function(__deps, __functions, __Library, __mergeInto, __objects, __tmlib){
 	var __Array = __deps.Array;
 	var __globals = __deps.globals;
 	var __jQuery = __deps.jQuery;
@@ -105,8 +98,8 @@ define(function(__require){
 					_parent = _options.parent;
 				break;
 				default:
-					if(typeof __.core.BaseClass != 'undefined'){
-						_parent = __.core.BaseClass;
+					if(typeof __tmlib.core.BaseClass != 'undefined'){
+						_parent = __tmlib.core.BaseClass;
 					}else{
 						_parent = __Object;
 					}

@@ -1,7 +1,4 @@
-define(function(__require){
-	var __deps = __require('./deps');
-	var __mergeInto = __require('./mergeInto');
-
+define(['./deps', './mergeInto'], function(__deps, __mergeInto){
 	var __globals = __deps.globals;
 
 	/*
