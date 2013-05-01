@@ -1,3 +1,4 @@
+/* global define */
 define(['./deps', './mergeInto'], function(__deps, __mergeInto){
 	var __globals = __deps.globals;
 
@@ -65,7 +66,7 @@ define(['./deps', './mergeInto'], function(__deps, __mergeInto){
 			switch(_args.length){
 				case 0:
 					return new __Namespace();
-				break;
+				//-! break;
 				case 1:
 					_namespace = _args[0];
 				break;
@@ -96,10 +97,9 @@ define(['./deps', './mergeInto'], function(__deps, __mergeInto){
 
 			//--start our current scope as _scope
 			var _currentScope = _scope;
-			var _i;
 
 			if(typeof _namespace == 'string'){
-				var _identifier, _identifierKey;
+				var _identifierKey;
 				//--split _namespace into identifiers on separator
 				var _identifiers = _namespace.split(__Namespace.separator);
 				//--go through all identifiers
@@ -116,7 +116,7 @@ define(['./deps', './mergeInto'], function(__deps, __mergeInto){
 			if(_extend){
 				if(_extend instanceof Array){
 					for(_i = 0; _i < _extend.length; ++_i){
-						Namespace(_extend[_i], _currentScope);
+						__Namespace(_extend[_i], _currentScope);
 					}
 				}else{
 					__mergeInto(_currentScope, _extend);
@@ -129,7 +129,7 @@ define(['./deps', './mergeInto'], function(__deps, __mergeInto){
 	__Namespace.prototype.__ = function(){
 		var _args = arguments;
 		//--if no arguments, return an array of keys
-		if(_args.length == 0){
+		if(_args.length === 0){
 			return __Namespace.helpers.keys.apply(this);
 		}else{
 			var _arg0 = _args[0];
@@ -150,7 +150,7 @@ define(['./deps', './mergeInto'], function(__deps, __mergeInto){
 				break;
 				case 'object':
 					return __mergeInto(this, _arg0);
-				break;
+				//-! break;
 			}
 		}
 	};

@@ -1,4 +1,5 @@
-define(function(__require){
+/* global define */
+define(function(){
 	/*
 	Function: mergeInto
 
@@ -15,7 +16,7 @@ define(function(__require){
 		<merge>
 	*/
 	var __mergeInto = function mergeInto(){
-		var _args = arguments
+		var _args = arguments;
 		var _object = _args[0];
 		for(var _keyArg = 1; _keyArg < _args.length; ++_keyArg){
 			for(var _argKey in _args[_keyArg]){
@@ -25,6 +26,6 @@ define(function(__require){
 			}
 		}
 		return _object;
-	}
+	};
 	return __mergeInto;
 });

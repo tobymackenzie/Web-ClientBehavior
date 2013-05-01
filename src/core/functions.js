@@ -1,4 +1,6 @@
-define(['./deps', './Library', './__'], function(__deps, __Library, __tmlib){
+/* global define */
+define(['./__', './deps', './Library'], function(__tmlib, __deps, __Library){
+	var __Array = __deps.Array;
 	var __undefined = __deps.undefined;
 
 	/*
@@ -22,8 +24,8 @@ define(['./deps', './Library', './__'], function(__deps, __Library, __tmlib){
 		Clones a function.  Clone will have the same function body, but will lose name and lose scope of any closed over variables.
 		*/
 		,clone: function(_function){
-			var _arguments, _body, _result;
-			var _matches = _function.toString().match(this.configuration.functionRegex)
+			var _result;
+			var _matches = _function.toString().match(this.configuration.functionRegex);
 			if(_matches){
 				if(_matches[1]){
 					_result = _matches[1].match(this.configuration.argumentsRegex);
@@ -51,7 +53,7 @@ define(['./deps', './Library', './__'], function(__deps, __Library, __tmlib){
 		*/
 		,contains:
 			//--make sure functions can be tested
-			(/xyz/.test(function(){xyz;}))
+			(/define/.test(function(){define;}))
 			? function(_function, _contains){
 				if(!(_contains instanceof RegExp)){
 					_contains = new RegExp(_contains, 'i');
@@ -107,7 +109,7 @@ define(['./deps', './Library', './__'], function(__deps, __Library, __tmlib){
 			The 'this' type is a bit slower than the 'arguments' type. So is the 'autoApply' option.  See http://jsperf.com/duck-punching-variants
 		*/
 		,'duckPunch': function(_function, _wrapper, _options){
-			var _options = _options || {};
+			_options = _options || {};
 			_options.autoApply = _options.autoApply || false;
 			var _originalFunction =
 				(_options.autoApply)
@@ -129,14 +131,14 @@ define(['./deps', './Library', './__'], function(__deps, __Library, __tmlib){
 							this[argKey] = _originalValue;
 						}
 						return _return;
-					}
-				break;
+					};
+				//-* break;
 				default:
 					return function(){
-						Array.prototype.unshift.call(arguments, _originalFunction)
+						__Array.prototype.unshift.call(arguments, _originalFunction);
 						return _wrapper.apply(this, arguments);
-					}
-				break;
+					};
+				//-* break;
 			}
 		}
 	});

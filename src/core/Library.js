@@ -1,12 +1,14 @@
-define(['./deps', './mergeInto', './__'], function(__deps, __mergeInto, __tmlib){
+/* global define */
+define(['./__', './deps', './mergeInto', './Namespace'], function(__tmlib, __deps, __mergeInto, __Namespace){
 	var __undefined = __deps.undefined;
+	var __Array = __deps.Array;
 
 	/*
 	Class: Library
 	Simple object type to hold a collection of related methods and possibly attributes
 	Parameters: (helper method run to extend the library)
 	*/
-	var __Library = function Library(){
+	var __Library = function Library(_properties){
 		if(!(this instanceof __Library)){
 			return new __Library(_properties);
 		}else{
@@ -18,9 +20,9 @@ define(['./deps', './mergeInto', './__'], function(__deps, __mergeInto, __tmlib)
 			//--attach passed in properties
 			this.__.apply(this, _args);
 		}
-	}
+	};
 	var __helper = function(){
-		var _args = arguments
+		var _args = arguments;
 		var _arg0 = _args[0];
 		var _return = null;
 		switch(typeof _arg0){
@@ -30,11 +32,11 @@ define(['./deps', './mergeInto', './__'], function(__deps, __mergeInto, __tmlib)
 			default:
 				switch(typeof __helper[_arg0]){
 					case 'function':
-						_Array.prototype.shift.call(_args);
+						__Array.prototype.shift.call(_args);
 						_return = __helper[_arg0].apply(this, _args);
 					break;
 					case 'undefined':
-						_return = _Namespace.prototype.__.apply(this, _args);
+						_return = __Namespace.prototype.__.apply(this, _args);
 					break;
 					default:
 						_return = __helper[_arg0];
@@ -46,10 +48,10 @@ define(['./deps', './mergeInto', './__'], function(__deps, __mergeInto, __tmlib)
 	};
 	__mergeInto(__helper, {
 		extend: function(){
-			var _args = arguments
+			var _args = arguments;
 			var _arg0 = _args[0];
 			var _i;
-			var _this = this._this || this
+			var _this = this._this || this;
 			switch(typeof _arg0){
 				case 'object':
 					var _argsLength = _args.length;

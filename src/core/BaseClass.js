@@ -1,3 +1,4 @@
+/* global define */
 define(['./classes', './__'], function(__classes, __tmlib){
 	/*
 	Class: BaseClass

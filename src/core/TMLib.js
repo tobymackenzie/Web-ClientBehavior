@@ -1,3 +1,4 @@
+/* global define */
 define(['./deps', './mergeInto', './Namespace'], function(__deps, __mergeInto, __Namespace){
 	var __Array = __deps.Array;
 	var __globals = __deps.globals;
@@ -21,7 +22,7 @@ define(['./deps', './mergeInto', './Namespace'], function(__deps, __mergeInto, _
 	Helper function for tmlib.  Will call any methods or return any values attached to _helper method, or pass arguments on to Namespace if none found.  If extending with '.' syntax, will namespace the TMLib prototype, otherwise will use the regular 'this'.
 	*/
 	var _helper = function(){
-		var _args = arguments
+		var _args = arguments;
 		var _arg0 = _args[0];
 		var _return = null;
 		switch(typeof _helper[_arg0]){
@@ -41,7 +42,7 @@ define(['./deps', './mergeInto', './Namespace'], function(__deps, __mergeInto, _
 			break;
 		}
 		return _return;
-	}
+	};
 
 	//---add methods / values to helper
 	__mergeInto(_helper, {

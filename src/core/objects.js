@@ -1,3 +1,4 @@
+/* global define */
 define(['./deps', './Library', './mergeInto', './__'], function(__deps, __Library, __mergeInto, __tmlib){
 	var __Array = __deps.Array;
 	var __undefined = __deps.undefined;
@@ -52,11 +53,14 @@ define(['./deps', './Library', './mergeInto', './__'], function(__deps, __Librar
 			doCountInherited(boolean): count inherited properties if true, otherwise just hasOwnProperty properties
 		*/
 		,'getLength': function(_object, _doCountInherited){
-			if(_doCountInherited === __undefined) _doCountInherited = false;
+			if(_doCountInherited === __undefined){
+				_doCountInherited = false;
+			}
 			var length = 0;
 			for(var key in _object){
-				if(_object.hasOwnProperty(key) || _doCountInherited)
+				if(_object.hasOwnProperty(key) || _doCountInherited){
 					++length;
+				}
 			}
 			return length;
 		}
@@ -78,9 +82,10 @@ define(['./deps', './Library', './mergeInto', './__'], function(__deps, __Librar
 			if(!__.lib.isArray(_needles)){
 				_needles = [_needles];
 			}
-			__.lib.each(_needles, function(argValue, argKey){
-				if(_haystack.hasOwnProperty(argValue))
+			__.lib.each(_needles, function(argValue){
+				if(_haystack.hasOwnProperty(argValue)){
 					return true;
+				}
 			});
 			return false;
 		}
@@ -103,9 +108,10 @@ define(['./deps', './Library', './mergeInto', './__'], function(__deps, __Librar
 			if(!__.lib.isArray(_needles)){
 				_needles = [_needles];
 			}
-			__.lib.each(_needles, function(argValue, argKey){
-				if(!(_has && _haystack.hasOwnProperty(argValue)))
+			__.lib.each(_needles, function(argValue){
+				if(!(_has && _haystack.hasOwnProperty(argValue))){
 					_has = false;
+				}
 			});
 			return _has;
 		}

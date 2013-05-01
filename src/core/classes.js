@@ -1,3 +1,4 @@
+/* global define */
 define(['./deps', './functions', './Library', './mergeInto', './objects', './__'], function(__deps, __functions, __Library, __mergeInto, __objects, __tmlib){
 	var __Array = __deps.Array;
 	var __globals = __deps.globals;
@@ -26,7 +27,7 @@ define(['./deps', './functions', './Library', './mergeInto', './objects', './__'
 			'addParentAccessToMethods': function(_options){
 				var _parent = _options.parent;
 				var _prototype = _options.prototype;
-				var _options = _options.options;
+				_options = _options.options;
 				var _properties =
 					(typeof _options.properties == 'object')
 					? __objects.merge(_options.properties)
@@ -209,15 +210,16 @@ define(['./deps', './functions', './Library', './mergeInto', './objects', './__'
 			parent(Function): function to mix statics into
 		*/
 		,'mixIn': function(_mixin, _object, _parent){
+			var _key;
 			if(typeof _mixin == 'object'){
 				//--if _mixin is an array, mix in all objects in array
 				if(_mixin instanceof __Array){
 					for(
-						var i = 0, mixinsLength = _mixin.length
-						; i < mixinsLength
-						; ++i
+						var _i = 0, mixinsLength = _mixin.length
+						; _i < mixinsLength
+						; ++_i
 					){
-						this.mixIn(_mixin[i], _object, _parent);
+						this.mixIn(_mixin[_i], _object, _parent);
 					}
 				}else{
 					//--mix in pre mixins
@@ -230,17 +232,17 @@ define(['./deps', './functions', './Library', './mergeInto', './objects', './__'
 					}
 					//--mix in statics
 					if(typeof _mixin.statics == 'object' && typeof _parent == 'function'){
-						for(var key in _mixin.statics){
-							if(_mixin.statics.hasOwnProperty(key)){
-								_parent[key] = _mixin.statics[key];
+						for(_key in _mixin.statics){
+							if(_mixin.statics.hasOwnProperty(_key)){
+								_parent[_key] = _mixin.statics[_key];
 							}
 						}
 					}
 					//--mix in properties
 					if(typeof _mixin.properties == 'object'){
-						for(var key in _mixin.properties){
-							if(_mixin.properties.hasOwnProperty(key)){
-								_object[key] = _mixin.properties[key];
+						for(_key in _mixin.properties){
+							if(_mixin.properties.hasOwnProperty(_key)){
+								_object[_key] = _mixin.properties[_key];
 							}
 						}
 					}
@@ -316,13 +318,13 @@ define(['./deps', './functions', './Library', './mergeInto', './objects', './__'
 			switch(_type){
 				case 'method':
 					return _handler;
-				break;
+				//-# break;
 				case 'jQuery':
 					__jQuery.fn[_options.name] = _handler;
 				break;
 				default:
 					throw new Error('Pluginize doesn\'t support type ' + _type);
-				break;
+				//-# break;
 			}
 		}
 	});

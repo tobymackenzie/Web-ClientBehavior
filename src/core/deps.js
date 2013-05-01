@@ -1,4 +1,5 @@
-define(function(__require){
+/* global define */
+define(function(){
 	var __deps = (this.TMLIB_CONFIG && typeof this.TMLIB_CONFIG.deps === 'object') ? this.TMLIB_CONFIG.deps : {};
 
 	var __i;
