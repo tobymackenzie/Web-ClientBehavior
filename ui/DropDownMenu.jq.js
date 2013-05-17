@@ -189,23 +189,46 @@ __.classes.DropDownMenu = function (args){
 	// 		}
 	// 	}
 	// }
-	// __.classes.DropDownMenu.prototype.sizeAndCenter2 = function(){
-	// 	for(var i=0; i < this.elmsMenuAssociations.length; ++i){
-	// 		var forElmMenuItemArray = this.elmsMenuAssociations[i];
-	// 		if(forElmMenuItemArray['elmSubMenu'] && (this.doSizeAndCenterFirst || (i != 0)) && (this.doSizeAndCenterLast || (i != this.elmsMenuAssociations.length - 1))){
-	// 			forElmMenuItemArray['elmSubMenu'].style.visibility = 'hidden';
-	// 			forElmMenuItemArray['elmSubMenu'].style.display = 'block';
-	// 			if(forElmMenuItemArray['elmSubMenu'].offsetWidth < forElmMenuItemArray['elmtopLevel'].offsetWidth + this.addedWidth && !__.ua.isIE6()){
-	// 				forElmMenuItemArray['elmSubMenu'].style.width = (forElmMenuItemArray['elmtopLevel'].offsetWidth + this.addedWidth + this.menuPadding*2) + 'px';
-	// 			}
-	// 			if(forElmMenuItemArray['elmSubMenu'].offsetWidth > forElmMenuItemArray['elmtopLevel'].offsetWidth){
-	// 				ifOffset = ((forElmMenuItemArray['elmtopLevel'].offsetWidth - forElmMenuItemArray['elmSubMenu'].offsetWidth ) / 2) + this.menuPadding;
-	// 				if(__.ua.isIE6()) ifOffset += this.subMenuOffset;
-	// 				forElmMenuItemArray['elmSubMenu'].style.left = ifOffset+ 'px';
-	// 			}
-	// 			forElmMenuItemArray['elmSubMenu'].style.display = '';
-	// 			forElmMenuItemArray['elmSubMenu'].style.visibility = '';
-	// 		}
-	// 	}
-	// }
+	__.classes.DropDownMenu.prototype.sizeAndCenter = function(){
+		var _this = this;
+		var _countItems = this.elmsItems.length;
+		this.elmsItems.each(function(_i){
+			var $this = jQuery(this);
+			var $subMenu = $this.find(_this.selectorSubMenu);
+			if(
+				$subMenu.length
+				&& (
+					_this.doSizeAndCenterFirst
+					|| (_i !== 0)
+				)
+				&& (
+					_this.doSizeAndCenterLast
+					|| (_i !== _countItems)
+				)
+			){
+				$subMenu.css({
+					'display': 'block'
+					,'visibility': 'hidden'
+				});
+				var $topLevel = $this.find(_this.selectorTopLevel);
+				if(
+					$subMenu.outerWidth() < $topLevel.outerWidth() + _this.addedWidth
+					&& !__.ua.isIE6()
+				){
+					$subMenu.css('width', $topLevel.outerWidth() + _this.addedWidth + _this.menuPadding * 2);
+				}
+				if($subMenu.outerWidth() > $topLevel.outerWidth()){
+					_ifOffset = ($topLevel.outerWidth() - $subMenu.outerWidth()) / 2 + _this.menuPadding;
+					if(__.ua.isIE6()){
+						_ifOffset += _this.subMenuOffset;
+					}
+					$subMenu.css('left', _ifOffset + 'px');
+				}
+				$subMenu.css({
+					'display': ''
+					,'visibility': ''
+				});
+			}
+		});
+	};
 
