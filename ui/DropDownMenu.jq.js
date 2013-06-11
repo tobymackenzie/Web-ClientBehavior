@@ -93,6 +93,10 @@ __.classes.DropDownMenu = function (args){
 			}
 		});
 
+		if(this.doSizeAndCenter){
+			this.sizeAndCenter();
+		}
+
 		if(this.onInit){
 			this.onInit.call(this);
 		}
