@@ -1,4 +1,11 @@
-define(['tmlib/core/__', 'tmlib/core/deps', 'tmlib/core/classes', 'tmlib/core/BaseClass'], function(__, __deps){
+(function(_globals, _factory){
+	if(typeof define === 'function' && define.amd){
+		define(['tmlib/core/__', 'tmlib/core/deps', 'tmlib/core/classes', 'tmlib/core/BaseClass'], _factory);
+	}else{
+		var __ = _globals.__;
+		_factory(__, __.core.deps);
+	}
+}(this, function(__, __deps){
 	//--get requirements
 	var __jQuery = __deps.jQuery;
 
@@ -349,4 +356,4 @@ define(['tmlib/core/__', 'tmlib/core/deps', 'tmlib/core/classes', 'tmlib/core/Ba
 		assert.ok(typeof myInstance.instanceMethod1 == 'function', 'myInstance should have a property "instanceMethod1" that is a function');
 		assert.equal(myInstance.instanceMethod1(), 'foo', 'myInstance.instanceMethod1() should return the string "foo"');
 	});
-});
+}));

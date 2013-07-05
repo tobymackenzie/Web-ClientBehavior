@@ -1,4 +1,12 @@
-define(['tmlib/core/__', 'tmlib/core/objects'], function(__){
+
+(function(_globals, _factory){
+	if(typeof define === 'function' && define.amd){
+		define(['tmlib/core/__', 'tmlib/core/objects'], _factory);
+	}else{
+		var __ = _globals.__;
+		_factory(__, __.core.deps);
+	}
+}(this, function(__){
 	//--define module
 	QUnit.module('tmlib.core.objects');
 
@@ -46,4 +54,4 @@ define(['tmlib/core/__', 'tmlib/core/objects'], function(__){
 		assert.equal(typeof myObject.addedComplexObjectProperty, 'object', 'Complex object property should have an object as a value');
 		assert.equal(myObject.addedComplexObjectProperty.complexSubProperty, 'complexSubValue', 'Complex function property should be set properly');
 	});
-});
+}));

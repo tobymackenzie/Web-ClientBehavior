@@ -1,4 +1,12 @@
-define(['tmlib/core/__', 'tmlib/core/functions'], function(__){
+/* global define, QUnit, test */
+(function(_globals, _factory){
+	if(typeof define === 'function' && define.amd){
+		define(['tmlib/core/__', 'tmlib/core/functions'], _factory);
+	}else{
+		var __ = _globals.__;
+		_factory(__, __.core.deps);
+	}
+}(this, function(__){
 	//--name module
 	QUnit.module('tmlib.core.functions');
 
@@ -290,4 +298,4 @@ define(['tmlib/core/__', 'tmlib/core/functions'], function(__){
 			window.fromBase = originalFromBase;
 		}
 	});
-});
+}));
