@@ -53,7 +53,7 @@ define(['./__', './deps', './Library'], function(__tmlib, __deps, __Library){
 		*/
 		,contains:
 			//--make sure functions can be tested
-			(/define/.test(function(){define;}))
+			(/define/.test(function(){'define';}))
 			? function(_function, _contains){
 				if(!(_contains instanceof RegExp)){
 					_contains = new RegExp(_contains, 'i');
