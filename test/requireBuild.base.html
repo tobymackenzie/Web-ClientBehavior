@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Test tmblib</title>
+
+		<!-- qunit -->
+		<script src="http://code.jquery.com/qunit/qunit-1.11.0.js"></script>
+		<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.11.0.css"></link>
+
+		<!-- require -->
+		<script src="../vendor/require.js"></script>
+
+		<!-- tmlib -->
+		<script>
+			//--test with global strict mode
+			'use strict';
+
+			//--make sure QUnit doesn't start immediately, so we can load all files first
+			QUnit.config.autostart = false;
+
+			//--configure require.js inline
+			requirejs.config({
+				baseUrl: '../src'
+				,paths: {
+					jquery: 'http://code.jquery.com/jquery-1.9.1.min'
+					,tmlib: '../src'
+					,tmlibBase: '../build/build.base'
+					,test: '../test'
+				}
+				,shim: {
+				}
+			});
+
+			//--require 'global' vendor libraries
+			require([
+					'jquery'
+				], function(jQuery){
+					//--require tests
+					require([
+							'tmlibBase'
+							,'test/core/functions'
+							,'test/core/objects'
+							,'test/core/classes'
+						]
+						,function(__){
+							//--start tests
+							QUnit.start();
+					});
+
+			});
+			//--pull in all tests and run them
+		</script>
+	</head>
+	<body>
+		<h1>Testing tmlib.</h1>
+		<div id="qunit">Should hold qunit results</div>
+	</body>
+</html>

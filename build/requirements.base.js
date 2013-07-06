@@ -1,4 +1,7 @@
 /*
-Closure requiring files we want in the base build
+Require files we want in the base build
 */
-define(['tmlib/core/__', 'tmlib/core/BaseClass'], function(__){});
+/* global define, require */
+define(['tmlib/core/__', 'tmlib/core/functions', 'tmlib/core/objects', 'tmlib/core/classes', 'tmlib/core/BaseClass'], function(){
+});
+require('requirements.base');
