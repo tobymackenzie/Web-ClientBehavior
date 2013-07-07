@@ -210,13 +210,15 @@ define(['./deps', './functions', './Library', './mergeInto', './objects', './__'
 			parent(Function): function to mix statics into
 		*/
 		,'mixIn': function(_mixin, _object, _parent){
+			var _i;
 			var _key;
+			var _mixinsLength;
 			if(typeof _mixin == 'object'){
 				//--if _mixin is an array, mix in all objects in array
 				if(_mixin instanceof __Array){
 					for(
-						var _i = 0, mixinsLength = _mixin.length
-						; _i < mixinsLength
+						_i = 0, _mixinsLength = _mixin.length
+						; _i < _mixinsLength
 						; ++_i
 					){
 						this.mixIn(_mixin[_i], _object, _parent);

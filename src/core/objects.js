@@ -79,10 +79,10 @@ define(['./deps', './Library', './mergeInto', './__'], function(__deps, __Librar
 			__.lib.isArray (could do typoef)
 		*/
 		,'hasKey': function(_needles, _haystack){
-			if(!__.lib.isArray(_needles)){
+			if(!__tmlib.lib.isArray(_needles)){
 				_needles = [_needles];
 			}
-			__.lib.each(_needles, function(argValue){
+			__tmlib.lib.each(_needles, function(argValue){
 				if(_haystack.hasOwnProperty(argValue)){
 					return true;
 				}
@@ -105,10 +105,10 @@ define(['./deps', './Library', './mergeInto', './__'], function(__deps, __Librar
 		*/
 		,'hasKeys': function(_needles, _haystack){
 			var _has = true;
-			if(!__.lib.isArray(_needles)){
+			if(!__tmlib.lib.isArray(_needles)){
 				_needles = [_needles];
 			}
-			__.lib.each(_needles, function(argValue){
+			__tmlib.lib.each(_needles, function(argValue){
 				if(!(_has && _haystack.hasOwnProperty(argValue))){
 					_has = false;
 				}

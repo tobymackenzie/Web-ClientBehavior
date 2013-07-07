@@ -18,30 +18,30 @@
 			{
 				func: function(){ return 'anonymous function'; }
 				,result: 'anonymous function'
-				,string: "function anonymous() {\n return 'anonymous function'; \n}"
+				,string: 'function anonymous() {\n return \'anonymous function\'; \n}'
 			}
 			,{
 				func: function Foo(){ return 'named function'; }
 				,result: 'named function'
-				,string: "function anonymous() {\n return 'named function'; \n}"
+				,string: 'function anonymous() {\n return \'named function\'; \n}'
 			}
 			,{
 				func: function Bar(){ var a = function(){ return 'function with internal function declaration'; }; return a(); }
 				,result: 'function with internal function declaration'
-				,string: "function anonymous() {\n var a = function(){ return 'function with internal function declaration'; }; return a(); \n}"
+				,string: 'function anonymous() {\n var a = function(){ return \'function with internal function declaration\'; }; return a(); \n}'
 			}
 			,{
 				func: function Biz(a,$boo,_c){ return 'function with parameters'; }
 				,result: 'function with parameters'
-				,string: "function anonymous(a, $boo, _c) {\n return 'function with parameters'; \n}"
+				,string: 'function anonymous(a, $boo, _c) {\n return \'function with parameters\'; \n}'
 			}
 		];
 		//--properties
 		_functions[0].func.a = 'a';
 		_functions[0].func.b = 'b';
-	    _functions[1].func.b = 'b';
+		_functions[1].func.b = 'b';
 
-	    //==tests
+		//==tests
 		for(_key in _functions){
 			_func = _functions[_key].func;
 			_clone = __.core.functions.clone(_func);
@@ -68,7 +68,7 @@
 		//==initial setup
 		var testFunction = function(argOne, argTwo){
 			var thisBase = this.__base || undefined;
-		}
+		};
 
 		var strings = [
 			{
