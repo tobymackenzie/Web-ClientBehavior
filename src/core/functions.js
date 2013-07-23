@@ -11,7 +11,7 @@ define(['./__', './deps', './Library'], function(__tmlib, __deps, __Library){
 		/*=====
 		==configuraiton
 		=====*/
-		'configuration': {
+		'config': {
 			'argumentsRegex': /((?!=^|,)([\w\$_]))+/g
 			,'duckPunchKey': '__original'
 			,'functionRegex': /^function[\s]+[\w]*\(([\w\s,_\$]*)?\)\{(.*)\}$/
@@ -25,10 +25,10 @@ define(['./__', './deps', './Library'], function(__tmlib, __deps, __Library){
 		*/
 		,clone: function(_function){
 			var _result;
-			var _matches = _function.toString().match(this.configuration.functionRegex);
+			var _matches = _function.toString().match(this.config.functionRegex);
 			if(_matches){
 				if(_matches[1]){
-					_result = _matches[1].match(this.configuration.argumentsRegex);
+					_result = _matches[1].match(this.config.argumentsRegex);
 				}else{
 					_result = [];
 				}
@@ -120,7 +120,7 @@ define(['./__', './deps', './Library'], function(__tmlib, __deps, __Library){
 			;
 			switch(_options.type || null){
 				case 'this':
-					var argKey = _options.key || this.configuration.duckPunchKey;
+					var argKey = _options.key || this.config.duckPunchKey;
 					return function(){
 						var _originalValue = this[argKey] || __undefined;
 						this[argKey] = _originalFunction;

@@ -277,17 +277,17 @@
 		//--ensure baseContext key is reset from 'this' duck punch type
 		//---should be reset to undefined since it wasn't before
 		assert.equal(
-			baseContext[__.core.functions.configuration.duckPunchKey]
+			baseContext[__.core.functions.config.duckPunchKey]
 			,undefined
-			, 'baseContext[' + __.core.functions.configuration.duckPunchKey + '] should be reset to original value of undefined'
+			, 'baseContext[' + __.core.functions.config.duckPunchKey + '] should be reset to original value of undefined'
 		);
 		//---now try when a value is set
-		baseContext[__.core.functions.configuration.duckPunchKey] = 26;
+		baseContext[__.core.functions.config.duckPunchKey] = 26;
 		punchedThisTypeFunction.apply(baseContext, args)
 		assert.equal(
-			baseContext[__.core.functions.configuration.duckPunchKey]
+			baseContext[__.core.functions.config.duckPunchKey]
 			,26
-			, 'baseContext[' + __.core.functions.configuration.duckPunchKey + '] should be reset to original value of 26'
+			, 'baseContext[' + __.core.functions.config.duckPunchKey + '] should be reset to original value of 26'
 		);
 
 		//==cleanup

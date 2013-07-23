@@ -13,7 +13,7 @@ define(['./deps', './functions', './Library', './mergeInto', './objects', './__'
 		/*=====
 		==configuration
 		=====*/
-		'configuration': {
+		'config': {
 			//--using autoapply makes for a nicer interface, but also has a performance penalty
 			'autoApplyForFunctionInheritance': true
 			,'overriddenParentKey': '__base'
@@ -44,14 +44,14 @@ define(['./deps', './functions', './Library', './mergeInto', './objects', './__'
 						typeof _prototype[_name] == 'function'
 						&& typeof _parent.prototype[_name] == 'function'
 						//--only override if function actually calls the parent
-						&& __functions.contains(_prototype[_name], '\\b' + this.configuration.overriddenParentKey + '(\\(|\\.apply|\\.call)\\b')
+						&& __functions.contains(_prototype[_name], '\\b' + this.config.overriddenParentKey + '(\\(|\\.apply|\\.call)\\b')
 					){
 						_prototype[_name] = __functions.duckPunch(
 							_parent.prototype[_name]
 							,_prototype[_name]
 							,{
-								autoApply: this.configuration.autoApplyForFunctionInheritance
-								,key: this.configuration.overriddenParentKey
+								autoApply: this.config.autoApplyForFunctionInheritance
+								,key: this.config.overriddenParentKey
 								,name: _name
 								,type: 'this'
 							}
