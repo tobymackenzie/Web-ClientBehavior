@@ -95,24 +95,31 @@ __.classes.CollapsingNav = __.core.Classes.create({
 			}, this.resizeInterval);
 		}
 		,isTooNarrow: function(){
+			var _this = this;
 			var $navItems = this.mainList.find(this.navItemSelector);
 			var _itemPadding = 0;
-			var _hasDifferentHeight = false;
-			var _previousHeight;
+			var _hasEnoughHeightDifference = false;
+
 			$navItems.each(function(_index){
 				var $this = jQuery(this);
-				var $topLevel = $this.find('.topLevel');
+				var $topLevel = $this.find(_this.topLevelSelector);
 				_itemPadding += $this.outerWidth() - $topLevel.outerWidth();
+				//--check height to see if item wraps
+				//-# must do this for each item, since individual items may have different font-size, etc
+				var _html = $topLevel.html();
+				$topLevel.html('x');
+				var _singleLineHeight = $topLevel.outerHeight();
+				$topLevel.html(_html);
 				var _outerHeight = $topLevel.outerHeight();
-				if(_previousHeight !== undefined && _outerHeight !== _previousHeight){
-					_hasDifferentHeight = true;
+				if(
+					_singleLineHeight
+					&& Math.abs(_outerHeight - _singleLineHeight) > 0.3 * _singleLineHeight
+				){
+					_hasEnoughHeightDifference = true;
 					return false;
 				}
-				if(_index){
-					_previousHeight = _outerHeight;
-				}
 			});
-			return _hasDifferentHeight || _itemPadding < this.minimumPadding;
+			return _hasEnoughHeightDifference || _itemPadding < this.minimumPadding;
 		}
 		,mainListSelector: '.navList.l-1'
 		,minimumPadding: 100
@@ -133,11 +140,14 @@ __.classes.CollapsingNav = __.core.Classes.create({
 			this.mainList.find(this.navItemSelector).last().before($item);
 		}
 		,pushItemToMoreList: function(){
-			var $item = this.mainList.find(this.navItemSelector).last().prev();
+			var $item = (this.moreItem.data('isAttached'))
+				? this.moreItem.prev()
+				: this.mainList.find(this.navItemSelector).last();
 			$item.detach();
 			this.moreList.append($item);
 		}
 		,resizeTimeout: null
 		,resizeInterval: 200
+		,topLevelSelector: '> .topLevel'
 	}
 });
