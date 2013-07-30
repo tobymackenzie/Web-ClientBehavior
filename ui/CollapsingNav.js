@@ -40,6 +40,11 @@ __.classes.CollapsingNav = __.core.Classes.create({
 			this.mainList = this.$.find(this.mainListSelector);
 		}
 
+		//--calculate 'auto' minimum padding
+		if(this.minimumPadding === 'auto'){
+			this.minimumPadding = this.mainList.find(this.navItemSelector).length * 20;
+		}
+
 		//--attach resize listener
 		var _this = this;
 		jQuery(window).on('resize', function(){
@@ -122,7 +127,7 @@ __.classes.CollapsingNav = __.core.Classes.create({
 			return _hasEnoughHeightDifference || _itemPadding < this.minimumPadding;
 		}
 		,mainListSelector: '.navList.l-1'
-		,minimumPadding: 100
+		,minimumPadding: 'auto'
 		,moreItem: null
 		,moreItemHTML: '<li class="topItem dropdown">'
 			+	'<a class="topLevel" href="javascript:/* open submenu */">More</a>'
