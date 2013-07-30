@@ -11,6 +11,7 @@ __.classes.ResponsiveHandler = __.core.Classes.create({
 				_this.handleResize(_event);
 			});
 		}
+		this.current = this.determineBreakPoint();
 	}
 	,properties: {
 		/*
