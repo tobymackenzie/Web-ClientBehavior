@@ -1,4 +1,4 @@
-/* global __ */
+/* global __, setTimeout */
 
 __.mixins.PubSub = {
 	properties: {
@@ -16,16 +16,16 @@ __.mixins.PubSub = {
 			}
 		}
 		,pub: function(_eventName, _data){
-			var _this;
+			var _this = this;
 			//-#publish in separate thread
 			setTimeout(function(){
 				var _i = 0;
 				var _subscription;
-				var _subscriptions = this.getSubscriptions(_eventName);
+				var _subscriptions = _this.getSubscriptions(_eventName);
 				var _subscriptionsLength = _subscriptions.length;
 				for(; _i < _subscriptionsLength; ++_i){
 					_subscription = _subscriptions[_i];
-					_subscription.call(this, _data || null);
+					_subscription.call(_this, _data || null);
 				}
 			}, 0);
 		}
