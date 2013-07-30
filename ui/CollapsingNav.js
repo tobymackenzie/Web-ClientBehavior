@@ -40,11 +40,6 @@ __.classes.CollapsingNav = __.core.Classes.create({
 			this.mainList = this.$.find(this.mainListSelector);
 		}
 
-		//--calculate 'auto' minimum padding
-		if(this.minimumPadding === 'auto'){
-			this.minimumPadding = this.mainList.find(this.navItemSelector).length * 20;
-		}
-
 		//--attach resize listener
 		var _this = this;
 		jQuery(window).on('resize', function(){
@@ -102,13 +97,17 @@ __.classes.CollapsingNav = __.core.Classes.create({
 		,isTooNarrow: function(){
 			var _this = this;
 			var $navItems = this.mainList.find(this.navItemSelector);
-			var _itemPadding = 0;
 			var _hasEnoughHeightDifference = false;
+			var _hasTooLittlePadding = false;
 
 			$navItems.each(function(_index){
 				var $this = jQuery(this);
 				var $topLevel = $this.find(_this.topLevelSelector);
-				_itemPadding += $this.outerWidth() - $topLevel.outerWidth();
+				var _itemPadding = $this.outerWidth() - $topLevel.outerWidth();
+				if(_itemPadding < _this.minimumPadding){
+					_hasTooLittlePadding = true;
+					return false;
+				}
 				//--check height to see if item wraps
 				//-# must do this for each item, since individual items may have different font-size, etc
 				var _html = $topLevel.html();
@@ -124,10 +123,10 @@ __.classes.CollapsingNav = __.core.Classes.create({
 					return false;
 				}
 			});
-			return _hasEnoughHeightDifference || _itemPadding < this.minimumPadding;
+			return _hasEnoughHeightDifference || _hasTooLittlePadding;
 		}
 		,mainListSelector: '.navList.l-1'
-		,minimumPadding: 'auto'
+		,minimumPadding: 20
 		,moreItem: null
 		,moreItemHTML: '<li class="topItem dropdown">'
 			+	'<a class="topLevel" href="javascript:/* open submenu */">More</a>'
