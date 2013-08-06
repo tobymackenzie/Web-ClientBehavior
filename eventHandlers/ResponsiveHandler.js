@@ -6,6 +6,7 @@ Monitor changes in breakpoints for responsive sites.
 __.classes.ResponsiveHandler = __.core.Classes.create({
 	init: function(){
 		var _this = this;
+		this.__base(arguments);
 		if(jQuery){
 			jQuery(window).on('resize', function(_event){
 				_this.handleResize(_event);
