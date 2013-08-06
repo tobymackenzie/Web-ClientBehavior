@@ -44,7 +44,7 @@ __.classes.ResponsiveMenu = __.core.Classes.create({
 		,$list: '.siteMainNavList'
 		,closedClass: 'hasClosedMenu'
 		,openedClass: 'hasOpenMenu'
-		,nvpBreakPoints: 'small'
+		,nvpBreakPoints: 'nvp'
 		,responsiveHandler: null
 		,responsiveSubscription: null
 		,state: null
@@ -67,7 +67,7 @@ __.classes.ResponsiveMenu = __.core.Classes.create({
 		}
 		,switchToWVP: function(){
 			//--hide action
-			this.$action.show();
+			this.$action.hide();
 			//--show menu
 			this.$list.show();
 		}

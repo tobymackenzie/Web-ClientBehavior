@@ -20,8 +20,8 @@ __.classes.ResponsiveHandler = __.core.Classes.create({
 		Map of break point names to values.  Must be in order from smallest to greatest.
 		*/
 		breakpoints: {
-			'small': 0
-			,'large': 48
+			'nvp': 0
+			,'wvp': 48
 		}
 		/*
 		Property: container
