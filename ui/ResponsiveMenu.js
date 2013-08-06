@@ -27,15 +27,7 @@ __.classes.ResponsiveMenu = __.core.Classes.create({
 
 		//--attach action listener
 		this.$action.on('click', function(){
-			var _isStartingVisible = _this.$list.is(':visible');
-			if(!_isStartingVisible){
-				_this.$.addClass(_this.openedClass).removeClass(_this.closedClass);
-			}
-			_this.$list.slideToggle(function(){
-				if(_isStartingVisible){
-					_this.$.removeClass(_this.openedClass).addClass(_this.closedClass);
-				}
-			});
+			_this.toggleList();
 		});
 	}
 	,properties: {
@@ -47,6 +39,39 @@ __.classes.ResponsiveMenu = __.core.Classes.create({
 		,nvpBreakPoints: 'nvp'
 		,responsiveHandler: null
 		,responsiveSubscription: null
+		,showList: function(){
+			return this.toggleList('show');
+		}
+		,hideList: function(){
+			return this.toggleList('hide');
+		}
+		,toggleList: function(_action){
+			var _this = this;
+			var _isStartingVisible, _method;
+			switch(_action){
+				case 'show':
+					_isStartingVisible = false;
+					_method = 'slideDown';
+				break;
+				case 'hide':
+					_isStartingVisible = true;
+					_method = 'slideUp';
+				break;
+				default:
+					_isStartingVisible = _this.$list.is(':visible');
+					_method = 'slideToggle';
+				break;
+			}
+			if(!_isStartingVisible){
+				_this.$.addClass(_this.openedClass).removeClass(_this.closedClass);
+			}
+			_this.$list[_method](function(){
+				if(_isStartingVisible){
+					_this.$.removeClass(_this.openedClass).addClass(_this.closedClass);
+				}
+			});
+			return this;
+		}
 		,state: null
 		,switchBreakpoint: function(_breakpoint){
 			if(_breakpoint !== this.state){
@@ -73,3 +98,4 @@ __.classes.ResponsiveMenu = __.core.Classes.create({
 		}
 	}
 });
+
