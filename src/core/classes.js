@@ -178,6 +178,16 @@ define(['./deps', './functions', './Library', './mergeInto', './objects', './__'
 						break;
 						//--all other possibilities cause nothing to happen
 					}
+				//--calling constructor directly, create new instance of class using new
+				}else{
+					//--use createPrototype() to create instance without running the init() method
+					var _instance = _this.createPrototype(_constructor);
+
+					//--if we have init, run with arguments applied
+					if(_instance.init && _instance.init.apply){
+						_instance.init.apply(_instance, arguments);
+					}
+					return _instance;
 				}
 			};
 			return _constructor;
