@@ -162,9 +162,10 @@ define(['./deps', './functions', './Library', './mergeInto', './objects', './__'
 			Function to act as constructor of class
 		*/
 		,'createConstructor': function(_parent){
-			return function _class(){
-				//--don't run if creating prototype via this.createPrototype
-				if(!__classes.__isCreatingPrototype){
+			var _this = this;
+			var _constructor = function _tmConstructor(){
+				//--using new keyword, handle normally
+				if(this instanceof _constructor){
 					//--call defined constructor or parent constructor
 					switch(typeof this.init){
 						//--call class's init method, if it exists
@@ -179,12 +180,12 @@ define(['./deps', './functions', './Library', './mergeInto', './objects', './__'
 					}
 				}
 			};
+			return _constructor;
 		}
 
 		/*
 		Function: createPrototype
-		Create prototype of class by creating an instance.  Set __isCreatingPrototype to ensure the constructors of all functions created through Classes.create will not run
-
+		Create prototype of class.
 		Parameters:
 			Class(Function): class to create prototype for
 
@@ -192,13 +193,11 @@ define(['./deps', './functions', './Library', './mergeInto', './objects', './__'
 			Object to serve as a prototype for another object that will properly inherit from the given class object.
 		*/
 		,'createPrototype': function(_Class){
-			//--ensure parent constructor not run
-			this.__isCreatingPrototype = true;
-			//--create prototype with 'new' keyword so that classes using this prototype will be seen as instances of the class
-			var _prototype = new _Class();
-			//--ensure constructor will be run on future creations
-			this.__isCreatingPrototype = false;
-
+			//--create noop function and attach prototype so that we won't run constructor of class
+			var _TempClass = function(){};
+			_TempClass.prototype = _Class.prototype;
+			//--return instance of noop class
+			var _prototype = new _TempClass();
 			return _prototype;
 		}
 
