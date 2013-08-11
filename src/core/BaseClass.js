@@ -28,6 +28,11 @@ define(['./classes', './__'], function(__classes, __tmlib){
 				this[_key] = _value;
 			}
 		}
+		,'statics': {
+			create: function(){
+				return this.apply(this, arguments);
+			}
+		}
 	});
 
 	//--add to tmlib and export

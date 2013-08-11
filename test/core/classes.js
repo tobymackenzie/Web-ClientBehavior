@@ -368,4 +368,15 @@
 		assert.equal(_instance.foo, 'foo','arguments should be passed to init method');
 		assert.equal(_instance.bar, 'bar','arguments should be passed to init method');
 	});
+	test('BaseClass:create()', function(assert){
+		//==initial setup
+		var _instance = __.core.BaseClass.create({foo: 'foo', bar: 'bar'});
+		//==tests
+		assert.ok(
+			_instance instanceof __.core.BaseClass
+			,'created object should be instance of BaseClass'
+		);
+		assert.equal(_instance.foo, 'foo','arguments should be passed to init method');
+		assert.equal(_instance.bar, 'bar','arguments should be passed to init method');
+	});
 }));
