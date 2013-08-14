@@ -49,7 +49,6 @@
 	/*=====
 	==config
 	=====*/
-	__.cfg.whatever = 'whatever';
 
 
 	/*=====
