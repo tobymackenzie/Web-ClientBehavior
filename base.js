@@ -1,23 +1,30 @@
 document.getElementsByTagName('html')[0].className += ' hasjavascript';
 
-(function(dependencies, undefined){
+(function(_deps, undefined){
 	/*=====
 	==dependencies
 	Allow injection of dependencies so they can be theoretically modified for testing.
 	Local names allow them to be minified.
 	=====*/
+	var $, globals, head, jQuery, window;
+	if(!_deps){
+		_deps = {};
+	}
 
-	var window = dependencies.window || window;
-	if(dependencies.head) var head = dependencies.head;
-	else if(window.head) var head = window.head;
-	if(dependencies.jQuery) var jQuery = dependencies.jQuery;
-	else if(window.jQuery) var jQuery = window.jQuery;
+	window = globals = _deps.globals || this;
+
+	head = _deps.head || window.head;
+	jQuery = $ = _deps.jQuery || window.jQuery;
 
 	/*=====
 	==tmlib
 	=====*/
 
-	if(typeof window.__ === 'undefined') var __ = window.__ = {ua: {}, cfg: {}, 'class': {}, classes: {}, core: {}, 'data': {}, lib: {}, objects: {}};
+	var __;
+	if(typeof window.__ === 'undefined'){
+		window.__ = {ua: {}, cfg: {}, 'class': {}, classes: {}, core: {}, 'data': {}, lib: {}, objects: {}};
+	}
+	__ = window.__;
 
 	/*===
 	==lib
@@ -65,4 +72,4 @@ document.getElementsByTagName('html')[0].className += ' hasjavascript';
 	}else if(typeof __.lib.addListeners != 'undefined'){
 		__.lib.addListeners(window, 'load', __.onload, false);
 	}
-})({'window': window});
+})();
