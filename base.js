@@ -28,7 +28,7 @@
 	==lib
 	===*/
 
-	__.message = function(arg){
+	var clog = __.message = function(arg){
 		if(window.console && window.console.log){
 			if(window.console.log.apply){
 				window.console.log.apply(window.console, arguments);
@@ -39,7 +39,7 @@
 				}
 			}
 		}//else alert(arg); //-# for ielte7, other old browsers
-	}
+	};
 
 	/*===
 	==classes
