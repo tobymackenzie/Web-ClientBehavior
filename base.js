@@ -1,5 +1,3 @@
-document.getElementsByTagName('html')[0].className += ' hasjavascript';
-
 (function(_deps, undefined){
 	/*=====
 	==dependencies
