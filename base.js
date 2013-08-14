@@ -52,21 +52,21 @@
 
 
 	/*=====
-	==main
+	==main onload
 	=====*/
 
-	__.onload = function(){
+	var __main = function(){
 
-	}
+	};
 
 	/*===
 	==init
 	===*/
 	if(typeof jQuery != 'undefined'){
-		jQuery(__.onload);
+		jQuery(__main);
 	}else if(typeof head != 'undefined'){
-		head.ready(__.onload);
+		head.ready(__main);
 	}else if(typeof __.lib.addListeners != 'undefined'){
-		__.lib.addListeners(window, 'load', __.onload, false);
+		__.lib.addListeners(window, 'load', __main, false);
 	}
 })();
