@@ -18,7 +18,7 @@ define(['./deps', './Library', './mergeInto', './__'], function(__deps, __Librar
 			object(Object): Object to add properties to
 			properties(Map): Map of named properties with values to add to object
 		*/
-		'addProperties': function(_object, _properties){
+		addProperties: function(_object, _properties){
 			for(var key in _properties){
 				if(_properties.hasOwnProperty(key)){
 					this.addProperty(_object, key, _properties[key]);
@@ -36,7 +36,7 @@ define(['./deps', './Library', './mergeInto', './__'], function(__deps, __Librar
 			property(mixed): Property definition/value.  Keep in mind that, when setting properties on an object prototyp, setting an initial value to an object will cause it to be shared among all instances (eg adding an element to an array object property will affect that property for all instances.  If an object that has an 'init' property, will be added as a complex type with special functionality or options (not yet implemented).  Complex objects can have the follow properties:
 				init(mixed): initial value for property
 		*/
-		,'addProperty': function(_object, _name, _property){
+		,addProperty: function(_object, _name, _property){
 			if(typeof _property == 'object' && typeof _property.init != 'undefined'){
 				_object[_name] = _property.init;
 			}else{
@@ -52,7 +52,7 @@ define(['./deps', './Library', './mergeInto', './__'], function(__deps, __Librar
 			object(object): object to check 'length' of
 			doCountInherited(boolean): count inherited properties if true, otherwise just hasOwnProperty properties
 		*/
-		,'getLength': function(_object, _doCountInherited){
+		,getLength: function(_object, _doCountInherited){
 			if(_doCountInherited === __undefined){
 				_doCountInherited = false;
 			}
@@ -78,7 +78,7 @@ define(['./deps', './Library', './mergeInto', './__'], function(__deps, __Librar
 			__.lib.each (should remove for efficiency)
 			__.lib.isArray (could do typoef)
 		*/
-		,'hasKey': function(_needles, _haystack){
+		,hasKey: function(_needles, _haystack){
 			if(!__tmlib.lib.isArray(_needles)){
 				_needles = [_needles];
 			}
@@ -103,7 +103,7 @@ define(['./deps', './Library', './mergeInto', './__'], function(__deps, __Librar
 			__.lib.each (should remove for efficiency)
 			__.lib.isArray (could do typoef)
 		*/
-		,'hasKeys': function(_needles, _haystack){
+		,hasKeys: function(_needles, _haystack){
 			var _has = true;
 			if(!__tmlib.lib.isArray(_needles)){
 				_needles = [_needles];
@@ -133,7 +133,7 @@ define(['./deps', './Library', './mergeInto', './__'], function(__deps, __Librar
 		See Also:
 			<mergeInto>
 		*/
-		,'merge': function(){
+		,merge: function(){
 			var _args = arguments;
 			var _object = {};
 			__Array.prototype.unshift.call(_args, _object);
@@ -146,10 +146,10 @@ define(['./deps', './Library', './mergeInto', './__'], function(__deps, __Librar
 
 		Defined in 'core/mergeInto' because it is needed for many base objects.
 		*/
-		,'mergeInto': __mergeInto
+		,mergeInto: __mergeInto
 	});
 
 	//--add to tmlib and export
-	__tmlib.__('.core', {'objects': __objects});
+	__tmlib.__('.core', {objects: __objects});
 	return __objects;
 });

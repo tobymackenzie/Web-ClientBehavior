@@ -11,10 +11,10 @@ define(['./__', './deps', './Library'], function(__tmlib, __deps, __Library){
 		/*=====
 		==configuraiton
 		=====*/
-		'config': {
-			'argumentsRegex': /((?!=^|,)([\w\$_]))+/g
-			,'duckPunchKey': '__original'
-			,'functionRegex': /^function[\s]+[\w]*\(([\w\s,_\$]*)?\)\{(.*)\}$/
+		config: {
+			argumentsRegex: /((?!=^|,)([\w\$_]))+/g
+			,duckPunchKey: '__original'
+			,functionRegex: /^function[\s]+[\w]*\(([\w\s,_\$]*)?\)\{(.*)\}$/
 		}
 		/*=====
 		==Library functions
@@ -108,7 +108,7 @@ define(['./__', './deps', './Library'], function(__tmlib, __deps, __Library){
 		Performance:
 			The 'this' type is a bit slower than the 'arguments' type. So is the 'autoApply' option.  See http://jsperf.com/duck-punching-variants
 		*/
-		,'duckPunch': function(_function, _wrapper, _options){
+		,duckPunch: function(_function, _wrapper, _options){
 			_options = _options || {};
 			_options.autoApply = _options.autoApply || false;
 			var _originalFunction =
@@ -144,6 +144,6 @@ define(['./__', './deps', './Library'], function(__tmlib, __deps, __Library){
 	});
 
 	//--add to tmlib and export
-	__tmlib.__('.core', {'functions': __functions});
+	__tmlib.__('.core', {functions: __functions});
 	return __functions;
 });

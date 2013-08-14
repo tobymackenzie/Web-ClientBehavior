@@ -17,28 +17,28 @@
 		//==initial setup
 		//--create parent class
 		var parentClass = __.core.classes.create({
-			'parent': Object
-			,'init': function(){
+			parent: Object
+			,init: function(){
 				this.propertyFromParentClassInit = 'woo';
 			}
 			,properties: {
-				'parentClassProperty1': 'foo'
-				,'parentClassProperty2': 'bar'
+				parentClassProperty1: 'foo'
+				,parentClassProperty2: 'bar'
 			}
 		});
 		//--create instance of parent class
 		var parentClassInstance = new parentClass();
 		//--create child class
 		var childClass = __.core.classes.create({
-			'parent': parentClass
-			,'init': function(){
+			parent: parentClass
+			,init: function(){
 				this.__base(arguments);
 				this.propertyFromChildClassInit = 'woo';
 			}
 			,'properties': {
-				'childClassProperty1': 'boo'
-				,'childClassProperty2': 'far'
-				,'parentClassProperty2': 'overriddenBar'
+				childClassProperty1: 'boo'
+				,childClassProperty2: 'far'
+				,parentClassProperty2: 'overriddenBar'
 			}
 		});
 
@@ -187,21 +187,21 @@
 		targetClass.originalStatic = 'originalValue';
 		targetClass.staticToBeOverridden = 'originalValue';
 		var targetObject = {
-			'originalProperty': 'originalValue'
-			,'propertyToBeOverridden': 'originalValue'
-			,'originalMethod': function(){ return this.originalProperty; }
-			,'methodToBeOverridden': function(){ return 2; }
+			originalProperty: 'originalValue'
+			,propertyToBeOverridden: 'originalValue'
+			,originalMethod: function(){ return this.originalProperty; }
+			,methodToBeOverridden: function(){ return 2; }
 		};
 		var mixinDefinition = {
-			'properties': {
-				'mixinProperty': 'mixinValue'
-				,'propertyToBeOverridden': 'mixinValue'
-				,'mixinMethod': function(){ return this.mixinProperty; }
-				,'methodToBeOverridden': function(){ return 'two'; }
+			properties: {
+				mixinProperty: 'mixinValue'
+				,propertyToBeOverridden: 'mixinValue'
+				,mixinMethod: function(){ return this.mixinProperty; }
+				,methodToBeOverridden: function(){ return 'two'; }
 			}
-			,'statics': {
-				'mixinStatic': 'mixinValue'
-				,'staticToBeOverridden': 'mixinValue'
+			,statics: {
+				mixinStatic: 'mixinValue'
+				,staticToBeOverridden: 'mixinValue'
 			}
 		}
 
@@ -272,15 +272,15 @@
 			//--pluginize class
 			//---method
 			var pluginizedMethod = __.core.classes.pluginize({
-				'class': testClass
-				,'name': 'testPlugin'
-				,'type': 'method'
+				Class: testClass
+				,name: 'testPlugin'
+				,type: 'method'
 			});
 			//---jQuery
 			__.core.classes.pluginize({
-				'class': testClass
-				,'name': 'testPlugin'
-				,'type': 'jQuery'
+				Class: testClass
+				,name: 'testPlugin'
+				,type: 'jQuery'
 			});
 
 			//--get object instances
@@ -343,9 +343,9 @@
 	test('BaseClass', function(assert){
 		//==initial setup
 		var myInstance = new __.core.BaseClass({
-			'instanceProperty1': 'value1'
-			,'instanceProperty2': 'value2'
-			,'instanceMethod1': function(){
+			instanceProperty1: 'value1'
+			,instanceProperty2: 'value2'
+			,instanceMethod1: function(){
 				return 'foo';
 			}
 		});

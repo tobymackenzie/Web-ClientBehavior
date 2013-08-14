@@ -13,18 +13,18 @@ define(['./deps', './functions', './Library', './mergeInto', './objects', './__'
 		/*=====
 		==configuration
 		=====*/
-		'config': {
+		config: {
 			//--using autoapply makes for a nicer interface, but also has a performance penalty
 			'autoApplyForFunctionInheritance': true
 			,'overriddenParentKey': '__base'
 		}
-		,'creationPlugins': {
+		,creationPlugins: {
 			/*
 			Function: addParentAccessToMethods
 
 			Adds ability to call 'this.base(arguments)' from child class methods to access parent class methods of same name
 			*/
-			'addParentAccessToMethods': function(_options){
+			addParentAccessToMethods: function(_options){
 				var _parent = _options.parent;
 				var _prototype = _options.prototype;
 				_options = _options.options;
@@ -82,7 +82,7 @@ define(['./deps', './functions', './Library', './mergeInto', './objects', './__'
 		Return:
 			Function object, the constructor of the class, but representing the class itself.
 		*/
-		,'create': function(_options){
+		,create: function(_options){
 			if(typeof _options == 'undefined'){
 				_options = {};
 			}
@@ -131,10 +131,10 @@ define(['./deps', './functions', './Library', './mergeInto', './objects', './__'
 			for(var _key in this.creationPlugins){
 				if(this.creationPlugins.hasOwnProperty(_key)){
 					this.creationPlugins[_key].call(this, {
-						'class': _class
-						,'parent': _parent
-						,'prototype': _prototype
-						,'options': _options
+						Class: _class
+						,parent: _parent
+						,prototype: _prototype
+						,options: _options
 					});
 				}
 			}
@@ -161,7 +161,7 @@ define(['./deps', './functions', './Library', './mergeInto', './objects', './__'
 		Return:
 			Function to act as constructor of class
 		*/
-		,'createConstructor': function(_parent){
+		,createConstructor: function(_parent){
 			var _this = this;
 			var _constructor = function _tmConstructor(){
 				//--using new keyword, handle normally
@@ -202,7 +202,7 @@ define(['./deps', './functions', './Library', './mergeInto', './objects', './__'
 		Return:
 			Object to serve as a prototype for another object that will properly inherit from the given class object.
 		*/
-		,'createPrototype': function(_Class){
+		,createPrototype: function(_Class){
 			//--create noop function and attach prototype so that we won't run constructor of class
 			var _TempClass = function(){};
 			_TempClass.prototype = _Class.prototype;
@@ -218,7 +218,7 @@ define(['./deps', './functions', './Library', './mergeInto', './objects', './__'
 			object(Object): object to mix properties into
 			parent(Function): function to mix statics into
 		*/
-		,'mixIn': function(_mixin, _object, _parent){
+		,mixIn: function(_mixin, _object, _parent){
 			var _i;
 			var _key;
 			var _mixinsLength;
@@ -270,17 +270,17 @@ define(['./deps', './functions', './Library', './mergeInto', './objects', './__'
 		Converts any class/object into a function to be used by another class/object to give it an instance of the 'pluginized' class/object.  With the jQuery type, this function is added to the jQuery object, effectively making it a plugin.
 		Parameters:
 			options(map):
-				class(Function): Class to instantiate for use as plugin.  Used if each containing object will have its own instance of the class, in place of the 'object' option
+				Class(Function): Class to instantiate for use as plugin.  Used if each containing object will have its own instance of the class, in place of the 'object' option
 				mapToThis(String): string will be key used for passing containing object's 'this' to pluginized object's constructor
-				object(Object): Object to use for plugin.  Used if one object instance is shared among all containing object instances, in place of the 'class' option
+				object(Object): Object to use for plugin.  Used if one object instance is shared among all containing object instances, in place of the 'Class' option
 				type(String): name of the type of plugin to create.  default: method
 					method: returns the pluganized method that can be added to any object/class
 					jQuery: attaches the pluganized method to the jQuery object
 		*/
-		,'pluginize': function(_options){
+		,pluginize: function(_options){
 			var _type = _options.type || 'method';
 			_options = __mergeInto({
-				'mapToThis': 'elements'
+				mapToThis: 'elements'
 			}, _options);
 			var _handler = function(){
 				var _args = arguments; //-# enhancement for obfuscation to allow arguments to become a shorter variable, saving 128 bytes at time of commit
@@ -301,7 +301,7 @@ define(['./deps', './functions', './Library', './mergeInto', './objects', './__'
 					if(typeof _options.object == 'object'){
 						_handler.instance = _options.object;
 					}else{
-						_handler.instance = new _options['class'](
+						_handler.instance = new _options.Class(
 							_args[0]
 							,_args[1]
 							,_args[2]
@@ -341,6 +341,6 @@ define(['./deps', './functions', './Library', './mergeInto', './objects', './__'
 	});
 
 	//--add to tmlib and export
-	__tmlib.__('.core', {'classes': __classes});
+	__tmlib.__('.core', {classes: __classes});
 	return __classes;
 });

@@ -21,21 +21,21 @@
 		__.core.objects.addProperty(myObject, 'addedNumericProperty', 1234);
 		__.core.objects.addProperty(myObject, 'addedFunctionProperty', function(){ return 'from added function property'; });
 		__.core.objects.addProperty(myObject, 'addedObjectProperty', {
-			'subStringProperty': 'subValue'
-			,'subNumericProperty': 5432
-			,'subFunctionProperty': function(){ return 'from sub function property'; }
-			,'subObjectProperty': { 'subSubProperty': 'subSubValue' }
+			subStringProperty: 'subValue'
+			,subNumericProperty: 5432
+			,subFunctionProperty: function(){ return 'from sub function property'; }
+			,subObjectProperty: { subSubProperty: 'subSubValue' }
 		});
 
 		//--add complex properties
-		__.core.objects.addProperty(myObject, 'addedComplexStringProperty', {'init': 'addedComplexValue'});
-		__.core.objects.addProperty(myObject, 'addedComplexNumericProperty', {'init': 4321});
-		__.core.objects.addProperty(myObject, 'addedComplexFunctionProperty', {'init': function(){ return 'from complex function property'; }});
+		__.core.objects.addProperty(myObject, 'addedComplexStringProperty', {init: 'addedComplexValue'});
+		__.core.objects.addProperty(myObject, 'addedComplexNumericProperty', {init: 4321});
+		__.core.objects.addProperty(myObject, 'addedComplexFunctionProperty', {init: function(){ return 'from complex function property'; }});
 		__.core.objects.addProperty(myObject, 'addedComplexObjectProperty', {
-			'init': {
-				'complexSubProperty': 'complexSubValue'
+			init: {
+				complexSubProperty: 'complexSubValue'
 			}
-			,'unusedKey': 'unusedValue'
+			,unusedKey: 'unusedValue'
 		});
 
 		//==test

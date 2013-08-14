@@ -10,7 +10,7 @@ define(['./classes', './__'], function(__classes, __tmlib){
 		Parameters:
 			options(map): receives a key value map of properties to add or apply to instance being created.
 		*/
-		'init': function(_options){
+		init: function(_options){
 			_options = _options || {};
 			//--set value of members from arguments
 			for(var _key in _options){
@@ -19,16 +19,16 @@ define(['./classes', './__'], function(__classes, __tmlib){
 				}
 			}
 		}
-		,'properties': {
+		,properties: {
 			/*
 			Method: __directSet
 			Directly set a property, without invoking any sort of set helper functions
 			*/
-			'__directSet': function(_key, _value){
+			__directSet: function(_key, _value){
 				this[_key] = _value;
 			}
 		}
-		,'statics': {
+		,statics: {
 			create: function(){
 				return this.apply(this, arguments);
 			}
@@ -36,6 +36,6 @@ define(['./classes', './__'], function(__classes, __tmlib){
 	});
 
 	//--add to tmlib and export
-	__tmlib.__('.core', {'BaseClass': __BaseClass});
+	__tmlib.__('.core', {BaseClass: __BaseClass});
 	return __BaseClass;
 });

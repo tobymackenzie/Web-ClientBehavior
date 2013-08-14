@@ -72,22 +72,22 @@
 
 		var strings = [
 			{
-				'message': 'Arguments should be tested'
-				,'regex': /\bargOne\b/
-				,'string': 'argOne'
-				,'shouldBe': true
+				message: 'Arguments should be tested'
+				,regex: /\bargOne\b/
+				,string: 'argOne'
+				,shouldBe: true
 			}
 			,{
-				'message': 'Function body should be tested'
-				,'regex': /\b__base\b/
-				,'string': '__base'
-				,'shouldBe': true
+				message: 'Function body should be tested'
+				,regex: /\b__base\b/
+				,string: '__base'
+				,shouldBe: true
 			}
 			,{
-				'message': 'Non-existing string should not be found'
-				,'regex': /\bfoo\b/
-				,'string': 'foo'
-				,'shouldBe': false
+				message: 'Non-existing string should not be found'
+				,regex: /\bfoo\b/
+				,string: 'foo'
+				,shouldBe: false
 			}
 		];
 
