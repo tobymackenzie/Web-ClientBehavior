@@ -1,26 +1,27 @@
-	__.Widget = {
+/* global __, jQuery, window */
+	__.mixins.Widget = {
 		addElementsToDOM: function(elements){
 			if(typeof elements == 'undefined'){
-				var elements = this.elements;
+				elements = this.elements;
 			}
 			this.container.append(elements);
 			if(typeof this.onAddElementsToDOM == 'function'){
 				this.onAddElementsToDOM.call(this, elements);
 			}
 		}
-		,getElements: function(argElements){
+		,getElements: function(){
 			if(typeof this.elements == 'string'){
 				this.loadElements();
 			}
 			return this.elements;
 		}
 		,hide: function(){
-			this.elements.hide();
+			this.getElements().hide();
 			this.state = 'hidden';
 		}
 		,init: function(argOptions){
 			this.container = argOptions.container || jQuery('body');
-			this.elementsUrl = argOptions.elementsUrl || location.href;
+			this.elementsUrl = argOptions.elementsUrl || window.location.href;
 			if(typeof argOptions.addElementsToDOM == 'function'){
 				this.addElementsToDOM = argOptions.addElementsToDOM;
 			}
@@ -38,6 +39,7 @@
 			}
 		}
 		,loadElements: function(){
+			var newElements, promise;
 			if(typeof this.elements == 'string'){
 				if(__.lib.isUrl(this.elements)){
 					//--store elements url for later in case form has an empty action
@@ -53,13 +55,13 @@
 							lcThis.setElements(elements);
 						}
 					});
-					var promise = request.promise();
+					promise = request.promise();
 				}else if(__.lib.isHTML(this.elements)){
-					var newElements = jQuery(this.elements);
+					newElements = jQuery(this.elements);
 					this.addElementsToDOM.call(this, newElements);
 					this.setElements(newElements);
 				}else{
-					var newElements = this.container.find(this.elements);
+					newElements = this.container.find(this.elements);
 					if(!newElements.length){
 						newElements = jQuery(this.elements);
 					}
@@ -69,7 +71,7 @@
 
 			//--if there is no promise, return an already resolved promise
 			if(typeof promise == 'undefined'){
-				var promise = jQuery.Deferred();
+				promise = jQuery.Deferred();
 				promise.resolve();
 			}
 			return promise;
@@ -78,7 +80,7 @@
 			this.elements = argElements;
 		}
 		,show: function(){
-			this.elements.show();
+			this.getElements().show();
 			this.state = 'shown';
 		}
 		,state: 'shown'
