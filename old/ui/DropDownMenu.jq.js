@@ -87,7 +87,7 @@ __.classes.DropDownMenu = function(_args){
 				,function(){
 					var elmThis = jQuery(this);
 					if(elmThis.is(lcThis.hasDropDownSelector)){
-						clearTimeout(lcThis.timout);
+						clearTimeout(lcThis.timeout);
 					}
 					if(lcThis.elmCurrentlySelected !== elmThis){
 						if(lcThis.onHover){
