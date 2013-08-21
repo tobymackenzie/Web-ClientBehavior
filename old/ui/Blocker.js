@@ -7,7 +7,7 @@
 				argOptions = {};
 			}
 			this.elements = argOptions.elements || '<div class="blocker">';
-			this.elmMessage = argOptions.elmMessage || jQuery('<div class="blockerMessage">');
+			this.elmMessage = argOptions.elmMessage || jQuery('<span class="blockerMessage">');
 
 			this.hasMessageClass = argOptions.hasMessageClass || 'hasMessage';
 			this.noMessageClass = argOptions.noMessageClass || 'noMessage';
