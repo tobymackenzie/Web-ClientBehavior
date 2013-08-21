@@ -1,7 +1,7 @@
 /* global define */
-define(function(){
-	var __deps = (this.TMLIB_CONFIG && typeof this.TMLIB_CONFIG.deps === 'object') ? this.TMLIB_CONFIG.deps : {};
-
+define(['module'], function(__module){
+	//-@ http://stackoverflow.com/questions/9916073/how-to-load-bootstrapped-models-in-backbone-js-while-using-amd-require-js
+	var __deps = __module.config();
 	var __i;
 	var __undefined;
 
@@ -38,6 +38,5 @@ define(function(){
 			__deps[_name] = __deps.globals[_name] || __undefined;
 		}
 	}
-
 	return __deps;
 });
