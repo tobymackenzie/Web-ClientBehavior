@@ -12,12 +12,22 @@ define(['./classes', './__'], function(__classes, __tmlib){
 		*/
 		init: function(_options){
 			_options = _options || {};
+
+			//--deInit if inited
+			if(this.isInited){
+				this.deInit();
+			}
+
 			//--set value of members from arguments
 			for(var _key in _options){
 				if(_options.hasOwnProperty(_key)){
 					this.__directSet(_key, _options[_key]);
 				}
 			}
+
+			//--make sure inited flags are set
+			this.isInited = true;
+			this.hasInited = true;
 		}
 		,properties: {
 			/*
@@ -27,6 +37,23 @@ define(['./classes', './__'], function(__classes, __tmlib){
 			__directSet: function(_key, _value){
 				this[_key] = _value;
 			}
+			/*
+			Method: deInit
+			Stop intervals and event monitors and unset instance properties to allow an object to be inited again.  Meant to be overridden by children.
+			*/
+			,deInit: function(){
+				this.isInited = false;
+			}
+			/*
+			Property: hasInited
+			Whether the object has been inited ever.  Allows classes that will be inited multiple times to handle the first time differently
+			*/
+			,hasInited: false
+			/*
+			Property: isInited
+			Whether the object has been inited and not deInited.
+			*/
+			,isInited: false
 		}
 		,statics: {
 			create: function(){
