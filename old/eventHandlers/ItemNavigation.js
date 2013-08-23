@@ -2,28 +2,19 @@
 Class: ItemNavigation
 Generic handler of item navigation
 */
+/* global __, jQuery */
 /*-----
 ==Navigation
 -----*/
-__.classes.ItemNavigation = function(args){
-		this.boundDataName = args.boundDataName || 'tjmNavigationBound';
-		this.classCurrent = args.classCurrent || 'current';
-		if(typeof args.createElement == 'function'){
-			this.createElement = args.createElement;
+__.classes.ItemNavigation = __.core.Classes.create({
+	init: function(){
+		this.__base(arguments);
+		if(!this.container){
+			this.container = jQuery('body');
 		}
-		this.container = args.container || jQuery('body');
-		this.elements = args.elements || jQuery();
-		if(typeof args.getElementForItem == 'function'){
-			this.getElementForItem = args.getElementForItem;
+		if(!this.elements){
+			this.elements = jQuery();
 		}
-		this.items = args.items || null;
-		this.itemSelector = args.itemSelector || '.navigationItem';
-		this.onActivate = args.onActivate || null;
-		this.onSwitch = args.onSwitch || null;
-		this.name = args.name || 'navigation';
-		this.transition = args.transition || null;
-		this.wrapper = args.wrapper || null;
-		this.wrapperMarkup = args.wrapperMarkup || '<ul class="navigationList" role="navigation">';
 
 		//--derived attributes
 		this.elmCurrent = this.elements.filter('.' + this.classCurrent);
@@ -31,84 +22,104 @@ __.classes.ItemNavigation = function(args){
 			this.elmCurrent = this.elements.first();
 		}
 	}
-	__.classes.ItemNavigation.prototype.addElement = function(argElement, elmItem){
-		if(typeof elmItem == 'object'){
-			argElement.data('tjmNavigationItem', elmItem);
+	,properties: {
+		addElement: function(_element, elmItem){
+			if(typeof elmItem == 'object'){
+				_element.data('tjmNavigationItem', elmItem);
+			}
+			this.elements = this.elements.add(_element);
+			this.wrapper.append(_element);
 		}
-		this.elements = this.elements.add(argElement);
-		this.wrapper.append(argElement);
-	}
-	__.classes.ItemNavigation.prototype.bindActivate = function(argWrapper, argSelector){
-		var lcThis = this;
-		var wrapper = argWrapper || this.wrapper;
-		var selector = argSelector || this.itemSelector;
-		wrapper.on('click', selector, function(argEvent){
-			if(argEvent.preventDefualt) argEvent.preventDefault();
-			lcThis.handleActivate(jQuery(this));
-			return false;
-		});
-		wrapper.data(this.boundDataName, true);
-	}
-	__.classes.ItemNavigation.prototype.build = function(argOptions){
-		var lcThis = this;
-		var options = (jQuery || false) ? jQuery.extend({}, this, argOptions) : __.lib.merge(this, argOptions);
-		if(!this.wrapper){
-			this.wrapper = jQuery(this.wrapperMarkup);
-			this.container.append(this.wrapper);
+		,bindActivate: function(_wrapper, _selector){
+			var _this = this;
+			var wrapper = _wrapper || this.wrapper;
+			if(!_selector){
+				_selector = this.itemSelector;
+			}
+			wrapper.on('click', _selector, function(argEvent){
+				argEvent.preventDefault();
+				_this.handleActivate(jQuery(this));
+				return false;
+			});
+			wrapper.data(this.boundDataName, true);
 		}
-		if(this.elements.length == 0){
-			this.items.each(function(argIndex){
-				var elmThis = jQuery(this);
-				var element = lcThis.createElement(elmThis, argIndex);
-				lcThis.addElement(element, elmThis);
+		,build: function(_options){
+			var _this = this;
+			_options = (jQuery || false) ? jQuery.extend({}, this, _options) : __.lib.merge(this, _options);
+			if(!this.wrapper){
+				this.wrapper = jQuery(this.wrapperMarkup);
+				this.container.append(this.wrapper);
+			}
+			if(this.elements.length === 0){
+				this.items.each(function(_index){
+					var elmThis = jQuery(this);
+					var element = _this.createElement(elmThis, _index);
+					_this.addElement(element, elmThis);
+				});
+			}
+			if(!this.wrapper.data(this.boundDataName)){
+				this.bindActivate();
+			}
+		}
+		,boundDataName: 'tjmNavigationBound'
+		,classCurrent: 'current'
+		,createElement: function(_item, _index){
+			_index = _index + 1;
+			_item = jQuery('<li class="navigationItem n' + _index + '"><a href="#/' + this.name + '/' + _index + '">' + _index + '</a></li>');
+			return _item;
+		}
+		,container: undefined
+		,elements: undefined
+		,elmCurrent: undefined
+		,getElementForItem: function(_item){
+			return this.elements.filter(function(){
+				return jQuery(this).data('tjmNavigationItem')[0] === _item[0];
 			});
 		}
-		if(!this.wrapper.data(this.boundDataName)){
-			this.bindActivate();
-		}
-	}
-	__.classes.ItemNavigation.prototype.createElement = function(argItem, argIndex){
-		var index = argIndex + 1;
-		var item = jQuery('<li class="navigationItem n' + index + '"><a href="#/' + this.name + '/' + index + '">' + index + '</a></li>');
-		return item;
-	}
-	__.classes.ItemNavigation.prototype.getElementForItem = function(argItem){
-		return this.elements.filter(function(){
-			return jQuery(this).data('tjmNavigationItem')[0] === argItem[0];
-		});
-	}
-	__.classes.ItemNavigation.prototype.handleActivate = function(argElement){
-		if(this.onActivate){
-			this.onActivate.call(this, argElement);
-		}else{
-			this.switche(argElement);
-		}
-	}
-	__.classes.ItemNavigation.prototype.setTo = function(argElmNew){
-		if(argElmNew[0] !== this.elmCurrent[0]){
-			this.elmCurrent = argElmNew;
-			this.setClasses();
-			if(this.onSwitch){
-				this.onSwitch.call(this);
-			}
-			this.inProgress = false;
-		}
-	}
-	__.classes.ItemNavigation.prototype.setClasses = function(){
-		if(this.elmCurrent){
-			if(jQuery){
-				this.elements.removeClass(this.classCurrent);
-				this.elmCurrent.addClass(this.classCurrent);
-			}
-		}
-	}
-	__.classes.ItemNavigation.prototype.switche = function(argElmNew){
-		if(!this.inProgress){
-			this.inProgress = true;
-			if(this.transition){
+		,handleActivate: function(_element){
+			if(this.onActivate){
+				this.onActivate.call(this, _element);
 			}else{
-				this.setTo(argElmNew);
+				this.switche(_element);
 			}
 		}
+		,items: null
+		,itemSelector: '.navigationItem'
+		,onActivate: null
+		,onSwitch: null
+		,name: 'navigation'
+		,setTo: function(argElmNew){
+			if(argElmNew[0] !== this.elmCurrent[0]){
+				this.elmCurrent = argElmNew;
+				this.setClasses();
+				if(this.onSwitch){
+					this.onSwitch.call(this);
+				}
+				this.inProgress = false;
+			}
+		}
+		,setClasses: function(){
+			if(this.elmCurrent){
+				if(jQuery){
+					this.elements.removeClass(this.classCurrent);
+					this.elmCurrent.addClass(this.classCurrent);
+				}
+			}
+		}
+		,switche: function(argElmNew){
+			if(!this.inProgress){
+				this.inProgress = true;
+				if(this.transition){
+				}else{
+					this.setTo(argElmNew);
+				}
+			}
+		}
+		,switchTo: function(){
+			return this.switche.apply(this, arguments);
+		}
+		,transition: null
+		,wrapper: null
+		,wrapperMarkup: '<ul class="navigationList" role="navigation">'
 	}
-	__.classes.ItemNavigation.prototype.switchTo = __.classes.ItemNavigation.prototype.switche;
+});
