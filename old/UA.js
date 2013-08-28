@@ -51,6 +51,12 @@ __.ua = {
 		}else
 			return false;
 	}
+	,isIOS: function(){
+		if(typeof this._data.isios === 'undefined'){
+			this._data.isios = (navigator.userAgent.match(/(iPad|iPhone|iPod)/g)) ? true : false;
+		}
+		return this._data.isios
+	}
 	,isIphone: function(){
 		if(typeof this._data.isiphone == 'undefined')
 			this._data.isiphone = (navigator.userAgent.toLowerCase().indexOf('iphone')!=-1);
@@ -62,4 +68,3 @@ __.ua = {
 		return this._data.version;
 	}
 };
-
