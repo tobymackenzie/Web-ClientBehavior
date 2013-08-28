@@ -18,6 +18,8 @@ Example:
 	}
 
 */
+/* global __ */
+
 __.classes.ElementValueManager = __.core.Classes.create({
 	'properties': {
 		'type': 'value'
@@ -64,6 +66,7 @@ __.classes.ElementValueManager = __.core.Classes.create({
 				: this.elements
 			;
 			if(_type.substr(0, 7) == 'checked'){
+				var _newDataSource = _type.substr(7);
 				_elements.checked = true;
 				if(_value != 'checked'){
 					_type = (_newDataSource) ? _newDataSource : _type;
