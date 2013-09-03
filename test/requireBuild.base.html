@@ -3,14 +3,14 @@
 	<head>
 		<title>Test tmblib</title>
 
-		<!-- qunit -->
+		<!-- load qunit -->
 		<script src="http://code.jquery.com/qunit/qunit-1.11.0.js"></script>
 		<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.11.0.css"></link>
 
-		<!-- require -->
+		<!-- load require -->
 		<script src="../vendor/require.js"></script>
 
-		<!-- tmlib -->
+		<!-- load tmlib -->
 		<script>
 			//--test with global strict mode
 			'use strict';
@@ -23,6 +23,7 @@
 				baseUrl: '../src'
 				,paths: {
 					jquery: 'http://code.jquery.com/jquery-1.9.1.min'
+					,tmclasses: '../vendor/tmclasses/src'
 					,tmlib: '../src'
 					,tmlibBase: '../build/build.base'
 					,test: '../test'
@@ -49,7 +50,6 @@
 					});
 
 			});
-			//--pull in all tests and run them
 		</script>
 	</head>
 	<body>

@@ -3,7 +3,7 @@ define(function(){
 	/*
 	Function: mergeInto
 
-	Merge all keys from all other objects into first object, preferring keys of objects to the farthest right.
+	Merge all keys from all other objects into first object, preferring keys of objects to the farthest right.  Currently duplicated in tmclasses.core.
 
 	Paramaters:
 		_object(Object): object to merge other paramaters into

@@ -45,7 +45,8 @@ define(['./__', './deps', './Library'], function(__tmlib, __deps, __Library){
 		}
 		/*
 		Function: contains
-		In support browsers, determines if a function contains a given string / matches a given regex.  Useful to see if a certain variable is used or function is called, particularly for checking if a child class calls a parent class's method.  For unsupported browsers, always returns true to allow them to function (may change this behavior in the future.)
+
+		In support browsers, determines if a function contains a given string / matches a given regex.  Useful to see if a certain variable is used or function is called, particularly for checking if a child class calls a parent class's method.  For unsupported browsers, always returns true to allow them to function (may change this behavior in the future).  Currently duplicated in tmclasses.core.
 
 		Parameters:
 			function(Function): the function to examine
@@ -64,7 +65,8 @@ define(['./__', './deps', './Library'], function(__tmlib, __deps, __Library){
 
 		/*
 		Function: duckPunch
-		Duck punch a function with a wrapper, ie create a function that runs the wrapper with the original function available inside.  Two types are available, since we cannot close into an already existing function.  One unshifts the original function into the first parameter for the wrapper.  Wrapper must shift off first argument as original function to be able to apply to said function.  The other attaches the original function as a key on the 'this' context, then restores whatever was at that key before.
+
+		Duck punch a function with a wrapper, ie create a function that runs the wrapper with the original function available inside.  Two types are available, since we cannot close into an already existing function.  One unshifts the original function into the first parameter for the wrapper.  Wrapper must shift off first argument as original function to be able to apply to said function.  The other attaches the original function as a key on the 'this' context, then restores whatever was at that key before.  Currently duplicated in tmclasses.core.
 
 		Parameters:
 			function(Function): Function to wrap

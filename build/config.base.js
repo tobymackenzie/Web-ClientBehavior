@@ -6,7 +6,8 @@ Configuration for require js
 	,include: ['../vendor/almond.js', 'requirements.base']
 	,out: 'build.base.js'
 	,paths: {
-		tmlib: '../src'
+		tmclasses: '../vendor/tmclasses/src'
+		,tmlib: '../src'
 	}
 	,wrap: {
 		startFile: 'wrap.start.js'

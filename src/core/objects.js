@@ -1,5 +1,5 @@
 /* global define */
-define(['./deps', './Library', './mergeInto', './__'], function(__deps, __Library, __mergeInto, __tmlib){
+define(['./deps', './Library', './mergeInto', 'tmclasses/tmclasses', './__'], function(__deps, __Library, __mergeInto, __tmclasses, __tmlib){
 	var __Array = __deps.Array;
 	var __undefined = __deps.undefined;
 
@@ -28,21 +28,10 @@ define(['./deps', './Library', './mergeInto', './__'], function(__deps, __Librar
 		/*
 		Function: addProperty
 
-		Add a property to an object.
-
-		Parameters:
-			object(Object): Object to add properties to
-			name(String): Name of property, key in object
-			property(mixed): Property definition/value.  Keep in mind that, when setting properties on an object prototyp, setting an initial value to an object will cause it to be shared among all instances (eg adding an element to an array object property will affect that property for all instances.  If an object that has an 'init' property, will be added as a complex type with special functionality or options (not yet implemented).  Complex objects can have the follow properties:
-				init(mixed): initial value for property
+		Add a property to an object.  From tmclasses.
 		*/
-		,addProperty: function(_object, _name, _property){
-			if(typeof _property == 'object' && typeof _property.init != 'undefined'){
-				_object[_name] = _property.init;
-			}else{
-				_object[_name] = _property;
-			}
-		}
+		,addProperty: __tmclasses.addProperty
+
 		/*
 		Function: getLength
 

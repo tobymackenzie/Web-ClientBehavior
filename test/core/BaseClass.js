@@ -7,6 +7,9 @@
 		_factory(__, __.core.deps);
 	}
 }(this, function(__){
+	/*
+	Currently just making sure tests still passes when tmclasses.BaseClass is ported into tmlib.  Using tests from when tmclasses wasn't separate.
+	*/
 	//--name module
 	QUnit.module('tmlib.core.BaseClass');
 

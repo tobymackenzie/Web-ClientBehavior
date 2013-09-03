@@ -1,3 +1,4 @@
+/* global define, document, QUnit, test */
 (function(_globals, _factory){
 	if(typeof define === 'function' && define.amd){
 		define(['tmlib/core/__', 'tmlib/core/deps', 'tmlib/core/classes', 'tmlib/core/BaseClass'], _factory);
@@ -6,6 +7,9 @@
 		_factory(__, __.core.deps);
 	}
 }(this, function(__, __deps){
+	/*
+	Currently just making sure tests still pass when tmclasses methods are ported into tmlib.  Using tests from when tmclasses wasn't separate.
+	*/
 	//--get requirements
 	var __jQuery = __deps.jQuery;
 
@@ -32,7 +36,7 @@
 		var childClass = __.core.classes.create({
 			parent: parentClass
 			,init: function(){
-				this.__base(arguments);
+				this.__parent(arguments);
 				this.propertyFromChildClassInit = 'woo';
 			}
 			,'properties': {
@@ -90,7 +94,7 @@
 			properties: {
 				propertyD: 'mmBvalueD'
 			}
-		}
+		};
 		var mixinMixinC = {
 			properties: {
 				propertyD: 'mmCvalueD'
@@ -178,7 +182,7 @@
 		assert.equal(myInstance.propertyD, 'mmBvalueD', 'mixinMixinB overrides mixinMixinC overrides mixinA overrides preMixinB');
 
 		//---non properties
-		assert.equal(typeof myInstance.nonPropertyA, 'undefined', 'Non properties should not be added to class.')
+		assert.equal(typeof myInstance.nonPropertyA, 'undefined', 'Non properties should not be added to class.');
 	});
 
 	test('mixIn', function(assert){
@@ -203,7 +207,7 @@
 				mixinStatic: 'mixinValue'
 				,staticToBeOverridden: 'mixinValue'
 			}
-		}
+		};
 
 		__.core.classes.mixIn(mixinDefinition, targetObject, targetClass);
 		//==tests
@@ -264,10 +268,10 @@
 			var testClass = function(argOptions){
 				this.elements = null;
 				__.core.objects.mergeInto(this, argOptions);
-			}
+			};
 			testClass.prototype.getElementCount = function(){
 				return this.elements.length;
-			}
+			};
 
 			//--pluginize class
 			//---method
