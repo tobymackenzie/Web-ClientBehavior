@@ -48,18 +48,18 @@
 			assert.equal(
 				_clone.toString()
 				,_functions[_key].string
-				,'toString of clone should equal desired result'
+				,'toString of clone ' + _key + ' should equal desired result'
 			);
 			assert.equal(
 				_clone()
 				,_func()
-				,'return of function should equal desired result'
+				,'return of function ' + _key + ' should equal desired result'
 			);
 			for(_subKey in _func){
 				assert.equal(
 					_func[_subKey]
 					,_clone[_subKey]
-					,'Properties of function and clone should be the same'
+					,'Properties of function and clone ' + _key + ' should be the same'
 				);
 			}
 		}
