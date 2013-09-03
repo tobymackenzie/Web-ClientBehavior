@@ -1,7 +1,7 @@
 /* global define */
 (function(__factory){
 	if(typeof define === 'function' && define.amd){
-		define(__factory);
+		define('tmlib', __factory);
 	}else{
 		var __ = __factory();
 		var __globals = __.core.deps.globals;
