@@ -2,7 +2,7 @@
 Class: ResponsiveMenu
 Menu widget to convert menu into a slide down menu when screen size reaches certain breakpoint.
 */
-/* global __ */
+/* global __, jQuery */
 __.classes.ResponsiveMenu = __.core.Classes.create({
 	init: function(){
 		var _this = this;
@@ -20,6 +20,10 @@ __.classes.ResponsiveMenu = __.core.Classes.create({
 			this.responsiveSubscription = this.responsiveHandler.sub('change', function(_data){
 				_this.switchBreakpoint(_data.breakPoint);
 			});
+		}
+		if(!__.lib.isArray(this.nvpBreakPoints)){
+			var _bpArray = [this.nvpBreakPoints];
+			this.nvpBreakPoints = _bpArray;
 		}
 
 		//--set to initial breakpoint
@@ -42,7 +46,7 @@ __.classes.ResponsiveMenu = __.core.Classes.create({
 		,state: null
 		,switchBreakpoint: function(_breakpoint){
 			if(_breakpoint !== this.state){
-				if(_breakpoint === this.nvpBreakPoints){
+				if(jQuery.inArray(_breakpoint, this.nvpBreakPoints) > -1){
 					this.switchToNVP();
 				}else{
 					this.switchToWVP();
