@@ -30,18 +30,31 @@ __.classes.ResponsiveHandler = __.core.Classes.create({
 		,container: jQuery && jQuery('html')
 		,current: null
 		,delay: 100
+		,getBreakPoint: function(_re){
+			var _breakpoint;
+			if(_re || !this.current){
+				_breakpoint = this.determineBreakPoint();
+				if(this.current !== _breakpoint){
+					this.current = this.determineBreakPoint();
+				}
+			}
+			return this.current;
+		}
+		,getResizeData: function(_re){
+			var _current = this.current;
+			return {
+				breakPoint: this.getBreakPoint(_re)
+				,lastBreakPoint: _current
+			};
+		}
 		,handleResize: function(_event){
 			var _this = this;
 			clearTimeout(this.timeout);
 			this.timeout = setTimeout(function(){
-				var _newBreakPoint = _this.determineBreakPoint();
-				if(_newBreakPoint !== _this.current){
-					_this.pub('change', {
-						breakPoint: _newBreakPoint
-						,event: _event
-						,lastBreakPoint: _this.current
-					});
-					_this.current = _newBreakPoint;
+				var _resizeData = _this.getResizeData(true);
+				if(_resizeData.breakPoint !== _resizeData.lastBreakPoint){
+					_resizeData.event = _event;
+					_this.pub('change', _resizeData);
 				}
 			}, this.delay);
 		}
