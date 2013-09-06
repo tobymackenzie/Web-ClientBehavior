@@ -1,5 +1,6 @@
 /*
 Class: CollapsingNav
+
 Monitors the padding of nav elements inside a flexible horizontal nav container, putting items into a submenu when the padding gets too small (ie items get scrunched together).  Kinda limited in scope, in that it won't work for items with fixed padding, but that could be added as a different calculation method.
 
 Example Usage:
@@ -40,17 +41,29 @@ __.classes.CollapsingNav = __.core.Classes.create({
 			this.mainList = this.$.find(this.mainListSelector);
 		}
 
-		//--attach resize listener
-		var _this = this;
-		jQuery(window).on('resize', function(){
-			_this.handleResizeInInterval();
-		});
+		if(this.isActive){
+			this.activate();
 
-		//--do handle of resize on page load
-		this.handleResize();
+			//--do handle of resize on page load
+			this.handleResize();
+		}
 	}
 	,'properties': {
 		$: null
+		,activate: function(){
+			//--attach resize listener
+			jQuery(window).on('resize', jQuery.proxy(this.handleResizeInInterval, this));
+
+			this.isActive = true;
+		}
+		,deactivate: function(){
+			clearTimeout(this.resizeTimeout);
+
+			//--detach resize listener
+			jQuery(window).off('resize', jQuery.proxy(this.handleResizeInInterval, this));
+
+			this.isActive = false;
+		}
 		,doHandleResize: true
 		,handleResize: function(){
 			var doHandleResize = true;
@@ -94,6 +107,7 @@ __.classes.CollapsingNav = __.core.Classes.create({
 				_this.handleResize();
 			}, this.resizeInterval);
 		}
+		,isActive: true
 		,isTooNarrow: function(){
 			var _this = this;
 			var $navItems = this.mainList.find(this.navItemSelector);
@@ -128,7 +142,7 @@ __.classes.CollapsingNav = __.core.Classes.create({
 		,mainListSelector: '.navList.l-1'
 		,minimumPadding: 20
 		,moreItem: null
-		,moreItemHTML: '<li class="topItem dropdown">'
+		,moreItemHTML: '<li class="topItem dropDown">'
 			+	'<a class="topLevel" href="javascript:/* open submenu */">More</a>'
 			+	'<div class="subMenu">'
 			+		'<ul class="navList"></ul>'
