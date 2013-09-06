@@ -27,7 +27,7 @@ __.classes.ResponsiveMenu = __.core.Classes.create({
 
 		//--attach action listener
 		this.$action.on('click', function(){
-			_this.toggleList();
+			_this.toggleOpen();
 		});
 	}
 	,properties: {
@@ -39,39 +39,6 @@ __.classes.ResponsiveMenu = __.core.Classes.create({
 		,nvpBreakPoints: 'nvp'
 		,responsiveHandler: null
 		,responsiveSubscription: null
-		,showList: function(){
-			return this.toggleList('show');
-		}
-		,hideList: function(){
-			return this.toggleList('hide');
-		}
-		,toggleList: function(_action){
-			var _this = this;
-			var _isStartingVisible, _method;
-			switch(_action){
-				case 'show':
-					_isStartingVisible = false;
-					_method = 'slideDown';
-				break;
-				case 'hide':
-					_isStartingVisible = true;
-					_method = 'slideUp';
-				break;
-				default:
-					_isStartingVisible = _this.$list.is(':visible');
-					_method = 'slideToggle';
-				break;
-			}
-			if(!_isStartingVisible){
-				_this.$.addClass(_this.openedClass).removeClass(_this.closedClass);
-			}
-			_this.$list[_method](function(){
-				if(_isStartingVisible){
-					_this.$.removeClass(_this.openedClass).addClass(_this.closedClass);
-				}
-			});
-			return this;
-		}
 		,state: null
 		,switchBreakpoint: function(_breakpoint){
 			if(_breakpoint !== this.state){
@@ -89,13 +56,43 @@ __.classes.ResponsiveMenu = __.core.Classes.create({
 			this.$action.show();
 			//--hide menu
 			this.$list.hide();
+
+			this.isOpened = false;
 		}
 		,switchToWVP: function(){
 			//--hide action
-			this.$action.hide();
+			this.$action.show().css('display', '');
 			//--show menu
-			this.$list.show();
+			this.$list.show().css('display', '');
+
+			this.isOpened = undefined;
+		}
+		,closeList: function(){
+			if(this.isOpened){
+				var _this = this;
+				this.$list.slideUp(function(){
+					_this.$.removeClass(_this.openedClass).addClass(_this.closedClass);
+					_this.isOpened = false;
+				});
+			}
+		}
+		,openList: function(){
+			if(!this.isOpened){
+				this.$.addClass(this.openedClass).removeClass(this.closedClass);
+				this.$list.slideDown();
+				this.isOpened = true;
+			}
+		}
+		,isOpened: undefined
+		,toggleOpen: function(){
+			if(typeof this.isOpened === 'undefined'){
+				this.isOpened = this.$list.is(':visible');
+			}
+			if(this.isOpened){
+				this.closeList();
+			}else{
+				this.openList();
+			}
 		}
 	}
 });
-
