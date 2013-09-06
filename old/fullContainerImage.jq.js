@@ -51,12 +51,7 @@ html.uaielte6 #bgimage img{
 -@http://plugins.jquery.com/project/fullscreenr
 
 */
-
-
-
-/*----------
-©fullContainerImage
-----------*/
+/* global __, clearTimeout, jQuery, setTimeout, window */
 __.classes.fullContainerImage = function(args){
 		//--optional attributes
 		this.boot = args.boot || null;
@@ -73,34 +68,42 @@ __.classes.fullContainerImage = function(args){
 		this.setImage(fncElmImage);
 
 		//--bind events
-		this.elmContainer.on('resize', function(){
-			fncThis.setClass();
+		var _timeout = null;
+		jQuery(window).on('resize', function(){
+			clearTimeout(_timeout);
+			_timeout = setTimeout(function(){
+				fncThis.setClass();
+			}, 200);
 		});
-
-		if(this.oninit)
+		if(this.oninit){
 			this.oninit.call(this);
-	}
+		}
+	};
 	__.classes.fullContainerImage.prototype.setClass = function(){
 		if(this.elmImage.length > 0){
 			if((this.elmContainer.width() / this.elmContainer.height()) < this.aspectRatioImage ){
 				if(!this.elmImage.hasClass(this.classFitHeight)){
 					this.elmImage.removeClass(this.classFitWidth).addClass(this.classFitHeight);
-					if(this.doCenterVertically)
+					if(this.doCenterVertically){
 						this.elmImage.css('top', 0);
+					}
 				}
-				if(this.doCenterHorizontally)
+				if(this.doCenterHorizontally){
 					this.elmImage.css('left', -((this.elmImage.width() - this.elmContainer.width()) / 2));
+				}
 			}else{
 				if(!this.elmImage.hasClass(this.classFitWidth)){
 					this.elmImage.removeClass(this.classFitHeight).addClass(this.classFitWidth);
-					if(this.doCenterHorizontally)
+					if(this.doCenterHorizontally){
 						this.elmImage.css('left', 0);
+					}
 				}
-				if(this.doCenterVertically)
+				if(this.doCenterVertically){
 					this.elmImage.css('top', -((this.elmImage.height() - this.elmContainer.height()) / 2));
+				}
 			}
 		}
-	}
+	};
 	__.classes.fullContainerImage.prototype.setImage = function(argElmImage){
 		var fncThis = this;
 		this.elmImage = argElmImage;
@@ -109,16 +112,15 @@ __.classes.fullContainerImage = function(args){
 				var fncWidthHeight = __.lib.getHiddenElementWidthHeight(this.elmImage);
 				this.aspectRatioImage = fncWidthHeight.width / fncWidthHeight.height;
 				this.setClass();
-			}
+			};
 			if(this.elmImage.width() > 0){
-				fncCallback.call(this);;
+				fncCallback.call(this);
 			}else{
 				this.elmImage.on('load', function(){
 					fncCallback.call(fncThis);
 				});
 			}
-		}else
+		}else{
 			this.aspectRatio = false;
-
-	}
-
+		}
+	};
