@@ -2,17 +2,31 @@
 /*----------
 data types
 ----------*/
-//-@based from http://andrewpeace.com/javascript-is-array.html
-__.lib.isArray = function(argObject){
-	if(
-		(typeof argObject == 'object' && argObject instanceof Array) //-normal array
-		|| ((typeof argObject == 'function' || typeof argObject == 'object') && typeof argObject.length == 'number' && typeof argObject.item == 'function') //-nodelist
-	){
-		return true;
-	}else{
-		return false;
+//-@ http://www.shamasis.net/2011/08/infinite-ways-to-detect-array-in-javascript/
+__.lib.isArray = (function(){
+	//-- use native isArray() if available
+	if (Array.isArray) {
+		return Array.isArray;
 	}
+
+	//-- Retain references to variables for performance
+	var toStringFn = Object.prototype.toString;
+	var _arrayToString = toStringFn.call([]);
+
+	return function(_var){
+		return toStringFn.call(_var) === _arrayToString;
+	};
+})();
+
+//-@based from http://andrewpeace.com/javascript-is-array.html
+__.lib.isArrayLike = function(_var){
+	return (
+		__.lib.isArray(_var) //-- regular array
+		|| ((typeof _var == 'function' || typeof _var == 'object') && typeof _var.length == 'number' && typeof _var.item == 'function') //-- nodeList or other
+	);
 };
+
+
 //-@ http://stackoverflow.com/questions/384286/javascript-isdom-how-do-you-check-if-a-javascript-object-is-a-dom-object
 __.lib.isElement = function(arg){
 	return(
@@ -389,7 +403,7 @@ __.lib.addListener = function(argElement, argEvent, argFunction, argBubble){
 };
 __.lib.addListeners = function(argElements, argEvent, argFunction, argBubble){
 	var fncBubble = (argBubble)?argBubble : false;
-	if(!__.lib.isArray(argElements)){
+	if(!__.lib.isArrayLike(argElements)){
 		argElements = new Array(argElements);
 	}
 	for(var i = 0; i < argElements.length; ++i){
