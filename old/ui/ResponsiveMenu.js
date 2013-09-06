@@ -31,7 +31,7 @@ __.classes.ResponsiveMenu = __.core.Classes.create({
 
 		//--attach action listener
 		this.$action.on('click', function(){
-			_this.toggleOpen();
+			_this.toggleList();
 		});
 	}
 	,properties: {
@@ -61,7 +61,7 @@ __.classes.ResponsiveMenu = __.core.Classes.create({
 			//--hide menu
 			this.$list.hide();
 
-			this.isOpened = false;
+			this.isOpen = false;
 		}
 		,switchToWVP: function(){
 			//--hide action
@@ -69,30 +69,30 @@ __.classes.ResponsiveMenu = __.core.Classes.create({
 			//--show menu
 			this.$list.show().css('display', '');
 
-			this.isOpened = undefined;
+			this.isOpen = undefined;
 		}
 		,closeList: function(){
-			if(this.isOpened){
+			if(this.isOpen){
 				var _this = this;
 				this.$list.slideUp(function(){
 					_this.$.removeClass(_this.openedClass).addClass(_this.closedClass);
-					_this.isOpened = false;
+					_this.isOpen = false;
 				});
 			}
 		}
 		,openList: function(){
-			if(!this.isOpened){
+			if(!this.isOpen){
 				this.$.addClass(this.openedClass).removeClass(this.closedClass);
 				this.$list.slideDown();
-				this.isOpened = true;
+				this.isOpen = true;
 			}
 		}
-		,isOpened: undefined
-		,toggleOpen: function(){
-			if(typeof this.isOpened === 'undefined'){
-				this.isOpened = this.$list.is(':visible');
+		,isOpen: undefined
+		,toggleList: function(){
+			if(typeof this.isOpen === 'undefined'){
+				this.isOpen = this.$list.is(':visible');
 			}
-			if(this.isOpened){
+			if(this.isOpen){
 				this.closeList();
 			}else{
 				this.openList();
