@@ -23,7 +23,7 @@ __.classes.ResponsiveMenu = __.core.Classes.create({
 		}
 
 		//--set to initial breakpoint
-		this.switchBreakpoint(this.responsiveHandler.determineBreakPoint());
+		this.switchBreakpoint(this.responsiveHandler.getBreakPoint());
 
 		//--attach action listener
 		this.$action.on('click', function(){
