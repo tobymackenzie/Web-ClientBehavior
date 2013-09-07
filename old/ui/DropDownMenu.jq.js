@@ -98,7 +98,7 @@ __.classes.DropDownMenu = function(_args){
 				}
 			);
 			_$element.on(
-				'mouseleave'
+				'mouseleave blur'
 				,this.itemSelector
 				,function(){
 					clearTimeout(lcThis.timeout);
