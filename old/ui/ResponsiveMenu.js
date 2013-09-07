@@ -1,5 +1,6 @@
 /*
 Class: ResponsiveMenu
+
 Menu widget to convert menu into a slide down menu when screen size reaches certain breakpoint.
 */
 /* global __, jQuery */
@@ -28,66 +29,70 @@ __.classes.ResponsiveMenu = __.core.Classes.create({
 
 		//--set to initial breakpoint
 		this.switchBreakpoint(this.responsiveHandler.getBreakPoint());
-
-		//--attach action listener
-		this.$action.on('click', function(){
-			_this.toggleList();
-		});
 	}
 	,properties: {
 		$: null
 		,$action: '.siteMainNavTitle'
 		,$list: '.siteMainNavList'
 		,closedClass: 'hasClosedMenu'
-		,openedClass: 'hasOpenMenu'
-		,nvpBreakPoints: 'nvp'
-		,responsiveHandler: null
-		,responsiveSubscription: null
-		,state: null
-		,switchBreakpoint: function(_breakpoint){
-			if(_breakpoint !== this.state){
-				if(jQuery.inArray(_breakpoint, this.nvpBreakPoints) > -1){
-					this.switchToNVP();
-				}else{
-					this.switchToWVP();
-					// __.topnavigationDropdownhandler.sizeAndCenter2();
-				}
-				this.state = _breakpoint;
+		,handleClick: function(_event){
+			_event.preventDefault();
+		}
+		,handleMouseEnter: function(){
+			clearTimeout(this.hoverTimeout);
+			if(!this.isOpen){
+				this.$list.show();
+				this.$.addClass(this.hoverClass);
+				this.setIsOpen(true);
+				this.pub('mouseEnter');
 			}
 		}
-		,switchToNVP: function(){
-			//--show action
-			this.$action.show();
-			//--hide menu
-			this.$list.hide();
-
-			this.isOpen = false;
+		,handleMouseLeave: function(){
+			var _this = this;
+			clearTimeout(this.hoverTimeout);
+			this.hoverTimeout = setTimeout(function(){
+				if(_this.isOpen){
+					_this.$list.hide();
+					_this.$.removeClass(_this.hoverClass);
+					_this.pub('close');
+					_this.setIsOpen(false);
+				}
+			}, this.hoverDelay);
 		}
-		,switchToWVP: function(){
-			//--hide action
-			this.$action.show().css('display', '');
-			//--show menu
-			this.$list.show().css('display', '');
-
-			this.isOpen = undefined;
+		,handleTouch: function(){
+			this.toggleList();
 		}
+		,hoverClass: 'selected'
+		,hoverDelay: 750
+		,hoverTimeout: undefined
+		,openedClass: 'hasOpenMenu'
 		,closeList: function(){
-			if(this.isOpen){
+			if(this.isActive && this.isOpen){
 				var _this = this;
 				this.$list.slideUp(function(){
 					_this.$.removeClass(_this.openedClass).addClass(_this.closedClass);
-					_this.isOpen = false;
+					_this.pub('close');
+					_this.setIsOpen(false);
 				});
 			}
 		}
 		,openList: function(){
-			if(!this.isOpen){
+			if(this.isActive && !this.isOpen){
 				this.$.addClass(this.openedClass).removeClass(this.closedClass);
 				this.$list.slideDown();
-				this.isOpen = true;
+				this.setIsOpen(true);
 			}
 		}
 		,isOpen: undefined
+		,setIsOpen: function(_val){
+			if(this.isOpen !== _val){
+				if(this.isActive){
+					this.pub((_val) ? 'open' : 'close');
+				}
+				this.isOpen = _val;
+			}
+		}
+		,supportsTouch: ('ontouchstart' in window || window.navigator.msPointerEnabled)
 		,toggleList: function(){
 			if(typeof this.isOpen === 'undefined'){
 				this.isOpen = this.$list.is(':visible');
@@ -98,5 +103,83 @@ __.classes.ResponsiveMenu = __.core.Classes.create({
 				this.openList();
 			}
 		}
+
+		//==active state
+		,activate: function(){
+			if(!this.isActive){
+				//--attach action listeners
+				this.$action.on({
+					click: jQuery.proxy(this.handleClick, this)
+				});
+				if(this.supportsTouch){
+					this.$action.on({
+						touchstart: jQuery.proxy(this.handleTouch, this)
+					});
+				}
+				if(!this.supportsTouch){
+					this.$action.add(this.$list).on({
+						'mouseenter focus': jQuery.proxy(this.handleMouseEnter, this)
+						,'mouseleave blur': jQuery.proxy(this.handleMouseLeave, this)
+					});
+				}
+				this.isActive = true;
+			}
+		}
+		,deactivate: function(){
+			if(this.isActive){
+				this.$action.off({
+					click: jQuery.proxy(this.handleClick, this)
+				});
+				if(this.supportsTouch){
+					this.$action.off({
+						touchstart: jQuery.proxy(this.handleTouch, this)
+					});
+				}
+				if(!this.supportsTouch){
+					this.$action.add(this.$list).off({
+						'mouseenter focus': jQuery.proxy(this.handleMouseEnter, this)
+						,'mouseleave blur': jQuery.proxy(this.handleMouseLeave, this)
+					});
+				}
+				this.isActive = false;
+			}
+		}
+		,isActive: false
+
+		//==responsiveness
+		,nvpBreakPoints: 'nvp'
+		,responsiveHandler: null
+		,responsiveSubscription: null
+		,breakpoint: null
+		,switchBreakpoint: function(_breakpoint){
+			if(_breakpoint !== this.breakpoint){
+				if(jQuery.inArray(_breakpoint, this.nvpBreakPoints) > -1){
+					this.switchToNVP();
+				}else{
+					this.switchToWVP();
+					// __.topnavigationDropdownhandler.sizeAndCenter2();
+				}
+				this.breakpoint = _breakpoint;
+			}
+		}
+		,switchToNVP: function(){
+			this.activate();
+			//--show action
+//				this.$action.show();
+			//--hide menu
+			this.$list.hide();
+
+			this.setIsOpen(false);
+		}
+		,switchToWVP: function(){
+			this.deactivate();
+			//--hide action
+//				this.$action.hide().css('display', '');
+			//--show menu
+			this.$list.show().css('display', '');
+
+			this.setIsOpen(undefined);
+		}
 	}
+	,mixins: __.mixins.PubSub
 });
