@@ -3,7 +3,7 @@ Class: ResponsiveMenu
 
 Menu widget to convert menu into a slide down menu when screen size reaches certain breakpoint.
 */
-/* global __, jQuery */
+/* global __, clearTimeout, jQuery, setTimeout, window */
 __.classes.ResponsiveMenu = __.core.Classes.create({
 	init: function(){
 		var _this = this;

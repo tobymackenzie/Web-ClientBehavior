@@ -1,13 +1,17 @@
 /*
-animates transition between two elements
------dependencies
+Class: AnimateTransition
+
+Animates transition between two elements
+
+Dependencies:
 tmlib: animationQueue
------parameters
-arguments:
+
+Parameters:
 	duration (integer || array[integers] || array[arrays[integers]]): duration of animation or of each animation step or for each item of each step
 	stylesBefore (array[map of style properties and values]): styles to apply to elements before animation starts
 	stylesTransition (array[stylemap || array[stylemap]]): styles to animate elements to
 	stylesAfter (array[stylemap]): styles to apply to elements after animation
+
 -----instantiation
 		//--
 		__.animateImage = new __.classes.AnimateTransition({
@@ -49,143 +53,144 @@ arguments:
 			]
 			,boot: {attrDataBottom: 'data-bottom'}
 		})
------html
------css
 */
-
-/*-------
-©AnimateTransition
--------- */
-__.classes.AnimateTransition = function(args){
+/* global __ */
+__.classes.AnimateTransition = function(_args){
 		//--required attributes
 //->return
 		//--optional attributes
-		this.boot = args.boot || null;
-		this.callbackTransition = (typeof args.callbackTransition != 'undefined')? args.callbackTransition: this.defaultCallbackTransition;
-		this.doMultistep = args.doMultistep || false;
-		this.duration = args.duration || 500;
-		this.stylesBefore = args.stylesBefore || null;
-		this.stylesTransition = args.stylesTransition || null;
-		this.stylesAfter = args.stylesAfter || null;
-		this.onbefore = (typeof args.onbefore != 'undefined')? args.onbefore: this.defaultOnBefore;
-		this.onafter = (typeof args.onafter != 'undefined')? args.onafter: this.defaultOnAfter;
-		this.oninit = args.oninit || null;
+		this.boot = _args.boot || null;
+		this.callbackTransition = (typeof _args.callbackTransition != 'undefined')? _args.callbackTransition: this.defaultCallbackTransition;
+		this.doMultistep = _args.doMultistep || false;
+		this.duration = _args.duration || 500;
+		this.stylesBefore = _args.stylesBefore || null;
+		this.stylesTransition = _args.stylesTransition || null;
+		this.stylesAfter = _args.stylesAfter || null;
+		this.onbefore = (typeof _args.onbefore != 'undefined')? _args.onbefore: this.defaultOnBefore;
+		this.onafter = (typeof _args.onafter != 'undefined')? _args.onafter: this.defaultOnAfter;
+		this.oninit = _args.oninit || null;
 
 		//--derived attributes
 		this.inprogress = false;
 		this.queue = new __.classes.animationQueue();
 		//--do something
-		if(this.oninit)
+		if(this.oninit){
 			this.oninit.call(this);
-	}
-	__.classes.AnimateTransition.prototype.transitionForElements = function(args){
-		if(typeof args.elements != 'undefined')
-			var fncArgs = args;
-		else
-			var fncArgs = {elements: args};
-		var fncThis = this;
-		if(fncThis.onbefore)
-			fncThis.queue.queue({callback: function(){
-				fncThis.onbefore.call(fncThis, fncArgs);
+		}
+	};
+	__.classes.AnimateTransition.prototype.transitionForElements = function(_args){
+		if(typeof _args.elements === 'undefined'){
+			_args = {elements: _args};
+		}
+		var _this = this;
+		if(_this.onbefore){
+			_this.queue.queue({callback: function(){
+				_this.onbefore.call(_this, _args);
 			}});
-		if(fncThis.callbackTransition){
-			if(fncThis.doMultistep && fncThis.stylesTransition){
-				for(var keyStep in fncThis.stylesTransition){
-					if(fncThis.stylesTransition.hasOwnProperty(keyStep)){
-						fncThis.queue.queue({callback: function(fncThis, keyStep){
+		}
+		if(_this.callbackTransition){
+			if(_this.doMultistep && _this.stylesTransition){
+				for(var _keyStep in _this.stylesTransition){
+					if(_this.stylesTransition.hasOwnProperty(_keyStep)){
+						_this.queue.queue({callback: function(_this, _keyStep){
 							return function(){
-								fncThis.callbackTransition.call(fncThis, fncArgs, keyStep);
-							}
-						}(fncThis, keyStep)});
+								_this.callbackTransition.call(_this, _args, _keyStep);
+							};
+						}(_this, _keyStep)});
 					}
 				}
 			}else{
-				fncThis.queue.queue({callback: function(){
-					fncThis.callbackTransition.call(fncThis, fncArgs);
+				_this.queue.queue({callback: function(){
+					_this.callbackTransition.call(_this, _args);
 				}});
 			}
 		}
-		if(fncThis.onafter)
-			fncThis.queue.queue({callback: function(){
-				fncThis.onafter.call(fncThis, fncArgs);
+		if(_this.onafter){
+			_this.queue.queue({callback: function(){
+				_this.onafter.call(_this, _args);
 			}});
-		fncThis.queue.dequeue();
-	}
-	__.classes.AnimateTransition.prototype.defaultCallbackTransition = function(args, argKeyStep){
-		var fncElements = args.elements;
-		var lcCountElements = fncElements.length;
-		var fncThis = this;
-		fncThis.countItemsCompleted = 0;
+		}
+		_this.queue.dequeue();
+	};
+	__.classes.AnimateTransition.prototype.defaultCallbackTransition = function(_args, _stepKey){
+		var _elms = _args.elements;
+		var _countElms = _elms.length;
+		var _this = this;
+		_this.countItemsCompleted = 0;
 		var callbackDQ = function(){
-			++fncThis.countItemsCompleted;
-			if(fncThis.countItemsCompleted >= lcCountElements){
-				fncThis.queue.dequeue();
+			++_this.countItemsCompleted;
+			if(_this.countItemsCompleted >= _countElms){
+				_this.queue.dequeue();
 			}
 		};
-		for(var keyItem in fncElements){
-			if(fncElements.hasOwnProperty(keyItem)){
+		for(var _iElms in _elms){
+			if(_elms.hasOwnProperty(_iElms)){
+				var lopDuration;
+				var lopStylesTransition;
 				if(!this.stylesTransition){
 					lopStylesTransition = null;
-				}else if(typeof argKeyStep != 'undefined'){
-					var lopStylesTransition = this.stylesTransition[argKeyStep][keyItem] || null;
+				}else if(typeof _stepKey != 'undefined'){
+					lopStylesTransition = this.stylesTransition[_stepKey][_iElms] || null;
 					if(this.duration.constructor == Array){
-						var lopDuration = this.duration[argKeyStep];
+						lopDuration = this.duration[_stepKey];
 						if(lopDuration.constructor == Array){
-							lopDuration = this.duration[argKeyStep][keyItem];
+							lopDuration = this.duration[_stepKey][_iElms];
 						}
 					}else{
-						var lopDuration = this.duration;
+						lopDuration = this.duration;
 					}
 				}else{
-					var lopStylesTransition = fncThis.stylesTransition[keyItem] || null;
-					var lopDuration = this.duration;
+					lopStylesTransition = _this.stylesTransition[_iElms] || null;
+					lopDuration = this.duration;
 					if(lopDuration.constructor == Array){
-						lopDuration = this.duration[keyItem];
+						lopDuration = this.duration[_iElms];
 					}
 				}
 				if(lopStylesTransition){
 					if(typeof lopStylesTransition === 'function'){
-						lopStylesTransition = lopStylesTransition.call(this, fncElements[keyItem], args);
+						lopStylesTransition = lopStylesTransition.call(this, _elms[_iElms], _args);
 					}
 					var lopCallbackDQ = callbackDQ;
-					fncElements[keyItem].animate(lopStylesTransition, lopDuration, lopCallbackDQ);
+					_elms[_iElms].animate(lopStylesTransition, lopDuration, lopCallbackDQ);
 				}else{
 					callbackDQ();
 				}
 			}
 		}
-	}
-	__.classes.AnimateTransition.prototype.defaultOnBefore = function(args){
-		var fncElements = args.elements;
-		var fncThis = this;
-		for(var keyItem in fncElements){
-			if(fncElements.hasOwnProperty(keyItem)){
-				var lopStylesBefore = (this.stylesBefore && this.stylesBefore[keyItem]) ? this.stylesBefore[keyItem] : null;
-				if(lopStylesBefore){
-					if(typeof lopStylesBefore === 'function'){
-						lopStylesBefore = lopStylesBefore.call(this, fncElements[keyItem], args);
+	};
+	__.classes.AnimateTransition.prototype.defaultOnBefore = function(_args){
+		var _elms = _args.elements;
+		var _styles;
+		for(var _iElms in _elms){
+			if(_elms.hasOwnProperty(_iElms)){
+				_styles = (this.stylesBefore && this.stylesBefore[_iElms]) ? this.stylesBefore[_iElms] : null;
+				if(_styles){
+					if(typeof _styles === 'function'){
+						_styles = _styles.call(this, _elms[_iElms], _args);
 					}
-					if(lopStylesBefore)
-						fncElements[keyItem].css(lopStylesBefore);
-				}
-			}
-		}
-		this.queue.dequeue();
-	}
-	__.classes.AnimateTransition.prototype.defaultOnAfter = function(args){
-		var fncElements = args.elements;
-		for(var keyItem in fncElements){
-			if(fncElements.hasOwnProperty(keyItem)){
-				var lopStylesAfter = (this.stylesAfter && this.stylesAfter[keyItem]) ? this.stylesAfter[keyItem] : null;
-				if(lopStylesAfter){
-					if(typeof lopStylesAfter === 'function'){
-						lopStylesAfter = lopStylesAfter.call(this, fncElements[keyItem], args);
-					}
-					if(lopStylesAfter){
-						fncElements[keyItem].css(lopStylesAfter);
+					if(_styles){
+						_elms[_iElms].css(_styles);
 					}
 				}
 			}
 		}
 		this.queue.dequeue();
-	}
+	};
+	__.classes.AnimateTransition.prototype.defaultOnAfter = function(_args){
+		var _elms = _args.elements;
+		var _styles
+		for(var _iElms in _elms){
+			if(_elms.hasOwnProperty(_iElms)){
+				_styles = (this.stylesAfter && this.stylesAfter[_iElms]) ? this.stylesAfter[_iElms] : null;
+				if(_styles){
+					if(typeof _styles === 'function'){
+						_styles = _styles.call(this, _elms[_iElms], _args);
+					}
+					if(_styles){
+						_elms[_iElms].css(_styles);
+					}
+				}
+			}
+		}
+		this.queue.dequeue();
+	};

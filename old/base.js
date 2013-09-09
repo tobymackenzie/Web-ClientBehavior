@@ -28,7 +28,7 @@
 	==lib
 	===*/
 
-	var clog = __.message = function(arg){
+	var clog = __.message = function(){
 		if(window.console && window.console.log){
 			if(window.console.log.apply){
 				window.console.log.apply(window.console, arguments);

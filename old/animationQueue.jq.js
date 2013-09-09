@@ -1,103 +1,111 @@
 /*
+Class: AnimationQueue
 used to place steps of jquery animation in order, wrapper for jquery's queue
 
------develompent notes
-the 'this' passed to the callback functions is not anything useful, seems to be the jquery queue object
+Develompent notes:
+	the 'this' passed to the callback functions is not anything useful, seems to be the jquery queue object
 
------parameters
-@param autoDequeue (false): if autodequeue is true, automatically moves to next animation step once started, otherwise must dequeue in callback functions.  autoDequeu only useful for animations on one element
+Parameters:
+	autoDequeue (false): if autodequeue is true, automatically moves to next animation step once started, otherwise must dequeue in callback functions.  autoDequeu only useful for animations on one element
 
------instantiation
-if(typeof $ !== 'undefined'){
-	$(document).ready(function(){
-		var elmErrorsbox = $('.phperrorsbox');
-		if(elmErrorsbox.length > 0){
-			__.animationQueue = new __.classes.animationQueue({autoDequeue: true});
-			__.animationQueue.queue(function(){
-				elmErrorsbox.fadeOut(1000);
-			});
-			__.animationQueue.queue(function(){
-				elmErrorsbox.animate({'left': (elmErrorsbox.position().left + 100) + 'px'}, 1000);
-			});
-			__.animationQueue.queue(function(){
-				elmErrorsbox.fadeIn(1000);
-			});
-			__.animationQueue.queue(function(){
-				elmErrorsbox.animate({'left': (elmErrorsbox.position().left - 100) + 'px'}, 1000);
-			});
-			__.animationQueue.queue(function(){
-				elmErrorsbox.animate({'left': (elmErrorsbox.position().left + 100) + 'px'}, 1000);
-			});
-			__.animationQueue.queue(function(){
-				elmErrorsbox.animate({'left': (elmErrorsbox.position().left - 100) + 'px'}, 1000);
-			});
-			__.animationQueue.queue(function(){
-				elmErrorsbox.animate({'left': (elmErrorsbox.position().left + 100) + 'px'}, 1000);
-			});
-			__.animationQueue.queue(function(){
-				elmErrorsbox.animate({'left': (elmErrorsbox.position().left - 100) + 'px'}, 1000);
-			});
-			__.animationQueue.queue(function(){
-				elmErrorsbox.animate({'left': (elmErrorsbox.position().left + 100) + 'px'}, 1000);
-			});
-			__.animationQueue.queue(function(){
-				elmErrorsbox.animate({'left': (elmErrorsbox.position().left - 100) + 'px'}, 1000);
-			});
-			__.animationQueue.dequeue();
-		}
-	});
-}
+Example:
+	if(typeof $ !== 'undefined'){
+		$(document).ready(function(){
+			var elmErrorsbox = $('.phperrorsbox');
+			if(elmErrorsbox.length > 0){
+				__.AnimationQueue = new __.classes.AnimationQueue({autoDequeue: true});
+				__.AnimationQueue.queue(function(){
+					elmErrorsbox.fadeOut(1000);
+				});
+				__.AnimationQueue.queue(function(){
+					elmErrorsbox.animate({'left': (elmErrorsbox.position().left + 100) + 'px'}, 1000);
+				});
+				__.AnimationQueue.queue(function(){
+					elmErrorsbox.fadeIn(1000);
+				});
+				__.AnimationQueue.queue(function(){
+					elmErrorsbox.animate({'left': (elmErrorsbox.position().left - 100) + 'px'}, 1000);
+				});
+				__.AnimationQueue.queue(function(){
+					elmErrorsbox.animate({'left': (elmErrorsbox.position().left + 100) + 'px'}, 1000);
+				});
+				__.AnimationQueue.queue(function(){
+					elmErrorsbox.animate({'left': (elmErrorsbox.position().left - 100) + 'px'}, 1000);
+				});
+				__.AnimationQueue.queue(function(){
+					elmErrorsbox.animate({'left': (elmErrorsbox.position().left + 100) + 'px'}, 1000);
+				});
+				__.AnimationQueue.queue(function(){
+					elmErrorsbox.animate({'left': (elmErrorsbox.position().left - 100) + 'px'}, 1000);
+				});
+				__.AnimationQueue.queue(function(){
+					elmErrorsbox.animate({'left': (elmErrorsbox.position().left + 100) + 'px'}, 1000);
+				});
+				__.AnimationQueue.queue(function(){
+					elmErrorsbox.animate({'left': (elmErrorsbox.position().left - 100) + 'px'}, 1000);
+				});
+				__.AnimationQueue.dequeue();
+			}
+		});
+	}
 */
-/*-------------
-©animationQueue
-------------*/
-__.classes.animationQueue = function(args){
-		if(typeof args== 'undefined') args= {};
+/* global __, jQuery */
+__.classes.AnimationQueue = function(_args){
+		if(typeof _args== 'undefined'){
+			_args= {};
+		}
+
 		//--optional variables
-		this.name = args.name || 'tmlib';
-		this.autoDequeue = args.autoDequeue || false;
+		this.name = _args.name || 'tmlib';
+		this.autoDequeue = _args.autoDequeue || false;
 
 		//--derived variables
 		this.objQueue = jQuery({});
-	}
-	__.classes.animationQueue.prototype.queue = function(args){
+	};
+	__.classes.AnimationQueue.prototype.queue = function(_args){
 		var fncThis = this;
-		var fncName = args.name || this.name;
-		var fncCallback = args.callback || args; //-arguments is (assumed) the callback if not set explicitely
-		var fncAutoDequeue = (typeof args.autoDequeue != 'undefined')? args.autoDequeue: fncThis.autoDequeue;
+		var _name = _args.name || this.name;
+		var fncCallback = _args.callback || _args; //-arguments is (assumed) the callback if not set explicitely
+		var fncAutoDequeue = (typeof _args.autoDequeue != 'undefined')? _args.autoDequeue: fncThis.autoDequeue;
 		var fncQueueCallback = (fncAutoDequeue)
 			?function(){
-					var fncArgs= args;
+					var fncArgs= _args;
 					var internalThis = this;
 					fncCallback.apply(internalThis, fncArgs);
 					fncThis.dequeue();
 				}
 			:fncCallback
 		;
-		this.objQueue.queue(fncName, fncQueueCallback);
-	}
-	__.classes.animationQueue.prototype.dequeue = function(args){
-		if(typeof args!= 'undefined')
-			var fncName = args.name || args;
-		else
-			var fncName = this.name;
-		this.objQueue.dequeue(fncName);
-	}
-	__.classes.animationQueue.prototype.unshift = function(args){
-		if(typeof args!= 'undefined'){
-			var fncCallback = args.callback || args;
-			var fncName = args.name || this.name;
+		this.objQueue.queue(_name, fncQueueCallback);
+	};
+	__.classes.AnimationQueue.prototype.dequeue = function(_args){
+		var _name;
+		if(typeof _args!= 'undefined'){
+			_name = _args.name || _args;
+		}else{
+			_name = this.name;
 		}
-		if(typeof fncCallback == 'undefined' || !fncCallback) return false;
+		this.objQueue.dequeue(_name);
+	};
+	__.classes.AnimationQueue.prototype.unshift = function(_args){
+		if(typeof _args === 'undefined'){
+			_args = {};
+		}
+		var fncCallback = _args.callback || _args;
+		var _name = _args.name || this.name;
+		if(typeof fncCallback == 'undefined' || !fncCallback){
+			return false;
+		}
 //->return
-		var fncQueue = this.objQueue.queue(fncName);
+		var fncQueue = this.objQueue.queue(_name);
 		fncQueue.unshift(fncCallback);
-	}
-	__.classes.animationQueue.prototype.clearQueue = function(args){
-		if(typeof args != 'undefined')
-			var fncName = args.name || args;
-		else
-			var fncName = this.name;
-		this.objQueue.clearQueue(fncName);
-	}
-
+	};
+	__.classes.AnimationQueue.prototype.clearQueue = function(_args){
+		var _name;
+		if(typeof _args !== 'undefined'){
+			_name = _args.name || _args;
+		}else{
+			_name = this.name;
+		}
+		this.objQueue.clearQueue(_name);
+	};

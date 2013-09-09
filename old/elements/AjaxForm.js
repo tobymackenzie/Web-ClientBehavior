@@ -1,66 +1,65 @@
 /*
-handle form submission with ajax
+Class: AjaxForm
 
------dependencies
-tmlib
-jquery
+Handle form submission with ajax
 
------parameters
------instantiation
------html
------css
+Dependencies:
+	tmlib
+	jquery
 */
-
-/*----
-©AjaxForm
------*/
-__.classes.AjaxForm = function(args){
-		if(typeof args == 'undefined') var args = {};
-		//--required attributes
-//->return
+/* global __, document, jQuery */
+__.classes.AjaxForm = function(_args){
+		if(typeof _args == 'undefined'){
+			_args = {};
+		}
 
 		//--optional attributes
-		this.boot = args.boot || {};
-		this.elmForm = args.elmForm || jQuery();
-		this.oninit = args.oninit || null;
-		this.onsubmitpreajax = args.onsubmitpreajax || null;
-		this.onsuccess = args.onsuccess || null;
+		this.boot = _args.boot || {};
+		this.elmForm = _args.elmForm || jQuery();
+		this.oninit = _args.oninit || null;
+		this.onsubmitpreajax = _args.onsubmitpreajax || null;
+		this.onsuccess = _args.onsuccess || null;
 
 		//--derived attributes
 
 		//--do something
 		this.bindSubmit();
 
-		if(this.oninit)
+		if(this.oninit){
 			this.oninit.call(this);
-	}
+		}
+	};
 	__.classes.AjaxForm.prototype.submit = function(){
-		var lclThis = this;
-		var lclValues = {};
+		var _this = this;
+		var _values = {};
 		this.elmForm.find('input, select, textarea').each(function(){
-			var elmThis = $(this);
-			lclValues[elmThis.attr('name')] = elmThis.val();
+			var elmThis = jQuery(this);
+			_values[elmThis.attr('name')] = elmThis.val();
 		});
-		if(this.onsubmitpreajax)
-			this.onsubmitpreajax.call(lclThis, lclValues);
+		if(this.onsubmitpreajax){
+			this.onsubmitpreajax.call(_this, _values);
+		}
 		jQuery.ajax({
-			data: lclValues
-			,success: function(argData){
-				if(lclThis.onsuccess)
-					lclThis.onsuccess.apply(lclThis, arguments);
+			data: _values
+			,success: function(){
+				if(_this.onsuccess){
+					_this.onsuccess.apply(_this, arguments);
+				}
 			}
 			,type: 'POST'
-			,url: (this.elmForm.attr('action'))? this.elmForm.attr('action'): document.URL
+			,url: (this.elmForm.attr('action')) ? this.elmForm.attr('action') : document.URL
 		});
-	}
+	};
 	__.classes.AjaxForm.prototype.bindSubmit = function(argElm){
-		var lclThis = this;
-		if(typeof argElm == 'undefined') argElm = this.elmForm;
+		var _this = this;
+		if(typeof argElm == 'undefined'){
+			argElm = this.elmForm;
+		}
 		argElm.on('submit', function(argEvent){
-			lclThis.submit.call(lclThis);
-			if(argEvent.preventDefault)
+			_this.submit.call(_this);
+			if(argEvent.preventDefault){
 				argEvent.preventDefault();
+			}
 			return false;
 		});
-	}
-
+	};

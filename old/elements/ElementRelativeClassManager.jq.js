@@ -1,61 +1,60 @@
 /*
-add classes to elements of a set based on their position in that set relative to a 'current' element
------dependencies
-tmlib: isnumeric
-jquery
+Class: ElementRelativeClassManager
 
------parameters
------instantiation
------html
------css
+Add classes to elements of a set based on their position in that set relative to a 'current' element
+
+Dependencies:
+	tmlib: isnumeric
+	jquery
 */
+/* global __, jQuery */
 
-/*-------
-©ElementRelativeClassManager
--------- */
-__.classes.ElementRelativeClassManager = function(args){
-		if(typeof args == 'undefined') var args = {};
-		//--required attributes
-//->return
+__.classes.ElementRelativeClassManager = function(_args){
+		if(typeof _args == 'undefined'){
+			_args = {};
+		}
 
 		//--optional attributes
-		this.boot = args.boot || {};
+		this.boot = _args.boot || {};
 		this.classAfter = this.classAfter || 'after';
 		this.classBefore = this.classBefore || 'before';
-		this.classCurrent = args.classCurrent || 'current';
-		this.classFirst = args.classFirst || 'first-child';
-		this.classLast = args.classLast || 'last-child';
-		this.elements = args.elements || Array();
-		this.oninit = args.oninit || null;
-		this.onsetclassesall = args.onsetclassesall || null;
-		this.onsetclassesforcurrent = args.onsetclassesforcurrent || null;
+		this.classCurrent = _args.classCurrent || 'current';
+		this.classFirst = _args.classFirst || 'first-child';
+		this.classLast = _args.classLast || 'last-child';
+		this.elements = _args.elements || Array();
+		this.oninit = _args.oninit || null;
+		this.onsetclassesall = _args.onsetclassesall || null;
+		this.onsetclassesforcurrent = _args.onsetclassesforcurrent || null;
 
 		//--derived attributes
 		this.indexCurrent = -1;
 		//--do something
-		if(this.oninit)
+		if(this.oninit){
 			this.oninit.call(this);
-	}
-	__.classes.ElementRelativeClassManager.prototype.getRelativePosition = function(argItemOrIndex){
+		}
+	};
+	__.classes.ElementRelativeClassManager.prototype.getRelativePosition = function(_itemOrIndex){
 		if(this.indexCurrent >= 0){
-			if(__.lib.isNumeric(argItemOrIndex))
-				return argItemOrIndex - this.indexCurrent;
-			else
-				return elements.index(argItemOrIndex);
+			if(__.lib.isNumeric(_itemOrIndex)){
+				return _itemOrIndex - this.indexCurrent;
+			}else{
+				return this.elements.index(_itemOrIndex);
+			}
 		}else{
 			return false;
 		}
-	}
+	};
 	__.classes.ElementRelativeClassManager.prototype.setClassesAll = function(){
 		if(this.elements.length > 0){
 			this.elements.removeClass(this.classFirst).removeClass(this.classLast);
 			this.elements.first().addClass(this.classFirst);
 			this.elements.last().addClass(this.classLast);
 			this.setClassesForCurrent();
-			if(this.onsetclassesall)
+			if(this.onsetclassesall){
 				this.onsetclassesall.call(this);
+			}
 		}
-	}
+	};
 	__.classes.ElementRelativeClassManager.prototype.setClassesForCurrent = function(){
 		if(this.elements.length > 0){
 			this.indexCurrent = this.elements.index(this.elements.filter('.'+this.classCurrent));
@@ -64,8 +63,8 @@ __.classes.ElementRelativeClassManager = function(args){
 				this.elements.slice(0, this.indexCurrent).removeClass(this.classAfter).addClass(this.classBefore);
 				this.elements.slice(this.indexCurrent + 1).removeClass(this.classBefore).addClass(this.classAfter);
 			}
-			if(this.onsetclassesforcurrent)
+			if(this.onsetclassesforcurrent){
 				this.onsetclassesforcurrent.call(this);
+			}
 		}
-	}
-
+	};

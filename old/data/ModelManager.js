@@ -1,91 +1,98 @@
 /*
-simple model handling that can fetch from and persist to server data mode, not much else currently, simply passed callback to get model data
+Class: ModelManager
 
------dependencies
-tmlib: merge
-jquery
+Simple model handling that can fetch from and persist to server data mode, not much else currently, simply passed callback to get model data
 
------parameters
------instantiation
------html
------css
+Dependencies:
+	tmlib: merge
+	jquery
 */
+/* global __, jQuery */
+__.classes.ModelManager = function(_args){
+		if(typeof _args == 'undefined'){
+			_args = {};
+		}
 
-/*-------
-©ModelManager
--------- */
-__.classes.ModelManager = function(args){
-		if(typeof args == 'undefined') args = {};
 		//--optional attributes
-		this.boot = args.boot || {};
-		this.clbFetch = args.clbFetch || null;
-		this.clbPersist = args.clbPersist || null;
-		this.fnGetRequestData = args.fnGetRequestData || this.defaultFnGetRequestData;
-		this.fnTransformDataForPersist = args.fnTransformDataForPersist || this.defaultfnTransformDataForPersist;
-		this.oninit = args.oninit || null;
-		this.optionsFetch = args.optionsFetch || {};
-		this.optionsPersist = args.optionsPersist || {};
-		this.urlFetch = args.urlFetch || null;
-		this.urlPersist = args.urlPersist || null;
+		this.boot = _args.boot || {};
+		this.clbFetch = _args.clbFetch || null;
+		this.clbPersist = _args.clbPersist || null;
+		this.fnGetRequestData = _args.fnGetRequestData || this.defaultFnGetRequestData;
+		this.fnTransformDataForPersist = _args.fnTransformDataForPersist || this.defaultfnTransformDataForPersist;
+		this.oninit = _args.oninit || null;
+		this.optionsFetch = _args.optionsFetch || {};
+		this.optionsPersist = _args.optionsPersist || {};
+		this.urlFetch = _args.urlFetch || null;
+		this.urlPersist = _args.urlPersist || null;
 
 		//--direct attributes
-		this.fetch = args.fnFetch || this.defaultFnFetch;
-		this.persist = args.fnPersist || this.defaultFnFetch;
+		this.fetch = _args.fnFetch || this.defaultFnFetch;
+		this.persist = _args.fnPersist || this.defaultFnFetch;
 
 		//--derived attributes
-		this.binder = $({});
+		this.binder = jQuery({});
 
-		if(this.oninit) this.oninit.call(this);
-	}
+		if(this.oninit){
+			this.oninit.call(this);
+		}
+	};
 	__.classes.ModelManager.prototype.on = function(){
 		this.binder.on.apply(this.binder, arguments);
-	}
+	};
 	__.classes.ModelManager.prototype.data = function(){
 		this.binder.data.apply(this.binder, arguments);
-	}
+	};
 	__.classes.ModelManager.prototype.store = function(){
 		var data = this.fnGetRequestData.apply(this, arguments);
 		this.persist(data, this.urlPersist, this.clbPersist);
-	}
-	__.classes.ModelManager.prototype.defaultFnGetRequestData = function(args){
-		var fncReturn = [];
-		if(typeof args != 'undefined'){
-			if(__.isArray(args))
-				fncReturn = args;
-			else
-				fncReturn = [args];
+	};
+	__.classes.ModelManager.prototype.defaultFnGetRequestData = function(_args){
+		var _return = [];
+		if(typeof _args != 'undefined'){
+			if(__.isArray(_args)){
+				_return = _args;
+			}else{
+				_return = [_args];
+			}
 		}
-		return fncReturn;
-	}
-	__.classes.ModelManager.prototype.defaultFnFetch = function(argData, argURL, argCallback){
-		var lclThis = this;
-		var lclCallback = (typeof argCallback != 'undefined')? argCallback: this.clbFetch;
+		return _return;
+	};
+	__.classes.ModelManager.prototype.defaultFnFetch = function(_data, _url, _callback){
+		var _this = this;
+		if(typeof _callback === 'undefined'){
+			_callback = this.clbFetch;
+		}
 		var lclParams = {
 			success: function(){
-				if(lclCallback)
-					lclCallback.apply(lclThis, arguments);
+				if(_callback){
+					_callback.apply(_this, arguments);
+				}
 			}
 		};
-		if(argData)
-			lclParams.data = JSON.stringify(argData);
-		lclParams.url = argURL || this.urlFetch;
+		if(_data){
+			lclParams.data = JSON.stringify(_data);
+		}
+		lclParams.url = _url || this.urlFetch;
 		jQuery.ajax(__.lib.merge(this.optionsFetch, lclParams));
-	}
-	__.classes.ModelManager.prototype.defaultFnPersist = function(argData, argURL, argCallback){
-		var lclThis = this;
-		var lclCallback = (typeof argCallback != 'undefined')? argCallback: this.clbPersist;
+	};
+	__.classes.ModelManager.prototype.defaultFnPersist = function(_data, _url, _callback){
+		var _this = this;
+		if(typeof _callback === 'undefined'){
+			_callback = this.clbPersist;
+		}
 		var lclParams = {
 			success: function(){
-				if(lclCallback)
-					lclCallback.apply(lclThis, arguments);
+				if(_callback){
+					_callback.apply(_this, arguments);
+				}
 			}
 		};
-		if(argData)
-			lclParams.data = this.fnTransformDataForPersist.call(this, argData);
-		lclParams.url = argURL || this.urlPersist;
+		if(_data){
+			lclParams.data = this.fnTransformDataForPersist.call(this, _data);
+		}
+		lclParams.url = _url || this.urlPersist;
 		jQuery.ajax(__.lib.merge(this.optionsPersist, lclParams));
-	}
-	__.classes.modelManager.prototype.defaultfnTransformDataForPersist = function(argData){
-		return JSON.stringify(argData);
-	}
-
+	};
+	__.classes.modelManager.prototype.defaultfnTransformDataForPersist = function(_data){
+		return JSON.stringify(_data);
+	};

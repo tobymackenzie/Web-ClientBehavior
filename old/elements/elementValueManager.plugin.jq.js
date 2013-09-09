@@ -1,79 +1,81 @@
-/*----------
-©elementValueManager
-----------*/
-(function(){
-	var cloFnVal = jQuery.fn.val;
-	var cloNamePlugin = 'elementValueManager';
-	var cloMethods = {
-		init : function(argSettings){
-			return this.each(function(argSettings){
-				var fncThis = jQuery(this);
-				var fncData = fncThis.data(cloNamePlugin);
+/*
+Plugin: elementValueManager
 
-				var fncSettingsDefault = {
+*/
+/* global jQuery */
+
+(function(){
+	var __pluginName = 'elementValueManager';
+	var __methods = {
+		init : function(){
+			return this.each(function(_settings){
+				var $this = jQuery(this);
+				var _data = $this.data(__pluginName);
+
+				var _defaultSettings = {
 					dataSourceValue: null
 					,dataSource: 'value'
 					,event: 'change'
 				};
 
 				//--settings
-				if(fncSettingsDefault)
-					jQuery.extend(fncSettingsDefault, argSettings);
+				if(_defaultSettings){
+					jQuery.extend(_defaultSettings, _settings);
+				}
 
 				//--initialize data if not already initialized
-				if(!fncData){
-					fncThis.data(cloNamePlugin, {
+				if(!_data){
+					$this.data(__pluginName, {
 					});
 				}
 
-				fncThis.val = cloMethods.getSetValue;
+				$this.val = __methods.getSetValue;
 			});
 		}
 		,destroy: function(){
 			return this.each(function(){
-				var fncThis = jQuery(this);
-				var fncData = fncThis.data(cloNamePlugin);
-				fncThis.removeData(cloNamePlugin);
+				var $this = jQuery(this);
+				$this.removeData(__pluginName);
 			});
 		}
 		,getSetValue: function(){
-			var fncReturn = false;
-			var fncDataSource = this.data(cloNamePlugin, 'dataSource');
-			if(arguments.length == 0){
-				if(fncDataSource.substr(0, 7) == 'checked'){
-					fncReturn = ((this.filter(':checked').length > 0)? true: false);
-					var newDataSource = fncDataSource.substr(7);
-					if(fncReturn)
-						fncDataSource = (newDataSource)? newDataSource: fncDataSource;
-					else
-						fncDataSource = false;
+			var _return = false;
+			var _dataSource = this.data(__pluginName, 'dataSource');
+			if(arguments.length === 0){
+				if(_dataSource.substr(0, 7) == 'checked'){
+					_return = ((this.filter(':checked').length > 0)? true: false);
+					var newDataSource = _dataSource.substr(7);
+					if(_return){
+						_dataSource = (newDataSource)? newDataSource: _dataSource;
+					}else{
+						_dataSource = false;
+					}
 				}
-				switch(fncDataSource){
+				switch(_dataSource){
 					case 'attribute':
-						fncReturn = this.attr(this.data(cloNamePlugin, 'dataSourceValue'));
+						_return = this.attr(this.data(__pluginName, 'dataSourceValue'));
 						break;
 					case 'data':
-						fncReturn = this.data(this.data(cloNamePlugin, 'dataSourceValue'));
+						_return = this.data(this.data(__pluginName, 'dataSourceValue'));
 						break;
 					case 'value':
-						fncReturn = this.cloFnVal();
+						_return = this.cloFnVal();
 						break;
 				}
-				return fncReturn;
+				return _return;
 			}else{
 
 			}
 		}
 	};
 
-	jQuery.fn[cloNamePlugin] = function(argMethod){
-		if(cloMethods[argMethod]){
-			return cloMethods[argMethod].apply(this, Array.prototype.slice.call(arguments, 1));
-		}else if(typeof argMethod == 'object' || argMethod){
-			return cloMethods.init.apply(this, arguments);
+	jQuery.fn[__pluginName] = function(_method){
+		if(__methods[_method]){
+			return __methods[_method].apply(this, Array.prototype.slice.call(arguments, 1));
+		}else if(typeof _method == 'object' || _method){
+			return __methods.init.apply(this, arguments);
 		}else{
-			return cloMethods.init.apply(this);
+			return __methods.init.apply(this);
 		}
 	};
 })();
-

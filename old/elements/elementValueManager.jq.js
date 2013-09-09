@@ -1,5 +1,6 @@
 /*
 Class: ElementValueManager
+
 Provides uniform interface for getting and (setting) 'values' of an element (or collection of radio buttons), monitoring them for changes
 
 Dependencies:
@@ -11,6 +12,7 @@ Parameters:
 	elements(jQuery): element(s) this interface provides data for
 	event(String): event to trigger on change
 	type(String): type of source this class is, changes what to monitor.  Can be one of 'attribute', checked', 'data', or 'value'
+
 Example:
 	$(document).ready(function(){
 		var elmValueManagerPrice = new __.classes.elementValueManager({element:elmThis, type: 'attribute', dataSourceValue: 'data-price'})

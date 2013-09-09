@@ -1,5 +1,6 @@
 /*
 Class: ElementValueManager
+
 Provides uniform interface for getting and (setting) 'values' of an element, monitoring them for changes
 
 Dependencies:
@@ -16,6 +17,7 @@ Example:
 	}
 
 */
+/* global __ */
 __.classes.ElementValueManager = __.core.Classes.create({
 	'init': function(){
 		this.__base(arguments);
@@ -56,6 +58,7 @@ __.classes.ElementValueManager = __.core.Classes.create({
 			if(_type.substr(0, 7) == 'checked'){
 				this.elements.checked = true;
 				if(_value != 'checked'){
+					var _newType = _type.substr(7);
 					_type = (_newType) ? _newType : _type;
 				}else{
 					_type = false;

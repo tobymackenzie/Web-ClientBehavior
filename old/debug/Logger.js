@@ -1,46 +1,41 @@
 /*
-logging of messages to a div on the page, with auto vardump of objects
+Library: Logger
+
+Logging of messages to a div on the page, with auto vardump of objects
 done as singleton by instantation while defining
 
------dependencies
-tmlib vardump
-jquery
-
------parameters
------instantiation
------html
------css
+Dependencies:
+	tmlib vardump
+	jquery
 */
-
-/*----
-©Logger
------*/
+/* global __, jQuery */
 __.logger = {
 	init: function(){
-		var fncThis = this;
-		fncThis.elmContainer = $('<div>');
-		fncThis.elmContainer.css({overflow: 'hidden', display: 'block', position: 'absolute', top: 0, left: 0, background: '#fff'});
-		fncThis.elmList = $('<ol>');
-		fncThis.elmContainer.append(fncThis.elmList);
-		//__.elmError.on('click', 'pre', function(){ $(this).remove(); });
-		fncThis.elmContainer.click(function(){
-			if(fncThis.elmContainer.data('open')){
-				fncThis.hide();
+		var _this = this;
+		_this.elmContainer = jQuery('<div>');
+		_this.elmContainer.css({overflow: 'hidden', display: 'block', position: 'absolute', top: 0, left: 0, background: '#fff'});
+		_this.elmList = jQuery('<ol>');
+		_this.elmContainer.append(_this.elmList);
+		//__.elmError.on('click', 'pre', function(){ jQuery(this).remove(); });
+		_this.elmContainer.click(function(){
+			if(_this.elmContainer.data('open')){
+				_this.hide();
 			}else{
-				fncThis.show();
+				_this.show();
 			}
 		});
-		fncThis.elmContainer.click();
-		$('body').append(fncThis.elmContainer);
+		_this.elmContainer.click();
+		jQuery('body').append(_this.elmContainer);
 	}
 	,log: function(){
-		if(!this.elmContainer)
+		if(!this.elmContainer){
 			this.init();
-		var lcl = {};
-		lcl.elmLI = $('<li>');
+		}
+		var _data = {};
+		_data.elmLI = jQuery('<li>');
 		if(arguments.length > 1){
-			lcl.elmSublist = $('<ol>');
-			lcl.elmLI.append(lcl.elmSublist);
+			_data.elmSublist = jQuery('<ol>');
+			_data.elmLI.append(_data.elmSublist);
 		}
 		for(var key = 0; key < arguments.length; ++key){
 			var lopItem = arguments[key];
@@ -51,27 +46,28 @@ __.logger = {
 				lopItemFormatted = lopItem;
 			}
 			if(arguments.length > 1){
-				var elmSubLI = $('<li>');
+				var elmSubLI = jQuery('<li>');
 				elmSubLI.text(lopItemFormatted).html();
-				lcl.elmSublist.append(elmSubLI);
+				_data.elmSublist.append(elmSubLI);
 			}else{
-				lcl.elmLI.text(lopItemFormatted).html();
+				_data.elmLI.text(lopItemFormatted).html();
 			}
 		}
-		this.elmList.append(lcl.elmLI);
+		this.elmList.append(_data.elmLI);
 		this.show();
 	}
 	,hide: function(){
-		if(!this.elmContainer)
+		if(!this.elmContainer){
 			this.init();
+		}
 		this.elmContainer.css({width: '20px', height: '20px'});
 		this.elmContainer.data('open', false);
 	}
 	,show: function(){
-		if(!this.elmContainer)
+		if(!this.elmContainer){
 			this.init();
+		}
 		this.elmContainer.css({width: '100%', height: 'auto'});
 		this.elmContainer.data('open', true);
 	}
-}
-
+};
