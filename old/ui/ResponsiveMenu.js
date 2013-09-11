@@ -113,7 +113,7 @@ __.classes.ResponsiveMenu = __.core.Classes.create({
 				});
 				if(this.supportsTouch){
 					this.$action.on({
-						touchstart: jQuery.proxy(this.handleTouch, this)
+						click: jQuery.proxy(this.handleTouch, this)
 					});
 				}
 				if(!this.supportsTouch){
@@ -132,7 +132,7 @@ __.classes.ResponsiveMenu = __.core.Classes.create({
 				});
 				if(this.supportsTouch){
 					this.$action.off({
-						touchstart: jQuery.proxy(this.handleTouch, this)
+						click: jQuery.proxy(this.handleTouch, this)
 					});
 				}
 				if(!this.supportsTouch){
