@@ -50,62 +50,63 @@ Example:
 	}
 */
 /* global __, jQuery */
-__.classes.AnimationQueue = function(_args){
-		if(typeof _args== 'undefined'){
-			_args= {};
-		}
-
-		//--optional variables
-		this.name = _args.name || 'tmlib';
-		this.autoDequeue = _args.autoDequeue || false;
+__.classes.AnimationQueue = __.core.Classes.create({
+	init: function(){
+		this.__base(arguments);
 
 		//--derived variables
 		this.objQueue = jQuery({});
-	};
-	__.classes.AnimationQueue.prototype.queue = function(_args){
-		var fncThis = this;
-		var _name = _args.name || this.name;
-		var fncCallback = _args.callback || _args; //-arguments is (assumed) the callback if not set explicitely
-		var fncAutoDequeue = (typeof _args.autoDequeue != 'undefined')? _args.autoDequeue: fncThis.autoDequeue;
-		var fncQueueCallback = (fncAutoDequeue)
-			?function(){
-					var fncArgs= _args;
-					var internalThis = this;
-					fncCallback.apply(internalThis, fncArgs);
-					fncThis.dequeue();
-				}
-			:fncCallback
-		;
-		this.objQueue.queue(_name, fncQueueCallback);
-	};
-	__.classes.AnimationQueue.prototype.dequeue = function(_args){
-		var _name;
-		if(typeof _args!= 'undefined'){
-			_name = _args.name || _args;
-		}else{
-			_name = this.name;
+	}
+	,properties: {
+		autoDequeue:  false
+		,clearQueue: function(_args){
+			var _name;
+			if(typeof _args !== 'undefined'){
+				_name = _args.name || _args;
+			}else{
+				_name = this.name;
+			}
+			this.objQueue.clearQueue(_name);
 		}
-		this.objQueue.dequeue(_name);
-	};
-	__.classes.AnimationQueue.prototype.unshift = function(_args){
-		if(typeof _args === 'undefined'){
-			_args = {};
+		,dequeue: function(_args){
+			var _name;
+			if(typeof _args!= 'undefined'){
+				_name = _args.name || _args;
+			}else{
+				_name = this.name;
+			}
+			this.objQueue.dequeue(_name);
 		}
-		var fncCallback = _args.callback || _args;
-		var _name = _args.name || this.name;
-		if(typeof fncCallback == 'undefined' || !fncCallback){
-			return false;
+		,name: 'tmlib'
+		,objQueue: undefined
+		,queue: function(_args){
+			var fncThis = this;
+			var _name = _args.name || this.name;
+			var fncCallback = _args.callback || _args; //-arguments is (assumed) the callback if not set explicitely
+			var fncAutoDequeue = (typeof _args.autoDequeue != 'undefined')? _args.autoDequeue: fncThis.autoDequeue;
+			var fncQueueCallback = (fncAutoDequeue)
+				?function(){
+						var fncArgs= _args;
+						var internalThis = this;
+						fncCallback.apply(internalThis, fncArgs);
+						fncThis.dequeue();
+					}
+				:fncCallback
+			;
+			this.objQueue.queue(_name, fncQueueCallback);
 		}
+		,unshift: function(_args){
+			if(typeof _args === 'undefined'){
+				_args = {};
+			}
+			var fncCallback = _args.callback || _args;
+			var _name = _args.name || this.name;
+			if(typeof fncCallback == 'undefined' || !fncCallback){
+				return false;
+			}
 //->return
-		var fncQueue = this.objQueue.queue(_name);
-		fncQueue.unshift(fncCallback);
-	};
-	__.classes.AnimationQueue.prototype.clearQueue = function(_args){
-		var _name;
-		if(typeof _args !== 'undefined'){
-			_name = _args.name || _args;
-		}else{
-			_name = this.name;
+			var fncQueue = this.objQueue.queue(_name);
+			fncQueue.unshift(fncCallback);
 		}
-		this.objQueue.clearQueue(_name);
-	};
+	}
+});
