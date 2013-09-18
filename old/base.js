@@ -1,18 +1,18 @@
-(function(_deps, undefined){
+(function(__deps, undefined){
 	/*=====
 	==dependencies
 	Allow injection of dependencies so they can be theoretically modified for testing.
 	Local names allow them to be minified.
 	=====*/
-	var $, globals, head, jQuery, window;
-	if(!_deps){
-		_deps = {};
+	var $, globals, __head, __jQuery, window;
+	if(!__deps){
+		__deps = {};
 	}
 
-	window = globals = _deps.globals || this;
+	window = globals = __deps.globals || this;
 
-	head = _deps.head || window.head;
-	jQuery = $ = _deps.jQuery || window.jQuery;
+	__head = __deps.head || window.head;
+	__jQuery = $ = __deps.jQuery || window.jQuery;
 
 	/*=====
 	==tmlib
@@ -27,6 +27,17 @@
 	/*===
 	==lib
 	===*/
+	__.ready = function(_function){
+		if(__jQuery){
+			__jQuery(_function);
+		}else if(__head){
+			__head.ready(_function);
+		}else if(__.lib.addListeners){
+			__.lib.addListeners(window, 'load', _function, false);
+		}else{
+			_function.call(this);
+		}
+	};
 
 	var clog = __.message = function(){
 		if(window.console && window.console.log){
@@ -55,18 +66,7 @@
 	==main onload
 	=====*/
 
-	var __main = function(){
+	__.ready(function(){
 
-	};
-
-	/*===
-	==init
-	===*/
-	if(typeof jQuery != 'undefined'){
-		jQuery(__main);
-	}else if(typeof head != 'undefined'){
-		head.ready(__main);
-	}else if(typeof __.lib.addListeners != 'undefined'){
-		__.lib.addListeners(window, 'load', __main, false);
-	}
+	});
 })();
