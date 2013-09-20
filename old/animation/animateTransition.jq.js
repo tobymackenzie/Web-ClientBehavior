@@ -54,7 +54,7 @@ Parameters:
 			,boot: {attrDataBottom: 'data-bottom'}
 		})
 */
-/* global __ */
+/* global __, jQuery, setTimeout */
 __.classes.AnimateTransition = __.core.Classes.create({
 	init: function(){
 		this.__base(arguments);
@@ -121,23 +121,26 @@ __.classes.AnimateTransition = __.core.Classes.create({
 		,duration: 500
 		,elms: undefined
 		,onAfter: function(_args){
-			var _elms = _args.elements;
-			var _styles;
-			for(var _iElms in _elms){
-				if(_elms.hasOwnProperty(_iElms)){
-					_styles = (this.stylesAfter && this.stylesAfter[_iElms]) ? this.stylesAfter[_iElms] : null;
-					if(_styles){
-						if(typeof _styles === 'function'){
-							_styles = _styles.call(this, _elms[_iElms], _args);
-						}
+			var _this = this;
+			setTimeout(function(){
+				var _elms = _args.elements;
+				var _styles;
+				for(var _iElms in _elms){
+					if(_elms.hasOwnProperty(_iElms)){
+						_styles = (_this.stylesAfter && _this.stylesAfter[_iElms]) ? _this.stylesAfter[_iElms] : null;
 						if(_styles){
-							_elms[_iElms].css(_styles);
+							if(typeof _styles === 'function'){
+								_styles = _styles.call(this, _elms[_iElms], _args);
+							}
+							if(_styles && !jQuery.isEmptyObject(_styles)){
+								_elms[_iElms].css(_styles);
+							}
 						}
 					}
 				}
-			}
-			this.pub('after', _args);
-			this.queue.dequeue();
+				_this.pub('after', _args);
+				_this.queue.dequeue();
+			}, 0);
 		}
 		,onBefore: function(_args){
 			var _elms = _args.elements;
@@ -149,7 +152,7 @@ __.classes.AnimateTransition = __.core.Classes.create({
 						if(typeof _styles === 'function'){
 							_styles = _styles.call(this, _elms[_iElms], _args);
 						}
-						if(_styles){
+						if(_styles && !jQuery.isEmptyObject(_styles)){
 							_elms[_iElms].css(_styles);
 						}
 					}
