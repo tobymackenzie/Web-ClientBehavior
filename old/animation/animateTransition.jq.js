@@ -74,47 +74,64 @@ __.classes.AnimateTransition = __.core.Classes.create({
 		animateStep: function(_args, _stepKey){
 			var _elms = _args.elements || this.elms;
 			var _countElms = _elms.length;
+			var _countElements = 0;
+			var _iElms;
 			var _this = this;
-			_this.countItemsCompleted = 0;
-			var callbackDQ = function(){
-				++_this.countItemsCompleted;
-				if(_this.countItemsCompleted >= _countElms){
+			var _countItemsCompleted = 0;
+			var _dqCallback = function(){
+				++_countItemsCompleted;
+				if(_countItemsCompleted >= _countElements){
 					_this.queue.dequeue();
 				}
 			};
-			for(var _iElms in _elms){
-				if(_elms.hasOwnProperty(_iElms)){
-					var lopDuration;
-					var lopStylesTransition;
-					if(!this.stylesTransition){
-						lopStylesTransition = null;
-					}else if(typeof _stepKey != 'undefined'){
-						lopStylesTransition = this.stylesTransition[_stepKey][_iElms] || null;
-						if(this.duration.constructor == Array){
-							lopDuration = this.duration[_stepKey];
-							if(lopDuration.constructor == Array){
-								lopDuration = this.duration[_stepKey][_iElms];
-							}
-						}else{
-							lopDuration = this.duration;
+			var _stepOpts;
+			var _stepAnimationPieces = [];
+
+			//--build step animation pieces and count all elements instead of just elements in array so that calls to _callbackDQ will happen the proper number of times
+			for(_iElms = 0; _iElms < _countElms; ++_iElms){
+				var _duration;
+				var _styles;
+				var _elm = _elms[_iElms];
+
+				if(!this.stylesTransition){
+					_styles = null;
+				}else if(typeof _stepKey != 'undefined'){
+					_styles = this.stylesTransition[_stepKey][_iElms] || null;
+					if(__.lib.isArray(this.duration)){
+						_duration = this.duration[_stepKey];
+						if(__.lib.isArray(_duration)){
+							_duration = this.duration[_stepKey][_iElms];
 						}
 					}else{
-						lopStylesTransition = _this.stylesTransition[_iElms] || null;
-						lopDuration = this.duration;
-						if(lopDuration.constructor == Array){
-							lopDuration = this.duration[_iElms];
-						}
+						_duration = this.duration;
 					}
-					if(lopStylesTransition){
-						if(typeof lopStylesTransition === 'function'){
-							lopStylesTransition = lopStylesTransition.call(this, _elms[_iElms], _args);
-						}
-						var lopCallbackDQ = callbackDQ;
-						_elms[_iElms].animate(lopStylesTransition, lopDuration, lopCallbackDQ);
-					}else{
-						callbackDQ();
+				}else{
+					_styles = _this.stylesTransition[_iElms] || null;
+					_duration = this.duration;
+					if(__.lib.isArray(_duration)){
+						_duration = this.duration[_iElms];
 					}
 				}
+				if(_styles){
+					//--count all elements, since each 'elm' could contain multiple elements
+					_countElements += _elm.length;
+					if(typeof _styles === 'function'){
+						_styles = _styles.call(this, _elm, _args);
+					}
+					_stepAnimationPieces.push({
+						duration: _duration
+						,elm: _elm
+						,styles: _styles
+					});
+
+					// _addStepAnimationPiece(_elm, _styles, _duration, _dqCallback);
+				}
+			}
+
+			//--run animations
+			for(var _iPieces = 0; _iPieces < _stepAnimationPieces.length; ++_iPieces){
+				_stepOpts = _stepAnimationPieces[_iPieces];
+				_stepOpts.elm.animate(_stepOpts.styles, _stepOpts.duration, _dqCallback);
 			}
 		}
 		,doMultistep: undefined
