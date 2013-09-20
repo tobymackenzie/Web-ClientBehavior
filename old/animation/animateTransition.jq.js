@@ -170,34 +170,35 @@ __.classes.AnimateTransition = __.core.Classes.create({
 				_args = {elements: _args};
 			}
 			var _this = this;
-			if(_this.onBefore){
-				_this.queue.queue({callback: function(){
+			if(this.onBefore){
+				this.queue.queue({callback: function(){
 					_this.onBefore.call(_this, _args);
 				}});
 			}
-			if(_this.animateStep){
-				if(_this.doMultistep && _this.stylesTransition){
-					for(var _keyStep in _this.stylesTransition){
-						if(_this.stylesTransition.hasOwnProperty(_keyStep)){
-							_this.queue.queue({callback: function(_this, _keyStep){
-								return function(){
-									_this.animateStep.call(_this, _args, _keyStep);
-								};
-							}(_this, _keyStep)});
-						}
+			if(this.animateStep && this.stylesTransition){
+				if(this.doMultistep){
+					var _createCallback = function(_this, _keyStep){
+						return function(){
+							_this.animateStep.call(_this, _args, _keyStep);
+						};
+					};
+					var _keyStep = 0;
+					var _stylesLength = this.stylesTransition.length;
+					for(; _keyStep < _stylesLength; ++_keyStep){
+						this.queue.queue({callback: _createCallback(this, _keyStep)});
 					}
 				}else{
-					_this.queue.queue({callback: function(){
+					this.queue.queue({callback: function(){
 						_this.animateStep.call(_this, _args);
 					}});
 				}
 			}
-			if(_this.onAfter){
-				_this.queue.queue({callback: function(){
+			if(this.onAfter){
+				this.queue.queue({callback: function(){
 					_this.onAfter.call(_this, _args);
 				}});
 			}
-			_this.queue.dequeue();
+			this.queue.dequeue();
 		}
 	}
 	,mixins: __.mixins.PubSub
