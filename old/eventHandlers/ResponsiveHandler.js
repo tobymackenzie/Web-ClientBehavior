@@ -56,6 +56,7 @@ __.classes.ResponsiveHandler = __.core.Classes.create({
 					_resizeData.event = _event;
 					_this.pub('change', _resizeData);
 				}
+				_this.pub('resize');
 			}, this.delay);
 		}
 		,method: 'lineHeight'
