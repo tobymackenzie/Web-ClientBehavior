@@ -8,6 +8,7 @@ define(['module'], function(__module){
 	if(!__deps.globals){
 		//--get global
 		//-@ stackoverflow.com/questions/3277182/how-to-get-the-global-object-in-javascript#answer-3277192
+		/* jshint -W061 */
 		__deps.globals = Function('return this')();
 	}
 
