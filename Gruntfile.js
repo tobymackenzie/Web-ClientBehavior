@@ -14,6 +14,7 @@ module.exports = function(__grunt){
 			,all: [
 				'Gruntfile.js'
 				,'src/**/*.js'
+				,'test/**/*.js'
 			]
 		}
 	});

@@ -1,4 +1,4 @@
-/* global define, QUnit, test */
+/* global define, QUnit, test, window */
 (function(_globals, _factory){
 	if(typeof define === 'function' && define.amd){
 		define(['tmlib/core/__', 'tmlib/core/functions'], _factory);
@@ -11,7 +11,7 @@
 	QUnit.module('tmlib.core.functions');
 
 	//--define tests
-	test('clone', function(assert){
+	test('clone', function(__assert){
 		var _clone, _func, _functions, _key, _subKey;
 		//==initial setup
 		_functions = [
@@ -31,9 +31,9 @@
 				,string: 'function anonymous() {\n var a = function(){ return \'function with internal function declaration\'; }; return a(); \n}'
 			}
 			,{
-				func: function Biz(a,$boo,_c){ return 'function with parameters'; }
+				func: function Biz(a,$boo,_c){ return a + $boo + _c + 'function with parameters'; }
 				,result: 'function with parameters'
-				,string: 'function anonymous(a, $boo, _c) {\n return \'function with parameters\'; \n}'
+				,string: 'function anonymous(a, $boo, _c) {\n return a + $boo + _c + \'function with parameters\'; \n}'
 			}
 		];
 		//--properties
@@ -45,18 +45,18 @@
 		for(_key in _functions){
 			_func = _functions[_key].func;
 			_clone = __.core.functions.clone(_func);
-			assert.equal(
+			__assert.equal(
 				_clone.toString()
 				,_functions[_key].string
 				,'toString of clone ' + _key + ' should equal desired result'
 			);
-			assert.equal(
+			__assert.equal(
 				_clone()
 				,_func()
 				,'return of function ' + _key + ' should equal desired result'
 			);
 			for(_subKey in _func){
-				assert.equal(
+				__assert.equal(
 					_func[_subKey]
 					,_clone[_subKey]
 					,'Properties of function and clone ' + _key + ' should be the same'
@@ -64,10 +64,13 @@
 			}
 		}
 	});
-	test('contains', function(assert){
+	test('contains', function(__assert){
+		var _expect, _i, _item, _message, _stringsLength;
+
 		//==initial setup
 		var testFunction = function(argOne, argTwo){
-			var thisBase = this.__base || undefined;
+			argOne = argOne + argTwo;
+			return this.__base || undefined;
 		};
 
 		var strings = [
@@ -94,80 +97,80 @@
 		//==tests
 		//--strings
 		for(
-			var i = 0, stringsLength = strings.length
-			; i < stringsLength
-			; ++i
+			_i = 0, _stringsLength = strings.length;
+			_i < _stringsLength;
+			++_i
 		){
-			var lopItem = strings[i];
-			if(lopItem.string || false){
-				var expect = (typeof lopItem.shouldBe == 'boolean') ? lopItem.shouldBe : true;
-				var message =
-					'String test (' + lopItem.string + ')'
+			_item = strings[_i];
+			if(_item.string || false){
+				_expect = (typeof _item.shouldBe == 'boolean') ? _item.shouldBe : true;
+				_message =
+					'String test (' + _item.string + ')'
 					+ (
-						(lopItem.message || false)
-						? ': ' + lopItem.message
+						(_item.message || false)
+						? ': ' + _item.message
 						: ''
 					)
 				;
-				assert.equal(
-					__.core.functions.contains(testFunction, lopItem.string)
-					,expect
-					,message
+				__assert.equal(
+					__.core.functions.contains(testFunction, _item.string)
+					,_expect
+					,_message
 				);
 			}
 		}
 
 		//--regex
 		for(
-			var i = 0, stringsLength = strings.length
-			; i < stringsLength
-			; ++i
+			_i = 0, _stringsLength = strings.length;
+			_i < _stringsLength;
+			++_i
 		){
-			var lopItem = strings[i];
-			if(lopItem.regex || false){
-				var expect = (typeof lopItem.shouldBe == 'boolean') ? lopItem.shouldBe : true;
-				var message =
-					'Straight regex test (' + lopItem.string + ')'
+			_item = strings[_i];
+			if(_item.regex || false){
+				_expect = (typeof _item.shouldBe == 'boolean') ? _item.shouldBe : true;
+				_message =
+					'Straight regex test (' + _item.string + ')'
 					+ (
-						(lopItem.message || false)
-						? ': ' + lopItem.message
+						(_item.message || false)
+						? ': ' + _item.message
 						: ''
 					)
 				;
-				assert.equal(
-					__.core.functions.contains(testFunction, lopItem.regex)
-					,expect
-					,message
+				__assert.equal(
+					__.core.functions.contains(testFunction, _item.regex)
+					,_expect
+					,_message
 				);
 			}
 		}
 
 		//--string regex
 		for(
-			var i = 0, stringsLength = strings.length
-			; i < stringsLength
-			; ++i
+			_i = 0, _stringsLength = strings.length;
+			_i < _stringsLength;
+			++_i
 		){
-			var lopItem = strings[i];
-			if(lopItem.string || false){
-				var expect = (typeof lopItem.shouldBe == 'boolean') ? lopItem.shouldBe : true;
-				var message =
-					'String regex test (' + lopItem.string + ')'
+			_item = strings[_i];
+			if(_item.string || false){
+				_expect = (typeof _item.shouldBe == 'boolean') ? _item.shouldBe : true;
+				_message =
+					'String regex test (' + _item.string + ')'
 					+ (
-						(lopItem.message || false)
-						? ': ' + lopItem.message
+						(_item.message || false)
+						? ': ' + _item.message
 						: ''
 					)
 				;
-				assert.equal(
-					__.core.functions.contains(testFunction, '\\b' + lopItem.string + '\\b')
-					,expect
-					,message
+				__assert.equal(
+					__.core.functions.contains(testFunction, '\\b' + _item.string + '\\b')
+					,_expect
+					,_message
 				);
 			}
 		}
 	});
-	test('duckPunch', function(assert){
+	test('duckPunch', function(__assert){
 		//==initial setup
 		//--store this for cleanup later
 		var originalFromBase = window.fromBase || undefined;
@@ -175,49 +178,49 @@
 		var baseContext = {
 			fromBase: false
 			,fromWrapper: false
-		}
+		};
 		var resetBaseContext = function(){
 			baseContext.fromBase = false;
 			baseContext.fromWrapper = false;
-		}
+		};
 
 		//--base function to duck punch
 		var baseFunction = function(argOne, argTwo){
 			this.fromBase = true;
 			return argOne + argTwo;
-		}
+		};
 
 		//--wrapper functions
 		//---for value and context testing
-		var wrapperFunctionArgumentType = function(argOne, argTwo){
+		var _wrapperFunctionArgumentType = function(argOne){
 			var originalFunction = Array.prototype.shift.call(arguments);
 			this.fromWrapper = true;
 			argOne += 10;
 			return originalFunction.apply(this, arguments);
-		}
-		var wrapperFunctionThisType = function(argOne, argTwo){
+		};
+		var _wrapperFunctionThisType = function(argOne){
 			this.fromWrapper = true;
 			argOne += 10;
 			return this.__original.apply(this, arguments);
-		}
-		var wrapperFunctionArgumentTypeAutoApply = function(argOne, argTwo){
+		};
+		var _wrapperFunctionArgumentTypeAutoApply = function(argOne){
 			var originalFunction = Array.prototype.shift.call(arguments);
 			this.fromWrapper = true;
 			argOne += 10;
 			return originalFunction(arguments);
-		}
-		var wrapperFunctionThisTypeAutoApply = function(argOne, argTwo){
+		};
+		var __wrapperFunctionThisTypeAutoApply = function(argOne){
 			this.fromWrapper = true;
 			argOne += 10;
 			return this.__original(arguments);
-		}
+		};
 
 		//--duck punch baseFunction
 		//---for value and context testing
-		var punchedArgumentTypeFunction = __.core.functions.duckPunch(baseFunction, wrapperFunctionArgumentType);
-		var punchedThisTypeFunction = __.core.functions.duckPunch(baseFunction, wrapperFunctionThisType, {type: 'this'});
-		var punchedArgumentTypeFunctionAutoApply = __.core.functions.duckPunch(baseFunction, wrapperFunctionArgumentTypeAutoApply, {autoApply: true});
-		var punchedThisTypeFunctionAutoApply = __.core.functions.duckPunch(baseFunction, wrapperFunctionThisTypeAutoApply, {autoApply: true, type: 'this'});
+		var punchedArgumentTypeFunction = __.core.functions.duckPunch(baseFunction, _wrapperFunctionArgumentType);
+		var punchedThisTypeFunction = __.core.functions.duckPunch(baseFunction, _wrapperFunctionThisType, {type: 'this'});
+		var punchedArgumentTypeFunctionAutoApply = __.core.functions.duckPunch(baseFunction, _wrapperFunctionArgumentTypeAutoApply, {autoApply: true});
+		var punchedThisTypeFunctionAutoApply = __.core.functions.duckPunch(baseFunction, __wrapperFunctionThisTypeAutoApply, {autoApply: true, type: 'this'});
 
 		//--arguments to run through all runs of function
 		var args = [10, 20];
@@ -225,50 +228,50 @@
 		//==tests
 		//--test context is making it through
 		baseFunction.apply(baseContext, args);
-		assert.ok(baseContext.fromBase, 'baseContext.fromBase should be true when only baseFunction called');
-		assert.ok(!baseContext.fromWrapper, 'baseContext.fromWrapper should be false when only baseFunction called');
+		__assert.ok(baseContext.fromBase, 'baseContext.fromBase should be true when only baseFunction called');
+		__assert.ok(!baseContext.fromWrapper, 'baseContext.fromWrapper should be false when only baseFunction called');
 		resetBaseContext();
 
 		punchedArgumentTypeFunction.apply(baseContext, args);
-		assert.ok(baseContext.fromBase, 'baseContext.fromBase should be true when punchedArgumentTypeFunction called');
-		assert.ok(baseContext.fromWrapper, 'baseContext.fromWrapper should be true when punchedArgumentTypeFunction called');
+		__assert.ok(baseContext.fromBase, 'baseContext.fromBase should be true when punchedArgumentTypeFunction called');
+		__assert.ok(baseContext.fromWrapper, 'baseContext.fromWrapper should be true when punchedArgumentTypeFunction called');
 		resetBaseContext();
 
 		punchedThisTypeFunction.apply(baseContext, args);
-		assert.ok(baseContext.fromBase, 'baseContext.fromBase should be true when punchedThisTypeFunction called');
-		assert.ok(baseContext.fromWrapper, 'baseContext.fromWrapper should be true when punchedThisTypeFunction called');
+		__assert.ok(baseContext.fromBase, 'baseContext.fromBase should be true when punchedThisTypeFunction called');
+		__assert.ok(baseContext.fromWrapper, 'baseContext.fromWrapper should be true when punchedThisTypeFunction called');
 		resetBaseContext();
 
 		//-# this test will not work for punchedArgumentTypeFunctionAutoApply because it does not properly handle 'this' in base function
 
 		punchedThisTypeFunctionAutoApply.apply(baseContext, args);
-		assert.ok(baseContext.fromBase, 'baseContext.fromBase should be true when punchedThisTypeFunctionAutoApply called');
-		assert.ok(baseContext.fromWrapper, 'baseContext.fromWrapper should be true when punchedThisTypeFunctionAutoApply called');
+		__assert.ok(baseContext.fromBase, 'baseContext.fromBase should be true when punchedThisTypeFunctionAutoApply called');
+		__assert.ok(baseContext.fromWrapper, 'baseContext.fromWrapper should be true when punchedThisTypeFunctionAutoApply called');
 		resetBaseContext();
 
 		//--test values through all versions of function
-		assert.equal(
+		__assert.equal(
 			baseFunction.apply(baseContext, args)
 			,30
 			,'baseFunction should return 30'
 		);
-		assert.equal(
+		__assert.equal(
 			punchedArgumentTypeFunction.apply(baseContext, args)
 			,40
 			,'punchedArgumentTypeFunction should return 40 (30 + 10)'
 		);
-		assert.equal(
+		__assert.equal(
 			punchedThisTypeFunction.apply(baseContext, args)
 			,40
 			,'punchedThisTypeFunction should return 40 (30 + 10)'
 		);
 		//-# this returns the correct result, but also sets a global variable, because 'this' is window
-		assert.equal(
+		__assert.equal(
 			punchedArgumentTypeFunctionAutoApply.apply(baseContext, args)
 			,40
 			,'punchedArgumentsTypeFunctionAutoApply should return 40 (30 + 10)'
 		);
-		assert.equal(
+		__assert.equal(
 			punchedThisTypeFunctionAutoApply.apply(baseContext, args)
 			,40
 			,'punchedThisTypeFunctionAutoApply should return 40 (30 + 10)'
@@ -276,15 +279,15 @@
 
 		//--ensure baseContext key is reset from 'this' duck punch type
 		//---should be reset to undefined since it wasn't before
-		assert.equal(
+		__assert.equal(
 			baseContext[__.core.functions.config.duckPunchKey]
 			,undefined
 			, 'baseContext[' + __.core.functions.config.duckPunchKey + '] should be reset to original value of undefined'
 		);
 		//---now try when a value is set
 		baseContext[__.core.functions.config.duckPunchKey] = 26;
-		punchedThisTypeFunction.apply(baseContext, args)
-		assert.equal(
+		punchedThisTypeFunction.apply(baseContext, args);
+		__assert.equal(
 			baseContext[__.core.functions.config.duckPunchKey]
 			,26
 			, 'baseContext[' + __.core.functions.config.duckPunchKey + '] should be reset to original value of 26'

@@ -1,6 +1,8 @@
-test('tmlib strings', function(assert){
+/* global __, test */
+test('tmlib strings', function(__assert){
+	var _i;
 	//==initial setup
-	var plainStrings = [
+	var _plainStrings = [
 		'google.com'
 		,'foo bar ://baz'
 		,'://good'
@@ -11,7 +13,7 @@ test('tmlib strings', function(assert){
 		// ,'http://google.com/ foo bar'
 	];
 
-	var URLs = [
+	var _urls = [
 		'gopher://foo.bar'
 		,'http://google.com'
 		,'http://google.com/?q=foo+bar'
@@ -20,7 +22,7 @@ test('tmlib strings', function(assert){
 		,'/foo/bar?red=blue'
 	];
 
-	var htmlStrings = [
+	var _htmlStrings = [
 		'<div>'
 		,'<div></div>'
 		,'<div class="foo"><input type="hidden" value="foo" /></div>'
@@ -30,13 +32,13 @@ test('tmlib strings', function(assert){
 	==html
 	=====*/
 	//--non html
-	for(var i = 0; i < plainStrings.length; ++i){
-		assert.ok(!__.lib.isHTML(plainStrings[i]), '"' + plainStrings[i] + '" should not be considered HTML.');
+	for(_i = 0; _i < _plainStrings.length; ++_i){
+		__assert.ok(!__.lib.isHTML(_plainStrings[_i]), '"' + _plainStrings[_i] + '" should not be considered HTML.');
 	}
 
 	//--html
-	for(var i = 0; i < htmlStrings.length; ++i){
-		assert.ok(__.lib.isHTML(htmlStrings[i]), '"' + htmlStrings[i] + '" should be considered HTML.');
+	for(_i = 0; _i < _htmlStrings.length; ++_i){
+		__assert.ok(__.lib.isHTML(_htmlStrings[_i]), '"' + _htmlStrings[_i] + '" should be considered HTML.');
 	}
 
 	/*=====
@@ -45,12 +47,12 @@ test('tmlib strings', function(assert){
 
 	//==test
 	//--non urls
-	for(var i = 0; i < plainStrings.length; ++i){
-		assert.ok(!__.lib.isURL(plainStrings[i]), '"' + plainStrings[i] + '" should not be considered a URL.');
+	for(_i = 0; _i < _plainStrings.length; ++_i){
+		__assert.ok(!__.lib.isURL(_plainStrings[_i]), '"' + _plainStrings[_i] + '" should not be considered a URL.');
 	}
 
 	//--urls
-	for(var i = 0; i < URLs.length; ++i){
-		assert.ok(__.lib.isURL(URLs[i]), '"' + URLs[i] + '" should be considered a URL.');
+	for(_i = 0; _i < _urls.length; ++_i){
+		__assert.ok(__.lib.isURL(_urls[_i]), '"' + _urls[_i] + '" should be considered a URL.');
 	}
 });

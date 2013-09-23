@@ -1,4 +1,4 @@
-
+/* global define, QUnit, test */
 (function(_globals, _factory){
 	if(typeof define === 'function' && define.amd){
 		define(['tmlib/core/__', 'tmlib/core/objects'], _factory);
