@@ -20,8 +20,8 @@ __.classes.ResponsiveHandler = __.core.Classes.create({
 		Map of break point names to values.  Must be in order from smallest to greatest.
 		*/
 		breakpoints: {
-			'nvp': 0
-			,'wvp': 48
+			'nvp': 48
+			,'wvp': 100
 		}
 		/*
 		Property: container
@@ -79,9 +79,8 @@ __.classes.ResponsiveHandler = __.core.Classes.create({
 			for(_point in this.breakpoints){
 				if(this.breakpoints.hasOwnProperty(_point)){
 					_pointValue = this.breakpoints[_point];
-					if(_currentValue >= _pointValue){
+					if(_currentValue <= _pointValue){
 						_maxPoint = _point;
-					}else{
 						break;
 					}
 				}
