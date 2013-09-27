@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 	<head>
-		<title>Test tmblib.base-> built for require</title>
+		<title>Test tmblib.base-> built with almond, using require</title>
 
 		<!-- load qunit -->
 		<script src="../vendor/qunit/qunit/qunit.js"></script>
@@ -15,6 +15,9 @@
 			//--test with global strict mode
 			'use strict';
 
+			//--tell tests whether this is using the build version
+			this.__usingAlmondBuild = true;
+
 			//--make sure QUnit doesn't start immediately, so we can load all files first
 			QUnit.config.autostart = false;
 
@@ -23,7 +26,7 @@
 				baseUrl: '../src'
 				,paths: {
 					jquery: '../vendor/jquery/jquery'
-					,tmlib: '../dist/tmlib.require'
+					,tmlib: '../dist/tmlib.almond'
 					,test: '../test'
 				}
 			});
@@ -34,8 +37,7 @@
 				], function(jQuery){
 					//--require tests
 					require([
-							'tmlib'
-							,'test/core/functions'
+							'test/core/functions'
 							,'test/core/objects'
 							,'test/core/classes'
 							,'test/core/BaseClass'

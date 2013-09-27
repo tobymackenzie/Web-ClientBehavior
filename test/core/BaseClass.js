@@ -1,9 +1,15 @@
 /* global define, QUnit, test */
-(function(_globals, _factory){
+(function(__globals, _factory){
 	if(typeof define === 'function' && define.amd){
-		define(['tmlib/core/__', 'tmlib/core/BaseClass'], _factory);
+		if(__globals.__usingAlmondBuild){
+			define(['tmlib'], function(_tmlib){
+				return _factory(_tmlib);
+			});
+		}else{
+			define(['tmlib/core/__', 'tmlib/core/BaseClass'], _factory);
+		}
 	}else{
-		var __ = _globals.__;
+		var __ = __globals.__;
 		_factory(__, __.core.deps);
 	}
 }(this, function(__){

@@ -1,15 +1,13 @@
 <!doctype html>
 <html>
 	<head>
-		<title>Test tmblib</title>
+		<title>Test tmblib.base-> loaded from src with require</title>
 
 		<!-- load qunit -->
 		<script src="../vendor/qunit/qunit/qunit.js"></script>
 		<link rel="stylesheet" href="../vendor/qunit/qunit/qunit.css"></link>
 
-		<script>
-			require = {config: {'tmlib/core/deps': {foo: 'foo', bar: 'bar'}}};
-		</script>
+		<!-- load require -->
 		<script src="../vendor/requirejs/require.js"></script>
 
 		<script>
