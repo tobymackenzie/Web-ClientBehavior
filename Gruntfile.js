@@ -17,6 +17,9 @@ module.exports = function(__grunt){
 				,'test/**/*.js'
 			]
 		}
+		,qunit: {
+			all: ['test/**/*.html']
+		}
 		,requirejs: {
 			almond: {
 				options: {
@@ -59,5 +62,10 @@ module.exports = function(__grunt){
 	]);
 	__grunt.registerTask('default', [
 		'jshint'
+		,'test'
+	]);
+	__grunt.registerTask('test', [
+		'build:all'
+		,'qunit'
 	]);
 };
