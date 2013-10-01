@@ -14,7 +14,7 @@ define(['./__', './deps', './Library'], function(__tmlib, __deps, __Library){
 		config: {
 			argumentsRegex: /((?!=^|,)([\w\$_]))+/g
 			,duckPunchKey: '__original'
-			,functionRegex: /^function[\s]+[\w]*\(([\w\s,_\$]*)?\)\{(.*)\}$/
+			,functionRegex: /^function[\s]+[\w]*\(([\w\s,_\$]*)?\)[\s]+\{(.*)\}$/
 		}
 		/*=====
 		==Library functions
