@@ -99,15 +99,29 @@ __.lib.brRemove = function(argString){
 	return argString.replace(regex, '');
 };
 //-@ http://stackoverflow.com/questions/6007821/how-do-i-distinguish-jquery-selector-strings-from-other-strings
-__.lib.isHTML = function(argString){
-	//--first do quick non regex check
-	if(argString.charAt(0) === '<' && argString.charAt( argString.length - 1 ) === '>' && argString.length >= 3){
-		return true;
-	}
+__.lib.isHTML = function(_string){
+	if(typeof _string === 'string'){
+		//--first do quick non regex check
+		switch(_string.charAt(0)){
+			//--json
+			case '{':
+			case '"':
+				return false;
+			//-break;
+			//--html with no extra characters inserted
+			case '<':
+				if(_string.charAt(_string.length - 1) === '>' && _string.length >= 3){
+					return true;
+				}
+			//-break;
+		}
 
-	//--next do longer regex check
-	var htmlPattern = /^(?:[^<]*(<[\w\W]+>)[^>]*$|#([\w\-]+)$)/;
-	return htmlPattern.test(argString);
+		//--next do longer regex check
+		var htmlPattern = /^(?:[^<]*(<[\w\W]+>)[^>]*$|#([\w\-]+)$)/;
+		return htmlPattern.test(_string);
+	}else{
+		return false;
+	}
 };
 //-@ http://stackoverflow.com/questions/8188645/javascript-regex-to-match-a-url-in-a-field-of-text
 //-! does not succeed with all tests
