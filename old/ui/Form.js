@@ -37,7 +37,7 @@ __.classes.Form = __.core.Classes.create({
 			}
 			jQuery.ajax({
 				url: this.action
-				,data: jQuery.extend(this.data, _values)
+				,data: jQuery.extend({}, this.data, _values)
 				,type: this.method.toUpperCase()
 				,success: function(_response){
 					if(_this.onSuccess){
