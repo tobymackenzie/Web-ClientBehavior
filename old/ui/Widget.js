@@ -34,12 +34,13 @@
 			if(typeof argOptions.show == 'function'){
 				this.show = argOptions.show;
 			}
-			if(typeof this.elements == 'undefined'){
-				this.setElements(argOptions.elements || null);
+			if(typeof this.elements === 'undefined' && typeof argOptions.elements !== 'undefined'){
+				this.setElements(argOptions.elements);
 			}
 		}
 		,loadElements: function(){
-			var newElements, promise;
+			var _newElms;
+			var _promise;
 			if(typeof this.elements == 'string'){
 				if(__.lib.isUrl(this.elements)){
 					//--store elements url for later in case form has an empty action
@@ -55,26 +56,26 @@
 							lcThis.setElements(elements);
 						}
 					});
-					promise = request.promise();
+					_promise = request.promise();
 				}else if(__.lib.isHTML(this.elements)){
-					newElements = jQuery(this.elements);
-					this.addElementsToDOM.call(this, newElements);
-					this.setElements(newElements);
+					_newElms = jQuery(this.elements);
+					this.addElementsToDOM.call(this, _newElms);
+					this.setElements(_newElms);
 				}else{
-					newElements = this.container.find(this.elements);
-					if(!newElements.length){
-						newElements = jQuery(this.elements);
+					_newElms = this.container.find(this.elements);
+					if(!_newElms.length){
+						_newElms = jQuery(this.elements);
 					}
-					this.setElements(newElements);
+					this.setElements(_newElms);
 				}
 			}
 
 			//--if there is no promise, return an already resolved promise
-			if(typeof promise == 'undefined'){
-				promise = jQuery.Deferred();
-				promise.resolve();
+			if(typeof _promise == 'undefined'){
+				_promise = jQuery.Deferred();
+				_promise.resolve();
 			}
-			return promise;
+			return _promise;
 		}
 		,setElements: function(argElements){
 			this.elements = argElements;
