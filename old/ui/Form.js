@@ -26,7 +26,7 @@ __.classes.Form = __.core.Classes.create({
 			this.setElements(undefined);
 			__.mixins.InitHandling.properties.deinit.apply(this, arguments);
 		}
-		,inputSelector: 'input:not([type=button],[type=image],[type=reset],[type=submit]),select,textarea'
+		,inputSelector: 'input[name],select[name],textarea[name]'
 		,method: 'post'
 		,methodType: 'deferred'
 		,onSend: null
