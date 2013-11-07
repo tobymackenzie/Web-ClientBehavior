@@ -214,6 +214,11 @@ define(['jquery', 'tmclasses/tmclasses', 'tmlib/AnimationQueue', 'tmlib/core/isA
 						_this.onAfter.call(_this, _args);
 					}});
 				}
+				if(_args.after){
+					this.queue.queue({callback: function(){
+						_args.after.call(_this, _args);
+					}});
+				}
 				this.queue.dequeue();
 			}
 		}
