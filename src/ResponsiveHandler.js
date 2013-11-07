@@ -2,9 +2,9 @@
 Class: ResponsiveHandler
 Monitor changes in breakpoints for responsive sites.
 */
-/* global clearTimeout, setTimeout, window */
+/* global define, clearTimeout, setTimeout, window */
 define(['jquery', 'tmclasses/tmclasses'], function(__jQuery, __tmclasses){
-	__ResponsiveHandler = __tmclasses.create({
+	var __ResponsiveHandler = __tmclasses.create({
 		init: function(){
 			var _this = this;
 			this.__parent(arguments);
