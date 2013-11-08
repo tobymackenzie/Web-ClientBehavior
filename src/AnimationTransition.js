@@ -91,7 +91,7 @@ define(['jquery', 'tmclasses/tmclasses', 'tmlib/AnimationQueue', 'tmlib/core/isA
 					var _styles;
 					var _elm = _elms[_iElms];
 
-					if(!this.stylesTransition){
+					if(!(_elm && this.stylesTransition)){
 						_styles = null;
 					}else if(typeof _stepKey != 'undefined'){
 						_styles = this.stylesTransition[_stepKey][_iElms] || null;
