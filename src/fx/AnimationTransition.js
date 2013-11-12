@@ -52,7 +52,7 @@ Parameters:
 		})
 */
 /* global __, jQuery, setTimeout */
-define(['jquery', 'tmclasses/tmclasses', 'tmlib/AnimationQueue', 'tmlib/core/isArray'], function(__jQuery, __tmclasses, __AnimationQueue, __isArray){
+define(['jquery', 'tmclasses/tmclasses', 'tmlib/fx/AnimationQueue', 'tmlib/core/isArray'], function(__jQuery, __tmclasses, __AnimationQueue, __isArray){
 	var __AnimationTransition = __tmclasses.create({
 		init: function(){
 			this.__parent(arguments);
