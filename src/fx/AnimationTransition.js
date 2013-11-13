@@ -162,7 +162,7 @@ define(['jquery', 'tmclasses/tmclasses', 'tmlib/fx/AnimationQueue', 'tmlib/core/
 				var _elms = _args.elements;
 				var _styles;
 				for(var _iElms in _elms){
-					if(_elms.hasOwnProperty(_iElms)){
+					if(_elms.hasOwnProperty(_iElms) && _elms[_iElms]){
 						_styles = (this.stylesBefore && this.stylesBefore[_iElms]) ? this.stylesBefore[_iElms] : null;
 						if(_styles){
 							if(typeof _styles === 'function'){
