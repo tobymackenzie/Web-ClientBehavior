@@ -125,11 +125,14 @@ define(['jquery', 'tmclasses/tmclasses', 'tmlib/fx/AnimationQueue', 'tmlib/core/
 						// _addStepAnimationPiece(_elm, _styles, _duration, _dqCallback);
 					}
 				}
-
-				//--run animations
-				for(var _iPieces = 0; _iPieces < _stepAnimationPieces.length; ++_iPieces){
-					_stepOpts = _stepAnimationPieces[_iPieces];
-					_stepOpts.elm.animate(_stepOpts.styles, _stepOpts.duration, _dqCallback);
+				if(_countElements){
+					//--run animations
+					for(var _iPieces = 0; _iPieces < _stepAnimationPieces.length; ++_iPieces){
+						_stepOpts = _stepAnimationPieces[_iPieces];
+						_stepOpts.elm.animate(_stepOpts.styles, _stepOpts.duration, _dqCallback);
+					}
+				}else{
+					_dqCallback();
 				}
 			}
 			,doMultistep: undefined
