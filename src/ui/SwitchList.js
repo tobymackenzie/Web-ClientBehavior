@@ -64,12 +64,14 @@ define(['tmclasses/tmclasses', 'jquery', '../fx/AnimationTransition'], function(
 			,carousel: true
 			,current: undefined
 			,currentNav: undefined
-			,deinit: function(){
+			,deInit: function(){
 				this.stop();
 				delete this.current;
+				delete this.currentNav;
 				delete this.items;
 				delete this.nav;
-				this.__parent();
+				delete this.navItems;
+				this.__parent(arguments);
 			}
 			,duration: 1000
 			,getTransElements: function(_item, _opts){
