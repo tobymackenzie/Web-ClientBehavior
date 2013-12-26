@@ -51,7 +51,7 @@ Parameters:
 			,boot: {attrDataBottom: 'data-bottom'}
 		})
 */
-/* global __, jQuery, setTimeout */
+/* global define, jQuery, setTimeout */
 define(['jquery', 'tmclasses/tmclasses', 'tmlib/fx/AnimationQueue', 'tmlib/core/isArray'], function(__jQuery, __tmclasses, __AnimationQueue, __isArray){
 	var __AnimationTransition = __tmclasses.create({
 		init: function(){

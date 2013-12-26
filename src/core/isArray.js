@@ -1,5 +1,5 @@
 /* global define */
-define(['./deps', './__'], function(__deps, __){
+define(['./deps'], function(__deps){
 	var __Array = __deps.Array;
 	var __Object = __deps.Object;
 
