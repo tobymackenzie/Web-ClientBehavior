@@ -49,9 +49,21 @@ define(['tmclasses/tmclasses', 'jquery', '../fx/AnimationTransition'], function(
 		,properties: {
 			$: undefined
 			,afterSwitch: function(_item, _opts){
-				this.current = _item;
-				if(this.nav){
-					this.currentNav = _newNav;
+				if(_item.is(this.current)){
+					_item.removeClass(this.currentClass);
+					this.current = undefined;
+					if(this.nav){
+						this.currentNav = undefined;
+					}
+				}else{
+					this.current = _item;
+					this.current.addClass(this.currentClass);
+					if(_opts.elements[0]){
+						_opts.elements[0].removeClass(this.currentClass);
+					}
+					if(this.nav){
+						this.currentNav = _newNav;
+					}
 				}
 				if(typeof _opts.after === 'function'){
 					_opts.after.apply(this, arguments);
@@ -61,6 +73,7 @@ define(['tmclasses/tmclasses', 'jquery', '../fx/AnimationTransition'], function(
 			,carousel: true
 			,current: undefined
 			,currentNav: undefined
+			,currentClass: 'current'
 			,deInit: function(){
 				this.stop();
 				delete this.current;
@@ -115,11 +128,14 @@ define(['tmclasses/tmclasses', 'jquery', '../fx/AnimationTransition'], function(
 						if(!_opts.newNav){
 							_opts.newNav = (_this.navItems) ? _this.navItems.eq(_this.items.index(_item)) : null;
 						}
+						if(!_opts.elements){
+							_opts.elements = _this.getTransElements(_item, _opts);
+						}
 						var _transitionSettings = {
 							after: function(){
 								_this.afterSwitch(_item, _opts);
 							}
-							,elements: _this.getTransElements(_item, _opts)
+							,elements: _opts.elements
 						};
 						if(_opts.duration){
 							_transitionSettings.duration = _opts.duration;
