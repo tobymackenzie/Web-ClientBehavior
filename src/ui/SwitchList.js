@@ -44,8 +44,7 @@ define(['tmclasses/tmclasses', 'jquery', '../fx/AnimationTransition'], function(
 						,duration: 0
 					});
 				}else{
-					_this.start();
-					_this.pub('init');
+					_postInit();
 				}
 			}
 		}
