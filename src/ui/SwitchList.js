@@ -31,13 +31,16 @@ define(['tmclasses/tmclasses', 'jquery', '../fx/AnimationTransition'], function(
 			}
 
 			if(typeof _this.items === 'object' && _this.items.length){
-				if(!_this.current){
+				var _postInit = function(){
+					if(_this.autoStart){
+						_this.start();
+					}
+					_this.pub('init');
+				};
+				if(!_this.current && _this.autoStart){
 					// _this.current = _this.items.first();
 					_this.switchToItem(_this.items.first(), {
-						after: function(){
-							this.start();
-							this.pub('init');
-						}
+						after: _postInit
 						,duration: 0
 					});
 				}else{
@@ -70,6 +73,7 @@ define(['tmclasses/tmclasses', 'jquery', '../fx/AnimationTransition'], function(
 				}
 				this.isTransitioning = false;
 			}
+			,autoStart: true
 			,carousel: true
 			,current: undefined
 			,currentNav: undefined
