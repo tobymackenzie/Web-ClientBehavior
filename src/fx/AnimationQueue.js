@@ -49,7 +49,7 @@ Example:
 		});
 	}
 */
-/* global __, jQuery */
+/* global define, jQuery */
 define(['jquery', 'tmclasses/tmclasses'], function(__jQuery, __tmclasses){
 	var __AnimationQueue = __tmclasses.create({
 		init: function(){

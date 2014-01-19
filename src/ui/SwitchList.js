@@ -2,7 +2,7 @@
 Class: SwitchList
 A collection of elements, of which one is always current and the current item can be switched between
 */
-/* global clearInterval, setInterval */
+/* global clearInterval, define, setInterval */
 define(['tmclasses/tmclasses', 'jquery', '../fx/AnimationTransition'], function(__tmclasses, jQuery, __AnimationTransition){
 	var __SwitchList = __tmclasses.create({
 		init: function(){
@@ -64,7 +64,7 @@ define(['tmclasses/tmclasses', 'jquery', '../fx/AnimationTransition'], function(
 						_opts.elements[0].removeClass(this.currentClass);
 					}
 					if(this.nav){
-						this.currentNav = _newNav;
+						// this.currentNav = _newNav;
 					}
 				}
 				if(typeof _opts.after === 'function'){
