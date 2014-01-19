@@ -29,9 +29,6 @@ define(['tmclasses/tmclasses', 'jquery', '../fx/AnimationTransition'], function(
 					}
 				});
 			}
-			if(typeof _this.transition === 'function'){
-				_this.transition = _this.transition();
-			}
 
 			if(typeof _this.items === 'object' && _this.items.length){
 				if(!_this.current){
@@ -128,7 +125,12 @@ define(['tmclasses/tmclasses', 'jquery', '../fx/AnimationTransition'], function(
 							_transitionSettings.duration = _opts.duration;
 						}
 						_this.isTransitioning = true;
-						_this.transition.transitionForElements(_transitionSettings);
+						var _transition = _this.getTransition();
+						if(_transition instanceof __AnimationTransition){
+							_transition.transitionForElements(_transitionSettings);
+						}else if(typeof _transition === 'function'){
+							_transition.call(_this, _transitionSettings);
+						}
 					}
 				}
 			}
@@ -141,48 +143,37 @@ define(['tmclasses/tmclasses', 'jquery', '../fx/AnimationTransition'], function(
 					this.switchToItem(_nextItem);
 				}
 			}
-			,transition: function(){
+			,transition: undefined
+			,getTransition: function(){
 				var _this = this;
-				return new __AnimationTransition({
-					/*
-					1: previous item
-					2: next item
-					*/
-					duration: this.duration
-					,stylesBefore: [
-						null
-						,{display: 'block', opacity: 0}
-					]
-					,stylesTransition: [
-						[
-							{opacity: 0}
-							,null
-						]
-						,[
+				if(!_this.transition){
+					_this.transition = new __AnimationTransition({
+						/*
+						1: previous item
+						2: next item
+						*/
+						duration: _this.duration
+						,stylesBefore: [
 							null
-							,{opacity: 1}
+							,{display: 'block', opacity: 0}
 						]
-					]
-					,stylesAfter: [
-						{opacity: ''}
-						,{opacity: ''}
-					]
-					,onAfter: function(_opts){
-						if(_opts[0]){
-							_opts[0].removeClass('current');
-						}
-						if(_opts[1]){
-							_opts[1].removeClass('current');
-						}
-						if(_opts[2]){
-							_opts[2].addClass('current');
-						}
-						if(_opts[3]){
-							_opts[3].addClass('current');
-						}
-						this.__parent(arguments);
-					}
-				});
+						,stylesTransition: [
+							[
+								{opacity: 0}
+								,null
+							]
+							,[
+								null
+								,{opacity: 1}
+							]
+						]
+						,stylesAfter: [
+							{opacity: ''}
+							,{opacity: ''}
+						]
+					});
+				}
+				return _this.transition;
 			}
 		}
 	});
