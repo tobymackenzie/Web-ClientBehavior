@@ -1,6 +1,8 @@
 /*
 Class: CollapsingNav
 
+No longer maintained.  Find version at src/ui/CollapsingNav
+
 Monitors the padding of nav elements inside a flexible horizontal nav container, putting items into a submenu when the padding gets too small (ie items get scrunched together).  Kinda limited in scope, in that it won't work for items with fixed padding, but that could be added as a different calculation method.
 
 Example Usage:
@@ -114,7 +116,7 @@ __.classes.CollapsingNav = __.core.Classes.create({
 			var _hasEnoughHeightDifference = false;
 			var _hasTooLittlePadding = false;
 
-			$navItems.each(function(_index){
+			$navItems.each(function(){
 				var $this = jQuery(this);
 				var $topLevel = $this.find(_this.topLevelSelector);
 				var _itemPadding = $this.outerWidth() - $topLevel.outerWidth();
