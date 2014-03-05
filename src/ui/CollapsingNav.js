@@ -24,6 +24,50 @@ Example Usage:
 */
 /* global clearTimeout, define, setTimeout, window */
 define(['tmclasses/tmclasses', 'jquery'], function(__tmclasses, jQuery){
+	var __hasTooManyItemsMethods = {
+		itemPadding: function(){
+			var _this = this;
+			var $navItems = this.mainList.find(this.navItemSelector);
+			var _hasEnoughHeightDifference = false;
+			var _hasTooLittlePadding = false;
+
+			$navItems.each(function(){
+				var $this = jQuery(this);
+				var $topLevel = $this.find(_this.topLevelSelector);
+				var _itemPadding = $this.outerWidth() - $topLevel.outerWidth();
+				if(_itemPadding < _this.minimumPadding){
+					_hasTooLittlePadding = true;
+					return false;
+				}
+				//--check height to see if item wraps
+				//-# must do this for each item, since individual items may have different font-size, etc
+				var _html = $topLevel.html();
+				$topLevel.html('x');
+				var _singleLineHeight = $topLevel.outerHeight();
+				$topLevel.html(_html);
+				var _outerHeight = $topLevel.outerHeight();
+				if(
+					_singleLineHeight
+					&& Math.abs(_outerHeight - _singleLineHeight) > 0.3 * _singleLineHeight
+				){
+					_hasEnoughHeightDifference = true;
+					return false;
+				}
+			});
+			return _hasEnoughHeightDifference || _hasTooLittlePadding;
+		}
+		,rightPos: function(){
+			var _this = this;
+			var $navItems = this.mainList.find(this.navItemSelector);
+			var $container = this.getContainer();
+
+			var containerRight = $container.offset().left + $container.outerWidth();
+			var mainListRight = this.mainList.offset().left + this.mainList.outerWidth();
+
+			return mainListRight > containerRight;
+		}
+	};
+
 	var __CollapsingNav = __tmclasses.create({
 		init: function(_options){
 			this.__parent(arguments);
@@ -57,6 +101,22 @@ define(['tmclasses/tmclasses', 'jquery'], function(__tmclasses, jQuery){
 				this.$window.on('resize', jQuery.proxy(this.handleResizeInInterval, this));
 
 				this.isActive = true;
+			,container: function(){
+				this.container = jQuery('body');
+				return this.container;
+			}
+			,getContainer: function(){
+				if(typeof this.container === 'function'){
+					return this.container();
+				}else{
+					return this.container;
+				}
+			}
+			,getDropDownOpts: function(_opts){
+				return {
+					$: this.moreItem
+					,itemSelector: 'this'
+				};
 			}
 			,deactivate: function(){
 				clearTimeout(this.resizeTimeout);
@@ -78,7 +138,7 @@ define(['tmclasses/tmclasses', 'jquery'], function(__tmclasses, jQuery){
 					break;
 				}
 				if(doHandleResize){
-					if(this.isTooNarrow()){
+					if(this.hasTooManyItems()){
 						if(!this.moreItem.data('isAttached')){
 							//--attach moreItem
 							this.mainList.append(this.moreItem);
@@ -87,12 +147,12 @@ define(['tmclasses/tmclasses', 'jquery'], function(__tmclasses, jQuery){
 						//--add items one by one to menu until not _isSectionNavTooNarrow
 						do{
 							this.pushItemToMoreList();
-						}while(this.isTooNarrow());
+						}while(this.hasTooManyItems());
 					}else{
 						//--remove items one by one until not _isSectionNavTooNarrow
 						do{
 							this.popItemFromMoreList();
-						}while(this.moreList.find(this.navItemSelector).length && !this.isTooNarrow());
+						}while(this.moreList.find(this.navItemSelector).length && !this.hasTooManyItems());
 
 						//--if item count reaches 0, detach moreItem
 						if(this.moreItem.data('isAttached') && !this.moreList.find(this.navItemSelector).length){
@@ -110,37 +170,11 @@ define(['tmclasses/tmclasses', 'jquery'], function(__tmclasses, jQuery){
 				}, this.resizeInterval);
 			}
 			,isActive: true
-			,isTooNarrow: function(){
-				var _this = this;
-				var $navItems = this.mainList.find(this.navItemSelector);
-				var _hasEnoughHeightDifference = false;
-				var _hasTooLittlePadding = false;
-
-				$navItems.each(function(){
-					var $this = jQuery(this);
-					var $topLevel = $this.find(_this.topLevelSelector);
-					var _itemPadding = $this.outerWidth() - $topLevel.outerWidth();
-					if(_itemPadding < _this.minimumPadding){
-						_hasTooLittlePadding = true;
-						return false;
-					}
-					//--check height to see if item wraps
-					//-# must do this for each item, since individual items may have different font-size, etc
-					var _html = $topLevel.html();
-					$topLevel.html('x');
-					var _singleLineHeight = $topLevel.outerHeight();
-					$topLevel.html(_html);
-					var _outerHeight = $topLevel.outerHeight();
-					if(
-						_singleLineHeight
-						&& Math.abs(_outerHeight - _singleLineHeight) > 0.3 * _singleLineHeight
-					){
-						_hasEnoughHeightDifference = true;
-						return false;
-					}
-				});
-				return _hasEnoughHeightDifference || _hasTooLittlePadding;
+			,hasTooManyItems: function(){
+				//--get actual method from private map based on 'hasTooManyItemsMethod' setting
+				return __hasTooManyItemsMethods[this.hasTooManyItemsMethod].apply(this, arguments);
 			}
+			,hasTooManyItemsMethod: 'rightPos'
 			,mainListSelector: '.navList.l-1'
 			,minimumPadding: 20
 			,moreItem: null
