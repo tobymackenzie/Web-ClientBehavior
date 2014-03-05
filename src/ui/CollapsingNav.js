@@ -189,10 +189,10 @@ define(['tmclasses/tmclasses', 'jquery', './DropDown'], function(__tmclasses, jQ
 			}
 			,handleResizeInInterval: function(){
 				var _this = this;
-				clearTimeout(this.resizeTimeout);
-				this.resizeTimeout = setTimeout(function(){
+				clearTimeout(_this.resizeTimeout);
+				_this.resizeTimeout = setTimeout(function(){
 					_this.handleResize();
-				}, this.resizeInterval);
+				}, _this.resizeInterval);
 			}
 			,isActive: true
 			,hasTooManyItems: function(){
