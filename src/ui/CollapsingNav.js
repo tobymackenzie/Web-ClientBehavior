@@ -88,9 +88,6 @@ define(['tmclasses/tmclasses', 'jquery'], function(__tmclasses, jQuery){
 
 			if(_this.isActive){
 				_this.activate();
-
-				//--do handle of resize on page load
-				_this.handleResize();
 			}
 		}
 		,properties: {
@@ -101,6 +98,9 @@ define(['tmclasses/tmclasses', 'jquery'], function(__tmclasses, jQuery){
 				this.$window.on('resize', jQuery.proxy(this.handleResizeInInterval, this));
 
 				this.isActive = true;
+
+				this.handleResize();
+			}
 			,container: function(){
 				this.container = jQuery('body');
 				return this.container;
