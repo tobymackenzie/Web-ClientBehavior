@@ -23,7 +23,7 @@ Example Usage:
 
 */
 /* global clearTimeout, define, setTimeout, window */
-define(['tmclasses/tmclasses', 'jquery'], function(__tmclasses, jQuery){
+define(['tmclasses/tmclasses', 'jquery', './DropDown'], function(__tmclasses, jQuery, __DropDown){
 	var __hasTooManyItemsMethods = {
 		itemPadding: function(){
 			var _this = this;
@@ -86,6 +86,10 @@ define(['tmclasses/tmclasses', 'jquery'], function(__tmclasses, jQuery){
 				_this.mainList = _this.$.find(_this.mainListSelector);
 			}
 
+			if(_this.dropDown === undefined){
+				_this.dropDown = new __DropDown(_this.getDropDownOpts());
+			}
+
 			if(_this.isActive){
 				_this.activate();
 			}
@@ -105,6 +109,7 @@ define(['tmclasses/tmclasses', 'jquery'], function(__tmclasses, jQuery){
 				this.container = jQuery('body');
 				return this.container;
 			}
+			,dropDown: undefined
 			,getContainer: function(){
 				if(typeof this.container === 'function'){
 					return this.container();
