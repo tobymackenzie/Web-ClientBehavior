@@ -169,6 +169,11 @@ define(['tmclasses/tmclasses', 'jquery'], function(__tmclasses, jQuery){
 							this.popItemFromMoreList();
 						}while(this.moreList.find(this.navItemSelector).length && !this.hasTooManyItems());
 
+						//--reinsert one if too many are added
+						if(this.hasTooManyItems()){
+							this.pushItemToMoreList();
+						}
+
 						//--if item count reaches 0, detach moreItem
 						if(this.moreItem.data('isAttached') && !this.moreList.find(this.navItemSelector).length){
 							this.moreItem.detach();
