@@ -125,6 +125,8 @@ define(['tmclasses/tmclasses', 'jquery'], function(__tmclasses, jQuery){
 				this.$window.off('resize', jQuery.proxy(this.handleResizeInInterval, this));
 
 				this.isActive = false;
+
+				this.popAllFromMoreList();
 			}
 			,doHandleResize: true
 			,fillFrom: 'top'
@@ -201,6 +203,13 @@ define(['tmclasses/tmclasses', 'jquery'], function(__tmclasses, jQuery){
 			,moreListSelector: '.navList'
 			,mainList: null
 			,navItemSelector: '> .topItem'
+			,popAllFromMoreList: function(){
+				var $item;
+				while($item = this.getNextItemInMoreList()){
+					this.popItemFromMoreList($item);
+				}
+				return this;
+			}
 			,popItemFromMoreList: function($item){
 				if(!$item){
 					$item = this.getNextItemInMoreList();
