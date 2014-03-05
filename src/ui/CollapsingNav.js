@@ -26,8 +26,8 @@ Example Usage:
 define(['tmclasses/tmclasses', 'jquery'], function(__tmclasses, jQuery){
 	var __CollapsingNav = __tmclasses.create({
 		init: function(_options){
+			this.__parent(arguments);
 			var _this = this;
-			_this.__parent(_this, _options);
 
 			if(!_this.moreItem){
 				_this.moreItem = jQuery(_this.moreItemHTML);
