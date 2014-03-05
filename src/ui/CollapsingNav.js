@@ -127,6 +127,19 @@ define(['tmclasses/tmclasses', 'jquery'], function(__tmclasses, jQuery){
 				this.isActive = false;
 			}
 			,doHandleResize: true
+			,fillFrom: 'top'
+			,getNextItemInMoreList: function(){
+				var $items = this.moreList.find(this.navItemSelector);
+				if($items.length){
+					if(this.fillFrom === 'top'){
+						return $items.first();
+					}else{
+						return $items.last();
+					}
+				}else{
+					return null;
+				}
+			}
 			,handleResize: function(){
 				var doHandleResize = true;
 				switch(typeof this.doHandleResize){
@@ -188,17 +201,33 @@ define(['tmclasses/tmclasses', 'jquery'], function(__tmclasses, jQuery){
 			,moreListSelector: '.navList'
 			,mainList: null
 			,navItemSelector: '> .topItem'
-			,popItemFromMoreList: function(){
-				var $item = this.moreList.find(this.navItemSelector).last();
-				$item.detach();
-				this.mainList.find(this.navItemSelector).last().before($item);
+			,popItemFromMoreList: function($item){
+				if(!$item){
+					$item = this.getNextItemInMoreList();
+				}
+				if($item){
+					$item.detach();
+					this.mainList.find(this.navItemSelector).last().before($item);
+					if(this.dropDown && this.dropDown.doSizeAndCenter){
+						this.dropDown.sizeAndCenter();
+					}
+				}
+				return this;
 			}
 			,pushItemToMoreList: function(){
 				var $item = (this.moreItem.data('isAttached'))
 					? this.moreItem.prev()
 					: this.mainList.find(this.navItemSelector).last();
 				$item.detach();
-				this.moreList.append($item);
+				if(this.fillFrom === 'bottom'){
+					this.moreList.append($item);
+				}else{
+					this.moreList.prepend($item);
+				}
+				if(this.dropDown && this.dropDown.doSizeAndCenter){
+					this.dropDown.sizeAndCenter();
+				}
+				return this;
 			}
 			,resizeTimeout: null
 			,resizeInterval: 200
