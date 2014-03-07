@@ -39,10 +39,10 @@ Simple, one level, dropdown menu that uses css classes to open dropdown menus, c
 		});
 	}
 */
-/* global define */
+/* global clearTimeout, define, setTimeout */
 define(['tmclasses/tmclasses', 'jquery', '../core/is', '../ua/ua'], function(__tmclasses, jQuery, __is, __ua){
 	var __this = __tmclasses.create({
-		init: function(_opts){
+		init: function(){
 			this.__parent(arguments);
 
 			if(!this.$items && this.$){

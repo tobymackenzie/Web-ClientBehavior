@@ -58,18 +58,17 @@ define(['tmclasses/tmclasses', 'jquery', './DropDown'], function(__tmclasses, jQ
 		}
 		,rightPos: function(){
 			var _this = this;
-			var $navItems = this.mainList.find(this.navItemSelector);
-			var $container = this.getContainer();
+			var $container = _this.getContainer();
 
 			var containerRight = $container.offset().left + $container.outerWidth();
-			var mainListRight = this.mainList.offset().left + this.mainList.outerWidth();
+			var mainListRight = _this.mainList.offset().left + _this.mainList.outerWidth();
 
 			return mainListRight > containerRight;
 		}
 	};
 
 	var __CollapsingNav = __tmclasses.create({
-		init: function(_options){
+		init: function(){
 			this.__parent(arguments);
 			var _this = this;
 
@@ -118,10 +117,10 @@ define(['tmclasses/tmclasses', 'jquery', './DropDown'], function(__tmclasses, jQ
 				}
 			}
 			,getDropDownOpts: function(_opts){
-				return {
+				return jQuery.extend({
 					$: this.moreItem
 					,itemSelector: 'this'
-				};
+				}, _opts);
 			}
 			,deactivate: function(){
 				clearTimeout(this.resizeTimeout);
@@ -215,7 +214,7 @@ define(['tmclasses/tmclasses', 'jquery', './DropDown'], function(__tmclasses, jQ
 			,navItemSelector: '> .topItem'
 			,popAllFromMoreList: function(){
 				var $item;
-				while($item = this.getNextItemInMoreList()){
+				while(($item = this.getNextItemInMoreList())){
 					this.popItemFromMoreList($item);
 				}
 				return this;
