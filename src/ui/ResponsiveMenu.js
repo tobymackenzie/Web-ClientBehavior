@@ -5,7 +5,7 @@ Menu widget to convert menu into a slide down menu when screen size reaches cert
 
 */
 /* global clearTimeout, define, setTimeout, window */
-define(['tmclasses/tmclasses', 'jquery', '../ResponsiveHandler', '../core/isArray'], function(__tmclasses, jQuery, __ResponsiveHandler, __isArray){
+define(['tmclasses/tmclasses', 'jquery', '../ua/ResponsiveHandler', '../core/isArray'], function(__tmclasses, jQuery, __ResponsiveHandler, __isArray){
 	var __ResponsiveMenu = __tmclasses.create({
 		init: function(){
 			var _this = this;
