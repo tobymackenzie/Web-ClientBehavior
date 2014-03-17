@@ -93,14 +93,18 @@ define(['tmclasses/tmclasses', 'jquery', '../core/is', '../ua/ua'], function(__t
 					_focusArgs.push(_this.itemSelector);
 					_blurArgs.push(_this.itemSelector);
 				}
-				_focusArgs.push(function(){
+				_focusArgs.push(function(_event){
 					var $this = jQuery(this);
 					if($this.is(_this.hasDropDownSelector)){
 						clearTimeout(_this.timeout);
 					}
-					if(_this.$current !== $this){
+					//--open dropdown if different than current
+					if(!$this.is(_this.$current)){
 						_this.pub('hover', $this);
 						_this.openDropDown($this);
+					//--close if clicking the current item
+					}else if(_event.type === 'click'){
+						_this.closeCurrentDrowDown();
 					}
 				});
 				_blurArgs.push(function(){
