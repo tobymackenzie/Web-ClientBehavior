@@ -128,6 +128,10 @@ define(['tmclasses/tmclasses', 'jquery', './DropDown'], function(__tmclasses, jQ
 				//--detach resize listener
 				this.$window.off('resize', jQuery.proxy(this.handleResizeInInterval, this));
 
+				if(this.dropDown){
+					this.dropDown.deactivate();
+				}
+
 				this.isActive = false;
 
 				this.popAllFromMoreList();
@@ -183,6 +187,9 @@ define(['tmclasses/tmclasses', 'jquery', './DropDown'], function(__tmclasses, jQ
 							this.moreItem.detach();
 							this.moreItem.data('isAttached', false);
 						}
+					}
+					if(this.dropDown){
+						this.dropDown.activate();
 					}
 				}
 			}

@@ -67,8 +67,8 @@ define(['tmclasses/tmclasses', 'jquery', '../core/is', '../ua/ua'], function(__t
 				}
 			});
 
-			if(this.doSizeAndCenter){
-				this.sizeAndCenter();
+			if(this.$){
+				this.activate();
 			}
 
 			if(this.onInit){
@@ -79,6 +79,11 @@ define(['tmclasses/tmclasses', 'jquery', '../core/is', '../ua/ua'], function(__t
 			$: null
 			,$current: null
 			,$items: null
+			,activate: function(){
+				if(this.doSizeAndCenter){
+					this.sizeAndCenter();
+				}
+			}
 			,attachListeners: function(_$){
 				var _this = this;
 
@@ -141,6 +146,12 @@ define(['tmclasses/tmclasses', 'jquery', '../core/is', '../ua/ua'], function(__t
 				if(_$.hasClass(this.openedClass)){
 					_$.removeClass(this.openedClass);
 					this.pub('close', _$);
+				}
+			}
+			,deactivate: function(){
+				//--reset centering styles
+				if(this.doSizeAndCenter){
+					this.$.find(this.subMenuSelector).css({left: '', width: ''});
 				}
 			}
 			,delay: 750
