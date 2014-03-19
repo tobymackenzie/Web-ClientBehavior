@@ -89,7 +89,8 @@ define(['tmclasses/tmclasses', 'jquery', '../core/is', '../ua/ua'], function(__t
 
 				//--attach listeners to container.  must build so we can add selector argument only if we need to
 				var _focusArgs = [
-					'mouseenter focus click touchstart'
+					// 'mouseenter focus click touchstart' //-# touchstart seemed to cause double events on occasion on ipad.  may need to reconsider, since I put this here because of problems on touch screens
+					'mouseenter focus click'
 				];
 				var _blurArgs = [
 					'mouseleave blur'
@@ -101,7 +102,7 @@ define(['tmclasses/tmclasses', 'jquery', '../core/is', '../ua/ua'], function(__t
 				_focusArgs.push(function(_event){
 					var $this = jQuery(this);
 					if($this.is(_this.hasDropDownSelector)){
-						clearTimeout(_this.timeout);
+						clearTimeout(_this.blurTimeout);
 					}
 					//--open dropdown if different than current
 					if(!$this.is(_this.$current)){
@@ -113,8 +114,8 @@ define(['tmclasses/tmclasses', 'jquery', '../core/is', '../ua/ua'], function(__t
 					}
 				});
 				_blurArgs.push(function(){
-					clearTimeout(_this.timeout);
-					_this.timeout = setTimeout(function(){
+					clearTimeout(_this.blurTimeout);
+					_this.blurTimeout = setTimeout(function(){
 						_this.closeCurrentDrowDown();
 					}, _this.delay);
 				});
@@ -162,7 +163,7 @@ define(['tmclasses/tmclasses', 'jquery', '../core/is', '../ua/ua'], function(__t
 			,openDropDown: function(_$){
 				var _doPublish = (this.$current !== _$);
 				if(this.$current && this.$current !== _$){
-					clearTimeout(this.timeout);
+					clearTimeout(this.blurTimeout);
 					this.closeCurrentDrowDown();
 				}
 				if(_$){
@@ -175,7 +176,8 @@ define(['tmclasses/tmclasses', 'jquery', '../core/is', '../ua/ua'], function(__t
 			}
 			,subMenuSelector: '.subMenu'
 			,topLevelSelector: '.topLevel'
-			,timeout: null
+
+			,blurTimeout: undefined
 
 			/*===menu sizing */
 			,centeringItemSelector: 'this'
