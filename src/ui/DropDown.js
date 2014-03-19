@@ -181,11 +181,16 @@ define(['tmclasses/tmclasses', 'jquery', '../core/is', '../ua/ua'], function(__t
 
 			/*===menu sizing */
 			,centeringItemSelector: 'this'
-			,centeringItemWidthGetter: 'width'
 			,centeringOffset: 'paddingLeft'
 			,doSizeAndCenter: false
 			,doSizeAndCenterFirst: true
 			,doSizeAndCenterLast: true
+			,getCenteringItemWidth: function($item){
+				return $item.width();
+			}
+			,getSubMenuWidth: function($subMenu){
+				return $subMenu.outerWidth();
+			}
 			,sizeAndCenter: function(){
 				var _this = this;
 				var _countItems = this.$items.length;
@@ -221,7 +226,7 @@ define(['tmclasses/tmclasses', 'jquery', '../core/is', '../ua/ua'], function(__t
 								$centeringItem = $this.find(_this.centeringItemSelector);
 							break;
 						}
-						var _centerItemWidth = $centeringItem.width();
+						var _centerItemWidth = _this.getCenteringItemWidth($centeringItem);
 						if(
 							$subMenu.width() < _centerItemWidth
 							&& !__ua.isIE6()
@@ -233,13 +238,17 @@ define(['tmclasses/tmclasses', 'jquery', '../core/is', '../ua/ua'], function(__t
 							var _subMenuOffset;
 							if(__is.numeric(_this.subMenuOffset)){
 								_subMenuOffset = _this.subMenuOffset;
+							}else if(typeof _this.subMenuOffset === 'function'){
+								_subMenuOffset = _this.subMenuOffset($centeringItem, $subMenu);
 							}else if(_this.subMenuOffset){
 								_subMenuOffset = $centeringItem.css(_this.subMenuOffset);
 							}else{
 								_subMenuOffset = 0;
 							}
 							_subMenuOffset = parseInt(_subMenuOffset, 10);
-							var _ifOffset = ($centeringItem[_this.centeringItemWidthGetter]() - $subMenu.width()) / 2 + _subMenuOffset;
+							_centerItemWidth = _this.getCenteringItemWidth($centeringItem);
+							var _subMenuWidth = _this.getSubMenuWidth($subMenu);
+							var _ifOffset = (_centerItemWidth - _subMenuWidth) / 2 + _subMenuOffset;
 							$subMenu.css('left', _ifOffset + 'px');
 						}
 						$subMenu.css({
