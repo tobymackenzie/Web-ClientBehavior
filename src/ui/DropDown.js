@@ -80,8 +80,10 @@ define(['tmclasses/tmclasses', 'jquery', '../core/is', '../ua/ua'], function(__t
 			,$current: null
 			,$items: null
 			,activate: function(){
-				if(this.doSizeAndCenter){
-					this.sizeAndCenter();
+				if(!this.isActive){
+					if(this.doSizeAndCenter){
+						this.sizeAndCenter();
+					}
 				}
 			}
 			,attachListeners: function(_$){
@@ -234,7 +236,7 @@ define(['tmclasses/tmclasses', 'jquery', '../core/is', '../ua/ua'], function(__t
 							var _newSize = _centerItemWidth;
 							$subMenu.css('width', _newSize);
 						}
-						if($subMenu.width() > _centerItemWidth){
+						if(_this.getSubMenuWidth($subMenu) > _centerItemWidth){
 							var _subMenuOffset;
 							if(__is.numeric(_this.subMenuOffset)){
 								_subMenuOffset = _this.subMenuOffset;
