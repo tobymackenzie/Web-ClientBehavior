@@ -256,7 +256,7 @@ define(['tmclasses/tmclasses', 'jquery', './DropDown'], function(__tmclasses, jQ
 			}
 			,resizeTimeout: null
 			,resizeInterval: 200
-			,topLevelSelector: '> .topLevel'
+			,topLevelSelector: '> .navItem'
 		}
 	});
 	return __CollapsingNav;
