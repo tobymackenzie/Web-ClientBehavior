@@ -97,11 +97,12 @@ define(['tmclasses/tmclasses', 'jquery', './DropDown'], function(__tmclasses, jQ
 			$: null
 			,$window: jQuery(window)
 			,activate: function(){
-				//--attach resize listener
-				this.$window.on('resize', jQuery.proxy(this.handleResizeInInterval, this));
+				if(!this.isActive){
+					//--attach resize listener
+					this.$window.on('resize', jQuery.proxy(this.handleResizeInInterval, this));
 
-				this.isActive = true;
-
+					this.isActive = true;
+				}
 				this.handleResize();
 			}
 			,container: function(){
@@ -123,18 +124,20 @@ define(['tmclasses/tmclasses', 'jquery', './DropDown'], function(__tmclasses, jQ
 				}, _opts);
 			}
 			,deactivate: function(){
-				clearTimeout(this.resizeTimeout);
+				if(this.isActive){
+					clearTimeout(this.resizeTimeout);
 
-				//--detach resize listener
-				this.$window.off('resize', jQuery.proxy(this.handleResizeInInterval, this));
+					//--detach resize listener
+					this.$window.off('resize', jQuery.proxy(this.handleResizeInInterval, this));
 
-				if(this.dropDown){
-					this.dropDown.deactivate();
+					if(this.dropDown){
+						this.dropDown.deactivate();
+					}
+
+					this.isActive = false;
+
+					this.popAllFromMoreList();
 				}
-
-				this.isActive = false;
-
-				this.popAllFromMoreList();
 			}
 			,doHandleResize: true
 			,fillFrom: 'top'
