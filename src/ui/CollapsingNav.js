@@ -236,7 +236,7 @@ define(['tmclasses/tmclasses', 'jquery', './DropDown'], function(__tmclasses, jQ
 				if($item){
 					$item.detach();
 					this.mainList.find(this.navItemSelector).last().before($item);
-					if(this.dropDown && this.dropDown.doSizeAndCenter){
+					if(this.isActive && this.dropDown && this.dropDown.doSizeAndCenter){
 						this.dropDown.sizeAndCenter();
 					}
 				}
