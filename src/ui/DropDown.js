@@ -154,7 +154,7 @@ define(['tmclasses/tmclasses', 'jquery', '../core/is', '../ua/ua'], function(__t
 			,deactivate: function(){
 				//--reset centering styles
 				if(this.doSizeAndCenter){
-					this.$.find(this.subMenuSelector).css({left: '', width: ''});
+					this.$.find(this.subMenuSelector).css({left: '', 'min-width': ''});
 				}
 			}
 			,delay: 750
@@ -234,7 +234,10 @@ define(['tmclasses/tmclasses', 'jquery', '../core/is', '../ua/ua'], function(__t
 							&& !__ua.isIE6()
 						){
 							var _newSize = _centerItemWidth;
-							$subMenu.css('width', _newSize);
+							if(_newSize){
+								//-# use min-width instead of width in case size and center ends up setting width to narrow width and then sized bigger again, the submenu may end up to narrow
+								$subMenu.css('min-width', _newSize);
+							}
 						}
 						if(_this.getSubMenuWidth($subMenu) > _centerItemWidth){
 							var _subMenuOffset;
