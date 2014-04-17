@@ -105,9 +105,17 @@ define(['tmclasses/tmclasses', 'jquery', './DropDown'], function(__tmclasses, jQ
 				}
 				this.handleResize();
 			}
+			,attachMoreItem: function(){
+				this.mainList.append(this.moreItem);
+				this.moreItem.data('isAttached', true);
+			}
 			,container: function(){
 				this.container = jQuery('body');
 				return this.container;
+			}
+			,detachMoreItem: function(){
+				this.moreItem.detach();
+				this.moreItem.data('isAttached', false);
 			}
 			,dropDown: undefined
 			,getContainer: function(){
@@ -166,9 +174,7 @@ define(['tmclasses/tmclasses', 'jquery', './DropDown'], function(__tmclasses, jQ
 				if(doHandleResize){
 					if(this.hasTooManyItems()){
 						if(!this.moreItem.data('isAttached')){
-							//--attach moreItem
-							this.mainList.append(this.moreItem);
-							this.moreItem.data('isAttached', true);
+							this.attachMoreItem();
 						}
 						//--add items one by one to menu until not _isSectionNavTooNarrow
 						do{
@@ -187,8 +193,7 @@ define(['tmclasses/tmclasses', 'jquery', './DropDown'], function(__tmclasses, jQ
 
 						//--if item count reaches 0, detach moreItem
 						if(this.moreItem.data('isAttached') && !this.moreList.find(this.navItemSelector).length){
-							this.moreItem.detach();
-							this.moreItem.data('isAttached', false);
+							this.detachMoreItem();
 						}
 					}
 					if(this.dropDown){
