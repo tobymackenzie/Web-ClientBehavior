@@ -145,6 +145,7 @@ define(['tmclasses/tmclasses', 'jquery', './DropDown'], function(__tmclasses, jQ
 					this.isActive = false;
 
 					this.popAllFromMoreList();
+					this.detachMoreItem();
 				}
 			}
 			,doHandleResize: true
