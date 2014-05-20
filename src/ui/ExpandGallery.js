@@ -1,5 +1,6 @@
 /* global define */
 define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/ui/SwitchList', 'tmlib/ua/ua'], function(jQuery, __AnimationTransition, __tmclasses, __SwitchList, __ua){
+
 	//-! temporarily here until it makes its way elsewhere
 	var __getElmDimensions = function(_elm){
 		var _data = {};
@@ -134,6 +135,28 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 			}
 			,itemSelector: '.expandGalleryItem'
 			,responsiveHandler: undefined
+			/*
+			Property: scrollContainer
+			Get copy of body/html element for use by scrollTo action of open transition.  Seem to need both to be cross browser safe
+			*/
+			,scrollContainer: undefined
+			,getScrollContainer: function(){
+				if(!this.scrollContainer){
+					this.scrollContainer = jQuery('body,html');
+				}
+				return this.scrollContainer;
+			}
+			,scrollTo: function(_data){
+				if(_data.elements[3]){
+					var _scrollTo = _data.elements[3].offset().top - 100;
+					if(_scrollTo < 0){
+						_scrollTo = 0;
+					}
+					this.getScrollContainer().animate({
+						scrollTop: _scrollTo
+					}, this.duration);
+				}
+			}
 			,transition: function(_opts){
 				if(_opts && _opts.elements && _opts.elements.length){
 					var _this = this;
@@ -171,10 +194,10 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 				4: next item detail
 				*/
 				if(!_this.transitionOpen){
-					_this.transitionOpen = __this.getDefaultTransitionOpen({duration: _this.duration});
+					_this.transitionOpen = __this.getDefaultTransitionOpen(null, _this);
 				}
 				if(!_this.transitionClose){
-					_this.transitionClose = __this.getDefaultTransitionClose({duration: _this.duration});
+					_this.transitionClose = __this.getDefaultTransitionClose(null, _this);
 				}
 				return _this.transition;
 			}
@@ -182,11 +205,9 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 			,transitionOpen: undefined
 		}
 		,statics: {
-			getDefaultTransitionOpen: function(_opts){
-				var $bodyHtml = jQuery('body,html'); //--get copy of body/html element for use by scrollTo action of open transition
-
+			getDefaultTransitionOpen: function(_opts, _this){
 				var _defaults = {
-					duration: 200
+					duration: (_this) ? _this.duration : 200
 					,stylesBefore: [
 						null
 						,null
@@ -229,10 +250,8 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 						,{display: '', height: ''}
 					]
 					,onAfter: function(_data){
-						if(_data.elements[3]){
-							$bodyHtml.animate({
-								scrollTop: _data.elements[3].offset().top - 100
-							}, this.duration);
+						if(_this && _this.scrollTo){
+							_this.scrollTo(_data);
 						}
 						__AnimationTransition.prototype.onAfter.apply(this, arguments);
 					}
@@ -242,9 +261,9 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 				}
 				return new __AnimationTransition(_defaults);
 			}
-			,getDefaultTransitionClose: function(_opts){
+			,getDefaultTransitionClose: function(_opts, _this){
 				var _defaults = {
-					duration: 200
+					duration: (_this) ? _this.duration : 200
 					,stylesBefore: [
 						null
 						,null
