@@ -137,7 +137,7 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 			,responsiveHandler: undefined
 			/*
 			Property: scrollContainer
-			Get copy of body/html element for use by scrollTo action of open transition.  Seem to need both to be cross browser safe
+			Get copy of body/html element for use by scrollToItem action of open transition.  Seem to need both to be cross browser safe
 			*/
 			,scrollContainer: undefined
 			,getScrollContainer: function(){
@@ -146,7 +146,13 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 				}
 				return this.scrollContainer;
 			}
-			,scrollTo: function(_data){
+			/*
+			Method: scrollToItem
+			Called after transition, will scroll to the opened item so that it isn't out of view
+			Arguments:
+				_data(Array): _data from transition
+			*/
+			,scrollToItem: function(_data){
 				if(_data.elements[3]){
 					var _scrollTo = _data.elements[3].offset().top - 100;
 					if(_scrollTo < 0){
@@ -250,8 +256,8 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 						,{display: '', height: ''}
 					]
 					,onAfter: function(_data){
-						if(_this && _this.scrollTo){
-							_this.scrollTo(_data);
+						if(_this && _this.scrollToItem){
+							_this.scrollToItem(_data);
 						}
 						__AnimationTransition.prototype.onAfter.apply(this, arguments);
 					}
