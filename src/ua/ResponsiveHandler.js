@@ -60,6 +60,13 @@ define(['jquery', 'tmclasses/tmclasses'], function(__jQuery, __tmclasses){
 					_this.pub('resize');
 				}, this.delay);
 			}
+			/*
+			Method: isNVP
+			Determine if passed breakpoint is considered narrow viewport.  Meant to be overridden if it is more complex than the default.
+			*/
+			,isNVP: function(_bp){
+				return (_bp === 'nvp');
+			}
 			,method: 'lineHeight'
 			,determineBreakPoint: function(){
 				var _currentValue, _maxPoint, _point, _pointValue;
