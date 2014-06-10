@@ -265,8 +265,11 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 						,{display: '', height: ''}
 					]
 					,onAfter: function(_data){
-						if(_this && _this.scrollToItem){
-							_this.scrollToItem(_data);
+						if(_this){
+							if(_this.scrollToItem){
+								_this.scrollToItem(_data);
+							}
+							_this.pub('open', _data);
 						}
 						__AnimationTransition.prototype.onAfter.apply(this, arguments);
 					}
@@ -303,6 +306,12 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 						,{paddingBottom: ''}
 						,{display: '', height: ''}
 					]
+					,onAfter: function(_data){
+						if(_this){
+							_this.pub('close', _data);
+						}
+						__AnimationTransition.prototype.onAfter.apply(this, arguments);
+					}
 				};
 				if(_opts){
 					jQuery.extend(_defaults, _opts);
