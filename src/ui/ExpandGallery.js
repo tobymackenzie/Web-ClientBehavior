@@ -147,14 +147,22 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 				return this.scrollContainer;
 			}
 			/*
+			Method: getScrollElement
+			Given transition data, returns the element 'scrollToItem' scrolls to.
+			*/
+			,getScrollElement: function(_data){
+				return _data.elements[3] || null;
+			}
+			/*
 			Method: scrollToItem
 			Called after transition, will scroll to the opened item so that it isn't out of view
 			Arguments:
 				_data(Array): _data from transition
 			*/
 			,scrollToItem: function(_data){
-				if(_data.elements[3]){
-					var _scrollTo = _data.elements[3].offset().top - 100;
+				var _elm = this.getScrollElement(_data);
+				if(_elm){
+					var _scrollTo = _elm.offset().top - this.scrollToOffset;
 					if(_scrollTo < 0){
 						_scrollTo = 0;
 					}
@@ -163,6 +171,7 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 					}, this.duration);
 				}
 			}
+			,scrollToOffset: 100
 			,transition: function(_opts){
 				if(_opts && _opts.elements && _opts.elements.length){
 					var _this = this;
