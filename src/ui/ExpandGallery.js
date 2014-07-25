@@ -236,6 +236,10 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 								var _height = __getElmDimensions(_elm).height;
 								//_styles.top = _container.position().top + _container.outerHeight();
 								_elm.data('height', _height);
+
+								//--capture margin so we can easily add extra space around detail container
+								var _margin = parseInt(_elm.css('margin-top').replace('px', ''),10) + parseInt(_elm.css('margin-bottom').replace('px', ''),10);
+								_elm.data('margin', _margin);
 							}
 							return _styles;
 						}
@@ -251,7 +255,7 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 						,{height: 0}
 						,function(_elm, _opts){
 							return {
-								paddingBottom: _opts.elements[3].data('height')
+								paddingBottom: _opts.elements[3].data('height') + _opts.elements[3].data('margin')
 							};
 						}
 						,function(_elm){
