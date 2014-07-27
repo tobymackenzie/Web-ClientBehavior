@@ -33,9 +33,18 @@ __.classes.AjaxForm = function(_args){
 		var _this = this;
 		var _values = {};
 		this.elmForm.find('input, select, textarea').each(function(){
-			var elmThis = jQuery(this);
-			_values[elmThis.attr('name')] = elmThis.val();
+			var _field = jQuery(this);
+			var _type = _field.attr('type');
+			var _name = _field.attr('name');
+			if(
+				_name //-# only submit if the element has a name
+				&& (_type !== 'radio' || _field.is(':checked')) //-# only add radio button if it is checked
+			){
+				_values[_name] = _field.val();
+			}
 		});
+		//-- disable buttons so double submission can't take place (need to handle non-button methods)
+		this.elmForm.find('input[type="submit"],button').attr('disabled', true);
 		if(this.onsubmitpreajax){
 			this.onsubmitpreajax.call(_this, _values);
 		}
