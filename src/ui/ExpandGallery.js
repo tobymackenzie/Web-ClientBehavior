@@ -1,6 +1,5 @@
 /* global define */
 define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/ui/SwitchList', 'tmlib/ua/ua'], function(jQuery, __AnimationTransition, __tmclasses, __SwitchList, __ua){
-
 	//-! temporarily here until it makes its way elsewhere
 	var __getElmDimensions = function(_elm){
 		var _data = {};
@@ -238,7 +237,10 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 								_elm.data('height', _height);
 
 								//--capture margin so we can easily add extra space around detail container
-								var _margin = parseInt(_elm.css('margin-top').replace('px', ''),10) + parseInt(_elm.css('margin-bottom').replace('px', ''),10);
+								//-# must make sure margins are numeric
+								var _marginBottom = parseInt(_elm.css('margin-bottom').replace('px', ''),10);
+								var _marginTop = parseInt(_elm.css('margin-top').replace('px', ''),10);
+								var _margin = (!isNaN(_marginBottom) ? _marginBottom : 0) + (!isNaN(_marginTop) ? _marginTop : 0);
 								_elm.data('margin', _margin);
 							}
 							return _styles;
