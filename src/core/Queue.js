@@ -1,6 +1,9 @@
 /*
 Class: Queue
 Use jQuery promises to queue operations.
+
+Source:
+	http://samarskyy.blogspot.com/2011/10/jquery-deferred-queues.html
 */
 /* global Exception, define */
 define(['jquery', 'tmclasses/tmclasses'], function(jQuery, tmclasses){
