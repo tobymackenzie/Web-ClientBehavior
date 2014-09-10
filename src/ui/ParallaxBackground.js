@@ -9,6 +9,7 @@ define(['jquery', 'tmclasses/tmclasses'], function(jQuery, tmclasses){
 		}
 		,properties: {
 			elm: undefined
+			,calcType: 'centeredStart'
 			,movementRatio: 0.8
 			,_changeHandler: function(){
 				var _viewportHeight = this.constructor.window.height();
@@ -26,11 +27,25 @@ define(['jquery', 'tmclasses/tmclasses'], function(jQuery, tmclasses){
 				}else{
 					_bgPosition = (_diff / _range) * 100;
 				}
-				_bgPosition = _bgPosition - 50;
-				_bgPosition = 50 + _bgPosition * this.movementRatio;
+				switch(this.calcType){
+					case 'centered':
+						_bgPosition = 50 + (_bgPosition - 50) * this.movementRatio;
+					break;
+					case 'centeredStart':
+						if(typeof this._startOffset === 'undefined'){
+							var _startingPosition = this.elm.css('background-position-y');
+							if(_startingPosition.indexOf('%') !== -1){
+								_startingPosition = parseInt(_startingPosition,10);
+							}
+							this._startOffset = -1 * (50 + (_bgPosition - 50) * this.movementRatio - _startingPosition);
+						}
+						_bgPosition = 50 + (_bgPosition - 50) * this.movementRatio + this._startOffset;
+					break;
+				}
 
 				this.elm.css('background-position', 'center ' + _bgPosition + '%');
 			}
+			,_startOffset: undefined
 		}
 		,statics: {
 			window: jQuery(window)
