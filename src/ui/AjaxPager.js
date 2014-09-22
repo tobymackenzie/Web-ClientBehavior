@@ -158,37 +158,17 @@ define([
 			}
 			,_loadedPages: undefined
 			,responsiveHandler: undefined
-			,showLoadedPage: function(_url){
+			,getPage: function(_url){
 				var _self = this;
+				var _page;
+				var _promise = new jQuery.Deferred();
 				if(typeof _self._loadedPages[_url] !== 'undefined'){
-					var $item = _self._loadedPages[_url];
-					if(_self.currentPage){
-						_self.transition.transitionForElements({
-							elements: [
-								_self.content
-								,_self.currentPage
-								,$item
-							]
-						});
-						//_self.currentPage.fadeOut(function(){
-						//	$item.fadeIn(function(){
-						//		_self.currentPage = $item;
-						//	});
-						//});
-					}else{
-						$item.show();
-						_self.content.show();
-						var _height = _self.getHiddenElementHeight($item);
-						_self.content.animate({height: _height}, function(){
-							_self.currentPage = $item;
-						});
-					}
-					_self.currentURL = _url;
-				}
-			}
-			,showPage: function(_url){
-				var _self = this;
-				if(typeof _self._loadedPages[_url] === 'undefined'){
+					_page = _self._loadedPages[_url];
+					_promise.resolve(_page);
+				}else if(_url.charAt(0) === '#'){
+					_page = jQuery(_url);
+					_promise.resolve(_page);
+				}else{
 					jQuery.ajax({
 						url: _url
 						,success: function(_data){
@@ -209,13 +189,41 @@ define([
 								$item.hide();
 								_self.content.append($item);
 								_self._loadedPages[_url] = $item;
-								_self.showLoadedPage(_url);
+								_promise.resolve($item);
 							}
 						}
 					});
-				}else{
-					_self.showLoadedPage(_url);
 				}
+				return _promise;
+			}
+			,showPage: function(_url){
+				var _self = this;
+				this.getPage(_url).done(function(_page){
+					if(_page){
+						if(_self.currentPage){
+							_self.transition.transitionForElements({
+								elements: [
+									_self.content
+									,_self.currentPage
+									,_page
+								]
+							});
+							//_self.currentPage.fadeOut(function(){
+							//	_page.fadeIn(function(){
+							//		_self.currentPage = _page;
+							//	});
+							//});
+						}else{
+							_page.show();
+							_self.content.show();
+							var _height = _self.getHiddenElementHeight(_page);
+							_self.content.animate({height: _height}, function(){
+								_self.currentPage = _page;
+							});
+						}
+						_self.currentURL = _url;
+					}
+				});
 			}
 			,transition: undefined
 		}
