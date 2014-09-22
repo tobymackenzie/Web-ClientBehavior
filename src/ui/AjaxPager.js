@@ -3,6 +3,28 @@ Class: AjaxPager
 Load content via link click, slide it in to replace previously loaded content if it exists, or into place if none exists.
 
 -! not generalized enough
+
+
+Styles:
+	``` scss
+	.ajaxLoaderContent{
+		margin-bottom: 2em;
+		*overflow: hidden;
+		position: relative;
+	}
+	.ajaxLoaderWrap{
+		overflow: hidden;
+	}
+	.ajaxPage{
+		left: 0;
+		top: 0;
+		.ajaxLoaderWrap-initialized &{
+			position: absolute;
+			width: 100%;
+		}
+	}
+	```
+
 */
 /* global define */
 define([
