@@ -130,6 +130,16 @@ define([
 						}
 					});
 
+					//--listen to browser width change, reset height of container if needed
+					if(_self.responsiveHandler){
+						_self.responsiveHandler.sub('resize', function(){
+							if(_self.currentPage){
+								var _height = _self.getHiddenElementHeight(_self.currentPage);
+								_self.content.height(_height);
+							}
+						});
+					}
+
 					//--add initialized state class
 					_self.elm.addClass('ajaxLoaderWrap-initialized');
 				}
