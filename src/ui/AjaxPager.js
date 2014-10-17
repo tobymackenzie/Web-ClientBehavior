@@ -106,7 +106,7 @@ define([
 					if(!_self._loadedPages){
 						_self._loadedPages = {};
 					}
-					// $ajaxLoaderHeading = $ajaxLoaderWrap.find('.ajaxLoaderHeading');
+					//$ajaxLoaderHeading = $ajaxLoaderWrap.find('.ajaxLoaderHeading');
 					if(!_self.content){
 						_self.content = _self.elm.find('.ajaxLoaderContent');
 					}
@@ -114,7 +114,7 @@ define([
 						_self.content = jQuery('<div class="ajaxLoaderContent">');
 						_self.content.hide();
 						_self.elm.prepend(_self.content);
-						// $ajaxLoaderHeading.after(_self.content);
+						//$ajaxLoaderHeading.after(_self.content);
 					}
 					if(_self.currentPage){
 						_self.content.css('height', _self.currentPage.outerHeight());
@@ -151,19 +151,6 @@ define([
 			,elm: undefined
 			,getHiddenElementHeight: function($elm){
 				var _height = __getElmDimensions($elm).height;
-
-				//--make sure image height is taken into account
-				var _imageHeight = $elm.find('img').attr('height');
-				if(_imageHeight > _height){
-					//--on nvp, image is stacked above text, so must be added to text height
-					if(this.responsiveHandler && this.responsiveHandler.getBreakPoint() === 'nvp'){
-						_height = parseInt(_height,10) + parseInt(_imageHeight,10);
-					//--on wvp, image is left of text, and so should be the height of the container
-					}else{
-						_height = _imageHeight;
-					}
-				}
-
 				return _height;
 			}
 			,_loadedPages: undefined
@@ -206,32 +193,45 @@ define([
 				}
 				return _promise;
 			}
+			,_renderPage: function(_page, _url){
+				var _self = this;
+				if(_self.currentPage){
+					_self.transition.transitionForElements({
+						elements: [
+							_self.content
+							,_self.currentPage
+							,_page
+						]
+					});
+					//_self.currentPage.fadeOut(function(){
+					//	_page.fadeIn(function(){
+					//		_self.currentPage = _page;
+					//	});
+					//});
+				}else{
+					_page.show();
+					_self.content.show();
+					var _height = _self.getHiddenElementHeight(_page);
+					_self.content.animate({height: _height}, function(){
+						_self.currentPage = _page;
+					});
+				}
+				if(_url){
+					_self.currentURL = _url;
+				}
+			}
 			,showPage: function(_url){
 				var _self = this;
 				this.getPage(_url).done(function(_page){
 					if(_page){
-						if(_self.currentPage){
-							_self.transition.transitionForElements({
-								elements: [
-									_self.content
-									,_self.currentPage
-									,_page
-								]
+						var _img = _page.find('img');
+						if(_img.height() === 0 || (parseInt(_img.attr('height'),10) !== parseInt(_img.height(),10))){
+							_img.load(function(){
+								_self._renderPage(_page, _url);
 							});
-							//_self.currentPage.fadeOut(function(){
-							//	_page.fadeIn(function(){
-							//		_self.currentPage = _page;
-							//	});
-							//});
 						}else{
-							_page.show();
-							_self.content.show();
-							var _height = _self.getHiddenElementHeight(_page);
-							_self.content.animate({height: _height}, function(){
-								_self.currentPage = _page;
-							});
+							_self._renderPage(_page, _url);
 						}
-						_self.currentURL = _url;
 					}
 				});
 			}
