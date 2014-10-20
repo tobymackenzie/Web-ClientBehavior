@@ -216,21 +216,21 @@ define([
 						_self.currentPage = _page;
 					});
 				}
-				if(_url){
-					_self.currentURL = _url;
-				}
 			}
 			,showPage: function(_url){
 				var _self = this;
 				this.getPage(_url).done(function(_page){
 					if(_page){
 						var _img = _page.find('img');
-						if(_img.height() === 0 || (parseInt(_img.attr('height'),10) !== parseInt(_img.height(),10))){
+						if(_img.length && (_img.height() === 0 || (parseInt(_img.attr('height'),10) !== parseInt(_img.height(),10)))){
 							_img.load(function(){
 								_self._renderPage(_page, _url);
 							});
 						}else{
 							_self._renderPage(_page, _url);
+						}
+						if(_url){
+							_self.currentURL = _url;
 						}
 					}
 				});
