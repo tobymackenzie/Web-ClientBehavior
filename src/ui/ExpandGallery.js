@@ -29,11 +29,26 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 					_this.switchToItem($this.closest('.expandGalleryItem'));
 				});
 			}
-			if(this.doEqualizeRowHeights){
-				if(this.responsiveHandler){
+			if(_this.doEqualizeRowHeights){
+				if(_this.responsiveHandler){
 					_this.responsiveHandler.sub('resize', jQuery.proxy(_this.equalizeRowsHeights, _this));
 				}
-				_this.equalizeRowsHeights();
+				//--equalize heights initially.  make sure images are loaded so heights are correct.
+				var _haveUnloadedImages = false;
+				var _images = _this.$.find('img');
+				_images.each(function(){
+					if(jQuery(this).height() === 0){
+						_haveUnloadedImages = true;
+						return false;
+					}
+				});
+				if(_haveUnloadedImages){
+					_images.on('load', function(){
+						_this.equalizeRowsHeights();
+					});
+				}else{
+					_this.equalizeRowsHeights();
+				}
 			}
 		}
 		,properties: {
