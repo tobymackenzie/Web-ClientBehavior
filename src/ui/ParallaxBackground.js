@@ -36,7 +36,11 @@ define(['jquery', 'tmclasses/tmclasses'], function(jQuery, tmclasses){
 							var _startingPosition = this.elm.css('background-position-y');
 							//-- FF doesn't return the 'background-position-y', derive from regular 'background-position'
 							if(typeof _startingPosition === 'undefined'){
-								_startingPosition = this.elm.css('background-position').split(' ')[1];
+								_startingPosition = this.elm.css('background-position').split(' ');
+								_startingPosition = (_startingPosition.length === 1)
+									? _startingPosition[0]
+									: _startingPosition[1]
+								;
 							}
 							if(_startingPosition.indexOf('%') !== -1){
 								_startingPosition = parseInt(_startingPosition,10);
