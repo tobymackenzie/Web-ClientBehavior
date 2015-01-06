@@ -64,7 +64,7 @@ define([
 						null
 						,null
 						,function(){
-							_self.contentWidth = _self.content.outerWidth();
+							_self.contentWidth = _self.content.outerWidth() + 1; //-# add 1 to prevent overlap in IE
 							return {
 								display: 'block'
 								,left: _self.contentWidth + 'px'
