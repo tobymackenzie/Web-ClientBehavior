@@ -33,14 +33,21 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 				if(_this.responsiveHandler){
 					_this.responsiveHandler.sub('resize', jQuery.proxy(_this.equalizeRowsHeights, _this));
 				}
-				//--equalize heights initially.  make sure images are loaded so heights are correct.
+				//--equalize heights initially.  make sure images are loaded so heights are correct.  Must use clone because browsers may consider images to have 0 height even if loaded since they will be in a 'display: none' element.  If we wait for onload event on already loaded images, callback will never fire.
 				var _haveUnloadedImages = false;
 				var _images = _this.$.find('img');
+				var $container = this.getScrollContainer();
 				_images.each(function(){
-					if(jQuery(this).height() === 0){
+					var $this = jQuery(this);
+					var $clone = $this.clone();
+					$clone.css({position: 'absolute', visibility: 'hidden', zIndex: -1000});
+					$container.append($clone);
+					if($clone.height() === 0){
 						_haveUnloadedImages = true;
+						$clone.remove();
 						return false;
 					}
+					$clone.remove();
 				});
 				if(_haveUnloadedImages){
 					_images.on('load', function(){
