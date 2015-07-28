@@ -28,6 +28,16 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 					var $this = jQuery(this);
 					_this.switchToItem($this.closest('.expandGalleryItem'));
 				});
+				if(_this.doLazyLoadIFrames){
+					//--disable 'src' of iframes so they won't be loaded until needed
+					_this.$.find('.expandGalleryItemDetail').find('iframe').each(function(){
+						var _$ = jQuery(this);
+						if(_$.attr('src')){
+							_$.data('src', _$.attr('src'));
+							_$.attr('src', '');
+						}
+					});
+				}
 			}
 			if(_this.doEqualizeRowHeights){
 				if(_this.responsiveHandler){
@@ -49,6 +59,7 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 			,autoStart: false
 			,duration: 200
 			,doEqualizeRowHeights: false
+			,doLazyLoadIFrames: true
 			,equalizeRowHeights: function(_rowItems){
 				var _i;
 				var _item;
@@ -165,6 +176,14 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 			*/
 			,onOpen: function(_data){
 				var _this = this;
+				if(_this.doLazyLoadIFrames){
+					_data.elements[3].find('iframe').each(function(){
+						var _$ = jQuery(this);
+						if(!_$.attr('src')){
+							_$.attr('src', _$.data('src'));
+						}
+					});
+				}
 				if(_this.scrollToItem){
 					_this.scrollToItem(_data);
 				}
