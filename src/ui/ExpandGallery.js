@@ -160,6 +160,16 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 				return _data.elements[3] || null;
 			}
 			/*
+			Method: onOpen
+			Called after opening transition, if defined.
+			*/
+			,onOpen: function(_data){
+				var _this = this;
+				if(_this.scrollToItem){
+					_this.scrollToItem(_data);
+				}
+			}
+			/*
 			Method: scrollToItem
 			Called after transition, will scroll to the opened item so that it isn't out of view
 			Arguments:
@@ -279,8 +289,8 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 					]
 					,onAfter: function(_data){
 						if(_this){
-							if(_this.scrollToItem){
-								_this.scrollToItem(_data);
+							if(_this.onOpen(_data)){
+								_this.onOpen(_data);
 							}
 							_this.pub('open', _data);
 						}
