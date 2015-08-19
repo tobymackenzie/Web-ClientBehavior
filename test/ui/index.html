@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Test tmblib.base-> loaded from src with require</title>
+
+		<!-- load qunit -->
+		<script src="../../vendor/qunit/qunit/qunit.js"></script>
+		<link rel="stylesheet" href="../../vendor/qunit/qunit/qunit.css"></link>
+
+		<!-- load require -->
+		<script src="../../vendor/requirejs/require.js"></script>
+
+		<script>
+			//--test with global strict mode
+			'use strict';
+
+			//--make sure QUnit doesn't start immediately, so we can load all files first
+			QUnit.config.autostart = false;
+
+			//--configure require.js inline
+			requirejs.config({
+				baseUrl: '../src'
+				,paths: {
+					jquery: '../../vendor/jquery/jquery'
+					,tmclasses: '../../vendor/tmclasses/src'
+					,tmlib: '../../src'
+					,test: '../ui'
+				}
+				,shim: {
+				}
+			});
+
+			//--require 'global' vendor libraries
+			require([
+					'jquery'
+				], function(jQuery){
+					//--require tests
+					require([
+							'test/Dialog'
+						]
+						,function(){
+							//--start tests
+							QUnit.start();
+					});
+
+			});
+			//--pull in all tests and run them
+		</script>
+		<link rel="stylesheet" href="../../src/ui/Dialog.css"></link>
+		<link rel="stylesheet" href="./Dialog.css"></link>
+	</head>
+	<body>
+		<h1>Testing tmlib.ui.</h1>
+		<div id="qunit">Should hold qunit results</div>
+	</body>
+</html>

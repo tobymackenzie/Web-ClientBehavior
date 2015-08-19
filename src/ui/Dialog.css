@@ -1,0 +1,52 @@
+.dialog{
+	display: inline-block;
+	position: relative;
+	text-align: left;
+	z-index: 2002;
+}
+.dialogAction-close:before{
+	content: 'X';
+}
+.dialogActionContent{
+	clip: rect(0 0 0 0);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	position: absolute;
+	width: 1px;
+}
+.dialogActions{
+	position: absolute;
+	right: 10px;
+	top: 10px;
+}
+.dialogInnerWrap{
+	display: table-cell;
+	text-align: center;
+	vertical-align: middle;
+}
+.dialogOverlay{
+	height: 100%;
+	left: 0;
+	position: absolute; position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 2001;
+}
+.dialogWrap{
+	display: none;
+	opacity: 0;
+}
+.dialogWrap.open{
+	display: table;
+	height: 100%;
+	left: 0;
+	opacity: 1;
+	position: absolute; position: fixed;
+	top: 0;
+	transition: opacity 0.5s;
+	vertical-align: middle;
+	width: 100%;
+	will-change: transform;
+	z-index: 2000;
+}
