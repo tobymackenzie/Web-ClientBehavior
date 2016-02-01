@@ -39,6 +39,10 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 					});
 				}
 			}
+			var _postLoad = function(){
+				_this.$.attr('data-inited', 'true');
+				_this.inited = true;
+			};
 			if(_this.doEqualizeRowHeights){
 				if(_this.responsiveHandler){
 					_this.responsiveHandler.sub('resize', jQuery.proxy(_this.equalizeRowsHeights, _this));
@@ -49,8 +53,18 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 				if(_images.length){
 					_images.on('load', function(){
 						_this.equalizeRowsHeights();
+						_postLoad();
 					});
+					setTimeout(function(){
+						if(!_this.inited){
+							_postLoad();
+						}
+					}, 1000);
+				}else{
+					_postLoad();
 				}
+			}else{
+				_postLoad();
 			}
 		}
 		,properties: {
@@ -151,6 +165,7 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 				return this.responsiveHandler && this.responsiveHandler.isNVP(_bp) || false;
 			}
 			,itemSelector: '.expandGalleryItem'
+			,inited: false
 			,responsiveHandler: undefined
 			/*
 			Property: scrollContainer
