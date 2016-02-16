@@ -1,97 +1,123 @@
+/* global __, google, window */
 /*
 Class: GoogleMap
 
 Create and work with a google map using google's map API.
 
-Example:
-	var __map = new __.classes.GoogleMap({
-		autoMark: false
-	});
-	//-- create on page load and History statechange, sticking marker at point of interest
-	var __initMap = function(){
-		var _locationMap = jQuery('.locationMap');
-		if(_locationMap.length){
-			_locationMap.each(function(){
-				var _locationMap = jQuery(this);
-				var _latLong = _locationMap.attr('data-latlong');
-				_latLong = _latLong.split(',');
-				var _lat = _latLong[0] || undefined;
-				var _long = _latLong[1] || undefined;
-				if(_lat && _long){
-					__map.init({
-						$: _locationMap
-						,latitude: _lat
-						,longitude: _long
-					});
-					var _name = _locationMap.attr('data-name');
-					if(_name){
-						__map.mark({
-							title: _name
-						});
+*/
+define(['jquery', 'tmclasses/tmclasses'], function(jQuery, __tmclasses){
+	var __this = __tmclasses.create({
+		init: function(){
+			var _self = this;
+			_self.__parent(arguments);
+			if(__this.isAPIScriptLoaded){
+				_self.activate();
+			}else{
+				__this.loadAPIScript().done(jQuery.proxy(_self.activate, _self));
+			}
+		}
+		,properties: {
+			$: undefined
+			,activate: function(){
+				var _self = this;
+				if(!_self.options){
+					_self.options = {};
+				}
+				if(!_self.markers){
+					_self.markers = [];
+				}
+				if(!_self.options.center && _self.latitude && _self.longitude){
+					_self.options.center = new google.maps.LatLng(_self.latitude, _self.longitude);
+				}
+				if(!_self.options.mapTypeId){
+					_self.options.mapTypeId = window.google.maps.MapTypeId.ROADMAP
+				}
+				if(!_self.options.zoom){
+					_self.options.zoom = 15
+				}
+
+				if(_self.$ && _self.$.length){
+					if(_self.points === 'auto'){
+						var _points = _self.$.find(_self.pointsSelector);
+						if(_points.length){
+							_self.points = [];
+							_points.each(function(){
+								_self.points.push(jQuery(this).data());
+							});
+						}else{
+							_self.points = undefined;
+						}
+					}
+					if(_self.points){
+						//-@ http://stackoverflow.com/a/15720047
+						// _self.$.html('');
+						_self.map = new google.maps.Map(_self.$[0], _self.options);
+						if(_self.autoMark && _self.map){
+							if(!_self.bounds){
+								_self.bounds = new google.maps.LatLngBounds();
+							}
+							for(var _i = 0; _i < _self.points.length; ++_i){
+								var _point = _self.points[_i];
+								var _marker = _self.mark(_point);
+								_self.bounds.extend(_marker.position);
+							}
+						}
+						if(_self.bounds){
+							_self.map.fitBounds(_self.bounds);
+						}
 					}else{
-						__map.mark();
+						//--set up single point map
+						_self.map = new google.maps.Map(_self.$[0], _self.options);
+						_self.mark({latitude: _self.latitude, longitude: _self.longitude});
 					}
 				}
-			});
+			}
+			,autoMark: true
+			,bounds: undefined
+			,deinit: function(){
+				delete this.$;
+				delete this.latitude;
+				delete this.longitude;
+				delete this.map;
+				delete this.markers;
+				this.__parent();
+			}
+			,latitude: undefined
+			,longitude: undefined
+			,map: undefined
+			,mark: function(_opts){
+				if(typeof _opts === 'undefined'){
+					_opts = {};
+				}
+				if(!_opts.position){
+					_opts.position = new google.maps.LatLng(_opts.latitude, _opts.longitude);
+				}
+				if(!_opts.map){
+					_opts.map = this.map;
+				}
+				var _marker = new google.maps.Marker(_opts);
+				this.markers.push(_marker);
+				return _marker;
+			}
+			,markers: undefined
+			,options: undefined
+			,points: undefined
+			,pointsSelector: '.point'
 		}
-	};
-	__initMap();
-	History.Adapter.bind(window, 'statechange', function(){
-		__map.deinit();
-		__initMap();
+		,statics: {
+			apiKey: undefined
+			,isAPIScriptLoaded: (window.google && window.google.maps) || false
+			,loadAPIScript: function(){
+				if(__this.isAPIScriptLoaded !== 'loading'){
+					var _promise = jQuery.getScript('https://maps.googleapis.com/maps/api/js?key=' + __this.apiKey);
+				}else{
+					var _promise = jQuery.Deferred();
+					_promise.resolve();
+					_promise = _promise.promise();
+				}
+				return _promise;
+			}
+		}
 	});
-*/
-/* global __, google, window */
-__.classes.GoogleMap = __.core.Classes.create({
-	init: function(){
-		this.__parent(arguments);
-		if(!this.options){
-			this.options = {
-				mapTypeId: window.google.maps.MapTypeId.ROADMAP || undefined
-				,zoom: 15
-			};
-		}
-		if(this.latitude && this.longitude){
-			this.options.center = new google.maps.LatLng(this.latitude, this.longitude);
-		}
-		if(!this.markers){
-			this.markers = [];
-		}
-
-		if(this.$ && this.$.length){
-			this.map = new google.maps.Map(this.$[0], this.options);
-			if(this.autoMark && this.map){
-				this.mark();
-			}
-		}
-	}
-	,properties: {
-		$: undefined
-		,autoMark: true
-		,deinit: function(){
-			delete this.$;
-			delete this.latitude;
-			delete this.longitude;
-			delete this.map;
-			delete this.markers;
-			this.__parent();
-		}
-		,latitude: undefined
-		,longitude: undefined
-		,map: undefined
-		,mark: function(_options){
-			if(typeof _options === 'undefined'){
-				_options = {};
-			}
-			if(!_options.position){
-				_options.position = new google.maps.LatLng(this.latitude, this.longitude);
-			}
-			if(!_options.map){
-				_options.map = this.map;
-			}
-			return this.markers.push(new google.maps.Marker(_options));
-		}
-		,markers: undefined
-		,options: undefined
-	}
+	return __this;
 });
