@@ -42,7 +42,15 @@ define(['jquery', 'tmclasses/tmclasses'], function(jQuery, __tmclasses){
 						if(_points.length){
 							_self.points = [];
 							_points.each(function(){
-								_self.points.push(jQuery(this).data());
+								var _pointEl = jQuery(this);
+								var _pointData = _pointEl.data();
+								if(!_pointData.info){
+									var _infoEl = _pointEl.find(_self.pointInfoSelector);
+									if(_infoEl.length){
+										_pointData.info = _infoEl.html();
+									}
+								}
+								_self.points.push(_pointData);
 							});
 						}else{
 							_self.points = undefined;
@@ -60,6 +68,14 @@ define(['jquery', 'tmclasses/tmclasses'], function(jQuery, __tmclasses){
 								var _point = _self.points[_i];
 								var _marker = _self.mark(_point);
 								_self.bounds.extend(_marker.position);
+								if(_point.info){
+									google.maps.event.addListener(_marker, 'click', (function(_marker, _point){
+										return function(){
+											_self.getInfoWindow().setContent(_point.info);
+											_self.getInfoWindow().open(_self.map, _marker);
+										};
+									})(_marker, _point));
+								}
 							}
 						}
 						if(_self.bounds){
@@ -82,6 +98,13 @@ define(['jquery', 'tmclasses/tmclasses'], function(jQuery, __tmclasses){
 				delete this.markers;
 				this.__parent();
 			}
+			,infoWindow: undefined
+			,getInfoWindow: function(){
+				if(!this.infoWindow){
+					this.infoWindow = new google.maps.InfoWindow();
+				}
+				return this.infoWindow;
+			}
 			,latitude: undefined
 			,longitude: undefined
 			,map: undefined
@@ -101,6 +124,7 @@ define(['jquery', 'tmclasses/tmclasses'], function(jQuery, __tmclasses){
 			}
 			,markers: undefined
 			,options: undefined
+			,pointInfoSelector: '.info'
 			,points: undefined
 			,pointsSelector: '.point'
 		}
