@@ -4,15 +4,10 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 	var __getElmDimensions = function(_elm){
 		var _data = {};
 		if(_elm){
-			var _originalCSS = {
-				position: _elm.css('position'),
-				visibility: _elm.css('visibility')
-			};
-
 			_elm.css({position: 'absolute', visibility: 'hidden'});
 			_data.width = _elm.outerWidth();
 			_data.height = _elm.outerHeight();
-			_elm.css(_originalCSS);
+			_elm.css('position', '').css('visibility', '');
 		}
 
 		return _data;
@@ -112,7 +107,7 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 							$actions.css('height', '');
 							$actions.each(function(){
 								var $this = jQuery(this);
-								var _position = $this.offset().top;
+								var _position = $this.position().top;
 								if(_position === _previousPosition || _previousPosition === undefined){
 									_previousRowItems.push($this);
 								}else{

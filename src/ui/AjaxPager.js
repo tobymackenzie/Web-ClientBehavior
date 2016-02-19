@@ -39,15 +39,10 @@ define([
 	var __getElmDimensions = function(_elm){
 		var _data = {};
 		if(_elm){
-			var _originalCSS = {
-				position: _elm.css('position'),
-				visibility: _elm.css('visibility')
-			};
-
 			_elm.css({position: 'absolute', visibility: 'hidden'});
 			_data.width = _elm.outerWidth();
 			_data.height = _elm.outerHeight();
-			_elm.css(_originalCSS);
+			_elm.css('position', '').css('visibility', '');
 		}
 
 		return _data;
