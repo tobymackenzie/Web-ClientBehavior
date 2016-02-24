@@ -18,11 +18,28 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 			var _this = this;
 			_this.__parent(arguments);
 			if(_this.$){
-				_this.$.on('click', _this.actionSelector, function(_event){
-					_event.preventDefault();
-					var $this = jQuery(this);
-					_this.switchToItem($this.closest('.expandGalleryItem'));
-				});
+				if(_this.actionSelector){
+					//--prevent click handling on interactive sub-elements
+					if(_this.interactiveTagNames && _this.interactiveTagNames.length){
+						var _actions = _this.actionSelector.split(',');
+						var _subActions = [];
+						for(var _i = 0; _i < _actions.length; ++_i){
+							for(var _j = 0; _j < _this.interactiveTagNames.length; ++_j){
+								_subActions.push(_actions[_i] + ' ' + _this.interactiveTagNames[_j]);
+							}
+						}
+					}
+					_this.$.on('click', _subActions.join(',') , function(_event){
+						_event.stopPropagation();
+					});
+
+					//--attach click handler
+					_this.$.on('click', _this.actionSelector, function(_event){
+						_event.preventDefault();
+						var $this = jQuery(this);
+						_this.switchToItem($this.closest('.expandGalleryItem'));
+					});
+				}
 				if(_this.doLazyLoadIFrames){
 					//--disable 'src' of iframes so they won't be loaded until needed
 					_this.$.find('.expandGalleryItemDetail').find('iframe').each(function(){
@@ -156,6 +173,11 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 			//		,_opts.newNav
 			//	];
 			//}
+			/*
+			Property: interactiveTagNames
+			Tags that won't trigger click on action.  Meant to allow child interactive elements to be usable.
+			*/
+			,interactiveTagNames: ['a','button','input','label','select','textarea']
 			,isNVP: function(_bp){
 				return this.responsiveHandler && this.responsiveHandler.isNVP(_bp) || false;
 			}
