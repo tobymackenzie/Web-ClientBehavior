@@ -124,7 +124,7 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 							$actions.css('height', '');
 							$actions.each(function(){
 								var $this = jQuery(this);
-								var _position = $this.position().top;
+								var _position = $this.offset().top;
 								if(_position === _previousPosition || _previousPosition === undefined){
 									_previousRowItems.push($this);
 								}else{
