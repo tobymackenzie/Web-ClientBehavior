@@ -138,6 +138,14 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 						}
 					}
 				}
+				if(this.current){
+					var _itemDetail = this.getItemDetail(this.current);
+					var _paddingBottom = __getElmDimensions(_itemDetail).height;
+					var _marginBottom = parseInt(_itemDetail.css('margin-bottom').replace('px', ''),10);
+					var _marginTop = parseInt(_itemDetail.css('margin-top').replace('px', ''),10);
+					_paddingBottom += (!isNaN(_marginBottom) ? _marginBottom : 0) + (!isNaN(_marginTop) ? _marginTop : 0);
+					this.current.css('paddingBottom', _paddingBottom);
+				}
 			}
 			,expandContainerSelector: 'this'
 			,getExpandContainer: function(_item){
@@ -337,6 +345,8 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 					,stylesAfter: [
 						{paddingBottom: ''}
 						,{display: '', height: ''}
+						,null
+						,{height: ''}
 					]
 					,onAfter: function(_data){
 						if(_this){
