@@ -134,21 +134,17 @@ define(['tmclasses/tmclasses', 'jquery', '../fx/AnimationTransition'], function(
 						if(!_opts.elements){
 							_opts.elements = _this.getTransElements(_item, _opts);
 						}
-						var _transitionSettings = {
-							after: function(){
-								_this.afterSwitch(_item, _opts);
-							}
-							,elements: _opts.elements
+						var _passedAfter = _opts.after || undefined;
+						_opts.after = function(){
+							_opts.after = _passedAfter;
+							_this.afterSwitch(_item, _opts);
 						};
-						if(_opts.duration){
-							_transitionSettings.duration = _opts.duration;
-						}
 						_this.isTransitioning = true;
 						var _transition = _this.getTransition();
 						if(_transition instanceof __AnimationTransition){
-							_transition.transitionForElements(_transitionSettings);
+							_transition.transitionForElements(_opts);
 						}else if(typeof _transition === 'function'){
-							_transition.call(_this, _transitionSettings);
+							_transition.call(_this, _opts);
 						}
 					}
 				}
