@@ -350,7 +350,7 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 					]
 					,onAfter: function(_data){
 						if(_this){
-							if(_this.onOpen(_data)){
+							if(_this.onOpen){
 								_this.onOpen(_data);
 							}
 							_this.pub('open', _data);
