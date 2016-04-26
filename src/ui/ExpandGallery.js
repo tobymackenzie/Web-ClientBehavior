@@ -52,6 +52,10 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 				}
 			}
 			var _postLoad = function(){
+				var _initial = _this.items.find('.' + _this.currentClass).removeClass(_this.currentClass).first();
+				if(_initial.length){
+					_this.switchToItem(_initial, {duration: 0, scrollToItem: false});
+				}
 				_this.$.attr('data-inited', 'true');
 				_this.inited = true;
 			};
