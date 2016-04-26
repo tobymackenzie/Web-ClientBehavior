@@ -224,7 +224,7 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 						}
 					});
 				}
-				if(_this.scrollToItem){
+				if(typeof _data.scrollToItem !== 'undefined' ? _data.scrollToItem : _this.scrollToItem){
 					_this.scrollToItem(_data);
 				}
 			}
