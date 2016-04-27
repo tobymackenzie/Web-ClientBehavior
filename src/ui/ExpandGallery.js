@@ -90,6 +90,11 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 			,duration: 200
 			,doEqualizeRowHeights: false
 			,doLazyLoadIFrames: true
+			/*
+			Property: equalizeOffsetDeviation
+			Pixel deviation of top of item used in the `equalizeRowsHeights()` method for determining if items are in same row.  Ran into an instance where it was off by one pixel for no visible reason.
+			*/
+			,equalizeOffsetDeviation: 1
 			,equalizeRowHeights: function(_rowItems){
 				var _i;
 				var _item;
@@ -129,7 +134,8 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 							$actions.each(function(){
 								var $this = jQuery(this);
 								var _position = $this.offset().top;
-								if(_position === _previousPosition || _previousPosition === undefined){
+
+								if((_position >= _previousPosition - _this.equalizeOffsetDeviation && _position <= _previousPosition + _this.equalizeOffsetDeviation) || _previousPosition === undefined){
 									_previousRowItems.push($this);
 								}else{
 									_this.equalizeRowHeights(_previousRowItems);
@@ -141,14 +147,6 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 							_this.equalizeRowHeights(_previousRowItems);
 						}
 					}
-				}
-				if(this.current){
-					var _itemDetail = this.getItemDetail(this.current);
-					var _paddingBottom = __getElmDimensions(_itemDetail).height;
-					var _marginBottom = parseInt(_itemDetail.css('margin-bottom').replace('px', ''),10);
-					var _marginTop = parseInt(_itemDetail.css('margin-top').replace('px', ''),10);
-					_paddingBottom += (!isNaN(_marginBottom) ? _marginBottom : 0) + (!isNaN(_marginTop) ? _marginTop : 0);
-					this.current.css('paddingBottom', _paddingBottom);
 				}
 			}
 			,expandContainerSelector: 'this'
@@ -349,8 +347,6 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 					,stylesAfter: [
 						{paddingBottom: ''}
 						,{display: '', height: ''}
-						,null
-						,{height: ''}
 					]
 					,onAfter: function(_data){
 						if(_this){
