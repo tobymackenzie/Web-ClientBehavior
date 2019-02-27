@@ -54,7 +54,7 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 			var _postLoad = function(){
 				var _initial = _this.items.find(_this.actionSelector + ',' + _this.getItemSelector()).filter('.' + _this.currentClass).removeClass(_this.currentClass).first();
 				if(_initial.length){
-					_this.switchToItem(_initial, {duration: 0, scrollToItem: false});
+					_this.switchToItem(_initial, {duration: 0, scrollToItem: _this.scrollToInitial});
 				}
 				_this.$.attr('data-inited', 'true');
 				_this.inited = true;
@@ -230,6 +230,7 @@ define(['jquery', 'tmlib/fx/AnimationTransition', 'tmclasses/tmclasses', 'tmlib/
 					_this.scrollToItem(_data);
 				}
 			}
+			,scrollToInitial: true
 			/*
 			Method: scrollToItem
 			Called after transition, will scroll to the opened item so that it isn't out of view
